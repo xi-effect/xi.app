@@ -1,9 +1,9 @@
 {
-  "name": "web",
+  "name": "xi.front",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -21,5 +21,9 @@
     "eslint-config-custom": "*",
     "tsconfig": "*",
     "typescript": "^4.5.3"
-  }
+  },
+  "description": "First, run the development server:",
+  "main": ".eslintrc.js",
+  "author": "",
+  "license": "ISC"
 }
