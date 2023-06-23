@@ -12,18 +12,19 @@
     "next": "^13.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "ui": "*"
+    "ui": "*",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@types/node": "^17.0.12",
-    "@types/react": "^18.0.22",
+    "@types/react": "^18.2.8",
     "@types/react-dom": "^18.0.7",
     "eslint-config-custom": "*",
     "tsconfig": "*",
-    "typescript": "^4.5.3"
+    "typescript": "^5.1.3"
   },
   "description": "First, run the development server:",
   "main": ".eslintrc.js",
-  "author": "",
+  "author": "xi.effect",
   "license": "ISC"
 }
