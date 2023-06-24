@@ -1,0 +1,24 @@
+{
+  "name": "pkg.theme",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.ts*\""
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.13.6",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.12",
+    "@types/react": "^18.2.8",
+    "@types/react-dom": "^18.0.7",
+    "eslint": "^7.32.0",
+    "eslint-config-custom": "*",
+    "typescript": "^5.1.3"
+  }
+}
