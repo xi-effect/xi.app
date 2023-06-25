@@ -1,5 +1,5 @@
-import { StateCreator, create } from "zustand";
-import { UserProfile } from "./userProfile";
+import { StateCreator } from 'zustand';
+import { UserProfile } from './userProfile';
 
 export type UserSettings = {
   id: number | null; // ID пользователя, уникален
@@ -8,15 +8,14 @@ export type UserSettings = {
   updateUsername: (newUsername: string) => void;
 };
 
-export const useUserSettingsSt: StateCreator<
+export const createUserSettingsSt: StateCreator<
   UserSettings & UserProfile,
   [],
   [],
   UserSettings
 > = (set) => ({
   id: 0,
-  username: "un",
-  handle: "aa",
-  updateUsername: (newUsername: string) =>
-    set(() => ({ username: newUsername })),
+  username: 'un',
+  handle: 'aa',
+  updateUsername: (newUsername: string) => set(() => ({ username: newUsername })),
 });

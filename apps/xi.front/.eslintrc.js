@@ -1,4 +1,4 @@
 module.exports = {
   root: true,
-  extends: ["custom"],
+  extends: ['@xipkg/eslint-config-custom'],
 };

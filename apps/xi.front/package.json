@@ -16,21 +16,21 @@
     "next": "^13.4.1",
     "next-pwa": "^5.6.0",
     "pkg.theme": "*",
+    "pkg.signin.form": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "ui": "*",
     "zustand": "^4.3.8"
   },
   "devDependencies": {
-    "@types/node": "^17.0.12",
-    "@types/react": "^18.2.8",
-    "@types/react-dom": "^18.0.7",
-    "eslint-config-custom": "*",
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@xipkg/eslint-config-custom": "latest",
     "ignore-loader": "^0.1.2",
-    "tsconfig": "*",
+    "@xipkg/config.typescript": "latest",
     "typescript": "^5.1.3"
   },
-  "description": "First, run the development server:",
+  "description": "",
   "main": ".eslintrc.js",
   "author": "xi.effect",
   "license": "ISC"

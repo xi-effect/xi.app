@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { EmotionCacheProvider } from "./EmotionCache";
-import { getScheme } from "@xipkg/theme";
+import * as React from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { getScheme } from '@xipkg/theme';
+import { EmotionCacheProvider } from './EmotionCache';
 
 export function ThemeRegistry({
   mode,
   children,
 }: {
-  mode: "light" | "dark";
+  mode: 'light' | 'dark';
   children: React.ReactNode;
 }) {
-  const theme = getScheme((mode = "light"));
+  const theme = getScheme(mode);
 
   return (
-    <EmotionCacheProvider options={{ key: "mui" }}>
+    <EmotionCacheProvider options={{ key: 'mui' }}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />

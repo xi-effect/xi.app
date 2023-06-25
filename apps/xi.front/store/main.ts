@@ -1,8 +1,12 @@
-import { create } from "zustand";
-import { UserProfile, useUserProfileSt } from "./userProfile";
-import { UserSettings, useUserSettingsSt } from "./userSettings";
+import { create } from 'zustand';
+import { UserProfile, createUserProfileSt } from './user/userProfile';
+import { UserSettings, createUserSettingsSt } from './user/userSettings';
+import { SignIn, createSignInSt } from './auth/signin';
 
-export const useMainSt = create<UserProfile & UserSettings>()((...a) => ({
-  ...useUserProfileSt(...a),
-  ...useUserSettingsSt(...a),
+export type Common = UserProfile & UserSettings & SignIn;
+
+export const useMainSt = create<Common>()((...a) => ({
+  ...createUserProfileSt(...a),
+  ...createUserSettingsSt(...a),
+  ...createSignInSt(...a),
 }));
