@@ -8,6 +8,7 @@
     "lint": "eslint \"**/*.ts*\""
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.6",
@@ -19,6 +20,10 @@
     "@types/react-dom": "^18.0.7",
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
+    "@xipkg/config.typescript": "latest",
+    "@xipkg/theme": "latest",
     "typescript": "^5.1.3"
-  }
+  },
+  "author": "",
+  "description": ""
 }

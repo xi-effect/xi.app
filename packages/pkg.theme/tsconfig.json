@@ -2,7 +2,7 @@
   "compilerOptions": {
       "jsx": "react"
   },
-  "extends": "pkg.config.typescript/react-library.json",
+  "extends": "@xipkg/config.typescript/react-library.json",
   "include": ["*"],
   "exclude": ["dist", "build", "node_modules"]
 }

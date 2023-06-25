@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { ReactNode } from "react";
+import { ThemeRegistry } from "pkg.theme";
 
 export const metadata: Metadata = {
   title: "xi.effect",
@@ -16,10 +17,10 @@ async function getData() {
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
+  console.log("res", res);
   // Recommendation: handle errors
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  if (res.status === 401) {
+    console.error("401");
   }
 
   return res.json();
@@ -43,8 +44,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div>{children}</div>
-        <div>{data.id === 1 ? main : login}</div>
+        <ThemeRegistry mode="light">
+          <div>{children}</div>
+          <div>{data.id === 1 ? main : login}</div>
+        </ThemeRegistry>
       </body>
     </html>
   );
