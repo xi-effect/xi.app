@@ -5,10 +5,12 @@ import { useMainSt } from 'store/main';
 import { SignIn } from 'pkg.signin.form';
 
 export default function SignInPage() {
-  const signInSt = useMainSt((state) => state.signIn);
+  const signIn = useMainSt((state) => state.signIn);
+  const onSignIn = useMainSt((state) => state.onSignIn);
+
   return (
     <div>
-      <SignIn signInSt={signInSt} />
+      <SignIn signIn={signIn} onSignIn={onSignIn} />
     </div>
   );
 }

@@ -30,7 +30,15 @@ const nextConfig = {
     esmExternals: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-  transpilePackages: ['pkg.theme', '@xipkg/config.typescript', 'pkg.signin.form'],
+  transpilePackages: [
+    'pkg.theme',
+    '@xipkg/config.typescript',
+    'pkg.signin.form',
+    '@emotion/styled',
+    '@emotion/react',
+    '@emotion/cache',
+    '@mui/material',
+  ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
   },

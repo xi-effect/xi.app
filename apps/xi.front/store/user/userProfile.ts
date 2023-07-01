@@ -1,3 +1,5 @@
+'use client';
+
 import { StateCreator } from 'zustand';
 import { UserSettings } from './userSettings';
 

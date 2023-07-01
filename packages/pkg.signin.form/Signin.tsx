@@ -1,6 +1,8 @@
+'use client';
+
 import * as React from 'react';
 import * as yup from 'yup';
-import { useRouter, NextRouter } from 'next/router';
+// import { useRouter, NextRouter } from 'next/router';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Stack, Link, Input, InputAdornment, Box } from '@mui/material';
@@ -15,7 +17,8 @@ export type SignInT = {
   /**
    * The store type is the store itself.
    */
-  signInSt: any;
+  signIn: any;
+  onSignIn: any;
 };
 
 const schema = yup
@@ -25,12 +28,12 @@ const schema = yup
   })
   .required();
 
-export const SignIn = ({ signInSt }: SignInT) => {
-  const {
-    signIn: { errorEmail, errorPassword, onSignIn },
-  } = signInSt;
+export const SignIn = ({ signIn, onSignIn }: SignInT) => {
+  console.log('signInSt', signIn);
 
-  const router: NextRouter = useRouter();
+  const { errorEmail, errorPassword } = signIn;
+
+  // const router: NextRouter = useRouter();
 
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
@@ -126,7 +129,7 @@ export const SignIn = ({ signInSt }: SignInT) => {
             lineHeight: '18px',
             letterSpacing: 0,
           }}
-          onClick={() => router.push('/resetpassword/email')}
+          // onClick={() => router.push('/resetpassword/email')}
         >
           Восстановить пароль
         </Link>
@@ -142,7 +145,7 @@ export const SignIn = ({ signInSt }: SignInT) => {
             lineHeight: '20px',
             letterSpacing: 0,
           }}
-          onClick={() => router.push('/signup')}
+          // onClick={() => router.push('/signup')}
         >
           Регистрация
         </Link>

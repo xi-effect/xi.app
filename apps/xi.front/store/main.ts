@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 import { UserProfile, createUserProfileSt } from './user/userProfile';
 import { UserSettings, createUserSettingsSt } from './user/userSettings';

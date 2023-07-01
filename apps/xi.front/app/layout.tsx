@@ -1,11 +1,13 @@
-import { Metadata } from 'next';
+'use client';
+
+// import { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { ThemeRegistry } from 'pkg.theme';
 
-export const metadata: Metadata = {
-  title: 'xi.effect',
-  description: 'Welcome to xi.effect',
-};
+// export const metadata: Metadata = {
+//   title: 'xi.effect',
+//   description: 'Welcome to xi.effect',
+// };
 
 async function getData() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/me/profile/`, {
