@@ -1,6 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}', '../../packages/**/*.{js,ts,jsx,tsx,mdx}'],
+  extend: {
+    fontFamily: {
+      sans: ['var(--font-inter)'],
+      mono: ['var(--font-inter)'],
+    },
+  },
   theme: {
     colors: {
       transparent: 'transparent',
@@ -19,6 +25,18 @@ module.exports = {
         10: '#E8E8E8',
         5: '#F7F7F7',
         0: '#FFFFFF',
+      },
+      brand: {
+        100: '#3546BD',
+        80: '#445AFF',
+        60: '#697BFF',
+        40: '#8F9CFF',
+        20: '#B4BDFF',
+        0: '#EDEFFF',
+      },
+      bkgd: {
+        main: '#EDEFFF',
+        block: '#FFFFFF',
       },
       red: {
         100: '#BE0D0C',

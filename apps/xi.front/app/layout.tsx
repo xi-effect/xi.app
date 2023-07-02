@@ -2,9 +2,19 @@
 
 import './globals.css';
 
+import { Inter } from 'next/font/google';
+
 import { ReactNode, useEffect } from 'react';
 import { ThemeRegistry } from 'pkg.theme';
 import { useMainSt } from 'store';
+
+const inter = Inter({
+  weight: ['400', '500', '600', '700'],
+  style: ['normal'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export default function RootLayout({ auth, main }: { auth: ReactNode; main: ReactNode }) {
   const [isLogin, getUser] = useMainSt((state) => [state.isLogin, state.getUser]); //
@@ -21,7 +31,7 @@ export default function RootLayout({ auth, main }: { auth: ReactNode; main: Reac
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable}`}>
       <body>
         <ThemeRegistry mode="light">
           <div className="w-screen h-screen">{getRoute()}</div>
