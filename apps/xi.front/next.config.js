@@ -32,6 +32,7 @@ const nextConfig = {
   },
   transpilePackages: [
     'pkg.theme',
+    'pkg.utils',
     '@xipkg/config.typescript',
     'pkg.signin.form',
     '@emotion/styled',

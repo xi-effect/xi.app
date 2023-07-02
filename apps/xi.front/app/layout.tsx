@@ -1,43 +1,30 @@
 'use client';
 
-// import { Metadata } from 'next';
-import { ReactNode } from 'react';
+import './globals.css';
+
+import { ReactNode, useEffect } from 'react';
 import { ThemeRegistry } from 'pkg.theme';
+import { useMainSt } from 'store';
 
-// export const metadata: Metadata = {
-//   title: 'xi.effect',
-//   description: 'Welcome to xi.effect',
-// };
+export default function RootLayout({ auth, main }: { auth: ReactNode; main: ReactNode }) {
+  const [isLogin, getUser] = useMainSt((state) => [state.isLogin, state.getUser]); //
 
-async function getData() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/me/profile/`, {
-    cache: 'no-store',
-  });
+  useEffect(() => {
+    console.log('isLogin in useEffect is', isLogin);
+    getUser();
+  }, []);
 
-  return res.json();
-}
-
-export default async function RootLayout({
-  params,
-  auth,
-  main,
-}: {
-  params: any;
-  children: ReactNode;
-  auth: ReactNode;
-  main: ReactNode;
-}) {
-  const data = await getData();
-  console.log('data', data);
-  console.log('params', params);
+  const getRoute = () => {
+    if (isLogin === null) return <h1> Loading </h1>;
+    if (isLogin === true) return main;
+    return auth;
+  };
 
   return (
     <html lang="en">
       <body>
         <ThemeRegistry mode="light">
-          <div>
-            {data?.a === 'unauthorized: Missing cookie "access_token_cookie"' ? auth : main}
-          </div>
+          <div className="w-screen h-screen">{getRoute()}</div>
         </ThemeRegistry>
       </body>
     </html>

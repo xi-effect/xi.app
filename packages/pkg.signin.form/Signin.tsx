@@ -2,11 +2,11 @@
 
 import * as React from 'react';
 import * as yup from 'yup';
-// import { useRouter, NextRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Stack, Link, Input, InputAdornment, Box } from '@mui/material';
-import { Eyeoff, Eyeon } from '@xipkg/icons';
+import { Button, Stack, Link, Input } from '@mui/material'; // InputAdornment, Box
+// import { Eyeoff, Eyeon } from '@xipkg/icons';
 
 type FormValues = {
   email: string;
@@ -33,9 +33,9 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
 
   const { errorEmail, errorPassword } = signIn;
 
-  // const router: NextRouter = useRouter();
+  const router = useRouter();
 
-  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+  // const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
   const {
     control,
@@ -99,23 +99,8 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
               fullWidth
               placeholder="Пароль"
               autoComplete="on"
-              type={showPassword ? 'text' : 'password'}
+              // type={showPassword ? 'text' : 'password'}
               {...field}
-              inputProps={{
-                endAdornment: (
-                  <InputAdornment position="end" sx={{ mr: '7px' }}>
-                    <Box
-                      width="24px"
-                      height="24px"
-                      borderRadius="8px"
-                      sx={{ cursor: 'pointer' }}
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {!showPassword ? <Eyeoff /> : <Eyeon />}
-                    </Box>
-                  </InputAdornment>
-                ),
-              }}
             />
           )}
         />
@@ -129,7 +114,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             lineHeight: '18px',
             letterSpacing: 0,
           }}
-          // onClick={() => router.push('/resetpassword/email')}
+          onClick={() => router.push('/resetpassword/email')}
         >
           Восстановить пароль
         </Link>
@@ -145,7 +130,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             lineHeight: '20px',
             letterSpacing: 0,
           }}
-          // onClick={() => router.push('/signup')}
+          onClick={() => router.push('/signup')}
         >
           Регистрация
         </Link>

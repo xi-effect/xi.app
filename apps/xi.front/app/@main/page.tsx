@@ -2,8 +2,8 @@
 
 export default function Main() {
   return (
-    <div>
-      <h1>Main page</h1>
+    <div className="bg-gray-10">
+      <h1 className="text-3xl font-bold underline">Main page</h1>
     </div>
   );
 }
