@@ -20,6 +20,7 @@
     "pkg.navigation": "*",
     "pkg.theme": "*",
     "pkg.utils": "*",
+    "pkg.spinner": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zustand": "^4.3.8"

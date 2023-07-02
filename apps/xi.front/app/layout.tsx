@@ -5,6 +5,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 
 import { ReactNode, useEffect } from 'react';
+import { LoadingSpinner } from 'pkg.spinner';
 import { ThemeRegistry } from 'pkg.theme';
 import { useMainSt } from 'store';
 
@@ -25,7 +26,7 @@ export default function RootLayout({ auth, main }: { auth: ReactNode; main: Reac
   }, []);
 
   const getRoute = () => {
-    if (isLogin === null) return <h1> Loading </h1>;
+    if (isLogin === null) return <LoadingSpinner />;
     if (isLogin === true) return main;
     return auth;
   };
