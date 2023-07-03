@@ -1,6 +1,6 @@
 'use client';
 
-import './globals.css';
+import '@xipkg/tailwind/tailwind.css';
 
 import { Inter } from 'next/font/google';
 
@@ -12,7 +12,7 @@ import { useMainSt } from 'store';
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
   style: ['normal'],
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   display: 'swap',
   variable: '--font-inter',
 });
