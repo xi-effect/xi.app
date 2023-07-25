@@ -34,12 +34,7 @@ const nextConfig = {
     'pkg.theme',
     'pkg.spinner',
     'pkg.utils',
-    '@xipkg/config.typescript',
     'pkg.signin.form',
-    '@emotion/styled',
-    '@emotion/react',
-    '@emotion/cache',
-    '@mui/material',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
