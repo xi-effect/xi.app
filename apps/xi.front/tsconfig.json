@@ -1,6 +1,7 @@
 {
   "extends": "@xipkg/typescript/nextjs.json",
   "compilerOptions": {
+    "jsx": "preserve",
     "baseUrl": ".",
     "plugins": [
       {

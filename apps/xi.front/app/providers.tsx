@@ -26,7 +26,8 @@ export function Providers(props) {
   //   return auth;
   // };
 
-  const { options, children } = props;
+  const options = { key: 'mui', prepend: true };
+  const { children } = props;
 
   const [{ cache, flush }] = React.useState(() => {
     const cache = createCache(options);
