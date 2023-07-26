@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
-    "@xipkg/eslint-config-custom": "latest",
+    "@xipkg/eslint": "latest",
     "prettier": "^2.5.1",
     "turbo": "latest"
   },

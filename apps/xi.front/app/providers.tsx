@@ -1,12 +1,12 @@
 'use client';
 
+import { getInitColorSchemeScript } from '@mui/material/styles';
 import { ThemeProvider } from 'next-themes';
-import { ThemeRegistry } from 'pkg.theme';
-import { LoadingSpinner } from 'pkg.spinner';
+import { ThemeRegistry } from '@xipkg/mui';
 import { useMainSt } from 'store';
 import { useEffect } from 'react';
 
-export function Providers({ main, auth }) {
+export function Providers({ children }) {
   const [isLogin, getUser] = useMainSt((state) => [state.isLogin, state.getUser]);
 
   useEffect(() => {
@@ -14,15 +14,18 @@ export function Providers({ main, auth }) {
     getUser();
   }, []);
 
-  const getRoute = () => {
-    if (isLogin === null) return <LoadingSpinner />;
-    if (isLogin === true) return main;
-    return auth;
-  };
+  // const getRoute = () => {
+  //   if (isLogin === null) return <LoadingSpinner />;
+  //   if (isLogin === true) return main;
+  //   return auth;
+  // };
 
   return (
-    <ThemeRegistry mode="light">
-      <ThemeProvider>{getRoute()}</ThemeProvider>
-    </ThemeRegistry>
+    <>
+      {getInitColorSchemeScript()}
+      <ThemeProvider attribute="data-mui-color-scheme">
+        <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
+      </ThemeProvider>
+    </>
   );
 }

@@ -11,19 +11,19 @@
     "react": "^18.2.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.13.6",
-    "@xipkg/icons": "0.3.0",
+    "@mui/material": "^5.14.2",
+    "@xipkg/icons": "0.4.1",
     "yup": "^1.2.0",
-    "next": "^13.4.1"
+    "next": "^13.4.12"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "eslint": "^7.32.0",
-    "eslint-config-custom": "*",
-    "@xipkg/config.typescript": "latest",
-    "@xipkg/theme": "latest",
+    "@xipkg/eslint": "latest",
+    "@xipkg/typescript": "latest",
+    "@xipkg/tailwind": "latest",
     "typescript": "^5.1.3"
   },
   "description": "form for signin",

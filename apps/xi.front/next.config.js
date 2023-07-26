@@ -35,6 +35,7 @@ const nextConfig = {
     'pkg.spinner',
     'pkg.utils',
     'pkg.signin.form',
+    '@pkg/mui',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
@@ -56,11 +57,18 @@ const nextConfig = {
       issuer: { and: [/\.(js|ts|md)x?$/] },
       type: 'asset/resource',
     });
+
     config.module.rules.push({
-      test: /\.d.ts?$/,
+      test: /\.(ts)x?$/, // Just `tsx?` file only
       use: [
+        // options.defaultLoaders.babel, I don't think it's necessary to have this loader too
         {
-          loader: 'ignore-loader',
+          loader: "ts-loader",
+          options: {
+            transpileOnly: true,
+            experimentalWatchApi: true,
+            onlyCompileBundledFiles: true,
+          },
         },
       ],
     });

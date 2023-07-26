@@ -12,11 +12,11 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-export default function RootLayout({ auth, main }: { auth: ReactNode; main: ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body>
-        <Providers auth={auth} main={main} />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
