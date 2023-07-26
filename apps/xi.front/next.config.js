@@ -34,8 +34,7 @@ const nextConfig = {
     'pkg.theme',
     'pkg.spinner',
     'pkg.utils',
-    'pkg.signin.form',
-    '@pkg/mui',
+    'pkg.signin.form'
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

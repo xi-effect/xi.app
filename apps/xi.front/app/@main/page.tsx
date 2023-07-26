@@ -1,5 +1,7 @@
 'use client';
 
+import React from "react";
+
 export default function Main() {
   return (
     <div className="p-8 h-full w-full">

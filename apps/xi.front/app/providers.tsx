@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes';
 import { ThemeRegistry } from '@xipkg/mui';
 import { useMainSt } from 'store';
 import { useEffect } from 'react';
+import React from 'react';
 
 export function Providers({ children }) {
   const [isLogin, getUser] = useMainSt((state) => [state.isLogin, state.getUser]);

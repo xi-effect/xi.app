@@ -13,7 +13,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.2",
-    "@xipkg/mui": "0.0.5",
+    "@xipkg/mui": "0.0.8",
     "@xipkg/tailwind": "^0.3.2",
     "crypto-js": "^4.1.1",
     "next": "^13.4.12",
@@ -43,5 +43,10 @@
   "description": "",
   "main": ".eslintrc.js",
   "author": "xi.effect",
-  "license": "ISC"
+  "license": "ISC",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }

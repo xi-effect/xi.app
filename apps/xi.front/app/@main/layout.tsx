@@ -3,6 +3,7 @@
 import Image from 'next/image';
 
 import { Navigation } from 'pkg.navigation';
+import React from 'react';
 import { ReactNode } from 'react';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
