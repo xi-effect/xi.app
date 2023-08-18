@@ -1,5 +1,6 @@
 import '@xipkg/tailwind/index.css';
 
+import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 import { Providers } from './providers';
@@ -12,6 +13,10 @@ const inter = Inter({
   display: 'swap',
   variable: '--font-inter',
 });
+
+export const metadata: Metadata = {
+  manifest: '/manifest.webmanifest',
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
