@@ -16,12 +16,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  manifest: '/manifest.webmanifest',
+  manifest: './manifest.webmanifest',
   icons: {
     icon: [
       { url: './favicon-for-light.svg' },
       { url: './favicon-for-dark.svg', media: '(prefers-color-scheme: dark)' },
     ],
+    apple: ['./assets/icons/apple-touch-icon.png'],
   },
 };
 
