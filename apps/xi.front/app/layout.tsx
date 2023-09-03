@@ -1,5 +1,3 @@
-import '@xipkg/tailwind/index.css';
-
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 import { Providers } from './providers';
