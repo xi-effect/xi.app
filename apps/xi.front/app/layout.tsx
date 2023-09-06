@@ -1,5 +1,3 @@
-import '@xipkg/tailwind/index.css';
-
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode, useMemo } from 'react';
