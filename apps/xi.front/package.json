@@ -9,11 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/cache": "^11.11.0",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.2",
-    "@xipkg/mui": "0.0.9",
     "crypto-js": "^4.1.1",
     "next": "^13.4.12",
     "next-pwa": "^5.6.0",
@@ -34,7 +29,11 @@
     "@xipkg/eslint": "latest",
     "@xipkg/typescript": "latest",
     "ignore-loader": "^0.1.2",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "autoprefixer": "^10.4.14",
+    "tailwindcss": "^3.3.2",
+    "postcss": "^8.4.24",
+    "@xipkg/tailwind": "latest"
   },
   "description": "",
   "main": ".eslintrc.js",

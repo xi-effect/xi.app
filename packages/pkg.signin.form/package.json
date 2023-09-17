@@ -14,7 +14,7 @@
     "@mui/material": "^5.14.2",
     "@hookform/resolvers": "^3.1.1",
     "@xipkg/icons": "0.4.1",
-    "@xipkg/input": "0.0.0",
+    "@xipkg/input": "0.0.4",
     "react-hook-form": "^7.45.0",
     "yup": "^1.2.0",
     "next": "^13.4.12"

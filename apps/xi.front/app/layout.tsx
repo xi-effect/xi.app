@@ -1,9 +1,8 @@
+import '@xipkg/tailwind/index.css';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ReactNode, useMemo } from 'react';
 import { Providers } from './providers';
-import React from 'react';
-import { useTheme } from 'next-themes';
+import React, { ReactNode } from 'react';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
