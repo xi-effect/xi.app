@@ -1,4 +1,4 @@
-import '@xipkg/tailwind/index.css';
+import './index.css';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from './providers';

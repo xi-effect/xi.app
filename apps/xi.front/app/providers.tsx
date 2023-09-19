@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { ThemeProvider } from 'next-themes';
 import React from 'react';
@@ -8,7 +8,9 @@ export function Providers(props) {
 
   return (
     <>
-      <ThemeProvider attribute="data-theme">{children}</ThemeProvider>
+      <ThemeProvider forcedTheme="light" attribute="data-theme">
+        {children}
+      </ThemeProvider>
     </>
   );
 }

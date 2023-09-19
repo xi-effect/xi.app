@@ -1,12 +1,22 @@
 'use client';
 
+import '@xipkg/tailwind/index.css';
 import * as React from 'react';
-import * as yup from 'yup';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Stack, Link } from '@mui/material';
+import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@xipkg/form';
 
 type FormValues = {
   email: string;
@@ -21,135 +31,55 @@ export type SignInT = {
   onSignIn: any;
 };
 
-const schema = yup
-  .object({
-    email: yup.string().email().max(100).required(),
-    password: yup.string().required().min(6).max(100),
-  })
-  .required();
+const FormSchema = z.object({
+  email: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+  password: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+});
 
 export const SignIn = ({ signIn, onSignIn }: SignInT) => {
-  console.log('signInSt', signIn);
-
-  const { errorEmail, errorPassword } = signIn;
-
-  const router = useRouter();
-
-  // const [showPassword, setShowPassword] = React.useState<boolean>(false);
-
-  const {
-    control,
-    handleSubmit,
-    trigger,
-    formState: { errors },
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema),
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
   });
 
-  const onSubmit = (data: any) => {
-    trigger();
-    onSignIn(data, trigger);
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.log('data', data);
   };
 
-  // const getEmailError = () => {
-  //   if (errors.email?.message) return "Некорректный email";
-  //   if (errorEmail) return "Не удалось найти аккаунт";
-  //   return null;
-  // };
-
-  // const getPasswordError = () => {
-  //   if (errors.email || errorPassword) return "Неправильный пароль";
-  //   return null;
-  // };
-
   return (
-    <Stack
-      height="100%"
-      direction="column"
-      justifyContent="space-between"
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <Stack direction="column" spacing={2}>
-        <Controller
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+        <FormField
+          control={form.control}
           name="email"
-          control={control}
-          defaultValue=""
           render={({ field }) => (
-            <Input
-              error={!!errors.email?.message || !!errorEmail}
-              type="email"
-              fullWidth
-              placeholder="Электронная почта"
-              autoComplete="on"
-              {...field}
-              sx={{
-                backgroundColor: 'petersburg.0',
-              }}
-            />
+            <FormItem>
+              <FormLabel>Электронная почта</FormLabel>
+              <FormControl>
+                <Input type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
-        <Controller
+        <FormField
+          control={form.control}
           name="password"
-          control={control}
-          defaultValue=""
           render={({ field }) => (
-            <Input
-              error={!!errors.password?.message || !!errorPassword}
-              fullWidth
-              placeholder="Пароль"
-              autoComplete="on"
-              // type={showPassword ? 'text' : 'password'}
-              {...field}
-            />
+            <FormItem>
+              <FormLabel>Пароль</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
-        <Link
-          underline="none"
-          sx={{
-            cursor: 'pointer',
-            color: 'brand.80',
-            fontWeight: 500,
-            fontSize: 14,
-            lineHeight: '18px',
-            letterSpacing: 0,
-          }}
-          onClick={() => router.push('/resetpassword/email')}
-        >
-          Восстановить пароль
-        </Link>
-      </Stack>
-      <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Link
-          underline="none"
-          sx={{
-            cursor: 'pointer',
-            color: 'brand.80',
-            fontWeight: 500,
-            fontSize: 16,
-            lineHeight: '20px',
-            letterSpacing: 0,
-          }}
-          onClick={() => router.push('/signup')}
-        >
-          Регистрация
-        </Link>
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{
-            width: '120px',
-            height: '48px',
-            borderRadius: '8px',
-            fontWeight: 500,
-            fontSize: 18,
-            lineHeight: '22px',
-            textTransform: 'capitalize',
-          }}
-        >
-          Войти
-        </Button>
-      </Stack>
-    </Stack>
+        <Button variant="default" type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 };

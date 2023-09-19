@@ -34,7 +34,11 @@ const nextConfig = {
     'pkg.theme',
     'pkg.spinner',
     'pkg.utils',
-    'pkg.signin.form'
+    'pkg.signin.form',
+    '@xipkg/form',
+    '@xipkg/input',
+    '@xipkg/tailwind',
+    '@xipkg/utils'
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
