@@ -15,7 +15,6 @@ export default function SigninPage() {
     <div className="flex flex-wrap flex-col justify-center content-center w-screen h-screen p-1">
       <div className="flex max-w-md border border-gray-10 rounded-2xl p-8">
         <SignIn signIn={signIn} onSignIn={onSignIn} />
-        <Button variant="default" type="submit">Submit</Button>
       </div>
     </div>
   );

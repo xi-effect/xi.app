@@ -33,7 +33,7 @@
     "autoprefixer": "^10.4.14",
     "tailwindcss": "^3.3.2",
     "postcss": "^8.4.24",
-    "@xipkg/tailwind": "latest"
+    "@xipkg/tailwind": "0.3.6"
   },
   "description": "",
   "main": ".eslintrc.js",

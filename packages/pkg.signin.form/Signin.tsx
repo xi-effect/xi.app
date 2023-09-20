@@ -51,7 +51,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-fill space-y-2">
         <FormField
           control={form.control}
           name="email"
@@ -78,7 +78,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             </FormItem>
           )}
         />
-        <Button variant="default" type="submit">Submit</Button>
+        <Button variant="default" type="submit">Войти</Button>
       </form>
     </Form>
   );
