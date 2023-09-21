@@ -34,15 +34,19 @@ export const fetchData = async (
       });
     }
     if (response?.status === 401 || response?.status === 403 || response?.status === 422) {
-      redirect('/');
+      redirect('/signin');
     }
     if (response?.ok) {
       const string = await response?.text();
       const json = string === '' ? {} : JSON.parse(string);
       return json;
     }
-  } catch (error) {
-    console.warn('Возникла проблема с вашим fetch запросом: ', error.message);
+  } catch (error: unknown) {
+    if (typeof error === "string") {
+      console.warn('Возникла проблема с вашим fetch запросом: ', error);
+    } else if (error instanceof Error) {
+      console.warn('Возникла проблема с вашим fetch запросом: ', error.message);
+    }
   }
 
   return null;

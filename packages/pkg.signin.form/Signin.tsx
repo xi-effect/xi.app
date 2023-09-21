@@ -1,17 +1,13 @@
 'use client';
 
-import '@xipkg/tailwind/index.css';
-import * as React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -46,7 +42,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log('data', data);
+    onSignIn({ ...data })
   };
 
   return (
@@ -59,7 +55,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             <FormItem>
               <FormLabel>Электронная почта</FormLabel>
               <FormControl>
-                <Input type="email" {...field} />
+                <Input autoComplete="on" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -72,7 +68,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl>
-                <Input type="password" {...field} />
+                <Input autoComplete="on" type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

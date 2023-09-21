@@ -16,7 +16,7 @@
     "@xipkg/form": "1.0.1",
     "@xipkg/utils": "1.0.1",
     "react-hook-form": "^7.45.0",
-    "next": "^13.4.19"
+    "next": "^13.5.2"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

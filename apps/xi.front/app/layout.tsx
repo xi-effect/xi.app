@@ -1,4 +1,4 @@
-import './index.css';
+import '@xipkg/tailwind/index.css';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from './providers';
@@ -27,7 +27,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="flex flex-row w-full h-screen">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );
