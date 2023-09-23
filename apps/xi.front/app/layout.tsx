@@ -13,7 +13,22 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  manifest: './manifest.webmanifest',
+  title: 'xi.effect',
+  description: 'Гибкий образовательный инструмент для репетиторов и малого бизнеса',
+  manifest: '/manifest.webmanifest',
+  keywords: [
+    'xi.effect',
+    'кси эффект',
+    'эффект',
+    'стартап',
+    'образование',
+    'репетитору',
+    'инструмент',
+    'бизнес',
+    'онлайн',
+    'приложение',
+    'app'
+  ],
   icons: {
     icon: [
       { url: './favicon-for-light.svg' },
@@ -25,12 +40,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
       <body>
         <Providers>
-          <div className="flex flex-row w-full h-screen">
-            {children}
-          </div>
+          <div className="flex flex-row w-full h-screen">{children}</div>
         </Providers>
       </body>
     </html>

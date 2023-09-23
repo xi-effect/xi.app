@@ -5,14 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@xipkg/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import { useRouter } from 'next/navigation';
 
 type FormValues = {
   email: string;
@@ -37,12 +31,15 @@ const FormSchema = z.object({
 });
 
 export const SignIn = ({ signIn, onSignIn }: SignInT) => {
+  const router = useRouter();
+  const redirectFn = (url: string) => router.push(url);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    onSignIn({ ...data })
+    onSignIn({ ...data, redirectFn });
   };
 
   return (
@@ -51,6 +48,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
         <FormField
           control={form.control}
           name="email"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>Электронная почта</FormLabel>
@@ -64,6 +62,7 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
         <FormField
           control={form.control}
           name="password"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>Пароль</FormLabel>
@@ -74,7 +73,9 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             </FormItem>
           )}
         />
-        <Button variant="default" type="submit">Войти</Button>
+        <Button variant="default" type="submit">
+          Войти
+        </Button>
       </form>
     </Form>
   );

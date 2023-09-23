@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
@@ -17,15 +17,13 @@ function Auth(props) {
   const { children } = props;
 
   const isLogin = useMainSt((state) => state.isLogin);
-  const onSignOut = useMainSt((state) => state.onSignOut);
   const getUser = useMainSt((state) => state.getUser);
 
-  useEffect(() => {
-    getUser();
+  const router = useRouter();
+  const redirectFn = (url: string) => router.push(url);
 
-    // нужно пока не реализована логика выхода
-    // @ts-ignore
-    window.onSignOut = onSignOut;
+  useEffect(() => {
+    getUser(redirectFn);
   }, []);
 
   console.log('isLogin', isLogin);
@@ -37,7 +35,12 @@ function Auth(props) {
       <>
         <Navigation
           logo={
-            <Image src="./assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
+            <Image
+              src="./assets/brand/navigationlogo.svg"
+              alt="xieffect logo"
+              width={134}
+              height={16}
+            />
           }
         >
           {children}
