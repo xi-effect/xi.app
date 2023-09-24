@@ -4,6 +4,7 @@ import { useMainSt } from 'store/main';
 import { UserSettings } from './userSettings';
 import { UserT } from 'store/models/user';
 import { redirect } from 'next/navigation';
+import { setTimeout } from 'timers';
 
 type DataUserMethodAnswer = {
   [key: string]: unknown;
@@ -31,9 +32,9 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     const data = await fetchData('/home/', 'GET');
     console.log('fetchData', data);
     if (data === null) {
-      useMainSt.getState().setIsLogin(false);
-      console.log('useMainSt.getState().isLogin', useMainSt.getState().isLogin);
       redirectFn('/signin');
+      setTimeout(() => useMainSt.getState().setIsLogin(false), 1000);
+      console.log('useMainSt.getState().isLogin', useMainSt.getState().isLogin);
     } else {
       useMainSt.getState().setIsLogin(true);
     }
