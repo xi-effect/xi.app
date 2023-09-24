@@ -8,6 +8,7 @@ import { Input } from '@xipkg/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { Link } from '@xipkg/link';
 
 type FormValues = {
   email: string;
@@ -86,9 +87,14 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             </FormItem>
           )}
         />
+        <Link size="l" variant="always" href="/password-recovery">
+          Восстановить пароль
+        </Link>
         <div className="flex w-full h-full justify-between items-end">
           <div className="flex h-[56px] items-center">
-            <a>Зарегистрироваться</a>
+            <Link size="l" theme="brand" variant="hover" href="/signup">
+              Зарегистрироваться
+            </Link>
           </div>
           <Button variant="default" type="submit">
             Войти

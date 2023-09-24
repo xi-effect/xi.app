@@ -36,6 +36,8 @@ const nextConfig = {
     'pkg.utils',
     'pkg.signin.form',
     '@xipkg/form',
+    '@xipkg/link',
+    '@xipkg/button',
     '@xipkg/input',
     '@xipkg/tailwind',
     '@xipkg/utils'

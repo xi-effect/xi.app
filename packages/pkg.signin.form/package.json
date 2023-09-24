@@ -13,6 +13,7 @@
     "@xipkg/icons": "0.4.1",
     "@xipkg/input": "0.0.5",
     "@xipkg/button": "1.0.1",
+    "@xipkg/link": "0.1.4",
     "@xipkg/form": "1.0.1",
     "@xipkg/utils": "1.0.1",
     "react-hook-form": "^7.45.0",
