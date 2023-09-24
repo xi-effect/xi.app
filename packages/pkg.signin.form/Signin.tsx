@@ -7,6 +7,7 @@ import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 type FormValues = {
   email: string;
@@ -44,13 +45,25 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-fill space-y-2">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full h-full flex flex-col justify-items-start space-y-4"
+      >
+        <div className="self-center">
+          <Image
+            height={22}
+            width={180}
+            alt="xieffect logo"
+            src="/assets/brand/navigationlogo.svg"
+          />
+        </div>
+        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
         <FormField
           control={form.control}
           name="email"
           defaultValue=""
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="pt-4">
               <FormLabel>Электронная почта</FormLabel>
               <FormControl>
                 <Input autoComplete="on" type="email" {...field} />
@@ -73,9 +86,14 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             </FormItem>
           )}
         />
-        <Button variant="default" type="submit">
-          Войти
-        </Button>
+        <div className="flex w-full h-full justify-between items-end">
+          <div className="flex h-[56px] items-center">
+            <a>Зарегистрироваться</a>
+          </div>
+          <Button variant="default" type="submit">
+            Войти
+          </Button>
+        </div>
       </form>
     </Form>
   );
