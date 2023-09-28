@@ -5,7 +5,7 @@ import { useMainSt } from 'store/main';
 import { SignIn } from 'pkg.signin.form';
 import React from 'react';
 
-export default function ResetPassword() {
+export default function ConfirmEmail() {
   const signIn = useMainSt((state) => state.signIn);
   const onSignIn = useMainSt((state) => state.onSignIn);
 

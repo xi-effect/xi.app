@@ -15,7 +15,7 @@ type FormValues = {
   password: string;
 };
 
-export type SignInT = {
+export type SignUpT = {
   /**
    * The store type is the store itself.
    */
@@ -32,7 +32,7 @@ const FormSchema = z.object({
   }),
 });
 
-export const SignIn = ({ signIn, onSignIn }: SignInT) => {
+export const SignUp = ({ signIn, onSignIn }: SignUpT) => {
   const router = useRouter();
   const redirectFn = (url: string) => router.push(url);
 
@@ -58,16 +58,16 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             src="/assets/brand/navigationlogo.svg"
           />
         </div>
-        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
+        <h1 className="self-center text-2xl font-semibold">Регистрация</h1>
         <FormField
           control={form.control}
           name="email"
           defaultValue=""
           render={({ field }) => (
             <FormItem className="pt-4">
-              <FormLabel>Электронная почта</FormLabel>
+              <FormLabel>Имя пользователя</FormLabel>
               <FormControl>
-                <Input autoComplete="on" type="email" {...field} />
+                <Input autoComplete="on" type="text" id="user name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,25 +79,22 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
           defaultValue=""
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Пароль</FormLabel>
+              <FormLabel>Код-приглашение</FormLabel>
               <FormControl>
-                <Input autoComplete="on" type="password" {...field} />
+                <Input autoComplete="on" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Link size="l" variant="always" href="/reset-password">
-          Восстановить пароль
-        </Link>
         <div className="flex w-full h-full justify-between items-end">
           <div className="flex h-[56px] items-center">
-            <Link size="l" theme="brand" variant="hover" href="/signup">
-              Зарегистрироваться
+            <Link size="l" theme="brand" variant="hover" href="/signin">
+              Войти
             </Link>
           </div>
           <Button variant="default" type="submit">
-            Войти
+            Далее
           </Button>
         </div>
       </form>

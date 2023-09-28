@@ -35,6 +35,7 @@ const nextConfig = {
     'pkg.spinner',
     'pkg.utils',
     'pkg.signin.form',
+    'pkg.signup.form',
     '@xipkg/form',
     '@xipkg/link',
     '@xipkg/button',

@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
@@ -20,7 +20,17 @@ function Auth(props) {
   const getUser = useMainSt((state) => state.getUser);
 
   const router = useRouter();
-  const redirectFn = (url: string) => router.push(url);
+  const pathname = usePathname();
+
+  const redirectFn = (url: string) => {
+    if (
+      pathname.includes('/reset-password') ||
+      pathname.includes('/confirm-email') ||
+      pathname.includes('/signup')
+    )
+      return null;
+    router.push(url);
+  };
 
   useEffect(() => {
     getUser(redirectFn);
