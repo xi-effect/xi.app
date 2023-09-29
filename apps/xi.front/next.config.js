@@ -40,6 +40,9 @@ const nextConfig = {
     '@xipkg/link',
     '@xipkg/button',
     '@xipkg/input',
+    '@xipkg/label',
+    '@xipkg/checkbox',
+    '@xipkg/avatar',
     '@xipkg/tailwind',
     '@xipkg/utils'
   ],

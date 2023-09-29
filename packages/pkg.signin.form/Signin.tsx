@@ -24,11 +24,14 @@ export type SignInT = {
 };
 
 const FormSchema = z.object({
-  email: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  password: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+  email: z.string({
+      required_error: 'Обязательное поле',
+    })
+    .email({
+      message: 'Некорректный формат данных',
+    }),
+  password: z.string({
+    required_error: 'Обязательное поле',
   }),
 });
 
@@ -40,7 +43,10 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
     resolver: zodResolver(FormSchema),
   });
 
+  console.log("errors", form.formState.errors)
+
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    form.trigger();
     onSignIn({ ...data, redirectFn });
   };
 
@@ -62,12 +68,11 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
         <FormField
           control={form.control}
           name="email"
-          defaultValue=""
           render={({ field }) => (
             <FormItem className="pt-4">
               <FormLabel>Электронная почта</FormLabel>
               <FormControl>
-                <Input autoComplete="on" type="email" {...field} />
+                <Input error={!!form.formState.errors?.email} autoComplete="on" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -76,12 +81,11 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
         <FormField
           control={form.control}
           name="password"
-          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl>
-                <Input autoComplete="on" type="password" {...field} />
+                <Input error={!!form.formState.errors?.password} autoComplete="on" type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
