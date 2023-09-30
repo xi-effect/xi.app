@@ -49,12 +49,15 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
     },
   });
 
+  console.log('form', form);
   console.log('errors', form.formState.errors);
+
+  const { setError } = form;
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     console.log('data', data);
     form.trigger();
-    onSignIn({ ...data, redirectFn });
+    onSignIn({ ...data, redirectFn, setError });
   };
 
   return (

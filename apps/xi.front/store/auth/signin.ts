@@ -12,20 +12,21 @@ type Data = { email: string; password: string };
 export type SignIn = {
   isLogin: boolean | null;
   setIsLogin: (value: boolean) => void;
-  signIn: { errorPassword: string; errorEmail: string };
   onSignIn: ({
     email,
     password,
     redirectFn,
-  }: Data & { redirectFn: (value: string) => void }) => void;
+  }: Data & {
+    redirectFn: (value: string) => void;
+    setError: (name: string, error: { type: string; message: string }) => void;
+  }) => void;
   onSignOut: (redirectFn: (value: string) => void) => void;
 };
 
 export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
   isLogin: null,
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
-  signIn: { errorPassword: '', errorEmail: '' },
-  onSignIn: async ({ email, password, redirectFn }) => {
+  onSignIn: async ({ email, password, redirectFn, setError }) => {
     const data = await fetchData('/signin/', 'POST', {
       email: email.toLowerCase(),
       password: Crypto.SHA384(password.trim()).toString(),
@@ -33,8 +34,10 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
     if (data && data.a === 'Success') {
       set(() => ({ isLogin: true }));
       redirectFn('/');
-    } else {
-      
+    } else if (data.a === "User doesn't exist") {
+      setError('email', { type: 'user', message: 'Не удалось найти аккаунт' });
+    } else if (data.a === 'Wrong password') {
+      setError('password', { type: 'wrong', message: 'Неправильный пароль' });
     }
     console.log('onSignIn', data);
   },
