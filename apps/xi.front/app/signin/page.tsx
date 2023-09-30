@@ -6,13 +6,12 @@ import { SignIn } from 'pkg.signin.form';
 import React from 'react';
 
 export default function ResetPassword() {
-  const signIn = useMainSt((state) => state.signIn);
   const onSignIn = useMainSt((state) => state.onSignIn);
 
   return (
-    <div className="flex flex-wrap flex-col justify-center content-center w-screen h-screen p-1">
-      <div className="flex max-w-[420px] w-full h-[520px] border border-gray-10 rounded-2xl p-8">
-        <SignIn signIn={signIn} onSignIn={onSignIn} />
+    <div className="flex flex-wrap flex-col xs:justify-center content-center w-screen h-screen">
+      <div className="flex max-w-[420px] w-full h-full xs:h-[520px] xs:border xs:border-gray-10 xs:rounded-2xl p-6 xs:p-8">
+        <SignIn onSignIn={onSignIn} />
       </div>
     </div>
   );

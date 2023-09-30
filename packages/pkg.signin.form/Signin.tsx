@@ -14,7 +14,6 @@ export type SignInT = {
   /**
    * The store type is the store itself.
    */
-  signIn: any;
   onSignIn: any;
 };
 
@@ -37,7 +36,7 @@ const FormSchema = z
   })
   .required();
 
-export const SignIn = ({ signIn, onSignIn }: SignInT) => {
+export const SignIn = ({ onSignIn }: SignInT) => {
   const router = useRouter();
   const redirectFn = (url: string) => router.push(url);
 
