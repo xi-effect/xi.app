@@ -19,7 +19,6 @@ export type SignUpT = {
   /**
    * The store type is the store itself.
    */
-  signIn: any;
   onSignIn: any;
 };
 
@@ -32,7 +31,7 @@ const FormSchema = z.object({
   }),
 });
 
-export const SignUp = ({ signIn, onSignIn }: SignUpT) => {
+export const SignUp = ({ onSignIn }: SignUpT) => {
   const router = useRouter();
   const redirectFn = (url: string) => router.push(url);
 
