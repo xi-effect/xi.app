@@ -39,11 +39,9 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
     } else if (data.a === 'Wrong password') {
       setError('password', { type: 'wrong', message: 'Неправильный пароль' });
     }
-    console.log('onSignIn', data);
   },
   onSignOut: async (redirectFn) => {
     const data = await fetchData('/signout/', 'POST', { lol: 'kek' });
-    console.log('onSignIn', data);
     if (data && data?.a) {
       set(() => ({ isLogin: false }));
       redirectFn('/signin');
