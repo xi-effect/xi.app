@@ -34,7 +34,7 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
       set(() => ({ isLogin: true }));
       redirectFn('/');
     } else {
-      redirectFn('/signin');
+      
     }
     console.log('onSignIn', data);
   },

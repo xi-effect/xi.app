@@ -10,11 +10,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 
-type FormValues = {
-  email: string;
-  password: string;
-};
-
 export type SignInT = {
   /**
    * The store type is the store itself.
@@ -23,17 +18,24 @@ export type SignInT = {
   onSignIn: any;
 };
 
-const FormSchema = z.object({
-  email: z.string({
-      required_error: 'Обязательное поле',
-    })
-    .email({
-      message: 'Некорректный формат данных',
-    }),
-  password: z.string({
-    required_error: 'Обязательное поле',
-  }),
-});
+const FormSchema = z
+  .object({
+    email: z
+      .string({
+        required_error: 'Обязательное поле',
+      })
+      .email({
+        message: 'Некорректный формат данных',
+      }),
+    password: z
+      .string({
+        required_error: 'Обязательное поле',
+      })
+      .min(1, {
+        message: 'Обязательное поле',
+      }),
+  })
+  .required();
 
 export const SignIn = ({ signIn, onSignIn }: SignInT) => {
   const router = useRouter();
@@ -41,11 +43,16 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
-  console.log("errors", form.formState.errors)
+  console.log('errors', form.formState.errors);
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.log('data', data);
     form.trigger();
     onSignIn({ ...data, redirectFn });
   };
@@ -72,7 +79,12 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             <FormItem className="pt-4">
               <FormLabel>Электронная почта</FormLabel>
               <FormControl>
-                <Input error={!!form.formState.errors?.email} autoComplete="on" type="email" {...field} />
+                <Input
+                  error={!!form.formState.errors?.email}
+                  autoComplete="on"
+                  type="email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,7 +97,12 @@ export const SignIn = ({ signIn, onSignIn }: SignInT) => {
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl>
-                <Input error={!!form.formState.errors?.password} autoComplete="on" type="password" {...field} />
+                <Input
+                  error={!!form.formState.errors?.password}
+                  autoComplete="on"
+                  type="password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
