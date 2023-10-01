@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
       <body>
         <Providers>
-          <div className="flex flex-row w-full h-screen">{children}</div>
+          <div className="flex flex-row w-full min-h-screen h-full">{children}</div>
         </Providers>
       </body>
     </html>

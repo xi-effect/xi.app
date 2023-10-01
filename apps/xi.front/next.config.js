@@ -44,7 +44,9 @@ const nextConfig = {
     '@xipkg/checkbox',
     '@xipkg/avatar',
     '@xipkg/tailwind',
-    '@xipkg/utils'
+    '@xipkg/utils',
+    '@xipkg/icons',
+    '@xipkg/dropdown',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
@@ -72,7 +74,7 @@ const nextConfig = {
       use: [
         // options.defaultLoaders.babel, I don't think it's necessary to have this loader too
         {
-          loader: "ts-loader",
+          loader: 'ts-loader',
           options: {
             transpileOnly: true,
             experimentalWatchApi: true,
