@@ -6,12 +6,7 @@ import React, { useEffect } from 'react';
 import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
 import Image from 'next/image';
-
-const Loading = () => (
-  <div>
-    <h2> Loading </h2>
-  </div>
-);
+import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 
 function Auth(props) {
   const { children } = props;
@@ -38,7 +33,7 @@ function Auth(props) {
 
   console.log('isLogin', isLogin);
 
-  if (isLogin === null) return <Loading />;
+  if (isLogin === null) return <SkeletonMainLayout />;
 
   if (isLogin)
     return (

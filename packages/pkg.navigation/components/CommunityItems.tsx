@@ -31,7 +31,7 @@ export const CommunityItems = ({
         inDropdown ? '' : 'mt-8'
       } items-center rounded-xl hover:cursor-pointer hover:bg-gray-5 transition-colors ease-in`}
     >
-      <Avatar />
+      {/* <Avatar /> */}
       <div className="ml-2 text-[16px] font-semibold self-center"> Мое пространство </div>
       <div className="ml-auto flex flex-col items-center justify-center w-4 h-4">
         <ChevronSmallTop
