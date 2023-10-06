@@ -1,13 +1,12 @@
 'use client';
 
-import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import React from 'react';
 
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (
-    <div className="h-full w-full">
-      <SkeletonMainLayout />
+    <div className="w-screen h-screen flex justify-center content-center">
+      <span className="c-spinner" />
     </div>
   );
 }

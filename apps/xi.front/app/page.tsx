@@ -1,26 +1,13 @@
 'use client';
 
-import { redirect } from 'next/navigation';
-import { fetchData } from 'pkg.utils';
+import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import React from 'react';
-// import { useMainSt } from 'store';
+import { useMainSt } from 'store';
 
-async function getUser() {
-  const data = await fetchData('/home/', 'GET');
-  console.log('fetchData', data);
+export default function Main() {
+  const isLogin = useMainSt((state) => state.isLogin);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  if (data === null) {
-    return false;
-  }
-  return data;
-}
-
-export default async function Main() {
-  const user = await getUser();
-
-  if (user === false) redirect('/signin');
+  if (isLogin === null) return <SkeletonMainLayout />;
 
   return (
     <div className="p-8 h-full w-full">
