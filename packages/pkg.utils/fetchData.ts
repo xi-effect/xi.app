@@ -16,7 +16,7 @@ export const fetchData = async (
     if (data != null) {
       response = await fetch(url, {
         method,
-        cache: 'no-cache',
+        cache: 'no-store',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export const fetchData = async (
     if (data == null) {
       response = await fetch(url, {
         method,
-        cache: 'no-cache',
+        cache: 'no-store',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
