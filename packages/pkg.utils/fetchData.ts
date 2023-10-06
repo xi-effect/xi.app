@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { toast } from 'sonner';
 
 type MethodT = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
@@ -34,6 +35,8 @@ export const fetchData = async (
       });
     }
     if (response?.status === 401 || response?.status === 403 || response?.status === 422) {
+      console.log('redirect');
+      toast('Пользователь не авторизован');
       redirect('/signin');
     }
     if (response?.ok) {
@@ -42,7 +45,7 @@ export const fetchData = async (
       return json;
     }
   } catch (error: unknown) {
-    if (typeof error === "string") {
+    if (typeof error === 'string') {
       console.warn('Возникла проблема с вашим fetch запросом: ', error);
     } else if (error instanceof Error) {
       console.warn('Возникла проблема с вашим fetch запросом: ', error.message);

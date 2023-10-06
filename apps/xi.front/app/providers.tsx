@@ -1,5 +1,6 @@
 'use client';
 
+import { Toaster } from 'sonner';
 import { ThemeProvider } from 'next-themes';
 import { useRouter, usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -62,6 +63,7 @@ export function Providers(props) {
   return (
     <>
       <ThemeProvider forcedTheme="light" attribute="data-theme">
+        <Toaster />
         <Auth>{children}</Auth>
       </ThemeProvider>
     </>
