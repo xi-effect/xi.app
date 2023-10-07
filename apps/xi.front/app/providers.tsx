@@ -14,21 +14,8 @@ function Auth(props) {
   const isLogin = useMainSt((state) => state.isLogin);
   const getUser = useMainSt((state) => state.getUser);
 
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const redirectFn = (url: string) => {
-    if (
-      pathname.includes('/reset-password') ||
-      pathname.includes('/confirm-email') ||
-      pathname.includes('/signup')
-    )
-      return null;
-    router.push(url);
-  };
-
   useEffect(() => {
-    getUser(redirectFn);
+    getUser();
   }, []);
 
   console.log('isLogin', isLogin);

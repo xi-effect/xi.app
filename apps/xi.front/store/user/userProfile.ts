@@ -13,7 +13,7 @@ type DataUserMethodAnswer = {
 export type UserProfile = {
   user: UserT;
   updateUser: (value) => void;
-  getUser: (redirectFn: (value: string) => void) => void;
+  getUser: () => void;
 };
 
 export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
@@ -28,15 +28,14 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
   },
   updateUser: (value: { [key in keyof UserT]: unknown }) =>
     set((state) => ({ user: { ...state.user, value } })),
-  getUser: async (redirectFn) => {
+  getUser: async () => {
     const data = await fetchData('/home/', 'GET');
     console.log('fetchData', data);
     if (data === null) {
-      redirectFn('/signin');
       setTimeout(() => useMainSt.getState().setIsLogin(false), 1000);
       console.log('useMainSt.getState().isLogin', useMainSt.getState().isLogin);
     } else {
-      useMainSt.getState().setIsLogin(true);
+      setTimeout(() => useMainSt.getState().setIsLogin(true), 1000);
     }
     console.log('getUser', 'getUser');
   },
