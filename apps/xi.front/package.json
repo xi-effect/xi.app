@@ -15,6 +15,7 @@
     "next-themes": "^0.2.1",
     "pkg.navigation": "*",
     "pkg.navigation.skeleton": "*",
+    "pkg.navigation.layout": "*",
     "pkg.signin.form": "*",
     "pkg.signup.form": "*",
     "pkg.spinner": "*",
@@ -22,7 +23,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ts-loader": "^9.4.4",
-    "zustand": "^4.3.8"
+    "zustand": "^4.3.8",
+    "sonner": "1.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

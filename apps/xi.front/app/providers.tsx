@@ -7,6 +7,7 @@ import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
 import Image from 'next/image';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
+import { Toaster } from 'sonner';
 
 function Auth(props) {
   const { children } = props;
@@ -49,6 +50,7 @@ export function Providers(props) {
   return (
     <>
       <ThemeProvider forcedTheme="light" attribute="data-theme">
+        <Toaster />
         <Auth>{children}</Auth>
       </ThemeProvider>
     </>

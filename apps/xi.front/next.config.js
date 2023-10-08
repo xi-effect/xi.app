@@ -47,6 +47,7 @@ const nextConfig = {
     '@xipkg/utils',
     '@xipkg/icons',
     '@xipkg/dropdown',
+    '@xipkg/userprofile',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
