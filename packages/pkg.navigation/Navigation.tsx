@@ -5,6 +5,7 @@ import { CommunityItems, CommunityMenu } from './components';
 import { UserProfile } from '@xipkg/userprofile';
 import { toast } from 'sonner';
 import { Notification } from '@xipkg/icons';
+import { useMedia } from 'react-use';
 
 type NavigationProp = {
   logo: ReactNode;
@@ -12,6 +13,9 @@ type NavigationProp = {
 };
 
 export const Navigation = ({ logo, children }: NavigationProp) => {
+  const isMobile = useMedia('(max-width: 480px)');
+  const isTablet = useMedia('(max-width: 480px)');
+
   console.log('Navigation');
   return (
     <div className="relative flex flex-row">
@@ -33,9 +37,9 @@ export const Navigation = ({ logo, children }: NavigationProp) => {
           </div>
           <div
             onClick={() => toast(`Уведомления пока в разработке`)}
-            className="h-[40px] w-[294px] p-2 mx-1 mt-2 flex flex-row items-center rounded-lg text-gray-90 hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
+            className="group h-[40px] w-[294px] p-2 mx-1 mt-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
           >
-            <Notification />
+            <Notification className="transition-colors ease-in group-hover:fill-brand-80" />
             <span className="text-[14px] font-normal pl-2">Уведомления</span>
           </div>
         </div>

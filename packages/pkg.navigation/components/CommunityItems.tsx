@@ -21,13 +21,15 @@ type IconsDictT = {
   [key: string]: ReactNode;
 };
 
+const iconClassName = 'transition-colors ease-in group-hover:fill-brand-80';
+
 const iconsDict: IconsDictT = {
-  announce: <Announce />,
-  calendar: <Calendar />,
-  updates: <Updates />,
-  task: <Task />,
-  chat: <Chat />,
-  camera: <Camera />,
+  announce: <Announce className={iconClassName} />,
+  calendar: <Calendar className={iconClassName} />,
+  updates: <Updates className={iconClassName} />,
+  task: <Task className={iconClassName} />,
+  chat: <Chat className={iconClassName} />,
+  camera: <Camera className={iconClassName} />,
 };
 
 const menuData = [
@@ -111,7 +113,7 @@ export const CommunityItems = () => {
       {menuData.map((item, index) => (
         <div
           onClick={() => toast(`Нажатие на ${item.label}`)}
-          className="h-[40px] w-[294px] p-2 flex flex-row items-center rounded-lg text-gray-90 hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
+          className="group h-[40px] w-[294px] p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
           key={index.toString()}
         >
           {iconsDict[item.icon]}

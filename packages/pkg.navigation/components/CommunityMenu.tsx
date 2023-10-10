@@ -67,27 +67,27 @@ export const CommunityMenu = () => {
       >
         <div className="bg-gray-5 rounded-lg">
           <DropdownHeader setIsOpen={setIsOpen} inDropdown />
-          <DropdownMenuItem>
+          <DropdownMenuItem className="group">
             <span>Пригласить людей</span>
-            <PeopleInvite size="s" className="ml-auto h-4 w-4" />
+            <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="group">
             <span>Настройки сообщества</span>
-            <Settings size="s" className="ml-auto h-4 w-4" />
+            <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem className="group">
             <span>Создать канал</span>
-            <ChannelAdd size="s" className="ml-auto h-4 w-4" />
+            <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="group">
             <span>Создать категорию</span>
-            <CategoryAdd size="s" className="ml-auto h-4 w-4" />
+            <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem error>
+          <DropdownMenuItem className="group" error>
             <span>Покинуть сообщество</span>
-            <Exit size="s" className="ml-auto h-4 w-4 fill-red-40" />
+            <Exit size="s" className="ml-auto h-4 w-4 fill-red-40 group-hover:fill-red-80" />
           </DropdownMenuItem>
         </div>
       </DropdownMenuContent>
