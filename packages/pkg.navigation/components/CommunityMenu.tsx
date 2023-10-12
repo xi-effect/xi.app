@@ -63,7 +63,7 @@ export const CommunityMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         onInteractOutside={() => setIsOpen(false)}
-        className="w-[314px] relative top-[-58px]"
+        className="w-[calc(100vw-22px)] sm:w-[312px] relative top-[-58px]"
       >
         <div className="bg-gray-5 rounded-lg">
           <DropdownHeader setIsOpen={setIsOpen} inDropdown />

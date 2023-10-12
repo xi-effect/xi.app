@@ -107,13 +107,13 @@ const menuData = [
   },
 ];
 
-export const CommunityItems = () => {
+export const CommunityItems = ({ className }: { className?: string }) => {
   return (
-    <div className="flex flex-col mb-[100px] mt-3 px-1 gap-1 overflow-y-auto">
+    <div className={`flex flex-col mb-[100px] mt-3 px-1 gap-1 overflow-y-auto ${className}`}>
       {menuData.map((item, index) => (
         <div
           onClick={() => toast(`Нажатие на ${item.label}`)}
-          className="group h-[40px] w-[294px] p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
+          className="group h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
           key={index.toString()}
         >
           {iconsDict[item.icon]}

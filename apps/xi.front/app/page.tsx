@@ -24,6 +24,42 @@ export default function Main() {
   return (
     <div className="p-8 h-full w-full">
       <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
+      <h1 className="text-3xl font-bold">Главная</h1>
     </div>
   );
 }
