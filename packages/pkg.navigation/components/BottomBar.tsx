@@ -37,7 +37,7 @@ export const BottomBar = ({ children }: BottomBarT) => {
 
   return (
     <div className={`w-full h-[100dvh] overflow-hidden relative`}>
-      <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
+      <SwipeableViews index={slideIndex} onChangeIndex={onSwipeEnd}>
         <div className={`relative w-full h-fit p-4`}>
           <div>
             <CommunityMenu />
