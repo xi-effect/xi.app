@@ -105,11 +105,57 @@ const menuData = [
     label: 'Видеоконференция',
     link: '',
   },
+  {
+    icon: 'camera',
+    type: '',
+    label: 'Видеоконференция',
+    link: '',
+  },
+  {
+    icon: 'announce',
+    type: '',
+    label: 'Объявления',
+    link: '',
+  },
+  {
+    icon: 'calendar',
+    type: '',
+    label: 'Календарь',
+    link: '',
+  },
+  {
+    icon: 'updates',
+    type: '',
+    label: 'Обновления',
+    link: '',
+  },
+  {
+    icon: 'task',
+    type: '',
+    label: 'Задания',
+    link: '',
+  },
+  {
+    icon: 'chat',
+    type: '',
+    label: 'Чат со студентами',
+    link: '',
+  },
+  {
+    icon: 'camera',
+    type: '',
+    label: 'Видеоконференция',
+    link: '',
+  },
 ];
 
 export const CommunityItems = ({ className }: { className?: string }) => {
   return (
-    <div className={`flex flex-col mb-[100px] mt-3 px-1 gap-1 overflow-y-auto ${className}`}>
+    <div
+      className={`flex flex-col h-[calc(100dvh-128px)] sm:mb-[100px] mt-3 px-5 sm:px-1 gap-1 overflow-y-auto ${
+        className ?? ''
+      }`}
+    >
       {menuData.map((item, index) => (
         <div
           onClick={() => toast(`Нажатие на ${item.label}`)}

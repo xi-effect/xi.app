@@ -35,8 +35,8 @@ const DropdownHeader = ({
   return (
     <div
       onClick={() => setIsOpen((prev: boolean) => !prev)}
-      className={`flex flex-wrap w-full h-12 p-2 ${
-        inDropdown ? '' : 'mt-8'
+      className={`flex flex-wrap sm:w-full h-12 p-2 ${
+        inDropdown ? '' : 'mt-0 sm:mt-8'
       } items-center rounded-xl hover:cursor-pointer hover:bg-gray-5 transition-colors ease-in`}
     >
       <Avatar />

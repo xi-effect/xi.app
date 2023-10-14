@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     'бизнес',
     'онлайн',
     'приложение',
-    'app'
+    'app',
   ],
   icons: {
     icon: [
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
-      <body>
+      <body className="overflow-hidden">
         <Providers>
           <div className="flex flex-row w-full min-h-screen h-full">{children}</div>
         </Providers>

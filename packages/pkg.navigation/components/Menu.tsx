@@ -15,7 +15,7 @@ export const Menu = () => {
       </div>
       <CommunityMenu />
       <CommunityItems />
-      <div className="fixed bottom-0 pb-6 flex flex-col bg-gray-0">
+      <div className="fixed sm:w-[302px] bottom-0 pb-6 flex flex-col bg-gray-0">
         <div
           onClick={() => toast('Открыть настойки пользователя')}
           className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"

@@ -36,15 +36,15 @@ export const BottomBar = ({ children }: BottomBarT) => {
   };
 
   return (
-    <div className={`w-full h-[100dvh] overflow-hidden relative`}>
-      <SwipeableViews index={slideIndex} onChangeIndex={onSwipeEnd}>
-        <div className={`relative w-full h-fit p-4`}>
-          <div>
+    <div className={`w-full overflow-auto`}>
+      <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
+        <div className={`w-full overflow-auto`}>
+          <div className={`sticky pt-4 px-4 top-0 left-0`}>
             <CommunityMenu />
           </div>
-          <CommunityItems className="overflow-hidden" />
+          <CommunityItems />
         </div>
-        <div className={`w-full h-full overflow-auto mb-2`}>{children}</div>
+        <div className="h-[calc(100dvh-80px)] overflow-auto">{children}</div>
       </SwipeableViews>
       <div className="fixed bottom-0 flex flex-row items-center w-screen h-[80px] p-4 bg-gray-0 z-10">
         <button
