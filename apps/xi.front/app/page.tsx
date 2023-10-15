@@ -22,7 +22,7 @@ export default function Main() {
     );
 
   return (
-    <div className="p-8 h-full w-full">
+    <div className="p-8 w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto">
       <h1 className="text-3xl font-bold">Главная</h1>
       <h1 className="text-3xl font-bold">Главная</h1>
       <h1 className="text-3xl font-bold">Главная</h1>

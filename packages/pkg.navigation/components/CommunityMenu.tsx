@@ -35,7 +35,7 @@ const DropdownHeader = ({
   return (
     <div
       onClick={() => setIsOpen((prev: boolean) => !prev)}
-      className={`flex flex-wrap sm:w-full h-12 p-2 ${
+      className={`flex flex-wrap md:w-[302px] h-12 py-2 px-2.5 ${
         inDropdown ? '' : 'mt-0 sm:mt-8'
       } items-center rounded-xl hover:cursor-pointer hover:bg-gray-5 transition-colors ease-in`}
     >
@@ -63,29 +63,29 @@ export const CommunityMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         onInteractOutside={() => setIsOpen(false)}
-        className="w-[calc(100vw-22px)] sm:w-[312px] relative top-[-58px]"
+        className="w-[calc(100vw-22px)] sm:w-[312px] relative top-[-57px] right-[1px]"
       >
         <div className="bg-gray-5 rounded-lg">
           <DropdownHeader setIsOpen={setIsOpen} inDropdown />
-          <DropdownMenuItem className="group">
+          <DropdownMenuItem className="group sm:w-[302px]">
             <span>Пригласить людей</span>
             <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
-          <DropdownMenuItem className="group">
+          <DropdownMenuItem className="group sm:w-[302px]">
             <span>Настройки сообщества</span>
             <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="group">
+          <DropdownMenuItem className="group sm:w-[302px]">
             <span>Создать канал</span>
             <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
-          <DropdownMenuItem className="group">
+          <DropdownMenuItem className="group sm:w-[302px]">
             <span>Создать категорию</span>
             <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="group" error>
+          <DropdownMenuItem className="group sm:w-[302px]" error>
             <span>Покинуть сообщество</span>
             <Exit size="s" className="ml-auto h-4 w-4 fill-red-40 group-hover:fill-red-80" />
           </DropdownMenuItem>
