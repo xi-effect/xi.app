@@ -1,5 +1,5 @@
 {
-  "name": "pkg.reset-password.form",
+  "name": "pkg.password-recovery.form",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -29,6 +29,6 @@
     "@xipkg/tailwind": "0.3.6",
     "typescript": "^5.1.3"
   },
-  "description": "form for password reset",
+  "description": "form for password recovery",
   "author": "xi.effect"
 }

@@ -7,11 +7,11 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
+import { useState } from 'react';
 
-export type ResetPasswordT = {
+export type PasswordRecoveryT = {
   /**
    * The store type is the store itself.
    */
@@ -28,10 +28,7 @@ const FormSchema = z.object({
     }),
 });
 
-export const ResetPassword = ({ onRestorePassword }: ResetPasswordT) => {
-  const router = useRouter();
-  const redirectFn = (url: string) => router.push(url);
-
+export const PasswordRecovery = ({ onRestorePassword }: PasswordRecoveryT) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -43,7 +40,7 @@ export const ResetPassword = ({ onRestorePassword }: ResetPasswordT) => {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     form.trigger();
-    onRestorePassword({ ...data, redirectFn, setError });
+    onRestorePassword({ ...data, setError });
   };
 
   return (

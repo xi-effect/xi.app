@@ -17,7 +17,7 @@
     "pkg.navigation.layout": "*",
     "pkg.navigation.skeleton": "*",
     "pkg.signin.form": "*",
-    "pkg.reset-password.form": "*",
+    "pkg.password-recovery.form": "*",
     "pkg.signup.form": "*",
     "pkg.spinner": "*",
     "pkg.utils": "*",
