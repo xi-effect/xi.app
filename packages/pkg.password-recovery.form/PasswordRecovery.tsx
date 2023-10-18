@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import * as z from 'zod';
@@ -6,17 +5,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@xipkg/form';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-export type PasswordRecoveryT = {
-  /**
-   * The store type is the store itself.
-   */
-  onRestorePassword: any;
-};
+import { fetchData } from 'pkg.utils';
 
 const FormSchema = z.object({
   email: z
@@ -28,22 +30,35 @@ const FormSchema = z.object({
     }),
 });
 
-export const PasswordRecovery = ({ onRestorePassword }: PasswordRecoveryT) => {
+export const PasswordRecovery = () => {
+  const [emailSent, setEmailSent] = useState(true);
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: '',
+      email: 'test@test.test',
     },
   });
 
+  const sendEmail = async () => {
+    const data = await fetchData('/password-reset/', 'POST', {
+      email: form.getValues().email.toLowerCase(),
+    });
+    if (data && data.a) {
+      setEmailSent(true);
+    } else {
+      setError('email', { type: 'user', message: 'Не удалось найти аккаунт' });
+    }
+  };
   const { setError } = form;
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     form.trigger();
-    onRestorePassword({ ...data, setError });
+    sendEmail();
   };
 
   return (
+    // @ts-ignore
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -57,35 +72,64 @@ export const PasswordRecovery = ({ onRestorePassword }: PasswordRecoveryT) => {
             src="/assets/brand/navigationlogo.svg"
           />
         </div>
-        <h1 className="self-center text-2xl font-semibold">Восстановление</h1>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="pt-4">
-              <FormLabel>Электронная почта</FormLabel>
-              <FormDescription className='mb-2'>Введите адрес, привязанный к аккаунту</FormDescription>
-              <FormControl>
-                <Input
-                  error={!!form.formState.errors?.email}
-                  autoComplete="on"
-                  type="email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <h1 className="self-center text-2xl font-semibold">
+          {emailSent ? 'Письмо отправлено' : 'Восстановление'}
+        </h1>
+        {emailSent ? (
+          <div className="pt-4 w-[80%] m-auto text-center">
+            Ссылка на восстановление пароля отправлена на {form.getValues().email}
+          </div>
+        ) : (
+          <FormField
+          // @ts-ignore
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="pt-4">
+                <FormLabel>Электронная почта</FormLabel>
+                <FormDescription className="mb-2">
+                  Введите адрес, привязанный к аккаунту
+                </FormDescription>
+                <FormControl>
+                  <Input
+                    error={!!form.formState.errors?.email}
+                    autoComplete="on"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <div className="flex w-full h-full justify-between items-end">
           <div className="flex h-[56px] items-center">
-            <Link size="l" theme="brand" variant="hover" href="/signin">
-              Войти
-            </Link>
+            {emailSent ? (
+              <Link
+                size="l"
+                theme="brand"
+                variant="hover"
+                onClick={sendEmail}
+                href={''}
+              >
+                Отправить ещё раз
+              </Link>
+            ) : (
+              <Link size="l" theme="brand" variant="hover" href="/signin">
+                Войти
+              </Link>
+            )}
           </div>
-          <Button variant="default" type="submit">
-            Отправить
-          </Button>
+          {emailSent ? (
+            <Button onClick={() => router.push('/signin')} variant="default">
+              Войти
+            </Button>
+          ) : (
+            <Button variant="default" type="submit">
+              Отправить
+            </Button>
+          )}
         </div>
       </form>
     </Form>
