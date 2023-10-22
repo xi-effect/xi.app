@@ -11,7 +11,12 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 
-export type SignInT = {
+type FormValues = {
+  email: string;
+  password: string;
+};
+
+export type SignUpT = {
   /**
    * The store type is the store itself.
    */
@@ -19,39 +24,24 @@ export type SignInT = {
 };
 
 const FormSchema = z.object({
-  email: z
-    .string({
-      required_error: 'Обязательное поле',
-    })
-    .email({
-      message: 'Некорректный формат данных',
-    }),
-  password: z
-    .string({
-      required_error: 'Обязательное поле',
-    })
-    .min(1, {
-      message: 'Обязательное поле',
-    }),
+  email: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+  password: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
 });
 
-export const SignIn = ({ onSignIn }: SignInT) => {
+export const SignUp = ({ onSignIn }: SignUpT) => {
   const router = useRouter();
   const redirectFn = (url: string) => router.push(url);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
   });
 
-  const { setError } = form;
-
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    form.trigger();
-    onSignIn({ ...data, redirectFn, setError });
+    onSignIn({ ...data, redirectFn });
   };
 
   return (
@@ -68,20 +58,16 @@ export const SignIn = ({ onSignIn }: SignInT) => {
             src="/assets/brand/navigationlogo.svg"
           />
         </div>
-        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
+        <h1 className="self-center text-2xl font-semibold">Регистрация</h1>
         <FormField
           control={form.control}
           name="email"
+          defaultValue=""
           render={({ field }) => (
             <FormItem className="pt-4">
-              <FormLabel>Электронная почта</FormLabel>
+              <FormLabel>Имя пользователя</FormLabel>
               <FormControl>
-                <Input
-                  error={!!form.formState.errors?.email}
-                  autoComplete="on"
-                  type="email"
-                  {...field}
-                />
+                <Input autoComplete="on" type="text" id="user name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,32 +76,25 @@ export const SignIn = ({ onSignIn }: SignInT) => {
         <FormField
           control={form.control}
           name="password"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Пароль</FormLabel>
+              <FormLabel>Код-приглашение</FormLabel>
               <FormControl>
-                <Input
-                  error={!!form.formState.errors?.password}
-                  autoComplete="on"
-                  type="password"
-                  {...field}
-                />
+                <Input autoComplete="on" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Link size="l" variant="always" href="/reset-password">
-          Восстановить пароль
-        </Link>
         <div className="flex w-full h-full justify-between items-end">
           <div className="flex h-[56px] items-center">
-            <Link size="l" theme="brand" variant="hover" href="/signup">
-              Зарегистрироваться
+            <Link size="l" theme="brand" variant="hover" href="/signin">
+              Войти
             </Link>
           </div>
           <Button variant="default" type="submit">
-            Войти
+            Далее
           </Button>
         </div>
       </form>

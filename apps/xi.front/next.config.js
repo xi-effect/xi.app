@@ -35,10 +35,19 @@ const nextConfig = {
     'pkg.spinner',
     'pkg.utils',
     'pkg.signin.form',
+    'pkg.signup.form',
     '@xipkg/form',
+    '@xipkg/link',
+    '@xipkg/button',
     '@xipkg/input',
+    '@xipkg/label',
+    '@xipkg/checkbox',
+    '@xipkg/avatar',
     '@xipkg/tailwind',
-    '@xipkg/utils'
+    '@xipkg/utils',
+    '@xipkg/icons',
+    '@xipkg/dropdown',
+    '@xipkg/userprofile',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
@@ -66,7 +75,7 @@ const nextConfig = {
       use: [
         // options.defaultLoaders.babel, I don't think it's necessary to have this loader too
         {
-          loader: "ts-loader",
+          loader: 'ts-loader',
           options: {
             transpileOnly: true,
             experimentalWatchApi: true,

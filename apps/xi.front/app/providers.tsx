@@ -1,17 +1,12 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
-import Image from 'next/image';
-
-const Loading = () => (
-  <div>
-    <h2> Loading </h2>
-  </div>
-);
+import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
+import { Toaster } from 'sonner';
 
 function Auth(props) {
   const { children } = props;
@@ -19,32 +14,18 @@ function Auth(props) {
   const isLogin = useMainSt((state) => state.isLogin);
   const getUser = useMainSt((state) => state.getUser);
 
-  const router = useRouter();
-  const redirectFn = (url: string) => router.push(url);
-
   useEffect(() => {
-    getUser(redirectFn);
+    getUser();
   }, []);
 
   console.log('isLogin', isLogin);
 
-  if (isLogin === null) return <Loading />;
+  if (isLogin === null) return <SkeletonMainLayout />;
 
   if (isLogin)
     return (
       <>
-        <Navigation
-          logo={
-            <Image
-              src="./assets/brand/navigationlogo.svg"
-              alt="xieffect logo"
-              width={134}
-              height={16}
-            />
-          }
-        >
-          {children}
-        </Navigation>
+        <Navigation>{children}</Navigation>
       </>
     );
 
@@ -57,6 +38,7 @@ export function Providers(props) {
   return (
     <>
       <ThemeProvider forcedTheme="light" attribute="data-theme">
+        <Toaster />
         <Auth>{children}</Auth>
       </ThemeProvider>
     </>
