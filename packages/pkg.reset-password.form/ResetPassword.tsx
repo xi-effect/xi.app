@@ -76,7 +76,7 @@ export const ResetPassword = () => {
           {emailSent ? 'Письмо отправлено' : 'Восстановление'}
         </h1>
         {emailSent ? (
-          <div className="pt-4 w-[80%] m-auto text-center">
+          <div className="pt-4 w-full xs:w-[80%] m-auto text-center">
             Ссылка на восстановление пароля отправлена на {form.getValues().email}
           </div>
         ) : (
