@@ -31,12 +31,12 @@ const FormSchema = z.object({
 });
 
 export const ResetPassword = () => {
-  const [emailSent, setEmailSent] = useState(true);
+  const [emailSent, setEmailSent] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: 'test@test.test',
+      email: '',
     },
   });
 
