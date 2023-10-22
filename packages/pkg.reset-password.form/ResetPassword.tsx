@@ -30,7 +30,7 @@ const FormSchema = z.object({
     }),
 });
 
-export const PasswordRecovery = () => {
+export const ResetPassword = () => {
   const [emailSent, setEmailSent] = useState(true);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -40,9 +40,9 @@ export const PasswordRecovery = () => {
     },
   });
 
-  const sendEmail = async () => {
+  const sendEmail = async ({ email }: z.infer<typeof FormSchema>) => {
     const data = await fetchData('/password-reset/', 'POST', {
-      email: form.getValues().email.toLowerCase(),
+      email: email.toLowerCase(),
     });
     if (data && data.a) {
       setEmailSent(true);
@@ -54,7 +54,7 @@ export const PasswordRecovery = () => {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     form.trigger();
-    sendEmail();
+    sendEmail(data);
   };
 
   return (
@@ -81,7 +81,7 @@ export const PasswordRecovery = () => {
           </div>
         ) : (
           <FormField
-          // @ts-ignore
+            // @ts-ignore
             control={form.control}
             name="email"
             render={({ field }) => (
@@ -110,7 +110,7 @@ export const PasswordRecovery = () => {
                 size="l"
                 theme="brand"
                 variant="hover"
-                onClick={sendEmail}
+                onClick={() => sendEmail(form.getValues())}
                 href={''}
               >
                 Отправить ещё раз
