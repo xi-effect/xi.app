@@ -121,11 +121,11 @@ export const ResetPassword = () => {
             )}
           </div>
           {emailSent ? (
-            <Button onClick={() => router.push('/signin')} variant="default">
+            <Button onClick={() => router.push('/signin')}>
               Войти
             </Button>
           ) : (
-            <Button variant="default" type="submit">
+            <Button type="submit">
               Отправить
             </Button>
           )}
