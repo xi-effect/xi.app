@@ -1,110 +1,29 @@
 'use client';
 
-import {
-  CategoryAdd,
-  ChannelAdd,
-  ChevronSmallTop,
-  Exit,
-  PeopleInvite,
-  Settings,
-} from '@xipkg/icons';
 import { ReactNode } from 'react';
+import { CommunityItems, CommunityMenu, BottomBar, Menu } from './components';
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@xipkg/dropdown';
-import React from 'react';
+import { useMedia } from 'react-use';
+import Image from 'next/image';
 
 type NavigationProp = {
-  logo: ReactNode;
   children: ReactNode;
 };
 
-const Avatar = () => {
-  return (
-    <div className="overflow-hidden bg-green-0 flex flex-col w-8 h-8 items-center justify-center rounded-[16px]">
-      <div className="text-center text-[12px] font-semibold leading-[16px] text-green-100">МП</div>
-    </div>
-  );
-};
-
-const DropdownHeader = ({
-  setIsOpen,
-  inDropdown = false,
-}: {
-  setIsOpen: any;
-  inDropdown?: boolean;
-}) => {
-  return (
-    <div
-      onClick={() => setIsOpen((prev: boolean) => !prev)}
-      className={`flex flex-wrap w-full h-12 p-2 ${
-        inDropdown ? '' : 'mt-8'
-      } items-center rounded-xl hover:cursor-pointer hover:bg-gray-5 transition-colors ease-in`}
-    >
-      <Avatar />
-      <div className="ml-2 text-[16px] font-semibold self-center"> Мое пространство </div>
-      <div className="ml-auto flex flex-col items-center justify-center w-4 h-4">
-        <ChevronSmallTop
-          size="s"
-          className={`transition-transform ease-in ${inDropdown ? '' : 'rotate-180'}`}
-        />
-      </div>
-    </div>
-  );
-};
-
-export const Navigation = ({ logo, children }: NavigationProp) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+export const Navigation = ({ children }: NavigationProp) => {
+  const isMobile = useMedia('(max-width: 480px)');
+  const isTablet = useMedia('(max-width: 960px)');
 
   console.log('Navigation');
+
+  if (isTablet) return <BottomBar>{children}</BottomBar>;
+
   return (
-    <div className="flex flex-row">
-      <div className="flex flex-col flex-wrap p-6 h-screen min-w-[350px]">
-        <div className="flex flex-wrap w-full h-8 p-2"> {logo} </div>
-        <DropdownMenu open={isOpen}>
-          <DropdownMenuTrigger asChild>
-            <div>
-              <DropdownHeader setIsOpen={setIsOpen} />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            onInteractOutside={() => setIsOpen(false)}
-            className="w-[302px] relative top-[-58px]"
-          >
-            <div className="bg-gray-5 rounded-lg">
-              <DropdownHeader setIsOpen={setIsOpen} inDropdown />
-              <DropdownMenuItem>
-                <span>Пригласить людей</span>
-                <PeopleInvite size="s" className="ml-auto h-4 w-4" />
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span>Настройки сообщества</span>
-                <Settings size="s" className="ml-auto h-4 w-4" />
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <span>Создать канал</span>
-                <ChannelAdd size="s" className="ml-auto h-4 w-4" />
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span>Создать категорию</span>
-                <CategoryAdd size="s" className="ml-auto h-4 w-4" />
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem error>
-                <span>Покинуть сообщество</span>
-                <Exit size="s" className="ml-auto h-4 w-4 fill-red-40" />
-              </DropdownMenuItem>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className="relative flex flex-row">
+      <div className="fixed flex flex-col p-6 h-screen min-h-screen min-w-[350px]">
+        <Menu />
       </div>
-      {children}
+      <div className="ml-[350px]">{children}</div>
     </div>
   );
 };

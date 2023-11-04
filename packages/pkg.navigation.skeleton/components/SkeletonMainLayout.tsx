@@ -25,7 +25,7 @@ export const SkeletonMainLayout = () => {
           </div>
           <div className="mt-8 flex flex-wrap items-start gap-4">
             {[...new Array(4)].map((item, index) => (
-              <div className='h-[260px] w-full max-w-[352px]'>
+              <div key={index} className="h-[260px] w-full max-w-[352px]">
                 <SkeletonRectangle height={260} className=" bg-gray-20 rounded-lg" />
               </div>
             ))}

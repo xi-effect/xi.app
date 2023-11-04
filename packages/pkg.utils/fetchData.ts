@@ -35,9 +35,9 @@ export const fetchData = async (
         },
       });
     }
-    if (response?.status === 401 || response?.status === 403 || response?.status === 422) {
-      redirect('/signin');
-    }
+    // if (response?.status === 401 || response?.status === 403 || response?.status === 422) {
+    //   redirect('/signin');
+    // }
     if (response?.ok) {
       const string = await response?.text();
       const json = string === '' ? {} : JSON.parse(string);
