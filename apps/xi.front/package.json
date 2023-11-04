@@ -22,7 +22,6 @@
     "pkg.utils": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-use": "^17.4.0",
     "sonner": "1.0.3",
     "zustand": "^4.3.8"
   },

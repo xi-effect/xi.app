@@ -8,7 +8,7 @@ export const fetchData = async (
   data?: unknown,
   domain?: string,
 ) => {
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL ?? domain}${pathname}`;
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND ?? domain}${pathname}`;
 
   try {
     let response: null | Response = null;

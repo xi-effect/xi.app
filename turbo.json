@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_SERVER_URL"],
+  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_SERVER_URL_BACKEND"],
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
