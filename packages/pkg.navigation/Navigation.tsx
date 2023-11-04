@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import { CommunityItems, CommunityMenu, BottomBar, Menu } from './components';
 
-import { useMedia } from 'react-use';
+import { useMedia } from 'pkg.utils';
 import Image from 'next/image';
 
 type NavigationProp = {

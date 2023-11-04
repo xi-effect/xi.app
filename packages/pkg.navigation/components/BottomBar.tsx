@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
 import { Close, Burger, Notification } from '@xipkg/icons';
 import { Avatar } from '@xipkg/avatar';
 import Image from 'next/image';
-import { useSessionStorage } from 'react-use';
+import { useSessionStorage } from 'pkg.utils';
 // @ts-ignore
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { Menu } from './Menu';
