@@ -29,7 +29,14 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
   updateUser: (value: { [key in keyof UserT]: unknown }) =>
     set((state) => ({ user: { ...state.user, value } })),
   getUser: async () => {
-    const data = await fetchData('/home/', 'GET');
+    const data = await fetchData({
+      service: 'auth',
+      pathname: '/api/users/current/home/',
+      method: 'GET',
+      headers: {
+        'X-Testing': 'true',
+      },
+    });
     console.log('fetchData', data);
     if (data === null) {
       setTimeout(() => useMainSt.getState().setIsLogin(false), 1000);

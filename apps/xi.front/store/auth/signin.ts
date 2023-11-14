@@ -3,9 +3,6 @@
 import { StateCreator } from 'zustand';
 import { fetchData } from 'pkg.utils';
 import { Common } from '../main';
-import { redirect } from 'next/navigation';
-
-const Crypto = require('crypto-js');
 
 type Data = { email: string; password: string };
 
@@ -27,21 +24,37 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
   isLogin: null,
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
   onSignIn: async ({ email, password, redirectFn, setError }) => {
-    const data = await fetchData('/signin/', 'POST', {
-      email: email.toLowerCase(),
-      password: Crypto.SHA384(password.trim()).toString(),
+    const data = await fetchData({
+      service: 'auth',
+      pathname: '/api/signin',
+      method: 'POST',
+      data: {
+        email: email.toLowerCase(),
+        password: password.trim().toString(),
+      },
+      headers: {
+        'X-Testing': 'true',
+      },
     });
-    if (data && data.a === 'Success') {
+    console.log('data', data);
+    if (data && data.email && data.id) {
       set(() => ({ isLogin: true }));
       redirectFn('/');
-    } else if (data.a === "User doesn't exist") {
+    } else if (data?.detail === 'User not found') {
       setError('email', { type: 'user', message: 'Не удалось найти аккаунт' });
-    } else if (data.a === 'Wrong password') {
+    } else if (data?.detail === 'Wrong password') {
       setError('password', { type: 'wrong', message: 'Неправильный пароль' });
     }
   },
   onSignOut: async (redirectFn) => {
-    const data = await fetchData('/signout/', 'POST', { lol: 'kek' });
+    const data = await fetchData({
+      service: 'auth',
+      pathname: '/api/signout',
+      method: 'POST',
+      headers: {
+        'X-Testing': 'true',
+      },
+    });
     if (data && data?.a) {
       set(() => ({ isLogin: false }));
       redirectFn('/signin');
