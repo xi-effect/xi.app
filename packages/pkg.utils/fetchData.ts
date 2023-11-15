@@ -20,6 +20,8 @@ type FetchDataT = {
   headers?: { [key: string]: string };
 };
 
+console.log("process.env.ENABLE_X_TESTING", process.env.ENABLE_X_TESTING);
+
 export const fetchData = async ({
   service,
   pathname,

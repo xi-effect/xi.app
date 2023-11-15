@@ -26,14 +26,16 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
   onSignIn: async ({ email, password, redirectFn, setError }) => {
     const data = await fetchData({
       service: 'auth',
-      pathname: '/api/signin',
+      pathname: '/api/signin/',
       method: 'POST',
       data: {
         email: email.toLowerCase(),
         password: password.trim().toString(),
       },
       headers: {
-        'X-Testing': 'true',
+        'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+          ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+          : 'false',
       },
     });
     console.log('data', data);
@@ -49,10 +51,12 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
   onSignOut: async (redirectFn) => {
     const data = await fetchData({
       service: 'auth',
-      pathname: '/api/signout',
+      pathname: '/api/signout/',
       method: 'POST',
       headers: {
-        'X-Testing': 'true',
+        'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+          ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+          : 'false',
       },
     });
     if (data && data?.a) {

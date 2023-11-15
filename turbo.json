@@ -1,6 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_SERVER_URL_BACKEND", "NEXT_PUBLIC_SERVER_URL_AUTH"],
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_SERVER_URL_BACKEND",
+    "NEXT_PUBLIC_SERVER_URL_AUTH",
+    "NEXT_PUBLIC_ENABLE_X_TESTING"
+  ],
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
