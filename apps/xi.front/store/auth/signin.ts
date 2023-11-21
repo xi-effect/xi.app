@@ -44,7 +44,7 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
     const data = await fetchData('/signout/', 'POST', { lol: 'kek' });
     if (data && data?.a) {
       set(() => ({ isLogin: false }));
-      redirectFn('/signin');
+      redirectFn('/');
     }
   },
 });
