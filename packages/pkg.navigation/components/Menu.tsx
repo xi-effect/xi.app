@@ -17,6 +17,7 @@ export const Menu = () => {
       <CommunityItems />
       <div className="fixed sm:w-[302px] bottom-0 pb-6 flex flex-col bg-gray-0">
         <div
+          id="user-profile-menu"
           onClick={() => toast('Открыть настойки пользователя')}
           className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"
         >

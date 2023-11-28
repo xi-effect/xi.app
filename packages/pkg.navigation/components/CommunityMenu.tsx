@@ -77,49 +77,49 @@ export const CommunityMenu = () => {
           popover: {
             title: 'Добро пожаловать!',
             description:
-              'Это краткое обучение поможет вам ознакомиться с возможностями нашей платформы',
+              'Это краткое руководство поможет вам ознакомиться с возможностями нашей платформы',
           },
         },
         {
           element: '#community-profile',
           popover: {
             title: 'Профиль сообщества',
-            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+            description: 'Сообщество - цифровой хаб, построенный вокруг преподавателя или организации. Открыв меню, вы можете получить доступ к настройкам сообщества, системе приглашений, созданию сервисов',
           },
         },
         {
           element: '#community-services',
           popover: {
             title: 'Сервисы сообщества',
-            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+            description: 'В рамках сообщества репетитор может создавать и настраивать необходимые ему модули - задания, чаты, видеоконференции, контент и т.д. ',
           },
         },
         {
           element: '#subitems-menu',
           popover: {
-            title: 'Сервисы сообщества',
-            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+            title: 'Группировка сервисов',
+            description: 'Для удобства можно группировать сервисы и настраивать к ним доступ по ролям, предметам или, например, уровню владения языком',
           },
         },
         {
           element: '#video-item-menu',
           popover: {
-            title: 'Сервисы сообщества',
-            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+            title: 'Сервис Видеоконференции',
+            description: 'Нажав на данный пункт меню можно присоединиться к видеоконференции или создать новую',
           },
         },
         {
           element: '#user-profile-menu',
           popover: {
             title: 'Профиль пользователя',
-            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+            description: 'Нажав на профиль, пользователь открывает панель настроек - данные аккаунта, кастомизация, настройка микрофона, вебкамеры и т.д.',
           },
         },
         {
           element: '#notification-menu',
           popover: {
             title: 'Уведомления',
-            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+            description: 'Сюда приходят уведомления со всех сервисов, напоминания о занятиях, результатах тестов и многом другом',
           },
         }
       ],

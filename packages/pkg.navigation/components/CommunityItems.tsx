@@ -46,6 +46,7 @@ const menuData = [
     link: '',
   },
   {
+    elId: 'subitems-menu',
     title: 'B1.2',
     subtitle: 'Intermediate',
   },
@@ -68,13 +69,13 @@ const menuData = [
     link: '',
   },
   {
+    elId: 'video-item-menu',
     icon: 'camera',
     type: '',
     label: 'Видеоконференция',
     link: '',
   },
   {
-    elId: '#subitems-menu',
     title: 'B2',
     subtitle: 'Upper-intermediate',
   },
@@ -85,7 +86,7 @@ const menuData = [
     link: '',
   },
   {
-    elId: '#chat-item-menu',
+    elId: 'chat-item-menu',
     icon: 'task',
     type: '',
     label: 'Задания',
@@ -98,7 +99,6 @@ const menuData = [
     link: '',
   },
   {
-    elId: '#video-item-menu',
     icon: 'camera',
     type: '',
     label: 'Видеоконференция',
@@ -110,6 +110,7 @@ const Item = ({ index, item }: any) => {
   if (!!item.title)
     return (
       <div
+        id={item?.elId}
         className="group w-full p-2 mt-8 flex flex-col items-start rounded-lg text-gray-90"
         key={index.toString()}
       >
@@ -120,6 +121,7 @@ const Item = ({ index, item }: any) => {
 
   return (
     <div
+      id={item?.elId}
       onClick={() => toast(`Нажатие на ${item.label}`)}
       className="group h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
       key={index.toString()}
