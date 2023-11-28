@@ -10,7 +10,7 @@ import Image from 'next/image';
 export const Menu = () => {
   return (
     <>
-      <div className="flex flex-wrap w-fit h-8 p-2">
+      <div id="header-logo" className="flex flex-wrap w-fit h-8 p-2">
         <Image src="/assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
       </div>
       <CommunityMenu />
@@ -23,6 +23,7 @@ export const Menu = () => {
           <UserProfile src="/test/avatar.svg" text="Ivan Kovylyaev" label="@ikovylyaev" size="m" />
         </div>
         <div
+          id="notification-menu"
           onClick={() => toast(`Уведомления пока в разработке`)}
           className="group h-[40px] w-full p-2 mx-1 mt-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
         >

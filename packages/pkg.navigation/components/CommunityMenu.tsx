@@ -7,6 +7,7 @@ import {
   Exit,
   PeopleInvite,
   Settings,
+  Objects,
 } from '@xipkg/icons';
 import React from 'react';
 import {
@@ -17,6 +18,8 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 import Image from 'next/image';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 
 const Avatar = () => {
   return (
@@ -43,6 +46,7 @@ const DropdownHeader = ({
 }) => {
   return (
     <div
+      id="community-profile"
       onClick={() => setIsOpen((prev: boolean) => !prev)}
       className={`flex flex-wrap md:w-[302px] h-12 py-2 px-2.5 ${
         inDropdown ? '' : 'mt-0 sm:mt-8'
@@ -63,6 +67,70 @@ const DropdownHeader = ({
 export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
+  const driverAction = () => {
+    setIsOpen(false);
+    const driverObj = driver({
+      showProgress: true,
+      steps: [
+        {
+          element: '#header-logo',
+          popover: {
+            title: 'Добро пожаловать!',
+            description:
+              'Это краткое обучение поможет вам ознакомиться с возможностями нашей платформы',
+          },
+        },
+        {
+          element: '#community-profile',
+          popover: {
+            title: 'Профиль сообщества',
+            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+          },
+        },
+        {
+          element: '#community-services',
+          popover: {
+            title: 'Сервисы сообщества',
+            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+          },
+        },
+        {
+          element: '#subitems-menu',
+          popover: {
+            title: 'Сервисы сообщества',
+            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+          },
+        },
+        {
+          element: '#video-item-menu',
+          popover: {
+            title: 'Сервисы сообщества',
+            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+          },
+        },
+        {
+          element: '#user-profile-menu',
+          popover: {
+            title: 'Профиль пользователя',
+            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+          },
+        },
+        {
+          element: '#notification-menu',
+          popover: {
+            title: 'Уведомления',
+            description: 'Visualize os detalhes do endereço e marque as casas nesta seção.',
+          },
+        }
+      ],
+      nextBtnText: 'Вперёд',
+      prevBtnText: 'Назад',
+      doneBtnText: 'Завершить',
+      progressText: '{{current}} из {{total}}',
+    });
+    driverObj.drive();
+  };
+
   return (
     <DropdownMenu open={isOpen}>
       <DropdownMenuTrigger asChild>
@@ -76,6 +144,11 @@ export const CommunityMenu = () => {
       >
         <div className="bg-gray-5 rounded-lg">
           <DropdownHeader setIsOpen={setIsOpen} inDropdown />
+          <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px]">
+            <span>Пройти обучение</span>
+            <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem className="group sm:w-[302px]">
             <span>Пригласить людей</span>
             <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />

@@ -46,28 +46,8 @@ const menuData = [
     link: '',
   },
   {
-    icon: 'updates',
-    type: '',
-    label: 'Обновления',
-    link: '',
-  },
-  {
-    icon: 'task',
-    type: '',
-    label: 'Задания',
-    link: '',
-  },
-  {
-    icon: 'chat',
-    type: '',
-    label: 'Чат со студентами',
-    link: '',
-  },
-  {
-    icon: 'camera',
-    type: '',
-    label: 'Видеоконференция',
-    link: '',
+    title: 'B1.2',
+    subtitle: 'Intermediate',
   },
   {
     icon: 'announce',
@@ -76,18 +56,6 @@ const menuData = [
     link: '',
   },
   {
-    icon: 'calendar',
-    type: '',
-    label: 'Календарь',
-    link: '',
-  },
-  {
-    icon: 'updates',
-    type: '',
-    label: 'Обновления',
-    link: '',
-  },
-  {
     icon: 'task',
     type: '',
     label: 'Задания',
@@ -96,7 +64,7 @@ const menuData = [
   {
     icon: 'chat',
     type: '',
-    label: 'Чат со студентами',
+    label: 'Чат',
     link: '',
   },
   {
@@ -106,10 +74,9 @@ const menuData = [
     link: '',
   },
   {
-    icon: 'camera',
-    type: '',
-    label: 'Видеоконференция',
-    link: '',
+    elId: '#subitems-menu',
+    title: 'B2',
+    subtitle: 'Upper-intermediate',
   },
   {
     icon: 'announce',
@@ -118,18 +85,7 @@ const menuData = [
     link: '',
   },
   {
-    icon: 'calendar',
-    type: '',
-    label: 'Календарь',
-    link: '',
-  },
-  {
-    icon: 'updates',
-    type: '',
-    label: 'Обновления',
-    link: '',
-  },
-  {
+    elId: '#chat-item-menu',
     icon: 'task',
     type: '',
     label: 'Задания',
@@ -138,10 +94,11 @@ const menuData = [
   {
     icon: 'chat',
     type: '',
-    label: 'Чат со студентами',
+    label: 'Чат',
     link: '',
   },
   {
+    elId: '#video-item-menu',
     icon: 'camera',
     type: '',
     label: 'Видеоконференция',
@@ -149,22 +106,40 @@ const menuData = [
   },
 ];
 
+const Item = ({ index, item }: any) => {
+  if (!!item.title)
+    return (
+      <div
+        className="group w-full p-2 mt-8 flex flex-col items-start rounded-lg text-gray-90"
+        key={index.toString()}
+      >
+        <span className="text-[16px] font-semibold">{item.title}</span>
+        <span className="text-[14px] font-normal">{item.subtitle}</span>
+      </div>
+    );
+
+  return (
+    <div
+      onClick={() => toast(`Нажатие на ${item.label}`)}
+      className="group h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
+      key={index.toString()}
+    >
+      {iconsDict[item.icon]}
+      <span className="text-[14px] font-normal pl-2">{item.label}</span>
+    </div>
+  );
+};
+
 export const CommunityItems = ({ className }: { className?: string }) => {
   return (
     <div
+      id="community-services"
       className={`flex flex-col h-[calc(100dvh-128px)] sm:mb-[100px] mt-3 px-5 sm:px-1 gap-1 overflow-y-auto ${
         className ?? ''
       }`}
     >
       {menuData.map((item, index) => (
-        <div
-          onClick={() => toast(`Нажатие на ${item.label}`)}
-          className="group h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
-          key={index.toString()}
-        >
-          {iconsDict[item.icon]}
-          <span className="text-[14px] font-normal pl-2">{item.label}</span>
-        </div>
+        <Item item={item} index={index} />
       ))}
     </div>
   );

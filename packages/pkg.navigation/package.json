@@ -12,6 +12,7 @@
     "@xipkg/dropdown": "1.1.2",
     "@xipkg/icons": "0.7.2",
     "@xipkg/userprofile": "0.2.0",
+    "driver.js": "^1.3.1",
     "next": "^13.5.2",
     "react": "^18.2.0",
     "react-swipeable-views-react-18-fix": "^0.14.1",

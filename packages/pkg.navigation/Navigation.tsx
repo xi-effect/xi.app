@@ -1,5 +1,4 @@
 'use client';
-
 import { ReactNode } from 'react';
 import { CommunityItems, CommunityMenu, BottomBar, Menu } from './components';
 
