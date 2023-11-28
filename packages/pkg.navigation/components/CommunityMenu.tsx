@@ -16,11 +16,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
+import Image from 'next/image';
 
 const Avatar = () => {
   return (
     <div className="overflow-hidden bg-green-0 flex flex-col w-8 h-8 items-center justify-center rounded-[16px]">
-      <div className="text-center text-[12px] font-semibold leading-[16px] text-green-100">МП</div>
+      <Image
+        style={{
+          borderRadius: '50%',
+        }}
+        src="/assets/avatarrep.svg"
+        width={32}
+        height={32}
+        alt="user avatar"
+      />
     </div>
   );
 };
@@ -40,7 +49,7 @@ const DropdownHeader = ({
       } items-center rounded-xl hover:cursor-pointer hover:bg-gray-5 transition-colors ease-in`}
     >
       <Avatar />
-      <div className="ml-2 text-[16px] font-semibold self-center"> Мое пространство </div>
+      <div className="ml-2 text-[16px] font-semibold self-center"> Иванова А. Г. </div>
       <div className="ml-auto flex flex-col items-center justify-center w-4 h-4">
         <ChevronSmallTop
           size="s"

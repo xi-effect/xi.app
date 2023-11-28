@@ -55,7 +55,16 @@ export const BottomBar = ({ children }: BottomBarT) => {
         </button>
         <Image src="/assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
         <div className="h-[32px] w-[32px] flex content-center items-center ml-auto">
-          <Avatar size="m" src="/test/avatar.png" className="justify-self-end" />
+          {/* <Avatar size="m" src="/test/avatar.png" className="justify-self-end" /> */}
+          <Image
+            style={{
+              borderRadius: '50%',
+            }}
+            src="/test/avatar.svg"
+            width={32}
+            height={32}
+            alt="user avatar"
+          />
         </div>
         <button className="h-[48px] w-[48px] p-3 flex content-center justify-center ml-4 bg-gray-0 justify-self-end">
           <Notification />

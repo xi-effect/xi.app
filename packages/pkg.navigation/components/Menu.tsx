@@ -20,7 +20,7 @@ export const Menu = () => {
           onClick={() => toast('Открыть настойки пользователя')}
           className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"
         >
-          <UserProfile src="/test/avatar.png" text="Ivan Kovylyaev" label="@ikovylyaev" size="m" />
+          <UserProfile src="/test/avatar.svg" text="Ivan Kovylyaev" label="@ikovylyaev" size="m" />
         </div>
         <div
           onClick={() => toast(`Уведомления пока в разработке`)}
