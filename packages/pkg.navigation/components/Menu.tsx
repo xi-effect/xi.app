@@ -1,7 +1,12 @@
 import { UserProfile } from '@xipkg/userprofile';
 import { toast } from 'sonner';
 import { Notification } from '@xipkg/icons';
-import React from 'react';
+import {
+  Modal,
+  ModalContent,
+  ModalTrigger,
+  ModalCloseButton,
+} from '@xipkg/modal';
 
 import { CommunityItems, CommunityMenu } from './';
 
@@ -16,13 +21,19 @@ export const Menu = () => {
       <CommunityMenu />
       <CommunityItems />
       <div className="fixed sm:w-[302px] bottom-0 pb-6 flex flex-col bg-gray-0">
-        <div
-          id="user-profile-menu"
-          onClick={() => toast('Открыть настойки пользователя')}
-          className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"
-        >
-          <UserProfile src="/test/avatar.svg" text="Ivan Kovylyaev" label="@ikovylyaev" size="m" />
-        </div>
+      <Modal>
+        <ModalTrigger asChild>
+          <div
+            id="user-profile-menu"
+            className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"
+          >
+            <UserProfile src="/test/avatar.svg" text="Ivan Kovylyaev" label="@ikovylyaev" size="m" />
+          </div>
+        </ModalTrigger>
+        <ModalContent variant="full">
+          <ModalCloseButton />
+        </ModalContent>
+      </Modal>
         <div
           id="notification-menu"
           onClick={() => toast(`Уведомления пока в разработке`)}
