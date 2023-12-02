@@ -12,6 +12,8 @@ import { CommunityItems, CommunityMenu } from './';
 
 import Image from 'next/image';
 
+import { UserSettings } from './UserSettings';
+
 export const Menu = () => {
   return (
     <>
@@ -31,7 +33,7 @@ export const Menu = () => {
           </div>
         </ModalTrigger>
         <ModalContent variant="full">
-          <ModalCloseButton />
+          <UserSettings />
         </ModalContent>
       </Modal>
         <div

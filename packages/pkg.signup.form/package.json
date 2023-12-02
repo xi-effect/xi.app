@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "@hookform/resolvers": "^3.1.1",
-    "@xipkg/icons": "0.7.2",
+    "@xipkg/icons": "0.7.3",
     "@xipkg/input": "0.0.5",
     "@xipkg/button": "1.0.1",
     "@xipkg/link": "0.1.7",
