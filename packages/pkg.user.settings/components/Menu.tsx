@@ -12,15 +12,15 @@ const options: ItemT[] = [
   {
     name: 'Личные данные',
   },
-  {
-    name: 'Внешний вид',
-  },
+  // {
+  //   name: 'Внешний вид',
+  // },
   {
     name: 'Безопасность',
   },
-  {
-    name: 'Звук и видео',
-  },
+  // {
+  //   name: 'Звук и видео',
+  // },
 ];
 
 type ItemPropsT = {
@@ -41,9 +41,9 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
   const iconsDict: React.ReactNode[] = [
     <Home className={getIconClassName(0)} />,
     <Account className={getIconClassName(1)} />,
-    <Palette className={getIconClassName(2)} />,
+    // <Palette className={getIconClassName(2)} />,
     <Key className={getIconClassName(3)} />,
-    <SoundTwo className={getIconClassName(4)} />,
+    // <SoundTwo className={getIconClassName(4)} />,
   ];
 
   return (
@@ -89,9 +89,9 @@ export const Menu = ({ activeContent, setActiveContent }: MenuPropsT) => {
       ))}
       <button
         onClick={() => handleExit()}
-        className="bg-transparent group mt-10 h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-60 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
+        className="bg-transparent group mt-10 h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-60 transition-colors ease-in hover:bg-brand-0 hover:text-red-100 hover:cursor-pointer"
       >
-        <Exit />
+        <Exit className="transition-colors ease-in group-hover:fill-red-100" />
         <span className="text-[14px] font-normal pl-2">Выйти</span>
       </button>
     </div>

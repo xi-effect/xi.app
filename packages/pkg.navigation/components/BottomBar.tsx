@@ -9,6 +9,7 @@ import { useSessionStorage } from 'pkg.utils';
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
+import { UserSettings } from 'pkg.user.settings';
 
 type BottomBarT = {
   children: ReactNode;
@@ -68,8 +69,8 @@ export const BottomBar = ({ children }: BottomBarT) => {
               />
             </div>
           </ModalTrigger>
-          <ModalContent variant="full">
-            <ModalCloseButton />
+          <ModalContent variant="full" className='p-4 lg:p-6'>
+            <UserSettings />
           </ModalContent>
         </Modal>
         <button className="h-[48px] w-[48px] p-3 flex content-center justify-center ml-4 bg-gray-0 justify-self-end">
