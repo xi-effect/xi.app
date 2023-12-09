@@ -4,11 +4,11 @@ import { PersonalData } from './PersonalData';
 import { Secure } from './Secure';
 
 type ContentPropsT = {
-  activeContent: number;
+    activeContent: number;
 };
 
 export const Content = ({ activeContent }: ContentPropsT) => {
-  const contentItems = [<Main />, <PersonalData />, <Secure />];
+    const contentItems = [<Main />, <PersonalData />, <Secure />];
 
-  return <div className="ml-8 w-full">{contentItems[activeContent]}</div>;
+    return <div className="ml-8 w-full">{contentItems[activeContent]}</div>;
 };

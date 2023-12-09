@@ -36,6 +36,7 @@ const nextConfig = {
     'pkg.utils',
     'pkg.signin.form',
     'pkg.signup.form',
+    'pkg.module.videoconference',
     '@xipkg/form',
     '@xipkg/link',
     '@xipkg/button',

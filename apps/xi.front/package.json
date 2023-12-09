@@ -16,6 +16,7 @@
     "next-themes": "^0.2.1",
     "pkg.navigation": "*",
     "pkg.navigation.layout": "*",
+    "pkg.module.videoconference": "*",
     "pkg.navigation.skeleton": "*",
     "pkg.signin.form": "*",
     "pkg.signup.form": "*",

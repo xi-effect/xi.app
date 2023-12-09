@@ -1,0 +1,30 @@
+{
+  "name": "pkg.module.videoconference",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.ts*\""
+  },
+  "dependencies": {
+    "@livekit/components-react": "^1.4.2",
+    "@livekit/components-styles": "^1.0.7",
+    "@xipkg/icons": "0.7.3",
+    "livekit-client": "^1.15.4",
+    "next": "^13.5.2",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@xipkg/eslint": "latest",
+    "@xipkg/tailwind": "latest",
+    "@xipkg/typescript": "latest",
+    "eslint": "^7.32.0",
+    "typescript": "^5.1.3"
+  },
+  "description": "form for signin",
+  "author": "xi.effect"
+}

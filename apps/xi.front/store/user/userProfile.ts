@@ -29,13 +29,15 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
   updateUser: (value: { [key in keyof UserT]: unknown }) =>
     set((state) => ({ user: { ...state.user, value } })),
   getUser: async () => {
-    console.log("ENABLE_X_TESTING", process.env.ENABLE_X_TESTING);
+    console.log('ENABLE_X_TESTING', process.env.ENABLE_X_TESTING);
     const data = await fetchData({
       service: 'auth',
       pathname: '/api/users/current/home/',
       method: 'GET',
       headers: {
-        'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING : 'false',
+        'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+          ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+          : 'false',
       },
     });
     console.log('fetchData', data);
