@@ -11,7 +11,7 @@ import {
 } from '@livekit/components-react';
 import { Track } from 'livekit-client';
 
-const serverUrl = 'wss://livekit.xieffect.ru';
+const serverUrl = 'wss://test-ztiuaccr.livekit.cloud';
 
 type VideoConferenceT = {
     token: string;
