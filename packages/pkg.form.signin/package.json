@@ -1,5 +1,5 @@
 {
-  "name": "pkg.signup.form",
+  "name": "pkg.form.signin",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",

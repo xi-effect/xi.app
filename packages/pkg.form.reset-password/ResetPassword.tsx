@@ -115,7 +115,7 @@ export const ResetPassword = () => {
                 Отправить ещё раз
               </Link>
             ) : (
-              <Link size="l" theme="brand" variant="hover" href="/signin">
+              <Link size="l" theme="brand" variant="hover" href="/">
                 Войти
               </Link>
             )}

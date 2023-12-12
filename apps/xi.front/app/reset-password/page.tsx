@@ -1,5 +1,5 @@
 'use client';
-import { ResetPassword } from 'pkg.reset-password.form';
+import { ResetPassword } from 'pkg.form.reset-password';
 import React from 'react';
 
 export default function ResetPasswordPage() {
