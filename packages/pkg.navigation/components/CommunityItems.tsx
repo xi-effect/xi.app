@@ -16,6 +16,7 @@ import {
 } from '@xipkg/icons';
 import { ReactNode } from 'react';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 type IconsDictT = {
   [key: string]: ReactNode;
@@ -73,7 +74,7 @@ const menuData = [
     icon: 'camera',
     type: '',
     label: 'Видеоконференция',
-    link: '',
+    link: '/community/1/videoconference/1',
   },
   {
     title: 'B2',
@@ -107,6 +108,12 @@ const menuData = [
 ];
 
 const Item = ({ index, item }: any) => {
+  const router = useRouter();
+
+  const handleRouteChange = () => {
+    router.push(item.link);
+  };
+
   if (!!item.title)
     return (
       <div
@@ -122,9 +129,9 @@ const Item = ({ index, item }: any) => {
   return (
     <div
       id={item?.elId}
-      onClick={() => toast(`Нажатие на ${item.label}`)}
       className="group h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
       key={index.toString()}
+      onClick={handleRouteChange}
     >
       {iconsDict[item.icon]}
       <span className="text-[14px] font-normal pl-2">{item.label}</span>
@@ -141,7 +148,7 @@ export const CommunityItems = ({ className }: { className?: string }) => {
       }`}
     >
       {menuData.map((item, index) => (
-        <Item item={item} index={index} />
+        <Item item={item} index={index} key={index} />
       ))}
     </div>
   );

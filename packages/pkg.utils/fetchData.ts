@@ -3,16 +3,17 @@ import { redirect } from 'next/navigation';
 type MethodT = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
 type ServicesMapT = {
-  [key in 'backend' | 'auth']: string;
+  [key in 'backend' | 'auth' | 'live']: string;
 };
 
 const servicesMap: ServicesMapT = {
   backend: process.env.NEXT_PUBLIC_SERVER_URL_BACKEND ?? '',
   auth: process.env.NEXT_PUBLIC_SERVER_URL_AUTH ?? '',
+  live: process.env.NEXT_PUBLIC_SERVER_URL_LIVE ?? '',
 };
 
 type FetchDataT = {
-  service: 'backend' | 'auth';
+  service: 'backend' | 'auth' | 'live';
   pathname: string;
   method: MethodT;
   data?: unknown;
@@ -20,7 +21,7 @@ type FetchDataT = {
   headers?: { [key: string]: string };
 };
 
-console.log("process.env.ENABLE_X_TESTING", process.env.ENABLE_X_TESTING);
+console.log('process.env.ENABLE_X_TESTING', process.env.ENABLE_X_TESTING);
 
 export const fetchData = async ({
   service,
