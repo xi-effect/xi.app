@@ -12,5 +12,5 @@ export const useMainSt = create<Common>()((...a) => ({
   ...createVideoConferenceSt(...a),
   ...createUserProfileSt(...a),
   ...createUserSettingsSt(...a),
-  ...createSignInSt(...a),
+  ...createSignInSt(...a)
 }));

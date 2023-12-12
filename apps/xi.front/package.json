@@ -19,6 +19,7 @@
     "pkg.module.videoconference": "*",
     "pkg.navigation.skeleton": "*",
     "pkg.signin.form": "*",
+    "pkg.reset-password.form": "*",
     "pkg.signup.form": "*",
     "pkg.spinner": "*",
     "pkg.utils": "*",

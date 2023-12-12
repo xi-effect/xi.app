@@ -1,17 +1,12 @@
 'use client';
-
-import { useMainSt } from 'store/main';
-
-import { SignIn } from 'pkg.signin.form';
+import { ResetPassword } from 'pkg.reset-password.form';
 import React from 'react';
 
-export default function ResetPassword() {
-  const onSignIn = useMainSt((state) => state.onSignIn);
-
+export default function ResetPasswordPage() {
   return (
-    <div className="flex flex-wrap flex-col justify-center content-center w-screen h-screen p-1">
-      <div className="flex max-w-[420px] w-full h-[520px] border border-gray-10 rounded-2xl p-8">
-        <SignIn onSignIn={onSignIn} />
+    <div className="flex flex-wrap flex-col justify-start xs:justify-center content-center w-screen h-screen p-1">
+      <div className="flex max-w-[420px] w-full h-full xs:h-[520px]  border-0 border-gray-10 xs:border rounded-2xl p-6 xs:p-8">
+        <ResetPassword />
       </div>
     </div>
   );
