@@ -2,13 +2,35 @@ import { redirect } from 'next/navigation';
 
 type MethodT = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
-export const fetchData = async (
-  pathname: string,
-  method: MethodT,
-  data?: unknown,
-  domain?: string,
-) => {
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL ?? domain}${pathname}`;
+type ServicesMapT = {
+  [key in 'backend' | 'auth']: string;
+};
+
+const servicesMap: ServicesMapT = {
+  backend: process.env.NEXT_PUBLIC_SERVER_URL_BACKEND ?? '',
+  auth: process.env.NEXT_PUBLIC_SERVER_URL_AUTH ?? '',
+};
+
+type FetchDataT = {
+  service: 'backend' | 'auth';
+  pathname: string;
+  method: MethodT;
+  data?: unknown;
+  domain?: string;
+  headers?: { [key: string]: string };
+};
+
+console.log("process.env.ENABLE_X_TESTING", process.env.ENABLE_X_TESTING);
+
+export const fetchData = async ({
+  service,
+  pathname,
+  method,
+  data,
+  domain,
+  headers,
+}: FetchDataT) => {
+  const url = `${servicesMap[service] ?? domain}${pathname}`;
 
   try {
     let response: null | Response = null;
@@ -19,6 +41,7 @@ export const fetchData = async (
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: JSON.stringify(data),
       });
@@ -30,6 +53,7 @@ export const fetchData = async (
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          ...headers,
         },
       });
     }
@@ -42,7 +66,7 @@ export const fetchData = async (
       return json;
     }
   } catch (error: unknown) {
-    if (typeof error === "string") {
+    if (typeof error === 'string') {
       console.warn('Возникла проблема с вашим fetch запросом: ', error);
     } else if (error instanceof Error) {
       console.warn('Возникла проблема с вашим fetch запросом: ', error.message);

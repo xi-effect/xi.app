@@ -1,0 +1,30 @@
+name: Common Preparation Steps
+
+on:
+  workflow_call:
+    outputs:
+      xi_front_files:
+        description: Will be 'true' xi.front's files have changed
+        value: ${{ jobs.analyze_files.outputs.xi_front_files }}
+
+jobs:
+  analyze_files:
+    runs-on: ubuntu-latest
+
+    outputs:
+      xi_front_files: ${{ steps.path_filter.outputs.xi_front_files }}
+      lintable_files: ${{ steps.path_filter.outputs.lintable_files }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Filter paths
+        uses: dorny/paths-filter@v2
+        id: path_filter
+        with:
+          filters: .github/files.yml
+
+  lint:
+    needs: analyze_files
+    if: needs.analyze_files.outputs.lintable_files == 'true'
+    uses: xi-effect/xieffect-actions/.github/workflows/front-lint-and-format.yml@main

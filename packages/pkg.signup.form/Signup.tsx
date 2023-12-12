@@ -89,7 +89,7 @@ export const SignUp = ({ onSignIn }: SignUpT) => {
         />
         <div className="flex w-full h-full justify-between items-end">
           <div className="flex h-[56px] items-center">
-            <Link size="l" theme="brand" variant="hover" href="/signin">
+            <Link size="l" theme="brand" variant="hover" href="/">
               Войти
             </Link>
           </div>

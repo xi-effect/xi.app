@@ -1,0 +1,49 @@
+name: Development
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  namer:
+    runs-on: ubuntu-latest
+
+    outputs:
+      branch: ${{ steps.branch_name.outputs.branch }}
+      tag: ${{ steps.branch_name.outputs.tag }}
+      base_branch: ${{ steps.branch_name.outputs.base_branch }}
+      base_tag: ${{ steps.branch_name.outputs.base_tag }}
+
+    steps:
+      - name: Get tag & branch name
+        id: branch_name
+        run: |-
+          branch=${{ github.event.pull_request.head.ref }}
+          echo "branch=${branch}"
+          echo "branch=${branch}" >> $GITHUB_OUTPUT
+
+          tag="${branch////-}"
+          echo "tag=${tag}"
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+
+          base_branch=${{ github.event.pull_request.base.ref }}
+          echo "base_branch=${base_branch}"
+          echo "base_branch=${base_branch}" >> $GITHUB_OUTPUT
+
+          base_tag="${base_branch////-}"
+          echo "base_tag=${base_tag}"
+          echo "base_tag=${base_tag}" >> $GITHUB_OUTPUT
+
+  prepare:
+    uses: ./.github/workflows/common-prepare.yml
+
+  build:
+    needs:
+      - namer
+      - prepare
+    if: needs.prepare.outputs.xi_front_files == 'true'
+    uses: xi-effect/xi.actions/.github/workflows/docker-build.yml@main
+    with:
+      tag: front-${{ needs.namer.outputs.tag }}
+      base-tag: front-${{ needs.namer.outputs.base_tag }}
+    secrets: inherit

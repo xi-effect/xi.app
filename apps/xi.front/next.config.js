@@ -48,6 +48,7 @@ const nextConfig = {
     '@xipkg/icons',
     '@xipkg/dropdown',
     '@xipkg/userprofile',
+    '@xipkg/modal',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
@@ -60,6 +61,7 @@ const nextConfig = {
       'localhost:5000',
       'xieffect.ru:5000',
       'xieffect.ru',
+      'app.xieffect.ru',
     ],
   },
   output: 'standalone',
