@@ -1,16 +1,13 @@
 import { UserProfile } from '@xipkg/userprofile';
 import { toast } from 'sonner';
 import { Notification } from '@xipkg/icons';
-import {
-  Modal,
-  ModalContent,
-  ModalTrigger,
-  ModalCloseButton,
-} from '@xipkg/modal';
+import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 
 import { CommunityItems, CommunityMenu } from './';
 
 import Image from 'next/image';
+
+import { UserSettings } from 'pkg.user.settings';
 
 export const Menu = () => {
   return (
@@ -21,19 +18,24 @@ export const Menu = () => {
       <CommunityMenu />
       <CommunityItems />
       <div className="fixed sm:w-[302px] bottom-0 pb-6 flex flex-col bg-gray-0">
-      <Modal>
-        <ModalTrigger asChild>
-          <div
-            id="user-profile-menu"
-            className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"
-          >
-            <UserProfile src="/test/avatar.svg" text="Ivan Kovylyaev" label="@ikovylyaev" size="m" />
-          </div>
-        </ModalTrigger>
-        <ModalContent variant="full">
-          <ModalCloseButton />
-        </ModalContent>
-      </Modal>
+        <Modal>
+          <ModalTrigger asChild>
+            <div
+              id="user-profile-menu"
+              className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"
+            >
+              <UserProfile
+                src="/test/avatar.svg"
+                text="Ivan Kovylyaev"
+                label="@ikovylyaev"
+                size="m"
+              />
+            </div>
+          </ModalTrigger>
+          <ModalContent variant="full" className="p-4 lg:p-6">
+            <UserSettings />
+          </ModalContent>
+        </Modal>
         <div
           id="notification-menu"
           onClick={() => toast(`Уведомления пока в разработке`)}

@@ -1,5 +1,5 @@
 {
-  "name": "pkg.profile.user",
+  "name": "pkg.form.signin",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -10,9 +10,9 @@
   "dependencies": {
     "react": "^18.2.0",
     "@hookform/resolvers": "^3.1.1",
-    "@xipkg/icons": "0.7.2",
+    "@xipkg/icons": "0.7.3",
     "@xipkg/input": "0.0.5",
-    "@xipkg/button": "1.0.1",
+    "@xipkg/button": "1.0.3",
     "@xipkg/link": "0.1.7",
     "@xipkg/form": "1.0.2",
     "@xipkg/utils": "1.0.1",

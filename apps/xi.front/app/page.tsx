@@ -1,6 +1,6 @@
 'use client';
 
-import { SignIn } from 'pkg.signin.form';
+import { SignIn } from 'pkg.form.signin';
 import React from 'react';
 import { useMainSt } from 'store';
 

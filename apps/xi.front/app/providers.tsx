@@ -1,7 +1,6 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import { useRouter, usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';

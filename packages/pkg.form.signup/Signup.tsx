@@ -24,6 +24,9 @@ export type SignUpT = {
 };
 
 const FormSchema = z.object({
+  nickname: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
   email: z.string().min(2, {
     message: 'Username must be at least 2 characters.',
   }),
@@ -61,13 +64,27 @@ export const SignUp = ({ onSignIn }: SignUpT) => {
         <h1 className="self-center text-2xl font-semibold">Регистрация</h1>
         <FormField
           control={form.control}
-          name="email"
+          name="nickname"
           defaultValue=""
           render={({ field }) => (
             <FormItem className="pt-4">
-              <FormLabel>Имя пользователя</FormLabel>
-              <FormControl>
-                <Input autoComplete="on" type="text" id="user name" {...field} />
+              <FormLabel htmlFor="user name">Никнейм</FormLabel>
+              <FormControl className="mt-2">
+                <Input autoComplete="off" type="text" id="user name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          defaultValue=""
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="user email">Электронная почта</FormLabel>
+              <FormControl className="mt-2">
+                <Input autoComplete="on" type="email" id="user email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,9 +96,9 @@ export const SignUp = ({ onSignIn }: SignUpT) => {
           defaultValue=""
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Код-приглашение</FormLabel>
+              <FormLabel htmlFor="user password">Пароль</FormLabel>
               <FormControl>
-                <Input autoComplete="on" type="text" {...field} />
+                <Input autoComplete="on" type="password" id="user password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -93,8 +110,8 @@ export const SignUp = ({ onSignIn }: SignUpT) => {
               Войти
             </Link>
           </div>
-          <Button variant="default" type="submit">
-            Далее
+          <Button size="m" variant="default" type="submit">
+            Зарегистрироваться
           </Button>
         </div>
       </form>
