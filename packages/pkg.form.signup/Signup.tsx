@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 
@@ -37,14 +37,14 @@ const FormSchema = z.object({
 
 export const SignUp = ({ onSignIn }: SignUpT) => {
   const router = useRouter();
-  const redirectFn = (url: string) => router.push(url);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    onSignIn({ ...data, redirectFn });
+    const status = onSignUp({ ...data });
+    if (status === 200) redirect('/');
   };
 
   return (

@@ -36,9 +36,6 @@ const FormSchema = z.object({
 });
 
 export const SignIn = ({ onSignIn }: SignInT) => {
-  const router = useRouter();
-  const redirectFn = (url: string) => router.push(url);
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -59,7 +56,8 @@ export const SignIn = ({ onSignIn }: SignInT) => {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     trigger();
-    onSignIn({ ...data, redirectFn, setError });
+    const status = onSignIn({ ...data, setError });
+    if (status === 200) redirect('/');
   };
 
   return (

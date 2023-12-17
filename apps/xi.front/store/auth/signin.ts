@@ -3,7 +3,6 @@
 import { StateCreator } from 'zustand';
 import { post } from 'pkg.utils';
 import { Common } from '../main';
-import { redirect } from 'next/navigation';
 
 type Data = { email: string; password: string };
 
@@ -52,7 +51,7 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
     console.log('onSignIn', data, status);
     if (status === 200) {
       set(() => ({ isLogin: true }));
-      redirect('/');
+      return 200;
     } else if (data?.detail === 'User not found') {
       setError('email', { type: 'user', message: 'Не удалось найти аккаунт' });
     } else if (data?.detail === 'Wrong password') {
@@ -72,9 +71,9 @@ export const createSignInSt: StateCreator<Common, [], [], SignIn> = (set) => ({
         },
       },
     });
-    if (status === 200) {
+    console.log('status', status);
+    if (status === 204) {
       set(() => ({ isLogin: false }));
-      redirect('/');
     }
   },
 });

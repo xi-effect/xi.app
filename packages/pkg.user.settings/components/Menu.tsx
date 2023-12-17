@@ -84,6 +84,7 @@ export const Menu = ({ activeContent, setActiveContent, onExit }: MenuPropsT) =>
         <Item
           item={item}
           index={index}
+          key={index}
           activeContent={activeContent}
           onMenuItemChange={handleMenuItem}
         />

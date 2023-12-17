@@ -6,9 +6,12 @@ import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import { Toaster } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 function Auth(props) {
   const { children } = props;
+
+  const router = useRouter();
 
   const isLogin = useMainSt((state) => state.isLogin);
   const getUser = useMainSt((state) => state.getUser);
