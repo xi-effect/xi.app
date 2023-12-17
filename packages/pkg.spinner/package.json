@@ -14,7 +14,7 @@
     "@mui/material": "^5.14.2",
     "@xipkg/icons": "0.7.3",
     "yup": "^1.2.0",
-    "next": "^13.5.2"
+    "next": "^14.0.4"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

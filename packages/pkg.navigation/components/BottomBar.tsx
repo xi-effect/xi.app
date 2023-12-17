@@ -13,6 +13,7 @@ import { UserSettings } from 'pkg.user.settings';
 
 type BottomBarT = {
   children: ReactNode;
+  onExit: () => void;
 };
 
 type ValuesT = {
@@ -24,7 +25,7 @@ const values: ValuesT = {
   1: 0,
 };
 
-export const BottomBar = ({ children }: BottomBarT) => {
+export const BottomBar = ({ children, onExit }: BottomBarT) => {
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
 
   const handleMenu = () => {
@@ -70,7 +71,7 @@ export const BottomBar = ({ children }: BottomBarT) => {
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
-            <UserSettings />
+            <UserSettings onExit={onExit} />
           </ModalContent>
         </Modal>
         <button className="h-[48px] w-[48px] p-3 flex content-center justify-center ml-4 bg-gray-0 justify-self-end">

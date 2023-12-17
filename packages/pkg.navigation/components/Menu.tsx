@@ -9,7 +9,11 @@ import Image from 'next/image';
 
 import { UserSettings } from 'pkg.user.settings';
 
-export const Menu = () => {
+type MenuT = {
+  onExit: () => void;
+};
+
+export const Menu = ({ onExit }: MenuT) => {
   return (
     <>
       <div id="header-logo" className="flex flex-wrap w-fit h-8 p-2">
@@ -33,7 +37,7 @@ export const Menu = () => {
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
-            <UserSettings />
+            <UserSettings onExit={onExit} />
           </ModalContent>
         </Modal>
         <div

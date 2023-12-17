@@ -1,5 +1,5 @@
-import { fetchData } from './fetchData';
+import { get, put, post } from './fetch';
 import { useMedia } from './useMedia';
 import { useSessionStorage } from './useSessionStorage';
 
-export { fetchData, useMedia, useSessionStorage };
+export { get, put, post, useMedia, useSessionStorage };

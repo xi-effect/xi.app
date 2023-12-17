@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { fetchData } from 'pkg.utils';
+import { post } from 'pkg.utils';
 import { UserSettings } from 'store/user/userSettings';
 import { UserProfile } from 'store/user/userProfile';
 
@@ -12,6 +12,14 @@ export type VideoConference = {
   getToken: (id: string) => void;
 };
 
+type RequestBody = {
+  room_name: string;
+};
+
+type ResponseBody = {
+  token: string;
+};
+
 export const createVideoConferenceSt: StateCreator<
   UserProfile & UserSettings & VideoConference,
   [],
@@ -20,16 +28,14 @@ export const createVideoConferenceSt: StateCreator<
 > = (set) => ({
   token: null,
   getToken: async (id: string) => {
-    console.log("id", id);
-    const data = await fetchData({
+    const { data } = await post<RequestBody, ResponseBody>({
       service: 'live',
-      pathname: '/api/tokens/',
-      method: 'POST',
-      data: {
+      path: '/api/tokens/',
+      body: {
         room_name: id,
       },
     });
     console.log('fetchData', data);
-    set(() => ({ token: data.token }));
+    set(() => ({ token: data?.token ?? '' }));
   },
 });

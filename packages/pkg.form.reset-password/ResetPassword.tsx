@@ -19,7 +19,7 @@ import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { fetchData } from 'pkg.utils';
+import { post } from 'pkg.utils';
 
 const FormSchema = z.object({
   email: z
@@ -42,8 +42,12 @@ export const ResetPassword = () => {
   });
 
   const sendEmail = async ({ email }: z.infer<typeof FormSchema>) => {
-    const data = await fetchData('/password-reset/', 'POST', {
-      email: email.toLowerCase(),
+    const { data } = await post({
+      service: 'auth',
+      path: '/password-reset/',
+      body: {
+        email: email.toLowerCase(),
+      },
     });
     if (data && data.a) {
       setEmailSent(true);
@@ -121,13 +125,9 @@ export const ResetPassword = () => {
             )}
           </div>
           {emailSent ? (
-            <Button onClick={() => router.push('/signin')}>
-              Войти
-            </Button>
+            <Button onClick={() => router.push('/signin')}>Войти</Button>
           ) : (
-            <Button type="submit">
-              Отправить
-            </Button>
+            <Button type="submit">Отправить</Button>
           )}
         </div>
       </form>

@@ -12,6 +12,7 @@ function Auth(props) {
 
   const isLogin = useMainSt((state) => state.isLogin);
   const getUser = useMainSt((state) => state.getUser);
+  const onSignOut = useMainSt((state) => state.onSignOut);
 
   useEffect(() => {
     getUser();
@@ -19,12 +20,16 @@ function Auth(props) {
 
   console.log('isLogin', isLogin);
 
+  const onExit = () => {
+    onSignOut();
+  };
+
   if (isLogin === null) return <SkeletonMainLayout />;
 
   if (isLogin)
     return (
       <>
-        <Navigation>{children}</Navigation>
+        <Navigation onExit={onExit}>{children}</Navigation>
       </>
     );
 
