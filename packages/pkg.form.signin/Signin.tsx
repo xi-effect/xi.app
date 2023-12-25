@@ -106,7 +106,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
         </Link>
         <div className="flex w-full h-full justify-between items-end">
           <div className="flex h-[56px] items-center">
-            <Link size="l" theme="brand" variant="hover" href="/signup">
+            <Link id="to-signup-link" data-umami-event="to-signup-link" size="l" theme="brand" variant="hover" href="/signup">
               Зарегистрироваться
             </Link>
           </div>
