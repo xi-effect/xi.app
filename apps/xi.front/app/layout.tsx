@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from './providers';
 import React, { ReactNode } from 'react';
+import Script from 'next/script';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -42,6 +43,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
       <body className="overflow-hidden xs:overflow-x-hidden">
+        <Script
+          async
+          defer
+          data-website-id="484fa2fe-898c-4ffa-8bbb-e0a2afe4e018"
+          src="https://analytics.xieffect.ru/umami.js"
+        />
         <Providers>
           <div className="flex flex-row w-full min-h-screen h-screen">{children}</div>
         </Providers>

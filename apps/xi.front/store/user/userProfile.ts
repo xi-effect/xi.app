@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { fetchData } from 'pkg.utils';
+import { get } from 'pkg.utils';
 import { useMainSt } from 'store/main';
 import { UserSettings } from './userSettings';
 import { UserT } from 'store/models/user';
@@ -29,24 +29,22 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
   updateUser: (value: { [key in keyof UserT]: unknown }) =>
     set((state) => ({ user: { ...state.user, value } })),
   getUser: async () => {
-    console.log('ENABLE_X_TESTING', process.env.ENABLE_X_TESTING);
-    const data = await fetchData({
+    const { data, status } = await get({
       service: 'auth',
-      pathname: '/api/users/current/home/',
-      method: 'GET',
-      headers: {
-        'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-          ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-          : 'false',
+      path: '/api/users/current/home/',
+      config: {
+        headers: {
+          'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+            ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
+            : 'false',
+        },
       },
     });
-    console.log('fetchData', data);
-    if (data === null) {
-      setTimeout(() => useMainSt.getState().setIsLogin(false), 1000);
+    if (status === 401) {
+      setTimeout(() => useMainSt.getState().setIsLogin(false), 500);
       console.log('useMainSt.getState().isLogin', useMainSt.getState().isLogin);
     } else {
-      setTimeout(() => useMainSt.getState().setIsLogin(true), 1000);
+      setTimeout(() => useMainSt.getState().setIsLogin(true), 500);
     }
-    console.log('getUser', 'getUser');
   },
 });
