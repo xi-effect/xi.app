@@ -1,9 +1,9 @@
 'use client';
 
 import { create } from 'zustand';
-import { UserProfile, createUserProfileSt } from './user/userProfile';
-import { UserSettings, createUserSettingsSt } from './user/userSettings';
-import { SignIn, createSignInSt } from './auth/signin';
+import { UserProfile, createUserProfileSt } from './user/profile';
+import { UserSettings, createUserSettingsSt } from './user/settings';
+import { SignIn, createAuthSt } from './user/auth';
 import { VideoConference, createVideoConferenceSt } from './community/videoConference';
 
 export type Common = UserProfile & UserSettings & SignIn & VideoConference;
@@ -12,5 +12,5 @@ export const useMainSt = create<Common>()((...a) => ({
   ...createVideoConferenceSt(...a),
   ...createUserProfileSt(...a),
   ...createUserSettingsSt(...a),
-  ...createSignInSt(...a)
+  ...createAuthSt(...a)
 }));
