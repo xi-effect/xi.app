@@ -1,6 +1,7 @@
 // @ts-nocheck
 'use client';
 
+import React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -10,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { redirect, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
+import { Eyeoff, Eyeon } from '@xipkg/icons';
 
 type FormValues = {
   email: string;
@@ -67,6 +69,12 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
     trigger();
     const status = onSignUp({ ...data, setError });
     if (status === 200) router.push('/');
+  };
+
+  const [isPasswordShow, setIsPasswordShow] = React.useState(false);
+
+  const changePasswordShow = () => {
+    setIsPasswordShow((prev) => !prev);
   };
 
   return (
@@ -135,8 +143,12 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
                 <Input
                   error={!!errors?.password}
                   autoComplete="on"
-                  type="password"
                   id="user password"
+                  type={isPasswordShow ? 'text' : 'password'}
+                  after={isPasswordShow ? <Eyeoff className="fill-gray-60" /> : <Eyeon className="fill-gray-60" />}
+                  afterProps={{
+                    onClick: changePasswordShow,
+                  }}
                   {...field}
                 />
               </FormControl>

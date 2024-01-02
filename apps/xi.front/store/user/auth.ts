@@ -6,7 +6,7 @@ import { Common } from '../main';
 
 type Data = { email: string; password: string };
 
-export type SignIn = {
+export type Auth = {
   isLogin: boolean | null;
   setIsLogin: (value: boolean) => void;
   onSignIn: ({
@@ -49,7 +49,7 @@ type ResponseBodySignUp = {
   detail: string;
 };
 
-export const createAuthSt: StateCreator<Common, [], [], SignIn> = (set) => ({
+export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   isLogin: null,
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
   onSignIn: async ({ email, password, redirectFn, setError }) => {

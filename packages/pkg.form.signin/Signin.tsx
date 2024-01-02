@@ -1,6 +1,7 @@
 // @ts-nocheck
 'use client';
 
+import React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -10,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
+import { Eyeoff, Eyeon } from '@xipkg/icons';
 
 export type SignInT = {
   /**
@@ -60,6 +62,12 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     if (status === 200) redirect('/');
   };
 
+  const [isPasswordShow, setIsPasswordShow] = React.useState(false);
+
+  const changePasswordShow = () => {
+    setIsPasswordShow((prev) => !prev);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -95,7 +103,23 @@ export const SignIn = ({ onSignIn }: SignInT) => {
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl>
-                <Input error={!!errors?.password} autoComplete="on" type="password" {...field} />
+                <Input
+                  error={!!errors?.password}
+                  autoComplete="on"
+                  type={isPasswordShow ? 'text' : 'password'}
+                  afterClassName="cursor-pointer"
+                  after={
+                    isPasswordShow ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
+                  afterProps={{
+                    onClick: changePasswordShow,
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
