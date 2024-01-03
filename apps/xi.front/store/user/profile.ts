@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import { get } from 'pkg.utils';
 import { useMainSt } from 'store/main';
-import { UserSettings } from './userSettings';
+import { UserSettings } from './settings';
 import { UserT } from 'store/models/user';
 import { redirect } from 'next/navigation';
 import { setTimeout } from 'timers';

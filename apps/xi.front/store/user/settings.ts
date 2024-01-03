@@ -1,7 +1,7 @@
 'use client';
 
 import { StateCreator } from 'zustand';
-import { UserProfile } from './userProfile';
+import { UserProfile } from './profile';
 
 export type UserSettings = {
   id: number | null; // ID пользователя, уникален

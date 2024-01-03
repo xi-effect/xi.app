@@ -1,6 +1,7 @@
 // @ts-nocheck
 'use client';
 
+import React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -10,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { redirect, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
+import { Eyeoff, Eyeon } from '@xipkg/icons';
 
 type FormValues = {
   email: string;
@@ -20,37 +22,65 @@ export type SignUpT = {
   /**
    * The store type is the store itself.
    */
-  onSignIn: any;
+  onSignUp: any;
 };
 
 const FormSchema = z.object({
-  nickname: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  email: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  password: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
+  nickname: z
+    .string()
+    .min(1, {
+      message: 'Обязательное поле',
+    })
+    .min(5, {
+      message: 'Минимальная длина - 5 символов',
+    }),
+  email: z
+    .string({
+      required_error: 'Обязательное поле',
+    })
+    .email({
+      message: 'Некорректный формат данных',
+    }),
+  password: z
+    .string({
+      required_error: 'Обязательное поле',
+    })
+    .min(6, {
+      message: 'Минимальная длина пароля - 6 символов',
+    }),
 });
 
-export const SignUp = ({ onSignIn }: SignUpT) => {
+export const SignUp = ({ onSignUp }: SignUpT) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
+  const {
+    control,
+    setError,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = form;
+
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    const status = onSignUp({ ...data });
-    if (status === 200) redirect('/');
+    trigger();
+    const status = onSignUp({ ...data, setError });
+    if (status === 200) router.push('/');
+  };
+
+  const [isPasswordShow, setIsPasswordShow] = React.useState(false);
+
+  const changePasswordShow = () => {
+    setIsPasswordShow((prev) => !prev);
   };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className="w-full h-full flex flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
@@ -63,42 +93,64 @@ export const SignUp = ({ onSignIn }: SignUpT) => {
         </div>
         <h1 className="self-center text-2xl font-semibold">Регистрация</h1>
         <FormField
-          control={form.control}
+          control={control}
           name="nickname"
           defaultValue=""
           render={({ field }) => (
             <FormItem className="pt-4">
               <FormLabel htmlFor="user name">Никнейм</FormLabel>
-              <FormControl className="mt-2">
-                <Input autoComplete="off" type="text" id="user name" {...field} />
+              <FormControl>
+                <Input
+                  error={!!errors?.nickname}
+                  autoComplete="off"
+                  type="text"
+                  id="user name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="email"
           defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor="user email">Электронная почта</FormLabel>
-              <FormControl className="mt-2">
-                <Input autoComplete="on" type="email" id="user email" {...field} />
+              <FormControl>
+                <Input
+                  error={!!errors?.email}
+                  autoComplete="on"
+                  type="email"
+                  id="user email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="password"
           defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel htmlFor="user password">Пароль</FormLabel>
               <FormControl>
-                <Input autoComplete="on" type="password" id="user password" {...field} />
+                <Input
+                  error={!!errors?.password}
+                  autoComplete="on"
+                  id="user password"
+                  type={isPasswordShow ? 'text' : 'password'}
+                  after={isPasswordShow ? <Eyeoff className="fill-gray-60" /> : <Eyeon className="fill-gray-60" />}
+                  afterProps={{
+                    onClick: changePasswordShow,
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

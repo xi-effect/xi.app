@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import { post } from 'pkg.utils';
-import { UserSettings } from 'store/user/userSettings';
-import { UserProfile } from 'store/user/userProfile';
+import { UserSettings } from 'store/user/settings';
+import { UserProfile } from 'store/user/profile';
 
 type DataUserMethodAnswer = {
   [key: string]: unknown;

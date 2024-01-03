@@ -1,4 +1,5 @@
 import { Account, Home, Palette, Key, SoundTwo, Exit } from '@xipkg/icons';
+import { useMedia } from 'pkg.utils';
 import React, { Dispatch, SetStateAction } from 'react';
 
 type ItemT = {
@@ -31,7 +32,9 @@ type ItemPropsT = {
 };
 
 const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
-  const isActive = activeContent === index;
+  const isMobile = useMedia('(max-width: 719px)');
+
+  const isActive = activeContent === index && !isMobile;
 
   const getIconClassName = (i: number) =>
     `transition-colors ease-in ${
@@ -65,13 +68,14 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
 type MenuPropsT = {
   activeContent: number;
   setActiveContent: Dispatch<SetStateAction<number>>;
+  setShowContent: Dispatch<SetStateAction<boolean>>;
   onExit: () => void;
 };
 
-export const Menu = ({ activeContent, setActiveContent, onExit }: MenuPropsT) => {
+export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }: MenuPropsT) => {
   const handleMenuItem = (index: number) => {
     setActiveContent(index);
-    console.log('index', index);
+    setShowContent(true);
   };
 
   const handleExit = () => {
@@ -79,7 +83,7 @@ export const Menu = ({ activeContent, setActiveContent, onExit }: MenuPropsT) =>
   };
 
   return (
-    <div className="w-[220px] flex flex-col gap-1">
+    <div className="w-full sm:w-[220px] flex flex-col gap-1">
       {options.map((item, index) => (
         <Item
           item={item}
