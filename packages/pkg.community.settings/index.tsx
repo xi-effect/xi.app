@@ -1,0 +1,1 @@
+export { CommunitySettings } from './CommunitySettings';
