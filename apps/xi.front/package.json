@@ -23,6 +23,7 @@
     "pkg.form.signup": "*",
     "pkg.spinner": "*",
     "pkg.utils": "*",
+    "@xipkg/icons": "0.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sonner": "1.0.3",

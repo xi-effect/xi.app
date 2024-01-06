@@ -1,5 +1,5 @@
 {
-  "name": "pkg.form.signup",
+  "name": "pkg.community.settings",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -13,6 +13,7 @@
     "@xipkg/form": "^1.0.4",
     "@xipkg/icons": "0.8.0",
     "@xipkg/input": "0.1.1",
+    "@xipkg/label": "0.0.9",
     "@xipkg/link": "0.2.0",
     "@xipkg/utils": "1.0.1",
     "next": "^14.0.4",
