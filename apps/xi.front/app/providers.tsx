@@ -16,6 +16,8 @@ const mapsOfPathsWithoutNav = [
   '/welcome/user-info',
 ];
 
+const mapsOfPathsWithoutRedirect = ['/', '/signup', '/reset-password'];
+
 function Auth(props) {
   const { children } = props;
 
@@ -36,12 +38,16 @@ function Auth(props) {
     onSignOut();
   };
 
+  // Показываем скелетон, пока запрос на проверку сессии не пришёл
   if (isLogin === null) return <SkeletonMainLayout />;
 
+  // Если пользователь залогинен, но нам не нужно главное меню
   if (isLogin && mapsOfPathsWithoutNav.includes(pathname)) return children;
 
-  if (!isLogin && pathname !== '/') return redirect('/');
+  // Если пользователь не залогинен, то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
+  if (!isLogin && !mapsOfPathsWithoutRedirect.includes(pathname)) return redirect('/');
 
+  // Если пользователь залогинен и нам нужно показать главное меню
   if (isLogin)
     return (
       <>
