@@ -48,7 +48,7 @@ export default function WelcomeCommunity() {
           >
             <div className="border-solid border-[#3546bd] bg-[#edefff] flex flex-col justify-center ml-0 pl-4 gap-1 w-full h-20 items-start border rounded-lg">
               <div className="flex flex-row gap-4 w-1/5 items-start">
-                <Plus />
+                <Plus size="l" className='fill-gray-100' />
                 <div className="text-xl font-medium leading-[28px] text-[#3546bd]">Создать</div>
               </div>
               <div className="leading-[22px] text-[#3546bd] ml-10">

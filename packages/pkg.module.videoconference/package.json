@@ -10,7 +10,7 @@
   "dependencies": {
     "@livekit/components-react": "^1.4.2",
     "@livekit/components-styles": "^1.0.7",
-    "@xipkg/icons": "0.7.5",
+    "@xipkg/icons": "0.8.0",
     "livekit-client": "^1.15.4",
     "next": "^14.0.4",
     "react": "^18.2.0"
