@@ -68,7 +68,7 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     trigger();
     const status = onSignUp({ ...data, setError });
-    if (status === 200) router.push('/');
+    if (status === 200) router.push('/welcome/user-info');
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);

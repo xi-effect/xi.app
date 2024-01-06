@@ -12,7 +12,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.2",
-    "@xipkg/icons": "0.7.3",
+    "@xipkg/icons": "0.7.5",
     "yup": "^1.2.0",
     "next": "^14.0.4"
   },

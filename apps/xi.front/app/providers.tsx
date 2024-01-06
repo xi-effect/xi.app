@@ -6,12 +6,21 @@ import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import { Toaster } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+
+const mapsOfPathsWithoutNav = [
+  "/signup",
+  "/welcome/community",
+  "/welcome/community-create",
+  "/welcome/community-invite",
+  "/welcome/final",
+  "/welcome/user-info",
+]
 
 function Auth(props) {
   const { children } = props;
 
-  const router = useRouter();
+  const pathname = usePathname();
 
   const isLogin = useMainSt((state) => state.isLogin);
   const getUser = useMainSt((state) => state.getUser);
@@ -22,12 +31,15 @@ function Auth(props) {
   }, []);
 
   console.log('isLogin', isLogin);
+  console.log('pathname', pathname);
 
   const onExit = () => {
     onSignOut();
   };
 
   if (isLogin === null) return <SkeletonMainLayout />;
+
+  if (mapsOfPathsWithoutNav.includes(pathname)) return children;
 
   if (isLogin)
     return (
