@@ -6,16 +6,15 @@ import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import { Toaster } from 'sonner';
-import { usePathname } from 'next/navigation';
+import { redirect, usePathname, useRouter } from 'next/navigation';
 
 const mapsOfPathsWithoutNav = [
-  "/signup",
-  "/welcome/community",
-  "/welcome/community-create",
-  "/welcome/community-invite",
-  "/welcome/final",
-  "/welcome/user-info",
-]
+  '/welcome/community',
+  '/welcome/community-create',
+  '/welcome/community-invite',
+  '/welcome/final',
+  '/welcome/user-info',
+];
 
 function Auth(props) {
   const { children } = props;
@@ -39,7 +38,9 @@ function Auth(props) {
 
   if (isLogin === null) return <SkeletonMainLayout />;
 
-  if (mapsOfPathsWithoutNav.includes(pathname)) return children;
+  if (isLogin && mapsOfPathsWithoutNav.includes(pathname)) return children;
+
+  if (!isLogin && pathname !== '/') return redirect('/');
 
   if (isLogin)
     return (

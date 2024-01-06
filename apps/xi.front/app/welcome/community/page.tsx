@@ -12,8 +12,15 @@ export default function WelcomeCommunity() {
 
   const router = useRouter();
 
+  const [tab, setTab] = React.useState(0);
+
   const handleNext = () => {
-    router.push('/');
+    if (tab === 0) router.push('/welcome/community-create');
+    if (tab === 1) router.push('/welcome/community-invite');
+  };
+
+  const handleBack = () => {
+    router.push('/welcome/user-info');
   };
 
   return (
@@ -42,35 +49,59 @@ export default function WelcomeCommunity() {
             В дальнейшем вы сможете создать ещё неограниченное число сообществ, а пока выберите,
             что хотите сделать
           </div>
-          <div
-            id="ActionsRoot"
-            className="border-solid border-[#b8b8b8] bg-white flex flex-col pb-4 gap-4 w-full items-start border rounded-lg"
-          >
-            <div className="border-solid border-[#3546bd] bg-[#edefff] flex flex-col justify-center ml-0 pl-4 gap-1 w-full h-20 items-start border rounded-lg">
-              <div className="flex flex-row gap-4 w-1/5 items-start">
-                <Plus size="l" className='fill-gray-100' />
-                <div className="text-xl font-medium leading-[28px] text-[#3546bd]">Создать</div>
+          <div className="relative mt-6 border border-gray-30 bg-gray-0 flex flex-col w-full items-start rounded-2xl">
+            <div
+              className={`h-[86px] absolute ${
+                tab === 1 ? 'top-[86px]' : 'top-0'
+              } border-solid border-brand-100 bg-brand-0 flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start border rounded-2xl transition-all ease-in duration-300`}
+            ></div>
+            <button
+              onClick={() => setTab(0)}
+              className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
+            >
+              <Plus className={`z-10 mt-0.5 ${tab === 0 ? 'fill-brand-100' : 'fill-gray-80'}`} />
+              <div className="flex flex-col gap-1 items-start">
+                <span
+                  className={`z-10 text-xl font-medium leading-[28px] ${
+                    tab === 0 ? 'text-brand-100' : 'text-gray-80'
+                  }`}
+                >
+                  Создать
+                </span>
+                <span
+                  className={`z-10 leading-[22px] ${tab === 0 ? 'text-brand-100' : 'text-gray-80'}`}
+                >
+                  Новое сообщество под ваши задачи
+                </span>
               </div>
-              <div className="leading-[22px] text-[#3546bd] ml-10">
-                Новое сообщество под ваши задачи
-              </div>
-            </div>
-            <div className="flex flex-row ml-4 gap-4 w-1/2 items-start">
-              <div className="flex flex-col gap-1 w-5/6  items-start">
-                <Mail />
-                <div className="text-xl font-medium leading-[28px] text-[#404040]">
+            </button>
+            <button
+              onClick={() => setTab(1)}
+              className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
+            >
+              <Mail className={`z-10 mt-0.5 ${tab === 1 ? 'fill-brand-100' : 'fill-gray-80'}`} />
+              <div className="flex flex-col gap-1 items-start">
+                <span
+                  className={`z-10 text-xl font-medium leading-[28px] ${
+                    tab === 1 ? 'text-brand-100' : 'text-gray-80'
+                  }`}
+                >
                   Присоединиться
-                </div>
-                <div className="leading-[22px] text-[#404040]">Если есть ссылка-приглашение</div>
+                </span>
+                <span
+                  className={`z-10 leading-[22px] ${tab === 1 ? 'text-brand-100' : 'text-gray-80'}`}
+                >
+                  Если есть ссылка-приглашение
+                </span>
               </div>
-            </div>
+            </button>
           </div>
           <div className="pt-4 mt-auto flex flex-row gap-6">
-            <Button onClick={handleNext} variant="ghost" className="w-[98px]">
+            <Button onClick={handleBack} variant="ghost" className="w-[98px]">
               Назад
             </Button>
             <Button onClick={handleNext} className="w-full">
-              Начать работать
+              Продолжить
             </Button>
           </div>
         </div>

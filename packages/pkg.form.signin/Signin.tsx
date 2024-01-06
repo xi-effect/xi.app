@@ -46,8 +46,6 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     },
   });
 
-  console.log('errors', errors);
-
   const {
     control,
     setError,
