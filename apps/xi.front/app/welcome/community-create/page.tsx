@@ -105,7 +105,23 @@ export default function WelcomeCommunityCreate() {
           </Form>
         </div>
       </div>
-      {!isMobile && <div className="w-full m-w-[856px] bg-gray-5">1</div>}
+      {!isMobile && (
+        <div className="w-full m-w-[856px] bg-gray-5">
+          <div className="pt-16 pl-16 h-full w-full relative">
+            <div className="absolute h-[calc(100vh-64px)] w-full">
+              <Image
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'left',
+                }}
+                alt="interface example"
+                src="/assets/welcome/community-add.png"
+                fill
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
