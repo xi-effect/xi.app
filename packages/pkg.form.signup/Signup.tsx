@@ -65,9 +65,9 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
     formState: { errors },
   } = form;
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
-    const status = onSignUp({ ...data, setError });
+    const status = await onSignUp({ ...data, setError });
     if (status === 200) router.push('/welcome/user-info');
   };
 

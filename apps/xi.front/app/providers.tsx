@@ -14,6 +14,7 @@ const mapsOfPathsWithoutNav = [
   '/welcome/community-invite',
   '/welcome/final',
   '/welcome/user-info',
+  '/signup',
 ];
 
 const mapsOfPathsWithoutRedirect = ['/', '/signup', '/reset-password'];
