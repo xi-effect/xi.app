@@ -13,9 +13,9 @@ const options: ItemT[] = [
   {
     name: 'Личные данные',
   },
-  // {
-  //   name: 'Внешний вид',
-  // },
+  {
+    name: 'Персонализация',
+  },
   {
     name: 'Безопасность',
   },
@@ -44,7 +44,7 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
   const iconsDict: React.ReactNode[] = [
     <Home className={getIconClassName(0)} />,
     <Account className={getIconClassName(1)} />,
-    // <Palette className={getIconClassName(2)} />,
+    <Palette className={getIconClassName(2)} />,
     <Key className={getIconClassName(3)} />,
     // <SoundTwo className={getIconClassName(4)} />,
   ];
