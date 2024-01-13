@@ -4,6 +4,7 @@ import { Input } from '@xipkg/input';
 import { Label } from '@xipkg/label';
 import React from 'react';
 import { useMedia } from 'pkg.utils';
+import { AvatarEditor } from 'pkg.avatar.editor';
 
 export const PersonalData = () => {
   const isMobile = useMedia('(max-width: 719px)');
@@ -12,9 +13,11 @@ export const PersonalData = () => {
     <>
       {!isMobile && <span className="text-3xl font-semibold">Личные данные</span>}
       <div className="h-[120px] w-full p-6 border border-gray-80 rounded-2xl flex sm:mt-4">
-        <button className="h-[72px] w-[72px] rounded-[36px] bg-gray-5 flex justify-center place-items-center">
-          <Camera size="l" className="fill-gray-60" />
-        </button>
+        <AvatarEditor>
+          <button className="h-[72px] w-[72px] rounded-[36px] bg-gray-5 flex justify-center place-items-center">
+            <Camera size="l" className="fill-gray-60" />
+          </button>
+        </AvatarEditor>
         <div className="flex flex-col justify-center gap-0.5 ml-4">
           <span className="text-2xl font-semibold leading-[32px]">Анна Иванова</span>
           <span className="text-[16px] leading-[22px] text-gray-80">ivanova.a</span>

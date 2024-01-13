@@ -1,5 +1,5 @@
 {
-  "name": "pkg.form.signin",
+  "name": "pkg.avatar.editor",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -8,20 +8,16 @@
     "lint": "eslint \"**/*.ts*\""
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.1.1",
-    "@xipkg/button": "1.0.3",
-    "@xipkg/form": "^1.0.4",
-    "@xipkg/icons": "0.8.1",
-    "@xipkg/input": "0.1.1",
-    "@xipkg/link": "0.2.0",
-    "@xipkg/utils": "1.0.1",
+    "@xipkg/button": "1.1.3",
+    "@xipkg/modal": "1.1.2",
     "next": "^14.0.4",
     "react": "^18.2.0",
-    "react-hook-form": "^7.45.0"
+    "react-easy-crop": "5.0.4"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
+    "@types/react-avatar-editor": "^13.0.2",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "latest",
     "@xipkg/tailwind": "0.3.6",
@@ -29,6 +25,6 @@
     "eslint": "^7.32.0",
     "typescript": "^5.1.3"
   },
-  "description": "form for signin",
+  "description": "",
   "author": "xi.effect"
 }
