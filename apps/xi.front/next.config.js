@@ -38,6 +38,7 @@ const nextConfig = {
     'pkg.form.signup',
     'pkg.form.reset-password',
     'pkg.module.videoconference',
+    'pkg.avatar.editor',
     '@xipkg/form',
     '@xipkg/link',
     '@xipkg/button',
@@ -51,6 +52,7 @@ const nextConfig = {
     '@xipkg/dropdown',
     '@xipkg/userprofile',
     '@xipkg/modal',
+    '@xipkg/fileuploader',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

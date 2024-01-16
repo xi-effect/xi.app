@@ -54,5 +54,5 @@
   "display": "standalone",
   "orientation": "portrait",
   "description": "xi.effect - платформа построения образовательных процессов",
-  "start_url": "./home"
+  "start_url": "./"
 }

@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@xipkg/input';
 import { Label } from '@xipkg/label';
+import { FileUploader } from '@xipkg/fileuploader';
 
 const FormSchema = z.object({
   nickname: z.string({
@@ -71,7 +72,15 @@ export default function WelcomeUserInfo() {
           <div id="title" className="mt-8 text-2xl font-semibold leading-[32px] text-gray-100">
             Давайте познакомимся
           </div>
-          <div className="mt-8 h-16 bg-gray-5">Avatar</div>
+          <div className="flex flex-row mt-8 h-16">
+            <div className="rounded-[32px] w-16 h-16 bg-brand-80" />
+            <div className="ml-4 flex flex-col gap-2">
+              <span className="font-medium leading-[22px] text-gray-90 w-full">
+                Изображение профиля
+              </span>
+              <FileUploader size="small" />
+            </div>
+          </div>
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full flex flex-col">
               <FormField

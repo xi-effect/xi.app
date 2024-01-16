@@ -24,7 +24,10 @@ export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT
       {isMobile && showContent && (
         <span className="ml-4 font-semibold">{menuLabels[Number(activeItem)]}</span>
       )}
-      <ModalCloseButton className="w-10 h-10 ml-auto xl:ml-0 xl:absolute bg-transparent flex p-2 right-0 xl:right-[-56px]">
+      <ModalCloseButton
+        variant="full"
+        className="w-10 h-10 ml-auto xl:ml-0 xl:absolute bg-transparent flex p-2 right-0 xl:right-[-56px]"
+      >
         <Close />
       </ModalCloseButton>
     </div>
