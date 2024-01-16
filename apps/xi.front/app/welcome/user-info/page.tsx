@@ -124,6 +124,7 @@ export default function WelcomeUserInfo() {
                   objectFit: 'cover',
                   objectPosition: 'left',
                 }}
+                placeholder="blur"
                 alt="interface example"
                 src="/assets/welcome/user-info.png"
                 fill
