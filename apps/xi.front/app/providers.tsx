@@ -6,7 +6,7 @@ import { useMainSt } from 'store';
 import { Navigation } from 'pkg.navigation';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import { Toaster } from 'sonner';
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 
 const mapsOfPathsWithoutNav = [
   '/welcome/community',
@@ -64,7 +64,7 @@ export function Providers(props) {
 
   return (
     <>
-      <ThemeProvider forcedTheme="light" attribute="data-theme">
+      <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
         <Toaster />
         <Auth>{children}</Auth>
       </ThemeProvider>
