@@ -60,7 +60,7 @@ export const NewPassword = (props: NewPasswordT) => {
             src="/assets/brand/navigationlogo.svg"
           />
         </div>
-        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
+        <h1 className="self-center text-2xl font-semibold">Сброс пароля</h1>
         <FormField
           //@ts-ignore
           control={control}
