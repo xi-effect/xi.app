@@ -6,9 +6,9 @@ import { Button } from '@xipkg/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
 import { Link } from '@xipkg/link';
 import Image from 'next/image';
-import { UseFormSetError, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import PasswordInput from './PasswordInput';
+import PasswordInput from './components/PasswordInput';
 
 const password = z
   .string({
@@ -29,11 +29,7 @@ const FormSchema = z
   });
 type FormSchemaT = z.infer<typeof FormSchema>;
 
-export type NewPasswordT = {
-  onNewPassword: (data: FormSchemaT & { setError: UseFormSetError<FormSchemaT> }) => void;
-};
-
-export const NewPassword = (props: NewPasswordT) => {
+export const NewPassword = () => {
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
   });
@@ -42,11 +38,9 @@ export const NewPassword = (props: NewPasswordT) => {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     trigger();
-    const status = props.onNewPassword({ ...data, setError });
   };
 
   return (
-    //@ts-ignore
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -62,7 +56,6 @@ export const NewPassword = (props: NewPasswordT) => {
         </div>
         <h1 className="self-center text-2xl font-semibold">Сброс пароля</h1>
         <FormField
-          //@ts-ignore
           control={control}
           name="password"
           render={({ field, fieldState: { error } }) => (
@@ -76,7 +69,6 @@ export const NewPassword = (props: NewPasswordT) => {
           )}
         />
         <FormField
-          //@ts-ignore
           control={control}
           name="confirmPassword"
           render={({ field, fieldState: { error } }) => (
@@ -90,7 +82,7 @@ export const NewPassword = (props: NewPasswordT) => {
           )}
         />
         <div className="flex w-full h-full justify-between items-end">
-          <div className="flex h-[56px] items-center">
+          <div className="flex h-14 items-center">
             <Link
               id="to-signup-link"
               data-umami-event="to-signup-link"
@@ -110,5 +102,3 @@ export const NewPassword = (props: NewPasswordT) => {
     </Form>
   );
 };
-
-export default NewPassword;
