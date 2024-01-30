@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import React from 'react';
+import { Mail, Plus } from '@xipkg/icons';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useMedia } from 'pkg.utils';
-import { Plus, Mail } from '@xipkg/icons';
+import React from 'react';
 
 export default function WelcomeCommunity() {
   const isMobile = useMedia('(max-width: 960px)');
@@ -51,8 +51,10 @@ export default function WelcomeCommunity() {
           </div>
           <div className="relative mt-6 border border-gray-30 bg-gray-0 flex flex-col w-full items-start rounded-2xl">
             <div
-              className={`h-[86px] absolute ${
-                tab === 1 ? 'top-[86px]' : 'top-0'
+              className={`absolute ${
+                tab === 1
+                  ? 'top-[108px] [@media_(min-width:395px)]:top-[86px] h-[86px]'
+                  : 'top-0 [@media_(min-width:395px)]:h-[86px] h-[108px]'
               } border-solid border-brand-100 bg-brand-0 flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start border rounded-2xl transition-all ease-in duration-300`}
             ></div>
             <button
@@ -60,7 +62,7 @@ export default function WelcomeCommunity() {
               className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
             >
               <Plus className={`z-10 mt-0.5 ${tab === 0 ? 'fill-brand-100' : 'fill-gray-80'}`} />
-              <div className="flex flex-col gap-1 items-start">
+              <div className="flex flex-col gap-1 text-start">
                 <span
                   className={`z-10 text-xl font-medium leading-[28px] ${
                     tab === 0 ? 'text-brand-100' : 'text-gray-80'
@@ -80,7 +82,7 @@ export default function WelcomeCommunity() {
               className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
             >
               <Mail className={`z-10 mt-0.5 ${tab === 1 ? 'fill-brand-100' : 'fill-gray-80'}`} />
-              <div className="flex flex-col gap-1 items-start">
+              <div className="flex flex-col gap-1 text-start">
                 <span
                   className={`z-10 text-xl font-medium leading-[28px] ${
                     tab === 1 ? 'text-brand-100' : 'text-gray-80'

@@ -72,7 +72,7 @@ export default function WelcomeCommunityCreate() {
             Создайте сообщество
           </div>
           <div className="flex flex-row mt-8 h-16">
-            <div className="rounded-[32px] w-16 h-16 bg-brand-80" />
+            <div className="rounded-[32px] shrink-0 w-16 h-16 bg-brand-80" />
             <div className="ml-4 flex flex-col gap-2">
               <span className="font-medium leading-[22px] text-gray-90 w-full">
                 Изображение сообщества
