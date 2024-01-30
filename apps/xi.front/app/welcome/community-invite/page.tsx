@@ -113,6 +113,7 @@ export default function WelcomeCommunityInvite() {
                   objectFit: 'cover',
                   objectPosition: 'left',
                 }}
+                placeholder="blur"
                 alt="interface example"
                 src="/assets/welcome/community-add.png"
                 fill

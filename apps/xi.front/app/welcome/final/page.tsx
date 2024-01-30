@@ -74,6 +74,7 @@ export default function WelcomeFinal() {
                   objectFit: 'cover',
                   objectPosition: 'left',
                 }}
+                placeholder="blur"
                 alt="interface example"
                 src="/assets/welcome/final.png"
                 fill
