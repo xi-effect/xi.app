@@ -1,12 +1,12 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import React, { useEffect } from 'react';
-import { useMainSt } from 'store';
+import { redirect, usePathname } from 'next/navigation';
 import { Navigation } from 'pkg.navigation';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
+import { useEffect } from 'react';
 import { Toaster } from 'sonner';
-import { redirect, usePathname } from 'next/navigation';
+import { useMainSt } from 'store';
 
 const mapsOfPathsWithoutNav = [
   '/welcome/community',
