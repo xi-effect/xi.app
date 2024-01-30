@@ -17,7 +17,7 @@ const mapsOfPathsWithoutNav = [
   '/signup',
 ];
 
-const mapsOfPathsWithoutRedirect = ['/', '/signup', '/reset-password'];
+const mapsOfPathsWithoutRedirect = ['/', '/signup', '/reset-password', '/reset-password/'];
 
 function Auth(props) {
   const { children } = props;
