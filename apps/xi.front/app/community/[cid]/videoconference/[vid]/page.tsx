@@ -14,7 +14,7 @@ export default function VideoConferenceInCommunity({ params }: { params: { vid: 
   }, []);
 
   return (
-    <div className="p-8 w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto">
+    <div className="w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto bg-gray-90">
       {token === null ? (
         <>
           <h1 className="text-3xl font-bold"> Видеоконференция </h1>

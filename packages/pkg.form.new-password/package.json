@@ -1,5 +1,5 @@
 {
-  "name": "pkg.form.signin",
+  "name": "pkg.form.new-password",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
-    "@xipkg/button": "1.0.3",
+    "@xipkg/button": "1.1.3",
     "@xipkg/form": "^1.0.4",
-    "@xipkg/icons": "0.8.4",
+    "@xipkg/icons": "0.8.1",
     "@xipkg/input": "0.1.1",
     "@xipkg/link": "0.2.0",
     "@xipkg/utils": "1.0.1",
@@ -29,6 +29,6 @@
     "eslint": "^7.32.0",
     "typescript": "^5.1.3"
   },
-  "description": "form for signin",
+  "description": "form for new password",
   "author": "xi.effect"
 }

@@ -1,19 +1,6 @@
 'use client';
 
-import {
-  Announce,
-  Calendar,
-  Camera,
-  CategoryAdd,
-  ChannelAdd,
-  Chat,
-  ChevronSmallTop,
-  Exit,
-  PeopleInvite,
-  Settings,
-  Task,
-  Updates,
-} from '@xipkg/icons';
+import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
 import { ReactNode } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -30,7 +17,7 @@ const iconsDict: IconsDictT = {
   updates: <Updates className={iconClassName} />,
   task: <Task className={iconClassName} />,
   chat: <Chat className={iconClassName} />,
-  camera: <Camera className={iconClassName} />,
+  camera: <Conference className={iconClassName} />,
 };
 
 const menuData = [

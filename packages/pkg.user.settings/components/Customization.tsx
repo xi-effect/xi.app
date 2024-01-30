@@ -1,12 +1,19 @@
-import { Button } from '@xipkg/button';
 import { Palette } from '@xipkg/icons';
-import { Input } from '@xipkg/input';
-import { Label } from '@xipkg/label';
 import React from 'react';
 import { useMedia } from 'pkg.utils';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@xipkg/select';
+import { useTheme } from 'next-themes';
 
 export const Customization = () => {
   const isMobile = useMedia('(max-width: 719px)');
+  const { theme, setTheme } = useTheme();
 
   return (
     <>
@@ -16,8 +23,19 @@ export const Customization = () => {
           <span className="text-xl font-semibold">Внешний вид</span>
         </div>
         <div className="flex flex-row w-full p-3 gap-4 mt-2">
-          <Palette className='fill-brand-80' />
+          <Palette className="fill-brand-80" />
           <span className="text-base leading-[24px] font-semibold">Тема оформления</span>
+          <Select value={theme} onValueChange={(value) => setTheme(value)}>
+            <SelectTrigger className="w-[250px] ml-auto">
+              <SelectValue placeholder="Select a fruit" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="light">Светлая</SelectItem>
+                <SelectItem value="dark">Тёмная</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </>

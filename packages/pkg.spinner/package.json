@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "@xipkg/icons": "0.8.1",
+    "@xipkg/icons": "0.8.4",
     "yup": "^1.2.0",
     "next": "^14.0.4"
   },
