@@ -53,8 +53,8 @@ export default function WelcomeCommunity() {
             <div
               className={`absolute ${
                 tab === 1
-                  ? 'top-[108px] [@media_(min-width:395px)]:top-[86px] h-[86px]'
-                  : 'top-0 [@media_(min-width:395px)]:h-[86px] h-[108px]'
+                  ? 'top-[108px] [@media_(min-width:400px)]:top-[86px] h-[108px] [@media_(min-width:357px)]:h-[86px]'
+                  : 'top-0 [@media_(min-width:400px)]:h-[86px] h-[108px]'
               } border-solid border-brand-100 bg-brand-0 flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start border rounded-2xl transition-all ease-in duration-300`}
             ></div>
             <button
