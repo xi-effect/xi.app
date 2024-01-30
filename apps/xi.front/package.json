@@ -20,6 +20,7 @@
     "pkg.navigation.skeleton": "*",
     "pkg.form.signin": "*",
     "pkg.form.reset-password": "*",
+    "pkg.form.new-password": "*",
     "pkg.form.signup": "*",
     "pkg.spinner": "*",
     "pkg.utils": "*",
