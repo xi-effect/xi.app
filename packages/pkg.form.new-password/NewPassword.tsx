@@ -4,11 +4,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@xipkg/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import { Eyeoff, Eyeon } from '@xipkg/icons';
+import { Input } from '@xipkg/input';
 import { Link } from '@xipkg/link';
 import Image from 'next/image';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import PasswordInput from './components/PasswordInput';
 
 const password = z
   .string({
@@ -32,6 +34,10 @@ type FormSchemaT = z.infer<typeof FormSchema>;
 export const NewPassword = () => {
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
   });
 
   const { control, setError, handleSubmit, trigger } = form;
@@ -39,6 +45,9 @@ export const NewPassword = () => {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     trigger();
   };
+
+  const [isPasswordShowFirst, setIsPasswordShowFirst] = React.useState(false);
+  const [isPasswordShowSecond, setIsPasswordShowSecond] = React.useState(false);
 
   return (
     <Form {...form}>
@@ -62,7 +71,23 @@ export const NewPassword = () => {
             <FormItem className="pt-4">
               <FormLabel>Пароль</FormLabel>
               <FormControl>
-                <PasswordInput {...field} error={!!error?.message} />
+                <Input
+                  {...field}
+                  error={!!error?.message}
+                  autoComplete="on"
+                  type={isPasswordShowFirst ? 'text' : 'password'}
+                  afterClassName="cursor-pointer"
+                  after={
+                    isPasswordShowFirst ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
+                  afterProps={{
+                    onClick: () => setIsPasswordShowFirst((p) => !p),
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,7 +100,23 @@ export const NewPassword = () => {
             <FormItem>
               <FormLabel>Подтвердите пароль</FormLabel>
               <FormControl>
-                <PasswordInput {...field} error={!!error?.message} />
+                <Input
+                  {...field}
+                  error={!!error?.message}
+                  autoComplete="on"
+                  type={isPasswordShowSecond ? 'text' : 'password'}
+                  afterClassName="cursor-pointer"
+                  after={
+                    isPasswordShowSecond ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
+                  afterProps={{
+                    onClick: () => setIsPasswordShowSecond((p) => !p),
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
