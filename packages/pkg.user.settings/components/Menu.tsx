@@ -95,7 +95,7 @@ export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }
       ))}
       <button
         onClick={() => handleExit()}
-        className="bg-transparent group mt-10 h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-60 transition-colors ease-in hover:bg-brand-0 hover:text-red-100 hover:cursor-pointer"
+        className="bg-transparent group mt-10 h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-60 transition-colors ease-in hover:bg-red-0 hover:text-red-100 hover:cursor-pointer"
       >
         <Exit className="transition-colors ease-in group-hover:fill-red-100" />
         <span className="text-[14px] font-normal pl-2">Выйти</span>

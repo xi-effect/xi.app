@@ -1,12 +1,12 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import React, { useEffect } from 'react';
-import { useMainSt } from 'store';
+import { redirect, usePathname } from 'next/navigation';
 import { Navigation } from 'pkg.navigation';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
+import { useEffect } from 'react';
 import { Toaster } from 'sonner';
-import { redirect, usePathname } from 'next/navigation';
+import { useMainSt } from 'store';
 
 const mapsOfPathsWithoutNav = [
   '/welcome/community',
@@ -23,6 +23,7 @@ function Auth(props) {
   const { children } = props;
 
   const pathname = usePathname();
+  console.log('pathname', pathname);
 
   const isLogin = useMainSt((state) => state.isLogin);
   const getUser = useMainSt((state) => state.getUser);
@@ -46,7 +47,11 @@ function Auth(props) {
   if (isLogin && mapsOfPathsWithoutNav.includes(pathname)) return children;
 
   // Если пользователь не залогинен, то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
-  if (!isLogin && !mapsOfPathsWithoutRedirect.includes(pathname)) return redirect('/');
+  if (
+    !isLogin &&
+    !(mapsOfPathsWithoutRedirect.includes(pathname) || pathname.includes('/reset-password/'))
+  )
+    return redirect('/');
 
   // Если пользователь залогинен и нам нужно показать главное меню
   if (isLogin)
