@@ -4,6 +4,7 @@ import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icon
 import { ReactNode } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useSessionStorage } from 'pkg.utils';
 
 type IconsDictT = {
   [key: string]: ReactNode;
@@ -94,10 +95,11 @@ const menuData = [
   },
 ];
 
-const Item = ({ index, item }: any) => {
+const Item = ({ index, item, setSlideIndex }: any) => {
   const router = useRouter();
 
   const handleRouteChange = () => {
+    setSlideIndex(1);
     router.push(item.link);
   };
 
@@ -126,7 +128,12 @@ const Item = ({ index, item }: any) => {
   );
 };
 
-export const CommunityItems = ({ className }: { className?: string }) => {
+type ItemPropsT = {
+  setSlideIndex: (value: number) => void;
+  className?: string;
+};
+
+export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   return (
     <div
       id="community-services"
@@ -135,7 +142,7 @@ export const CommunityItems = ({ className }: { className?: string }) => {
       }`}
     >
       {menuData.map((item, index) => (
-        <Item item={item} index={index} key={index} />
+        <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
       ))}
     </div>
   );
