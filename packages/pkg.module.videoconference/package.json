@@ -11,6 +11,7 @@
     "@livekit/components-react": "^1.4.2",
     "@livekit/components-styles": "^1.0.7",
     "@livekit/components-core": "^0.8.3",
+    "@xipkg/aspect-ratio": "^0.1.2",
     "@xipkg/icons": "0.8.4",
     "livekit-client": "^1.15.4",
     "next": "^14.0.4",
