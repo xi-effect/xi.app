@@ -24,7 +24,7 @@ export default function WelcomeCommunity() {
   };
 
   return (
-    <div className="flex flex-row justify-center content-center w-screen h-screen">
+    <div className="flex flex-row justify-center content-center w-screen h-[100dvh] xs:h-screen">
       <div className="h-full w-full p-8 flex justify-center content-center">
         <div className="flex flex-col h-full xs:p-8 w-full max-w-[536px]">
           <div className="h-22">
