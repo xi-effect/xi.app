@@ -11,6 +11,7 @@ import {
   GridLayout,
   useTracks,
   TrackRefContext,
+  CarouselLayout,
 } from '@livekit/components-react';
 import { ConnectionQuality, Room, Track } from 'livekit-client';
 import { HTMLAttributes, useState } from 'react';
@@ -125,18 +126,16 @@ export function Stage() {
 
   return (
     <>
-      <div className="">
+      <div className="flex flex-row w-full overflow-hidden">
         <GridLayout tracks={tracks}>
           <TrackRefContext.Consumer>
             {(track) =>
               track && (
-                <div className="my-tile">
+                <div className="text-gray-5 bg-gray-80 w-full h-full min-w-[320px]">
                   {isTrackReference(track) ? <VideoTrack {...track} /> : <p>Camera placeholder</p>}
-                  <div className="">
-                    <div style={{ display: 'flex' }}>
-                      <TrackMutedIndicator source={Track.Source.Microphone} />
-                      <TrackMutedIndicator source={track.source} />
-                    </div>
+                  <div className="h-6 w-fit bg-gray-100 flex flex-row rounded p-1 m-2 gap-1">
+                    <TrackMutedIndicator source={Track.Source.Microphone} />
+                    <TrackMutedIndicator source={track.source} />
                     {/* Overwrite styles: By passing class names, we can easily overwrite/extend the existing styles. */}
                     {/* In addition, we can still specify a style attribute and further customize the styles. */}
                     <ParticipantName
