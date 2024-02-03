@@ -18,9 +18,6 @@ import { HTMLAttributes, useState } from 'react';
 import { UpBar } from './components/UpBar';
 import { BottomBar } from './components/BottomBar';
 import { Button } from '@xipkg/button';
-// function generateRandomUserId() {
-//   return `test-identity-${String(Math.random() * 100_000).slice(0, 5)}` as const;
-// }
 
 const serverUrl = 'wss://livekit.xieffect.ru';
 
@@ -100,9 +97,11 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
       className="h-screen"
     >
       {!isConnected ? (
-        <Button className="lk-button" onClick={() => setConnect(!connect)}>
-          {connect ? 'Disconnect' : 'Connect'}
-        </Button>
+        <div className="p-4">
+          <Button className="lk-button" onClick={() => setConnect(!connect)}>
+            {connect ? 'Disconnect' : 'Connect'}
+          </Button>
+        </div>
       ) : (
         <>
           <UpBar />
