@@ -45,7 +45,7 @@ const CameraButton = () => {
 const ShareButton = () => {
   return (
     <TrackToggle
-      source={Track.Source.Camera}
+      source={Track.Source.ScreenShare}
       showIcon={false}
       className="h-12 w-12 rounded-[24px] bg-gray-100 flex flex-row items-center justify-center ml-8"
     >

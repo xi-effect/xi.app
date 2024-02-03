@@ -12,8 +12,10 @@ import { CommunityItems } from './CommunityItems';
 import { UserSettings } from 'pkg.user.settings';
 
 type BottomBarT = {
+  slideIndex: number;
   children: ReactNode;
   onExit: () => void;
+  setSlideIndex: (value: number) => void;
 };
 
 type ValuesT = {
@@ -25,9 +27,7 @@ const values: ValuesT = {
   1: 0,
 };
 
-export const BottomBar = ({ children, onExit }: BottomBarT) => {
-  const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
-
+export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: BottomBarT) => {
   const handleMenu = () => {
     setSlideIndex(values[slideIndex]);
   };
@@ -43,7 +43,7 @@ export const BottomBar = ({ children, onExit }: BottomBarT) => {
           <div className={`sticky pt-4 px-4 top-0 left-0`}>
             <CommunityMenu />
           </div>
-          <CommunityItems />
+          <CommunityItems setSlideIndex={setSlideIndex} />
         </div>
         <div className="h-[calc(100dvh-80px)] overflow-auto">{children}</div>
       </SwipeableViews>

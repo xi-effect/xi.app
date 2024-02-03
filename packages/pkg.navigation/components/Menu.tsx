@@ -10,17 +10,19 @@ import Image from 'next/image';
 import { UserSettings } from 'pkg.user.settings';
 
 type MenuT = {
+  slideIndex: number;
+  setSlideIndex: (value: number) => void;
   onExit: () => void;
 };
 
-export const Menu = ({ onExit }: MenuT) => {
+export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
   return (
     <>
       <div id="header-logo" className="flex flex-wrap w-fit h-8 p-2">
         <Image src="/assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
       </div>
       <CommunityMenu />
-      <CommunityItems />
+      <CommunityItems setSlideIndex={setSlideIndex} />
       <div className="fixed sm:w-[302px] bottom-0 pb-6 flex flex-col bg-gray-0">
         <Modal>
           <ModalTrigger asChild>
