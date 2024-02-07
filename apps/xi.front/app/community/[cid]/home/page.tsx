@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import { Telegram, TaskFile } from '@xipkg/icons';
 
 import Image from 'next/image';
 
@@ -87,7 +86,7 @@ function InfoCardList() {
 
 function SupportBox() {
   return (
-    <section className="py-8 max-xs:py-4  w-[100%] max-w-[1570px]">
+    <section className="py-8 max-xs:py-4 w-[100%] max-w-[1570px]">
       <div className="bg-[#F7F7F7] p-8 rounded-2xl w-[100%]">
         <div className="flex gap-1">
           <h3 className="font-semibold text-[32px] max-xs:text-2xl leading-10 xl:text-[40px] xl:leading-[48px]">
@@ -101,19 +100,15 @@ function SupportBox() {
         </p>
         <div className=" max-xs:flex-col max-xs:gap-2 flex gap-8 mt-6">
           <Button className=" text-sm h-8 xl:h-11 xl:text-base font-medium">
-            Написать в телеграм{' '}
-            <Telegram
-              className="fill-white ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6"
-              width={0}
-              height={0}
-            />
+            Написать в телеграм
+            <span className="bg-[url('/assets/community-home-page/tg-filled-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />
           </Button>
           <Button
             variant={'secondary'}
             className="text-sm h-8 xl:h-11 xl:text-base border-[1px] xl:border-2 font-medium"
           >
-            Посмотреть руководства{' '}
-            <TaskFile className="ml-[6px] w-4 h-4 xl:w-6 xl:h-6 xl:ml-2" width={24} height={24} />
+            Посмотреть руководства
+            <span className="bg-[url('/assets/community-home-page/manual-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />
           </Button>
         </div>
       </div>
