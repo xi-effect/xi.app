@@ -36,7 +36,7 @@ function InfoCardList() {
         <div className="flex items-end max-xl:justify-center justify-end w-full min-w-[470px] bg-gray-5 h-60 rounded-2xl">
           <Image
             className="h-auto"
-            src={'/assets/community-home-page/left-menu-screenshot.png'}
+            src={'/assets/community-home-page/left-menu-screenshot.svg'}
             width={422}
             height={0}
             sizes="100vw"
@@ -52,7 +52,7 @@ function InfoCardList() {
         <div className="w-full xl:min-w-[470px] bg-gray-5 h-60 rounded-2xl flex items-center justify-center">
           <Image
             className=" h-auto"
-            src={'/assets/community-home-page/roles-screenshot.png'}
+            src={'/assets/community-home-page/roles-screenshot.svg'}
             width={236}
             height={92}
             sizes="100vw"
@@ -68,7 +68,7 @@ function InfoCardList() {
         <div className="flex bg-gray-5 justify-center h-60 rounded-2xl">
           <Image
             className="w-[342px] h-[calc(100%-48px)] mt-12"
-            src={'/assets/community-home-page/change-community-screenshot.png'}
+            src={'/assets/community-home-page/change-community-screenshot.svg'}
             width={0}
             height={0}
             sizes="100vw"
