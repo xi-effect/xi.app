@@ -98,8 +98,8 @@ function SupportBox() {
           Наша команда всегда на связи и готова ответить на любые вопросы. А ещё мы рады обратной
           связи, вашим идеям и предложениям.
         </p>
-        <div className="max-[600px]:flex-col max-[600px]:gap-2 flex gap-8 mt-6">
-          <Button className=" text-sm h-8 xl:h-11 xl:text-base font-medium">
+        <div className="flex gap-8 mt-6 max-[600px]:flex-col max-[600px]:gap-2 ">
+          <Button className="text-sm h-8 xl:h-11 xl:text-base font-medium">
             Написать в телеграм
             <span className="bg-[url('/assets/community-home-page/tg-filled-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />
           </Button>
@@ -118,7 +118,7 @@ function SupportBox() {
 
 export default function CommunityHomePage() {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full p-8 max-xs:p-4">
       <Header />
       <InfoCardList />
       <SupportBox />
