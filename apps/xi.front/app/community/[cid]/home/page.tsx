@@ -4,12 +4,12 @@ import { Button } from '@xipkg/button';
 
 import Image from 'next/image';
 
-function Header() {
+const Header = () => {
   const role = 'администратор';
 
   return (
-    <header className=" max-xs:pb-4 pb-8 w-[100%] max-w-[1570px]">
-      <div className="font-semibold text-[32px] max-xs:text-2xl leading-10 xl:text-[40px] xl:leading-[48px] xl:flex">
+    <header className=" max-xs:pb-4 pb-8 w-full max-w-[1570px]">
+      <div className="font-semibold text-[32px] max-xs:text-2xl leading-10 xl:text-[40px] xl:leading-[48px] xl:flex text-gray-100">
         <h2>Добро пожаловать в сообщество</h2>
         <div className="flex items-center max-xl:mt-3 max-xs:mt-0 xl:ml-6">
           <Image
@@ -22,14 +22,14 @@ function Header() {
           <p className="ml-2 xl:ml-4">Иванова А. Г.</p>
         </div>
       </div>
-      <p className="mt-4 font-normal max-xs:mt-2 max-xs:text-sm text-[#404040] text-[16px] leading-[22px] xl:text-2xl">
+      <p className="mt-4 font-normal max-xs:mt-2 max-xs:text-sm text-gray-80 text-[16px] leading-[22px] xl:text-2xl">
         Ваша роль: {role || `[РОЛЬ ПОЛЬЗОВАТЕЛЯ]`}
       </p>
     </header>
   );
-}
+};
 
-function InfoCardList() {
+const InfoCardList = () => {
   return (
     <ul className="grid py-8 max-xs:py-4 gap-12 max-w-[1570px] xl:grid-cols-3">
       <li className="overflow-hidden">
@@ -44,14 +44,14 @@ function InfoCardList() {
           />
         </div>
         <h3 className="font-semibold text-2xl max-xs:text-xl mt-4">Меню слева</h3>
-        <p className="font-normal text-base max-xs:text-sm max-xs:mt-1 mt-2 text-[#101010]">
+        <p className="font-normal text-base max-xs:text-sm max-xs:mt-1 mt-2 text-gray-100">
           С помощью меню слева вы можете перемещаться по каналам внутри сообщества
         </p>
       </li>
       <li className="overflow-hidden">
         <div className="w-full xl:min-w-[470px] bg-gray-5 h-60 rounded-2xl flex items-center justify-center">
           <Image
-            className=" h-auto"
+            className="h-auto"
             src={'/assets/community-home-page/roles-screenshot.svg'}
             width={236}
             height={92}
@@ -60,7 +60,7 @@ function InfoCardList() {
           />
         </div>
         <h3 className="font-semibold text-2xl max-xs:text-xl mt-4">Роли</h3>
-        <p className="font-normal text-base max-xs:text-sm max-xs:mt-1 mt-2 text-[#101010]">
+        <p className="font-normal text-base max-xs:text-sm max-xs:mt-1 mt-2 text-gray-100">
           В рамках сообщества могут взаимодейтсвовать только студенты и преподаватели
         </p>
       </li>
@@ -76,25 +76,25 @@ function InfoCardList() {
           />
         </div>
         <h3 className="font-semibold text-2xl max-xs:text-xl mt-4">Смена сообщества</h3>
-        <p className="font-normal text-base max-xs:text-sm max-xs:mt-1 mt-2 text-[#101010]">
+        <p className="font-normal text-base max-xs:text-sm max-xs:mt-1 mt-2 text-gray-100">
           Для перехода в другое сообщество выберите его из выпадающего списка в меню слева
         </p>
       </li>
     </ul>
   );
-}
+};
 
-function SupportBox() {
+const SupportBox = () => {
   return (
-    <section className="py-8 max-xs:py-4 w-[100%] max-w-[1570px]">
-      <div className="bg-[#F7F7F7] p-8 rounded-2xl w-[100%]">
+    <section className="py-8 max-xs:py-4 w-full max-w-[1570px]">
+      <div className="bg-gray-5 p-8 rounded-2xl w-full">
         <div className="flex gap-1">
           <h3 className="font-semibold text-[32px] max-xs:text-2xl leading-10 xl:text-[40px] xl:leading-[48px]">
             Мы всегда рядом
           </h3>
           <span className="bg-[url('/assets/community-home-page/support-box-heart.svg')] bg-no-repeat bg-center w-[15px] max-xs:w-[12px] xl:w-[18px] mb-2 bg-contain" />
         </div>
-        <p className="text-sm max-xs:text-xs xl:text-xl text-[#404040] font-normal mt-2 max-w-[800px]">
+        <p className="text-sm max-xs:text-xs xl:text-xl text-gray-80 font-normal mt-2 max-w-[800px]">
           Наша команда всегда на связи и готова ответить на любые вопросы. А ещё мы рады обратной
           связи, вашим идеям и предложениям.
         </p>
@@ -114,7 +114,7 @@ function SupportBox() {
       </div>
     </section>
   );
-}
+};
 
 export default function CommunityHomePage() {
   return (
