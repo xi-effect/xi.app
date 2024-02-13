@@ -4,11 +4,7 @@ import { Menu } from './components/Menu';
 import { Content } from './components/Content';
 import { useMedia } from 'pkg.utils';
 
-type CommunitySettingsT = {
-  onExit: () => void;
-};
-
-export const CommunitySettings = ({ onExit }: CommunitySettingsT) => {
+export const CommunitySettings = () => {
   const isMobile = useMedia('(max-width: 719px)');
 
   const [activeContent, setActiveContent] = React.useState<number>(0);
@@ -33,7 +29,6 @@ export const CommunitySettings = ({ onExit }: CommunitySettingsT) => {
                   activeContent={activeContent}
                   setActiveContent={setActiveContent}
                   setShowContent={setShowContent}
-                  onExit={onExit}
                 />
               )}
             </>
@@ -43,7 +38,6 @@ export const CommunitySettings = ({ onExit }: CommunitySettingsT) => {
                 activeContent={activeContent}
                 setActiveContent={setActiveContent}
                 setShowContent={setShowContent}
-                onExit={onExit}
               />
               <Content activeContent={activeContent} />
             </>
