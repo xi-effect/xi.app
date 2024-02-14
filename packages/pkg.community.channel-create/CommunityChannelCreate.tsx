@@ -52,23 +52,23 @@ export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) =>
 
   return (
     <Modal>
-      <ModalTrigger className="bg-[transparent] flex justify-between w-full items-center">
+      <ModalTrigger className="bg-transparent flex justify-between w-full items-center">
         {children}
       </ModalTrigger>
       <ModalContent>
-        <ModalHeader className="flex flex-row items-center justify-between ">
-          <ModalTitle>Создание канала</ModalTitle>
+        <ModalHeader className="flex flex-row items-center justify-between">
+          <ModalTitle className="text-gray-100 text-[24px] font-bold">Создание канала</ModalTitle>
           <ModalCloseButton className="static sm:fixed">
-            <Close className="fill-[#404040] sm:fill-[#FFFFFF] " />
+            <Close className="fill-gray-80 sm:fill-white" />
           </ModalCloseButton>
         </ModalHeader>
         <ModalDescription className="p-6 flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <Label className="text-[#101010] text-[16px] font-medium">Название</Label>
+            <Label className="text-gray-100 text-[16px] font-medium">Название</Label>
             <Input />
           </div>
           <div>
-            <Label className="text-[#101010] text-[16px] font-bold">Тип</Label>
+            <Label className="text-gray-100 text-[16px] font-bold">Тип</Label>
             <div className="flex flex-col gap-4">
               {actionsSheetList.map((item, index) => (
                 <ActionsSheetButton
