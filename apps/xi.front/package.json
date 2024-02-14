@@ -18,6 +18,8 @@
     "pkg.navigation.layout": "*",
     "pkg.module.videoconference": "*",
     "pkg.navigation.skeleton": "*",
+		"pkg.modal.change-password": "*",
+		"pkg.modal.change-email": "*",
     "pkg.form.signin": "*",
     "pkg.form.reset-password": "*",
     "pkg.form.new-password": "*",

@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 import {
   Modal,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalTitle,
   ModalTrigger,
-  ModalCloseButton,
 } from '@xipkg/modal';
 import { Close } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
@@ -67,7 +67,7 @@ export const AvatarEditorComponent = ({ children }: AvatarEditorT) => {
             minZoom={0.85}
           />
         </div>
-        <ModalFooter className="gap-4">
+        <ModalFooter className="gap-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
           <Button className="ml-auto" variant="secondary">
             Отменить
           </Button>
