@@ -17,6 +17,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
+import { CommunityChannelCreate } from 'pkg.community.channel-create';
+
 import Image from 'next/image';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
@@ -165,8 +167,10 @@ export const CommunityMenu = () => {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="group sm:w-[302px]">
-            <span>Создать канал</span>
-            <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+            <CommunityChannelCreate>
+              <span>Создать канал</span>
+              <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+            </CommunityChannelCreate>
           </DropdownMenuItem>
           <DropdownMenuItem className="group sm:w-[302px]">
             <span>Создать категорию</span>

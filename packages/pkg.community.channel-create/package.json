@@ -1,35 +1,31 @@
 {
-  "name": "pkg.navigation",
+  "name": "pkg.community.channel-create",
   "version": "0.0.0",
-  "main": "./index.tsx",
-  "types": "./index.tsx",
+  "main": "/index.tsx",
+  "types": "/index.tsx",
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\""
   },
   "dependencies": {
-    "@xipkg/avatar": "0.1.2",
-    "@xipkg/dropdown": "1.2.0",
-    "@xipkg/icons": "0.8.4",
-    "@xipkg/userprofile": "0.2.1",
+    "@xipkg/button": "1.1.3",
+    "@xipkg/form": "^1.0.4",
+    "@xipkg/input": "0.1.1",
     "@xipkg/modal": "1.1.2",
-    "driver.js": "^1.3.1",
+    "@xipkg/icons": "0.8.4",
     "next": "^14.0.4",
-    "react": "^18.2.0",
-    "react-swipeable-views-react-18-fix": "^0.14.1",
-    "sonner": "1.0.3",
-    "pkg.community.channel-create": "*",
-    "pkg.user.settings": "*"
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "latest",
+    "@xipkg/tailwind": "0.3.6",
     "@xipkg/typescript": "latest",
     "eslint": "^7.32.0",
     "typescript": "^5.1.3"
   },
-  "description": "form for signin",
+  "description": "Dialog box for creating a new channel",
   "author": "xi.effect"
 }
