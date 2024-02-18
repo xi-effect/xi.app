@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { Button } from '@xipkg/button';

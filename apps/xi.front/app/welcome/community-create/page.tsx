@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -77,7 +76,7 @@ export default function WelcomeCommunityCreate() {
               <span className="font-medium leading-[22px] text-gray-90 w-full">
                 Изображение сообщества
               </span>
-              <FileUploader size="small" />
+              <FileUploader size="small" onChange={() => {}} />
             </div>
           </div>
           <Form {...form}>
