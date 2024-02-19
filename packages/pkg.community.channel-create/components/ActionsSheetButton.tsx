@@ -20,18 +20,18 @@ export function ActionsSheetButton({
   return (
     <button
       onClick={() => onClick(index)}
-      className="border-gray-40 border border-solid p-4 rounded-lg bg-transparent flex flex-row gap-4"
+      className="border-gray-40 border border-solid p-4 rounded-lg bg-transparent flex gap-4 hover:bg-gray-5"
     >
       <div className="py-0.5">
         <Icon className="fill-gray-100" />
       </div>
       <div className="flex items-center gap-4">
-        <div className="flex flex-col text-start gap-1">
+        <div className="text-start space-y-1">
           <h3 className="text-gray-100 text-[20px] font-medium leading-7">{title}</h3>
-          <p className="leading-5">{desctiption}</p>
+          <p className="text-gray-80 text-[16px] font-normal leading-5">{desctiption}</p>
         </div>
         <div>
-          <div className={`w-6 h-6 rounded-full bg-transparent ${сlassName}`}></div>
+          <div className={`size-6 rounded-full bg-transparent ${сlassName}`}></div>
         </div>
       </div>
     </button>
