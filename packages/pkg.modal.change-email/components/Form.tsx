@@ -26,7 +26,7 @@ const FormBlock = (props: FormBlockProps) => {
   return (
     <Form {...(form as any)}>
       <form className="p-6 pt-5 space-y-4" onSubmit={form.handleSubmit(console.log)}>
-        {true && (
+        {timer && (
           <Timer
             durationSecs={10 * 60}
             getTitle={(t) => `Отправить повторно можно через ${t}`}

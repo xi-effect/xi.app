@@ -14,7 +14,7 @@ export const ChangeEmailModal = (props: ChangeEmailModalT) => {
   });
 
   return (
-    <M.Modal defaultOpen>
+    <M.Modal>
       <M.ModalTrigger asChild>{props.children}</M.ModalTrigger>
       <M.ModalContent>
         {(stage.type === 'form' && (

@@ -12,7 +12,7 @@ export const ChangePasswordModal = (props: ChangePasswordModalT) => {
   const [stage, setStage] = useState<'form' | 'success'>('form');
 
   return (
-    <M.Modal defaultOpen>
+    <M.Modal>
       <M.ModalTrigger asChild>{props.children}</M.ModalTrigger>
       <M.ModalContent>
         {(stage === 'form' && (
