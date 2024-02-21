@@ -26,7 +26,7 @@ const Timer = (props: TimerProps) => {
   useEffect(() => {
     const t = setInterval(() => {
       if (leftSecs > 0) {
-        setSecs(leftSecs - 1);
+        setSecs((p) => p - 1);
       } else {
         clearInterval(t);
         props.onTimerEnd();
