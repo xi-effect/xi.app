@@ -1,4 +1,3 @@
-import { Account, Home, Palette, Key, SoundTwo, Exit } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import React, { Dispatch, SetStateAction } from 'react';
 
@@ -8,20 +7,20 @@ type ItemT = {
 
 const options: ItemT[] = [
   {
-    name: 'Главная',
+    name: 'Обзор',
   },
   {
-    name: 'Личные данные',
+    name: 'Роли',
   },
   {
-    name: 'Персонализация',
+    name: 'История активности',
   },
   {
-    name: 'Безопасность',
+    name: 'Участники',
   },
-  // {
-  //   name: 'Звук и видео',
-  // },
+  {
+    name: 'Приглашения',
+  },
 ];
 
 type ItemPropsT = {
@@ -36,19 +35,6 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
 
   const isActive = activeContent === index && !isMobile;
 
-  const getIconClassName = (i: number) =>
-    `transition-colors ease-in ${
-      i === activeContent ? 'fill-brand-80' : 'group-hover:fill-brand-80'
-    }`;
-
-  const iconsDict: React.ReactNode[] = [
-    <Home className={getIconClassName(0)} />,
-    <Account className={getIconClassName(1)} />,
-    <Palette className={getIconClassName(2)} />,
-    <Key className={getIconClassName(3)} />,
-    // <SoundTwo className={getIconClassName(4)} />,
-  ];
-
   return (
     <button
       onClick={() => onMenuItemChange(index)}
@@ -59,7 +45,6 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
       } group h-[40px] w-full p-2 flex flex-row items-center rounded-lg transition-colors ease-in  hover:cursor-pointer`}
       key={index.toString()}
     >
-      {iconsDict[index]}
       <span className="text-[14px] font-normal pl-2">{item.name}</span>
     </button>
   );
@@ -69,17 +54,12 @@ type MenuPropsT = {
   activeContent: number;
   setActiveContent: Dispatch<SetStateAction<number>>;
   setShowContent: Dispatch<SetStateAction<boolean>>;
-  onExit: () => void;
 };
 
-export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }: MenuPropsT) => {
+export const Menu = ({ activeContent, setActiveContent, setShowContent }: MenuPropsT) => {
   const handleMenuItem = (index: number) => {
     setActiveContent(index);
     setShowContent(true);
-  };
-
-  const handleExit = () => {
-    if (onExit) onExit();
   };
 
   return (
@@ -94,11 +74,10 @@ export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }
         />
       ))}
       <button
-        onClick={() => handleExit()}
+        // onClick={() => handleExit()}
         className="bg-transparent group mt-10 h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-60 transition-colors ease-in hover:bg-brand-0 hover:text-red-100 hover:cursor-pointer"
       >
-        <Exit className="transition-colors ease-in group-hover:fill-red-100" />
-        <span className="text-[14px] font-normal pl-2">Выйти</span>
+        <span className="text-[14px] font-normal pl-2">Удалить сообщество</span>
       </button>
     </div>
   );

@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import React from 'react';
@@ -145,7 +144,13 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
                   autoComplete="on"
                   id="user password"
                   type={isPasswordShow ? 'text' : 'password'}
-                  after={isPasswordShow ? <Eyeoff className="fill-gray-60" /> : <Eyeon className="fill-gray-60" />}
+                  after={
+                    isPasswordShow ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
                   afterProps={{
                     onClick: changePasswordShow,
                   }}

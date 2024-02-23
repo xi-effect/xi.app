@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import * as z from 'zod';
@@ -49,6 +48,7 @@ export const ResetPassword = () => {
         email: email.toLowerCase(),
       },
     });
+    // @ts-ignore
     if (data && data.a) {
       setEmailSent(true);
     } else {

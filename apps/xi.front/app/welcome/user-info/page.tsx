@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -78,7 +77,7 @@ export default function WelcomeUserInfo() {
               <span className="font-medium leading-[22px] text-gray-90 w-full">
                 Изображение профиля
               </span>
-              <FileUploader size="small" />
+              <FileUploader onChange={() => {}} size="small" />
             </div>
           </div>
           <Form {...form}>
