@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@xipkg/button": "1.0.3",
-    "@xipkg/form": "^1.1.0",
+    "@xipkg/form": "^2.0.0",
     "@xipkg/icons": "0.8.4",
     "@xipkg/input": "0.1.1",
     "@xipkg/link": "0.2.0",

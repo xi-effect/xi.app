@@ -2,13 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@xipkg/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useForm } from '@xipkg/form';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Input } from '@xipkg/input';
 import { Link } from '@xipkg/link';
 import Image from 'next/image';
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const password = z

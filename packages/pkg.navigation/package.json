@@ -14,7 +14,7 @@
     "@xipkg/userprofile": "0.2.1",
     "@xipkg/modal": "1.1.2",
     "driver.js": "^1.3.1",
-    "next": "^14.0.4",
+    "next": "^13.5.6",
     "react": "^18.2.0",
     "react-swipeable-views-react-18-fix": "^0.14.1",
     "sonner": "1.0.3",
