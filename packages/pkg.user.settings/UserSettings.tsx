@@ -16,14 +16,14 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
   const isTablet = useMedia('(max-width: 960px)');
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-full max-w-[1132px] h-full min-h-full flex flex-col">
+    <div className="flex w-full justify-center">
+      <div className="flex h-full min-h-full w-full max-w-[1132px] flex-col">
         <Header
           activeItem={activeContent}
           showContent={showContent}
           setShowContent={setShowContent}
         />
-        <div className="flex flex-row mt-4">
+        <div className="mt-4 flex flex-row">
           {isMobile ? (
             <>
               {showContent ? (

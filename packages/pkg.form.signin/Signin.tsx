@@ -3,11 +3,18 @@
 import React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
-import { redirect, useRouter } from 'next/navigation';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
+import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
@@ -69,7 +76,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full h-full flex flex-col justify-items-start space-y-4"
+        className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
           <Image
@@ -125,7 +132,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
         <Link size="l" variant="always" href="/reset-password">
           Восстановить пароль
         </Link>
-        <div className="flex w-full h-full justify-between items-end">
+        <div className="flex h-full w-full items-end justify-between">
           <div className="flex h-[56px] items-center">
             <Link
               id="to-signup-link"

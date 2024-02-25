@@ -11,7 +11,7 @@ import {
 } from '@xipkg/modal';
 import { Input } from '@xipkg/input';
 import { Label } from '@xipkg/label';
-import { Close, Announce, Task, Camera, Chat } from '@xipkg/icons';
+import { Close, Announce, Task, Conference, Chat } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { ActionsSheetButton } from './components/ActionsSheetButton';
 
@@ -35,7 +35,7 @@ const actionsSheetList = [
       'Создавайте задания, тесты, получайте ответы от учеников, оценивайте и улучшайте знания',
   },
   {
-    icon: Camera,
+    icon: Conference,
     title: 'Видеоконференции',
     desctiption:
       'Проводите уроки онлайн, проводите активности, работайте со студентами из любой точки мира',
@@ -52,29 +52,28 @@ export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) =>
 
   return (
     <Modal>
-      <ModalTrigger className="bg-transparent flex justify-between w-full items-center">
+      <ModalTrigger className="flex w-full items-center justify-between bg-transparent">
         {children}
       </ModalTrigger>
-      <ModalContent>
+      <ModalContent className="sm:max-w-[560px] xl:max-w-[600px]">
         <ModalHeader className="flex flex-row items-center justify-between">
-          <ModalTitle className="text-gray-100 text-[24px] font-bold">Создание канала</ModalTitle>
+          <ModalTitle className="text-[24px] font-bold text-gray-100">Создание канала</ModalTitle>
           <ModalCloseButton className="static sm:fixed">
-            <Close className="fill-gray-80 sm:fill-gray-0"/>
+            <Close className="fill-gray-80 sm:fill-gray-0" />
           </ModalCloseButton>
         </ModalHeader>
-        <ModalDescription className="p-6 space-y-6">
+        <ModalDescription className="space-y-6 px-6">
           <div className="flex flex-col gap-2">
-            <Label className="text-gray-100 text-[16px] font-medium">Название</Label>
+            <Label className="text-[16px] font-normal text-gray-100">Название</Label>
             <Input />
           </div>
-          <div>
-            <Label className="text-gray-100 text-[16px] font-bold">Тип</Label>
+          <div className="space-y-4">
+            <Label className="text-[16px] font-medium text-gray-100">Тип</Label>
             <div className="space-y-4">
               {actionsSheetList.map((item, index) => (
                 <ActionsSheetButton
                   key={index}
                   Icon={item.icon}
-                  
                   title={item.title}
                   desctiption={item.desctiption}
                   index={index}

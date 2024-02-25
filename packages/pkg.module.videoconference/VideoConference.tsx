@@ -106,7 +106,7 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
       ) : (
         <>
           <UpBar />
-          <div className="px-8 py-4 h-[calc(100vh-152px)] flex flex-row">
+          <div className="flex h-[calc(100vh-152px)] flex-row px-8 py-4">
             <RoomAudioRenderer />
             {/* Render a custom Stage omponent once connected */}
             {isConnected && <Stage />}
@@ -126,14 +126,14 @@ export function Stage() {
 
   return (
     <>
-      <div className="flex flex-row w-full overflow-hidden">
+      <div className="flex w-full flex-row overflow-hidden">
         <GridLayout tracks={tracks}>
           <TrackRefContext.Consumer>
             {(track) =>
               track && (
-                <div className="text-gray-5 bg-gray-80 w-full h-full min-w-[320px]">
+                <div className="text-gray-5 bg-gray-80 h-full w-full min-w-[320px]">
                   {isTrackReference(track) ? <VideoTrack {...track} /> : <p>Camera placeholder</p>}
-                  <div className="h-6 w-fit bg-gray-100 flex flex-row rounded p-1 m-2 gap-1">
+                  <div className="m-2 flex h-6 w-fit flex-row gap-1 rounded bg-gray-100 p-1">
                     <TrackMutedIndicator source={Track.Source.Microphone} />
                     <TrackMutedIndicator source={track.source} />
                     {/* Overwrite styles: By passing class names, we can easily overwrite/extend the existing styles. */}

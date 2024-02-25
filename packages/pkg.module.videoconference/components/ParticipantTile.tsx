@@ -30,7 +30,7 @@ export const ParticipantTile = ({ ...htmlProps }) => {
           track && (
             <AspectRatio
               ratio={16 / 9}
-              className="min-w-[160px] min-h-[90px] h-full w-full bg-orange-20"
+              className="bg-orange-20 h-full min-h-[90px] w-full min-w-[160px]"
             >
               {isTrackReference(track) ? <VideoTrack {...track} /> : <p>Camera placeholder</p>}
               <div>

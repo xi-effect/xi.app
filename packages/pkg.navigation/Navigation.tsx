@@ -24,7 +24,7 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
 
   return (
     <div className="relative flex flex-row">
-      <div className="fixed flex flex-col p-6 h-screen min-h-screen min-w-[350px]">
+      <div className="fixed flex h-screen min-h-screen min-w-[350px] flex-col p-6">
         <Menu onExit={onExit} slideIndex={slideIndex} setSlideIndex={setSlideIndex} />
       </div>
       <div className="ml-[350px]">{children}</div>
