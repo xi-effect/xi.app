@@ -10,7 +10,8 @@
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
     "@xipkg/eslint": "latest",
-    "prettier": "^2.5.1",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "turbo": "latest"
   },
   "name": "xi.app",

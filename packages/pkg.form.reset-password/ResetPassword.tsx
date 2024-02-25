@@ -12,7 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  useForm
+  useForm,
 } from '@xipkg/form';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
@@ -66,7 +66,7 @@ export const ResetPassword = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full h-full flex flex-col justify-items-start space-y-4"
+        className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
           <Image
@@ -80,7 +80,7 @@ export const ResetPassword = () => {
           {emailSent ? 'Письмо отправлено' : 'Восстановление'}
         </h1>
         {emailSent ? (
-          <div className="pt-4 w-full xs:w-[80%] m-auto text-center">
+          <div className="xs:w-[80%] m-auto w-full pt-4 text-center">
             Ссылка на восстановление пароля отправлена на {form.getValues().email}
           </div>
         ) : (
@@ -106,7 +106,7 @@ export const ResetPassword = () => {
             )}
           />
         )}
-        <div className="flex w-full h-full justify-between items-end">
+        <div className="flex h-full w-full items-end justify-between">
           <div className="flex h-[56px] items-center">
             {emailSent ? (
               <Link

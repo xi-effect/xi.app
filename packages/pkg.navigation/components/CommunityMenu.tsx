@@ -25,7 +25,7 @@ import { CommunitySettings } from 'pkg.community.settings';
 
 const Avatar = () => {
   return (
-    <div className="overflow-hidden bg-green-0 flex flex-col w-8 h-8 items-center justify-center rounded-[16px]">
+    <div className="bg-green-0 flex h-8 w-8 flex-col items-center justify-center overflow-hidden rounded-[16px]">
       <Image
         style={{
           borderRadius: '50%',
@@ -50,13 +50,13 @@ const DropdownHeader = ({
     <div
       id="community-profile"
       onClick={() => setIsOpen((prev: boolean) => !prev)}
-      className={`flex flex-wrap md:w-[302px] h-12 py-2 px-2.5 ${
+      className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${
         inDropdown ? '' : 'mt-0 sm:mt-8'
-      } items-center rounded-xl hover:cursor-pointer hover:bg-gray-5 transition-colors ease-in`}
+      } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
     >
       <Avatar />
-      <div className="ml-2 text-[16px] font-semibold self-center"> Иванова А. Г. </div>
-      <div className="ml-auto flex flex-col items-center justify-center w-4 h-4">
+      <div className="ml-2 self-center text-[16px] font-semibold"> Иванова А. Г. </div>
+      <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
         <ChevronSmallTop
           size="s"
           className={`transition-transform ease-in ${inDropdown ? '' : 'rotate-180'}`}
@@ -160,7 +160,7 @@ export const CommunityMenu = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           onInteractOutside={handleClose}
-          className="w-[calc(100vw-22px)] sm:w-[312px] relative top-[-57px] right-[1px]"
+          className="relative right-[1px] top-[-57px] w-[calc(100vw-22px)] sm:w-[312px]"
         >
           <div className="bg-gray-5 rounded-lg">
             <DropdownHeader setIsOpen={setIsOpen} inDropdown />
@@ -195,7 +195,7 @@ export const CommunityMenu = () => {
             <DropdownMenuSeparator />
             <DropdownMenuItem className="group sm:w-[302px]" error>
               <span>Покинуть сообщество</span>
-              <Exit size="s" className="ml-auto h-4 w-4 fill-red-40 group-hover:fill-red-80" />
+              <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
             </DropdownMenuItem>
           </div>
         </DropdownMenuContent>

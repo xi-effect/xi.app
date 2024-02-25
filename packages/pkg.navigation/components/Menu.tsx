@@ -18,17 +18,17 @@ type MenuT = {
 export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
   return (
     <>
-      <div id="header-logo" className="flex flex-wrap w-fit h-8 p-2">
+      <div id="header-logo" className="flex h-8 w-fit flex-wrap p-2">
         <Image src="/assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
       </div>
       <CommunityMenu />
       <CommunityItems setSlideIndex={setSlideIndex} />
-      <div className="fixed sm:w-[302px] bottom-0 pb-6 flex flex-col bg-gray-0">
+      <div className="bg-gray-0 fixed bottom-0 flex flex-col pb-6 sm:w-[302px]">
         <Modal>
           <ModalTrigger asChild>
             <div
               id="user-profile-menu"
-              className="w-full h-[48px] p-2 rounded-lg hover:cursor-pointer hover:bg-gray-5"
+              className="hover:bg-gray-5 h-[48px] w-full rounded-lg p-2 hover:cursor-pointer"
             >
               <UserProfile
                 src="/test/avatar.svg"
@@ -45,10 +45,10 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
         <div
           id="notification-menu"
           onClick={() => toast(`Уведомления пока в разработке`)}
-          className="group h-[40px] w-full p-2 mx-1 mt-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
+          className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group mx-1 mt-2 flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
         >
-          <Notification className="transition-colors ease-in group-hover:fill-brand-80" />
-          <span className="text-[14px] font-normal pl-2">Уведомления</span>
+          <Notification className="group-hover:fill-brand-80 transition-colors ease-in" />
+          <span className="pl-2 text-[14px] font-normal">Уведомления</span>
         </div>
       </div>
     </>

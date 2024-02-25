@@ -15,9 +15,9 @@ export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT
   const isMobile = useMedia('(max-width: 719px)');
 
   return (
-    <div className="relative h-[40px] sm:pb-4 flex w-full justify-start items-center">
+    <div className="relative flex h-[40px] w-full items-center justify-start sm:pb-4">
       {isMobile && showContent && (
-        <button onClick={() => setShowContent(false)} className="h-10 w-10 p-2 bg-transparent">
+        <button onClick={() => setShowContent(false)} className="h-10 w-10 bg-transparent p-2">
           <ArrowLeft />
         </button>
       )}
@@ -26,7 +26,7 @@ export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT
       )}
       <ModalCloseButton
         variant="full"
-        className="w-10 h-10 ml-auto xl:ml-0 xl:absolute bg-transparent flex p-2 right-0 xl:right-[-56px]"
+        className="right-0 ml-auto flex h-10 w-10 bg-transparent p-2 xl:absolute xl:right-[-56px] xl:ml-0"
       >
         <Close />
       </ModalCloseButton>

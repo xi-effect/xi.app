@@ -2,7 +2,15 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@xipkg/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useForm } from '@xipkg/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Input } from '@xipkg/input';
 import { Link } from '@xipkg/link';
@@ -51,7 +59,7 @@ export const NewPassword = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full h-full flex flex-col justify-items-start space-y-4"
+        className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
           <Image
@@ -120,7 +128,7 @@ export const NewPassword = () => {
             </FormItem>
           )}
         />
-        <div className="flex w-full h-full justify-between items-end">
+        <div className="flex h-full w-full items-end justify-between">
           <div className="flex h-14 items-center">
             <Link
               id="to-signup-link"
