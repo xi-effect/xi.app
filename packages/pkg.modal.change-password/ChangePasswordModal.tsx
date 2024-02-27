@@ -8,12 +8,12 @@ import Form from './components/Form';
 
 type ChangePasswordModalT = PropsWithChildren<{}>;
 
-export const ChangePasswordModal = (props: ChangePasswordModalT) => {
+export const ChangePasswordModal = ({children}: ChangePasswordModalT) => {
   const [stage, setStage] = useState<'form' | 'success'>('form');
 
   return (
     <M.Modal>
-      <M.ModalTrigger asChild>{props.children}</M.ModalTrigger>
+      <M.ModalTrigger asChild>{children}</M.ModalTrigger>
       <M.ModalContent>
         {(stage === 'form' && (
           <>
