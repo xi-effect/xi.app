@@ -1,10 +1,9 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import Timer from './Timer';
 
@@ -24,7 +23,7 @@ const FormBlock = (props: FormBlockProps) => {
   const [timer, setTimer] = useState(false);
 
   return (
-    <Form {...(form as any)}>
+    <Form {...form}>
       <form className="p-6 pt-5 space-y-4" onSubmit={form.handleSubmit(console.log)}>
         {timer && (
           <Timer
@@ -34,7 +33,6 @@ const FormBlock = (props: FormBlockProps) => {
           />
         )}
         <FormField
-          // @ts-ignore
           control={control}
           name="email"
           render={({ fieldState: { error } }) => (
@@ -48,7 +46,6 @@ const FormBlock = (props: FormBlockProps) => {
           )}
         />
         <FormField
-          // @ts-ignore
           control={control}
           name="password"
           render={({ fieldState: { error } }) => (

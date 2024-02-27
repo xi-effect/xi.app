@@ -19,10 +19,9 @@ const FormBlock = (props: FormBlockProps) => {
   const { control } = form;
 
   return (
-    <Form {...(form as any)}>
+    <Form {...form}>
       <form className="p-6 pt-5 space-y-4" onSubmit={form.handleSubmit(console.log)}>
         <FormField
-          // @ts-ignore
           control={control}
           name="currentPassword"
           render={({ fieldState: { error } }) => (
@@ -36,7 +35,6 @@ const FormBlock = (props: FormBlockProps) => {
           )}
         />
         <FormField
-          // @ts-ignore
           control={control}
           name="password"
           render={({ fieldState: { error } }) => (
@@ -50,7 +48,6 @@ const FormBlock = (props: FormBlockProps) => {
           )}
         />
         <FormField
-          // @ts-ignore
           control={control}
           name="confirmPassword"
           render={({ fieldState: { error } }) => (
