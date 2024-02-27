@@ -11,7 +11,7 @@ const DisconnectButton = () => {
   return (
     <button
       {...buttonProps}
-      className="h-12 w-12 rounded-[24px] bg-red-80 flex flex-row items-center justify-center ml-2 hover:bg-red-100"
+      className="bg-red-80 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] hover:bg-red-100"
     >
       <Endcall className="fill-gray-0" />
     </button>
@@ -23,7 +23,7 @@ const MicrophoneButton = () => {
     <TrackToggle
       source={Track.Source.Microphone}
       showIcon={false}
-      className="h-12 w-12 rounded-[24px] bg-gray-100 flex flex-row items-center justify-center"
+      className="flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100"
     >
       <Microphone className={`fill-red-0`} />
     </TrackToggle>
@@ -35,7 +35,7 @@ const CameraButton = () => {
     <TrackToggle
       source={Track.Source.Camera}
       showIcon={false}
-      className="h-12 w-12 rounded-[24px] bg-gray-100 flex flex-row items-center justify-center ml-0.5"
+      className="ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100"
     >
       <Conference className={`fill-red-0`} />
     </TrackToggle>
@@ -45,9 +45,9 @@ const CameraButton = () => {
 const ShareButton = () => {
   return (
     <TrackToggle
-      source={Track.Source.Camera}
+      source={Track.Source.ScreenShare}
       showIcon={false}
-      className="h-12 w-12 rounded-[24px] bg-gray-100 flex flex-row items-center justify-center ml-8"
+      className="ml-8 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100"
     >
       <Screenshare className={`fill-red-0`} />
     </TrackToggle>
@@ -59,7 +59,7 @@ const GroupButton = () => {
     <TrackToggle
       source={Track.Source.Camera}
       showIcon={false}
-      className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center"
+      className="flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
     >
       <Group className={`fill-red-0`} />
     </TrackToggle>
@@ -71,7 +71,7 @@ const ChatButton = () => {
     <TrackToggle
       source={Track.Source.Camera}
       showIcon={false}
-      className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center"
+      className="flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
     >
       <Chat className={`fill-red-0`} />
     </TrackToggle>
@@ -83,7 +83,7 @@ const HandButton = () => {
     <TrackToggle
       source={Track.Source.Camera}
       showIcon={false}
-      className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center"
+      className="flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
       aria-label="Поднять руку"
     >
       <Hand className={`fill-red-0`} />
@@ -93,14 +93,14 @@ const HandButton = () => {
 
 export const BottomBar = () => {
   return (
-    <div className="p-4 w-full flex flex-row justify-between">
+    <div className="flex w-full flex-row justify-between p-4">
       <div className="flex flex-row">
         <MicrophoneButton />
         <CameraButton />
         <ShareButton />
       </div>
 
-      <div className="h-12 w-[144px] rounded-[24px] bg-gray-100 flex flex-row items-center justify-center p-1 gap-2">
+      <div className="flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] bg-gray-100 p-1">
         <GroupButton />
         <ChatButton />
         <HandButton />

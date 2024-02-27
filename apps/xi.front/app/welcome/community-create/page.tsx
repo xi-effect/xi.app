@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -6,10 +5,17 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useMedia } from 'pkg.utils';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Input } from '@xipkg/input';
 import { FileUploader } from '@xipkg/fileuploader';
 
@@ -77,7 +83,7 @@ export default function WelcomeCommunityCreate() {
               <span className="font-medium leading-[22px] text-gray-90 w-full">
                 Изображение сообщества
               </span>
-              <FileUploader size="small" />
+              <FileUploader size="small" onChange={() => {}} />
             </div>
           </div>
           <Form {...form}>

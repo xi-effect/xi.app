@@ -45,7 +45,7 @@ export const AvatarEditorComponent = ({ children }: AvatarEditorT) => {
         <ModalHeader>
           <ModalTitle>Изменение фотографии</ModalTitle>
         </ModalHeader>
-        <div className="relative w-[calc(100%-48px)] h-[300px]">
+        <div className="relative h-[300px] w-[calc(100%-48px)]">
           <Cropper
             image="https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000"
             crop={crop}
@@ -61,7 +61,7 @@ export const AvatarEditorComponent = ({ children }: AvatarEditorT) => {
               containerStyle: {
                 borderRadius: '8px',
                 left: '24px',
-                width: '100%'
+                width: '100%',
               },
             }}
             minZoom={0.85}

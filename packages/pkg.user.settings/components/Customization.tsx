@@ -18,15 +18,15 @@ export const Customization = () => {
   return (
     <>
       {!isMobile && <span className="text-3xl font-semibold">Персонализация</span>}
-      <div className="flex flex-col w-full p-1 border border-gray-80 rounded-2xl sm:mt-4">
-        <div className="flex flex-col w-full p-3">
+      <div className="border-gray-80 flex w-full flex-col rounded-2xl border p-1 sm:mt-4">
+        <div className="flex w-full flex-col p-3">
           <span className="text-xl font-semibold">Внешний вид</span>
         </div>
-        <div className="flex flex-row w-full p-3 gap-4 mt-2">
+        <div className="mt-2 flex w-full flex-row gap-4 p-3">
           <Palette className="fill-brand-80" />
-          <span className="text-base leading-[24px] font-semibold">Тема оформления</span>
+          <span className="text-base font-semibold leading-[24px]">Тема оформления</span>
           <Select value={theme} onValueChange={(value) => setTheme(value)}>
-            <SelectTrigger className="w-[250px] ml-auto">
+            <SelectTrigger className="ml-auto w-[250px]">
               <SelectValue placeholder="Select a fruit" />
             </SelectTrigger>
             <SelectContent>

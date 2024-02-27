@@ -1,14 +1,20 @@
-// @ts-nocheck
 'use client';
 
 import React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
-import { redirect, useRouter } from 'next/navigation';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
@@ -81,7 +87,7 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full h-full flex flex-col justify-items-start space-y-4"
+        className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
           <Image
@@ -145,7 +151,13 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
                   autoComplete="on"
                   id="user password"
                   type={isPasswordShow ? 'text' : 'password'}
-                  after={isPasswordShow ? <Eyeoff className="fill-gray-60" /> : <Eyeon className="fill-gray-60" />}
+                  after={
+                    isPasswordShow ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
                   afterProps={{
                     onClick: changePasswordShow,
                   }}
@@ -156,7 +168,7 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
             </FormItem>
           )}
         />
-        <div className="flex w-full h-full justify-between items-end">
+        <div className="flex h-full w-full items-end justify-between">
           <div className="flex h-[56px] items-center">
             <Link size="l" theme="brand" variant="hover" href="/">
               Войти
