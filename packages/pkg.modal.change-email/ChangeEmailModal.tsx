@@ -8,14 +8,14 @@ import Form from './components/Form';
 
 type ChangeEmailModalT = PropsWithChildren<{}>;
 
-export const ChangeEmailModal = (props: ChangeEmailModalT) => {
+export const ChangeEmailModal = ({children}: ChangeEmailModalT) => {
   const [stage, setStage] = useState<{ type: 'form' } | { type: 'success'; email: string }>({
     type: 'form',
   });
 
   return (
     <M.Modal>
-      <M.ModalTrigger asChild>{props.children}</M.ModalTrigger>
+      <M.ModalTrigger asChild>{children}</M.ModalTrigger>
       <M.ModalContent>
         {(stage.type === 'form' && (
           <>
