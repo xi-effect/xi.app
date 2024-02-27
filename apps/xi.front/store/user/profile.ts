@@ -17,8 +17,6 @@ export type UserProfile = {
   getUser: () => void;
 };
 
-const controller = new AbortController();
-
 export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
   set,
 ) => ({
@@ -32,11 +30,6 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
   updateUser: (value: { [key in keyof UserT]: unknown }) =>
     set((state) => ({ user: { ...state.user, value } })),
   getUser: async () => {
-    setTimeout(() => {
-      controller.abort();
-      toast.error('Время ожидания запроса превышено');
-    }, 2000);
-
     const { data, status } = await get({
       service: 'auth',
       path: '/api/users/current/home/',
@@ -46,13 +39,13 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
             ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             : 'false',
         },
-        signal: controller.signal
       },
     });
+
     if (status === 401) {
-      setTimeout(() => useMainSt.getState().setIsLogin(false), 500);
+      useMainSt.getState().setIsLogin(false)
     } else {
-      setTimeout(() => useMainSt.getState().setIsLogin(true), 500);
+      useMainSt.getState().setIsLogin(true)
     }
   },
 });

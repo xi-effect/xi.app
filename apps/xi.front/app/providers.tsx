@@ -2,11 +2,16 @@
 
 import { ThemeProvider } from 'next-themes';
 import { redirect, usePathname } from 'next/navigation';
-import { Navigation } from 'pkg.navigation';
 import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import { useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { useMainSt } from 'store';
+
+import dynamic from 'next/dynamic';
+ 
+const Navigation = dynamic(() =>
+  import('pkg.navigation').then((mod) => mod.Navigation)
+)
 
 const mapsOfPathsWithoutNav = [
   '/welcome/community',
