@@ -9,11 +9,10 @@ type UserSettingsT = {
 };
 
 export const UserSettings = ({ onExit }: UserSettingsT) => {
-  const isMobile = useMedia('(max-width: 719px)');
+  const isMobile = useMedia('(max-width: 719px)', false);
 
   const [activeContent, setActiveContent] = React.useState<number>(0);
   const [showContent, setShowContent] = React.useState(false);
-  const isTablet = useMedia('(max-width: 960px)');
 
   return (
     <div className="flex w-full justify-center">

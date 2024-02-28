@@ -1,14 +1,10 @@
-import React from 'react';
-import { Button } from '@xipkg/button';
-import { Camera, ChevronRight, Key, Mail } from '@xipkg/icons';
-import { Input } from '@xipkg/input';
-import { Label } from '@xipkg/label';
+import { ChevronRight, Key, Mail } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import { ChangePasswordModal } from 'pkg.modal.change-password';
 import { ChangeEmailModal } from 'pkg.modal.change-email';
 
 export const Secure = () => {
-  const isMobile = useMedia('(max-width: 719px)');
+  const isMobile = useMedia('(max-width: 719px)', false);
 
   return (
     <>

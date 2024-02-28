@@ -11,8 +11,7 @@ type NavigationProp = {
 };
 
 export const Navigation = ({ children, onExit }: NavigationProp) => {
-  const isMobile = useMedia('(max-width: 480px)');
-  const isTablet = useMedia('(max-width: 960px)');
+  const isTablet = useMedia('(max-width: 960px)', false);
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
 
   if (isTablet)

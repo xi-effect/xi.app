@@ -7,10 +7,6 @@ import { ReactNode, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { useMainSt } from 'store';
 
-import dynamic from 'next/dynamic';
-
-const Navigation = dynamic(() => import('pkg.navigation').then((mod) => mod.Navigation));
-
 const mapsOfPathsWithoutNav = [
   '/welcome/community',
   '/welcome/community-create',

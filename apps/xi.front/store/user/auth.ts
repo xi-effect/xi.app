@@ -52,7 +52,7 @@ type ResponseBodySignUp = {
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   isLogin: null,
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
-  onSignIn: async ({ email, password, redirectFn, setError }) => {
+  onSignIn: async ({ email, password, setError }) => {
     const { data, status } = await post<RequestBodySignIn, ResponseBodySignIn>({
       service: 'auth',
       path: '/api/signin/',
@@ -78,7 +78,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
       setError('password', { type: 'manual', message: 'Неправильный пароль' });
     }
   },
-  onSignUp: async ({ nickname, email, password, redirectFn, setError }) => {
+  onSignUp: async ({ nickname, email, password, setError }) => {
     const { data, status } = await post<RequestBodySignUp, ResponseBodySignUp>({
       service: 'auth',
       path: '/api/signup/',

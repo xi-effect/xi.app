@@ -63,7 +63,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     trigger();
     const status = onSignIn({ ...data, setError });
-    if (status === 200) redirect('/');
+    if (status === 200) redirect('/community/1/home');
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);

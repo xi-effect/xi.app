@@ -12,7 +12,7 @@ import {
 import { useTheme } from 'next-themes';
 
 export const Customization = () => {
-  const isMobile = useMedia('(max-width: 719px)');
+  const isMobile = useMedia('(max-width: 719px)', false);
   const { theme, setTheme } = useTheme();
 
   return (
