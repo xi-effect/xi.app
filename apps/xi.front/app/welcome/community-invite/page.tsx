@@ -17,6 +17,15 @@ import {
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@xipkg/input';
+import { del, put } from 'pkg.utils/fetch';
+import { toast } from 'sonner';
+import { useMainSt } from 'store';
+
+type RequestBody = {};
+
+type ResponseBody = {
+  detail: string;
+};
 
 const FormSchema = z.object({
   invite: z.string({
@@ -27,10 +36,22 @@ const FormSchema = z.object({
 export default function WelcomeCommunityInvite() {
   const isMobile = useMedia('(max-width: 960px)');
 
+  const updateUser = useMainSt((state) => state.updateUser);
+
   const router = useRouter();
 
-  const handleBack = () => {
-    router.push('/welcome/community');
+  const handleBack = async () => {
+    const { data, status } = await del({
+      service: 'auth',
+      path: '/api/onboarding/stages/community-invite/',
+    });
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'community-choice' });
+      router.push('/welcome/community');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -44,15 +65,24 @@ export default function WelcomeCommunityInvite() {
     control,
     watch,
     handleSubmit,
-    trigger,
     formState: { errors },
   } = form;
 
   const watchInvite = watch('invite');
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    trigger();
-    router.push('/welcome/final');
+  const onSubmit = async ({}: z.infer<typeof FormSchema>) => {
+    const { data, status } = await put<RequestBody, ResponseBody>({
+      service: 'auth',
+      path: '/api/onboarding/stages/completed/',
+      body: {},
+    });
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'completed' });
+      router.push('/welcome/final');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   return (
@@ -119,7 +149,6 @@ export default function WelcomeCommunityInvite() {
                   objectFit: 'cover',
                   objectPosition: 'left',
                 }}
-                placeholder="blur"
                 alt="interface example"
                 src="/assets/welcome/community-add.png"
                 fill

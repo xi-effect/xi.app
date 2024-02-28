@@ -4,7 +4,7 @@ import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useMedia } from 'pkg.utils';
+import { put, useMedia } from 'pkg.utils';
 import {
   Form,
   FormControl,
@@ -18,6 +18,9 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@xipkg/input';
 import { FileUploader } from '@xipkg/fileuploader';
+import { toast } from 'sonner';
+import { del } from 'pkg.utils/fetch';
+import { useMainSt } from 'store';
 
 const FormSchema = z.object({
   community: z.string({
@@ -25,13 +28,28 @@ const FormSchema = z.object({
   }),
 });
 
+type RequestBody = {};
+
+type ResponseBody = {
+  detail: string;
+};
+
 export default function WelcomeCommunityCreate() {
   const isMobile = useMedia('(max-width: 960px)');
 
+  const updateUser = useMainSt((state) => state.updateUser);
+
   const router = useRouter();
 
-  const handleBack = () => {
-    router.push('/welcome/community');
+  const handleBack = async () => {
+    const { data, status } = await del({ service: 'auth', path: '/api/onboarding/stages/community-create/' });
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'community-choise' });
+      router.push('/welcome/community');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -45,15 +63,24 @@ export default function WelcomeCommunityCreate() {
     control,
     watch,
     handleSubmit,
-    trigger,
     formState: { errors },
   } = form;
 
   const watchCommunity = watch('community');
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    trigger();
-    router.push('/welcome/final');
+  const onSubmit = async ({ community }: z.infer<typeof FormSchema>) => {
+    const { data, status } = await put<RequestBody, ResponseBody>({
+      service: 'auth',
+      path: '/api/onboarding/stages/completed/',
+      body: {},
+    });
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'completed' });
+      router.push('/welcome/final');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   return (
@@ -128,7 +155,6 @@ export default function WelcomeCommunityCreate() {
                   objectFit: 'cover',
                   objectPosition: 'left',
                 }}
-                placeholder="blur"
                 alt="interface example"
                 src="/assets/welcome/community-add.png"
                 fill

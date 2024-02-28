@@ -4,7 +4,7 @@ import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useMedia } from 'pkg.utils';
+import { put, useMedia } from 'pkg.utils';
 import {
   Form,
   FormControl,
@@ -19,26 +19,34 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@xipkg/input';
 import { Label } from '@xipkg/label';
 import { FileUploader } from '@xipkg/fileuploader';
+import { toast } from 'sonner';
+import { useMainSt } from 'store';
 
 const FormSchema = z.object({
-  nickname: z.string({
+  displayName: z.string({
     required_error: 'Обязательное поле',
   }),
 });
 
+type RequestBody = {
+  display_name: string;
+};
+
+type ResponseBody = {
+  detail: string;
+};
+
 export default function WelcomeUserInfo() {
   const isMobile = useMedia('(max-width: 960px)');
 
-  const router = useRouter();
+  const updateUser = useMainSt((state) => state.updateUser);
 
-  const handleBack = () => {
-    router.push('/welcome/community');
-  };
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      nickname: '',
+      displayName: '',
     },
   });
 
@@ -46,15 +54,28 @@ export default function WelcomeUserInfo() {
     control,
     watch,
     handleSubmit,
-    trigger,
     formState: { errors },
   } = form;
 
-  const watchNickname = watch('nickname');
+  const watchNickname = watch('displayName');
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    trigger();
-    router.push('/welcome/community');
+  const onSubmit = async ({ displayName }: z.infer<typeof FormSchema>) => {
+    const { data, status } = await put<RequestBody, ResponseBody>({
+      service: 'auth',
+      path: '/api/onboarding/stages/community-choice/',
+      body: {
+        display_name: displayName,
+      },
+    });
+
+    console.log('data', data);
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'community-choice' });
+      router.push('/welcome/community');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   return (
@@ -91,14 +112,14 @@ export default function WelcomeUserInfo() {
             <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full flex flex-col">
               <FormField
                 control={control}
-                name="nickname"
+                name="displayName"
                 render={({ field }) => (
                   <FormItem className="mt-8">
                     <FormLabel>Отображаемое имя</FormLabel>
                     <FormControl>
                       <Input
                         className="mt-1"
-                        error={!!errors?.nickname}
+                        error={!!errors?.displayName}
                         autoComplete="off"
                         type="text"
                         {...field}
@@ -130,7 +151,6 @@ export default function WelcomeUserInfo() {
                   objectFit: 'cover',
                   objectPosition: 'left',
                 }}
-                placeholder="blur"
                 alt="interface example"
                 src="/assets/welcome/user-info.png"
                 fill

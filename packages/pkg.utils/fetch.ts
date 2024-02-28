@@ -14,6 +14,7 @@ type GetT = {
 
 type PostT<T> = GetT & { body: T };
 type PutT<T> = GetT & { body: T };
+type DelT = GetT;
 
 const servicesMap: ServicesMapT = {
   backend: process.env.NEXT_PUBLIC_SERVER_URL_BACKEND ?? '',
@@ -64,6 +65,13 @@ export async function post<T, U>({ service, path, body, config }: PostT<T>) {
 export async function put<T, U>({ service, path, body, config }: PutT<T>) {
   const init = { method: 'put', body: JSON.stringify(body), ...config };
   const { data, status } = await http<U>(service, path, init as RequestInit);
+
+  return { data, status };
+}
+
+export async function del<T>({ service, path, config }: DelT) {
+  const init = { method: 'delete', ...config };
+  const { data, status } = await http<T>(service, path, init as RequestInit);
 
   return { data, status };
 }
