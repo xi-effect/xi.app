@@ -3,6 +3,7 @@
 import { Button } from '@xipkg/button';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   const role = 'администратор';
@@ -99,13 +100,15 @@ const SupportBox = () => {
           связи, вашим идеям и предложениям.
         </p>
         <div className="flex gap-8 mt-6 max-[600px]:flex-col max-[600px]:gap-2 ">
-          <Button className="text-sm h-8 xl:h-11 xl:text-base font-medium">
-            Написать в телеграм
-            <span className="bg-[url('/assets/community-home-page/tg-filled-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />
+          <Button className="text-sm h-8 xl:h-12 xl:text-base font-medium" asChild>
+            <Link href="https://t.me/+SCYx_bvsSolmMmZi">
+              Написать в телеграм
+              <span className="bg-[url('/assets/community-home-page/tg-filled-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />
+            </Link>
           </Button>
           <Button
             variant={'secondary'}
-            className="text-sm h-8 xl:h-11 xl:text-base border-[1px] xl:border-2 font-medium"
+            className="text-sm h-8 xl:h-12 xl:text-base border-[1px] xl:border-2 font-medium"
           >
             Посмотреть руководства
             <span className="bg-[url('/assets/community-home-page/manual-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />

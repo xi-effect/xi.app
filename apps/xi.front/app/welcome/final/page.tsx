@@ -10,7 +10,7 @@ export default function WelcomeFinal() {
   const router = useRouter();
 
   const handleNext = () => {
-    router.push('/');
+    router.push('/community/1/home');
   };
 
   return (
@@ -35,7 +35,7 @@ export default function WelcomeFinal() {
             Добро пожаловать!
           </div>
           <Link
-            href="/?show-tour=true"
+            href="/community/1/home/?show-tour=true"
             className="mt-8 border-solid border-gray-20 flex flex-col justify-center p-4 gap-1 w-full items-start border rounded-2xl cursor-pointer"
           >
             <div className="text-xl font-medium leading-[28px] text-gray-80">

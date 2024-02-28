@@ -2,10 +2,10 @@
 
 import { ThemeProvider } from 'next-themes';
 import { redirect, usePathname } from 'next/navigation';
-import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
 import { ReactNode, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { useMainSt } from 'store';
+import Load from './load';
 
 const mapsOfPathsWithoutNav = [
   '/welcome/community',
@@ -16,14 +16,7 @@ const mapsOfPathsWithoutNav = [
   '/signup',
 ];
 
-const mapsOfPathsWithoutRedirect = ['/', '/signup', '/reset-password'];
-
-const welcomePagesPathsDict = {
-  created: '/welcome/user-info',
-  'community-choice': '/welcome/community',
-  'community-create': '/welcome/community-create',
-  'community-invite': '/welcome/community-invite',
-};
+const mapsOfPathsWithoutRedirect = ['/', '/signin', '/signup', '/reset-password'];
 
 const welcomePagesPaths = [
   '/welcome/user-info',
@@ -32,49 +25,53 @@ const welcomePagesPaths = [
   '/welcome/community-invite',
 ];
 
+const welcomePagesPathsDict = {
+  created: '/welcome/user-info',
+  'community-choice': '/welcome/community',
+  'community-create': '/welcome/community-create',
+  'community-invite': '/welcome/community-invite',
+};
+
 type AuthProviderT = {
   children: ReactNode;
 };
 
 const AuthProvider = ({ children }: AuthProviderT) => {
   const pathname = usePathname();
-  console.log('pathname', pathname);
 
   const isLogin = useMainSt((state) => state.isLogin);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
 
   console.log('isLogin', isLogin);
   console.log('onboardingStage', onboardingStage);
-  console.log('pathname', pathname);
 
   // Показываем скелетон, пока запрос на проверку сессии не пришёл
-//   if (isLogin === null) return <SkeletonMainLayout />;
+  if (isLogin === null) return <Load />;
 
-//   // Если пользователь не залогинен, то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
-//   if (
-//     !isLogin &&
-//     !(mapsOfPathsWithoutRedirect.includes(pathname) || pathname.includes('/reset-password/'))
-//   )
-//     return redirect('/');
+  // Если пользователь не залогинен, то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
+  if (
+    !isLogin &&
+    !(mapsOfPathsWithoutRedirect.includes(pathname) || pathname.includes('/reset-password/'))
+  ) {
+    redirect('/signin');
+    // toast('Требуется авторизация');
+  }
 
-//   if (
-//     isLogin &&
-//     !!onboardingStage &&
-//     onboardingStage === 'completed' &&
-//     welcomePagesPaths.includes(pathname)
-//   )
-//     redirect('/');
+  if (
+    isLogin &&
+    !!onboardingStage &&
+    onboardingStage === 'completed' &&
+    !pathname.includes('/community/')
+  )
+    redirect('/community/1/home');
 
-//   if (
-//     isLogin &&
-//     !!onboardingStage &&
-//     onboardingStage !== 'completed' &&
-//     !welcomePagesPaths.includes(pathname)
-//   )
-//     redirect(welcomePagesPathsDict[onboardingStage]);
-
-//   // Если пользователь залогинен, но нам не нужно главное меню
-//   if (isLogin && mapsOfPathsWithoutNav.includes(pathname)) return children;
+  if (
+    isLogin &&
+    !!onboardingStage &&
+    onboardingStage !== 'completed' &&
+    !welcomePagesPaths.includes(pathname)
+  )
+    redirect(welcomePagesPathsDict[onboardingStage]);
 
   return children;
 };
@@ -85,9 +82,14 @@ type ProvidersT = {
 
 export const Providers = ({ children }: ProvidersT) => {
   const getUser = useMainSt((state) => state.getUser);
+  const setIsLogin = useMainSt((state) => state.setIsLogin);
 
   useEffect(() => {
-    getUser();
+    const { redir, isLogin } = getUser();
+    console.log("redir, isLogin", redir, isLogin);
+
+    if (!!redir) redirect(redir);
+    if (isLogin === true) setIsLogin(true);
   }, []);
 
   return (

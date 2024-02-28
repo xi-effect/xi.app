@@ -4,8 +4,13 @@ import { useMainSt } from 'store/main';
 import { UserSettings } from './settings';
 import { UserT } from 'store/models/user';
 import { redirect } from 'next/navigation';
-import { setTimeout } from 'timers';
-import { toast } from 'sonner';
+
+const welcomePagesPathsDict = {
+  created: '/welcome/user-info',
+  'community-choice': '/welcome/community',
+  'community-create': '/welcome/community-create',
+  'community-invite': '/welcome/community-invite',
+};
 
 type DataUserMethodAnswer = {
   [key: string]: unknown;
@@ -14,7 +19,7 @@ type DataUserMethodAnswer = {
 export type UserProfile = {
   user: UserT;
   updateUser: (value: { [key: string]: unknown }) => void;
-  getUser: () => void;
+  getUser: () => { redir?: string, isLogin?: boolean };
 };
 
 type ResponseBody = {
@@ -52,7 +57,8 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     if (status === 401) {
       useMainSt.getState().setIsLogin(false)
     } else {
-      useMainSt.getState().setIsLogin(true)
+      // if (data["onboarding_stage"] && data["onboarding_stage"] !== "completed") return { redir: welcomePagesPathsDict[data["onboarding_stage"]], isLogin: true };
+      useMainSt.getState().setIsLogin(true);
     }
   },
 });

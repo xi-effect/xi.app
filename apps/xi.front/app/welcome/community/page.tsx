@@ -56,8 +56,10 @@ export default function WelcomeCommunity() {
   const handleBack = async () => {
     const { data, status } = await del({
       service: 'auth',
-      path: '/api/onboarding/stages/community-choise/',
+      path: '/api/onboarding/stages/community-choice/',
     });
+
+    console.log("data", data);
 
     if (status === 204) {
       updateUser({ onboardingStage: 'created' });
