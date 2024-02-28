@@ -8,8 +8,8 @@ type ContentPropsT = {
   activeContent: number;
 };
 
-export const Content = ({ activeContent }: ContentPropsT) => {
-  const contentItems = [<Main />, <PersonalData />, <Customization />, <Secure />];
+const contentItems = [<Main />, <PersonalData />, <Customization />, <Secure />];
 
-  return <div className="w-full sm:ml-8">{contentItems[activeContent]}</div>;
+export const Content = ({ activeContent }: ContentPropsT) => {
+  return <div className="sm:ml-8 w-full">{contentItems[activeContent]}</div>;
 };
