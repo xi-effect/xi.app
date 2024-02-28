@@ -4,7 +4,7 @@ import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { put, useMedia } from 'pkg.utils';
+import { put } from 'pkg.utils';
 import {
   Form,
   FormControl,
@@ -35,14 +35,15 @@ type ResponseBody = {
 };
 
 export default function WelcomeCommunityCreate() {
-  const isMobile = useMedia('(max-width: 960px)');
-
   const updateUser = useMainSt((state) => state.updateUser);
 
   const router = useRouter();
 
   const handleBack = async () => {
-    const { data, status } = await del({ service: 'auth', path: '/api/onboarding/stages/community-create/' });
+    const { data, status } = await del({
+      service: 'auth',
+      path: '/api/onboarding/stages/community-create/',
+    });
 
     if (status === 204) {
       updateUser({ onboardingStage: 'community-choise' });
@@ -146,23 +147,21 @@ export default function WelcomeCommunityCreate() {
           </Form>
         </div>
       </div>
-      {!isMobile && (
-        <div className="w-full m-w-[856px] bg-gray-5">
-          <div className="pt-16 pl-16 h-full w-full relative">
-            <div className="absolute h-[calc(100vh-64px)] w-full">
-              <Image
-                style={{
-                  objectFit: 'cover',
-                  objectPosition: 'left',
-                }}
-                alt="interface example"
-                src="/assets/welcome/community-add.png"
-                fill
-              />
-            </div>
+      <div className="hidden md:flex w-full m-w-[856px] bg-gray-5">
+        <div className="pt-16 pl-16 h-full w-full relative">
+          <div className="absolute h-[calc(100vh-64px)] w-full">
+            <Image
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'left',
+              }}
+              alt="interface example"
+              src="/assets/welcome/community-add.png"
+              fill
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

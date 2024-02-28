@@ -27,7 +27,7 @@ const values: ValuesT = {
   1: 0,
 };
 
-export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: BottomBarT) => {
+export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex, }: BottomBarT) => {
   const handleMenu = () => {
     setSlideIndex(values[slideIndex]);
   };
@@ -37,7 +37,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
   };
 
   return (
-    <div className={`w-full overflow-auto`}>
+    <div className={`flex md:hidden w-full overflow-auto`}>
       <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
         <div className={`w-full overflow-auto`}>
           <div className={`sticky left-0 top-0 px-4 pt-4`}>

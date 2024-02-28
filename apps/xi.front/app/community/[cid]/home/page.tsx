@@ -118,7 +118,7 @@ const SupportBox = () => {
 
 export default function CommunityHomePage() {
   return (
-    <div className="flex flex-col h-full p-8 max-xs:p-4">
+    <div className="flex flex-col min-h-[100vh] h-full p-8 max-xs:p-4">
       <Header />
       <InfoCardList />
       <SupportBox />

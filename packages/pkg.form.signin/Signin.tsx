@@ -14,7 +14,7 @@ import {
   FormMessage,
   useForm,
 } from '@xipkg/form';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
@@ -44,6 +44,8 @@ const FormSchema = z.object({
 });
 
 export const SignIn = ({ onSignIn }: SignInT) => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -60,10 +62,10 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     formState: { errors },
   } = form;
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
-    const status = onSignIn({ ...data, setError });
-    if (status === 200) redirect('/community/1/home');
+    const status = await onSignIn({ ...data, setError });
+    if (status === 200) router.push('/community/1/home');
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
