@@ -55,12 +55,12 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
       className={`${
         isActive
           ? 'bg-brand-0 text-brand-80'
-          : 'bg-transparent text-gray-90 hover:bg-brand-0 hover:text-brand-80'
-      } group h-[40px] w-full p-2 flex flex-row items-center rounded-lg transition-colors ease-in  hover:cursor-pointer`}
+          : 'text-gray-90 hover:bg-brand-0 hover:text-brand-80 bg-transparent'
+      } group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in  hover:cursor-pointer`}
       key={index.toString()}
     >
       {iconsDict[index]}
-      <span className="text-[14px] font-normal pl-2">{item.name}</span>
+      <span className="pl-2 text-[14px] font-normal">{item.name}</span>
     </button>
   );
 };
@@ -83,7 +83,7 @@ export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }
   };
 
   return (
-    <div className="w-full sm:w-[220px] flex flex-col gap-1">
+    <div className="flex w-full flex-col gap-1 sm:w-[220px]">
       {options.map((item, index) => (
         <Item
           item={item}
@@ -95,10 +95,10 @@ export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }
       ))}
       <button
         onClick={() => handleExit()}
-        className="bg-transparent group mt-10 h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-60 transition-colors ease-in hover:bg-red-0 hover:text-red-100 hover:cursor-pointer"
+        className="text-gray-60 hover:bg-red-0 group mt-10 flex h-[40px] w-full flex-row items-center rounded-lg bg-transparent p-2 transition-colors ease-in hover:cursor-pointer hover:text-red-100"
       >
         <Exit className="transition-colors ease-in group-hover:fill-red-100" />
-        <span className="text-[14px] font-normal pl-2">Выйти</span>
+        <span className="pl-2 text-[14px] font-normal">Выйти</span>
       </button>
     </div>
   );

@@ -2,11 +2,10 @@
 
 import { ThemeProvider } from 'next-themes';
 import { redirect, usePathname } from 'next/navigation';
-import { Navigation } from 'pkg.navigation';
-import { SkeletonMainLayout } from 'pkg.navigation.skeleton';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { useMainSt } from 'store';
+import Load from './load';
 
 const mapsOfPathsWithoutNav = [
   '/welcome/community',
@@ -17,62 +16,88 @@ const mapsOfPathsWithoutNav = [
   '/signup',
 ];
 
-const mapsOfPathsWithoutRedirect = ['/', '/signup', '/reset-password'];
+const mapsOfPathsWithoutRedirect = ['/', '/signin', '/signup', '/reset-password'];
 
-function Auth(props) {
-  const { children } = props;
+const welcomePagesPaths = [
+  '/welcome/user-info',
+  '/welcome/community',
+  '/welcome/community-create',
+  '/welcome/community-invite',
+];
 
+const welcomePagesPathsDict = {
+  created: '/welcome/user-info',
+  'community-choice': '/welcome/community',
+  'community-create': '/welcome/community-create',
+  'community-invite': '/welcome/community-invite',
+};
+
+type AuthProviderT = {
+  children: ReactNode;
+};
+
+const AuthProvider = ({ children }: AuthProviderT) => {
   const pathname = usePathname();
-  console.log('pathname', pathname);
 
   const isLogin = useMainSt((state) => state.isLogin);
-  const getUser = useMainSt((state) => state.getUser);
-  const onSignOut = useMainSt((state) => state.onSignOut);
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const onboardingStage = useMainSt((state) => state.user.onboardingStage);
 
   console.log('isLogin', isLogin);
-  console.log('pathname', pathname);
-
-  const onExit = () => {
-    onSignOut();
-  };
+  console.log('onboardingStage', onboardingStage);
 
   // Показываем скелетон, пока запрос на проверку сессии не пришёл
-  if (isLogin === null) return <SkeletonMainLayout />;
-
-  // Если пользователь залогинен, но нам не нужно главное меню
-  if (isLogin && mapsOfPathsWithoutNav.includes(pathname)) return children;
+  if (isLogin === null) return <Load />;
 
   // Если пользователь не залогинен, то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
   if (
     !isLogin &&
     !(mapsOfPathsWithoutRedirect.includes(pathname) || pathname.includes('/reset-password/'))
-  )
-    return redirect('/');
+  ) {
+    redirect('/signin');
+    // toast('Требуется авторизация');
+  }
 
-  // Если пользователь залогинен и нам нужно показать главное меню
-  if (isLogin)
-    return (
-      <>
-        <Navigation onExit={onExit}>{children}</Navigation>
-      </>
-    );
+  if (
+    isLogin &&
+    !!onboardingStage &&
+    onboardingStage === 'completed' &&
+    !pathname.includes('/community/')
+  )
+    redirect('/community/1/home');
+
+  if (
+    isLogin &&
+    !!onboardingStage &&
+    onboardingStage !== 'completed' &&
+    !welcomePagesPaths.includes(pathname)
+  )
+    redirect(welcomePagesPathsDict[onboardingStage]);
 
   return children;
-}
+};
 
-export function Providers(props) {
-  const { children } = props;
+type ProvidersT = {
+  children: ReactNode;
+};
+
+export const Providers = ({ children }: ProvidersT) => {
+  const getUser = useMainSt((state) => state.getUser);
+  const setIsLogin = useMainSt((state) => state.setIsLogin);
+
+  useEffect(() => {
+    const { redir, isLogin } = getUser();
+    console.log("redir, isLogin", redir, isLogin);
+
+    if (!!redir) redirect(redir);
+    if (isLogin === true) setIsLogin(true);
+  }, []);
 
   return (
     <>
       <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
         <Toaster />
-        <Auth>{children}</Auth>
+        <AuthProvider>{children}</AuthProvider>
       </ThemeProvider>
     </>
   );
-}
+};

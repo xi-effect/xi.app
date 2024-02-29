@@ -4,23 +4,69 @@ import { Button } from '@xipkg/button';
 import { Mail, Plus } from '@xipkg/icons';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useMedia } from 'pkg.utils';
+import { del, put } from 'pkg.utils/fetch';
 import React from 'react';
+import { toast } from 'sonner';
+import { useMainSt } from 'store';
+
+type RequestBody = {};
+
+type ResponseBody = {
+  detail: string;
+};
 
 export default function WelcomeCommunity() {
-  const isMobile = useMedia('(max-width: 960px)');
+  const updateUser = useMainSt((state) => state.updateUser);
 
   const router = useRouter();
 
   const [tab, setTab] = React.useState(0);
 
-  const handleNext = () => {
-    if (tab === 0) router.push('/welcome/community-create');
-    if (tab === 1) router.push('/welcome/community-invite');
+  const handleNext = async () => {
+    if (tab === 0) {
+      const { data, status } = await put<RequestBody, ResponseBody>({
+        service: 'auth',
+        path: '/api/onboarding/stages/community-create/',
+        body: {},
+      });
+
+      if (status === 204) {
+        updateUser({ onboardingStage: 'community-create' });
+        router.push('/welcome/community-create');
+      } else {
+        toast('Ошибка сервера');
+      }
+    }
+    if (tab === 1) {
+      const { data, status } = await put<RequestBody, ResponseBody>({
+        service: 'auth',
+        path: '/api/onboarding/stages/community-invite/',
+        body: {},
+      });
+
+      if (status === 204) {
+        updateUser({ onboardingStage: 'community-invite' });
+        router.push('/welcome/community-invite');
+      } else {
+        toast('Ошибка сервера');
+      }
+    }
   };
 
-  const handleBack = () => {
-    router.push('/welcome/user-info');
+  const handleBack = async () => {
+    const { data, status } = await del({
+      service: 'auth',
+      path: '/api/onboarding/stages/community-choice/',
+    });
+
+    console.log("data", data);
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'created' });
+      router.push('/welcome/user-info');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   return (
@@ -108,23 +154,21 @@ export default function WelcomeCommunity() {
           </div>
         </div>
       </div>
-      {!isMobile && (
-        <div className="w-full m-w-[856px] bg-gray-5">
-          <div className="pt-16 pl-16 h-full w-full relative">
-            <div className="absolute h-[calc(100vh-64px)] w-full">
-              <Image
-                style={{
-                  objectFit: 'cover',
-                  objectPosition: 'left',
-                }}
-                alt="interface example"
-                src="/assets/welcome/community.png"
-                fill
-              />
-            </div>
+      <div className="hidden md:flex w-full m-w-[856px] bg-gray-5">
+        <div className="pt-16 pl-16 h-full w-full relative">
+          <div className="absolute h-[calc(100vh-64px)] w-full">
+            <Image
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'left',
+              }}
+              alt="interface example"
+              src="/assets/welcome/community.png"
+              fill
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

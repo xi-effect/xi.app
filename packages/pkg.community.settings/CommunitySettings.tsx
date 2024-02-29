@@ -4,11 +4,7 @@ import { Menu } from './components/Menu';
 import { Content } from './components/Content';
 import { useMedia } from 'pkg.utils';
 
-type CommunitySettingsT = {
-  onExit: () => void;
-};
-
-export const CommunitySettings = ({ onExit }: CommunitySettingsT) => {
+export const CommunitySettings = () => {
   const isMobile = useMedia('(max-width: 719px)');
 
   const [activeContent, setActiveContent] = React.useState<number>(0);
@@ -16,14 +12,14 @@ export const CommunitySettings = ({ onExit }: CommunitySettingsT) => {
   const isTablet = useMedia('(max-width: 960px)');
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-full max-w-[1132px] h-full min-h-full flex flex-col">
+    <div className="flex w-full justify-center">
+      <div className="flex h-full min-h-full w-full max-w-[1132px] flex-col">
         <Header
           activeItem={activeContent}
           showContent={showContent}
           setShowContent={setShowContent}
         />
-        <div className="flex flex-row mt-4">
+        <div className="mt-4 flex flex-row">
           {isMobile ? (
             <>
               {showContent ? (
@@ -33,7 +29,6 @@ export const CommunitySettings = ({ onExit }: CommunitySettingsT) => {
                   activeContent={activeContent}
                   setActiveContent={setActiveContent}
                   setShowContent={setShowContent}
-                  onExit={onExit}
                 />
               )}
             </>
@@ -43,7 +38,6 @@ export const CommunitySettings = ({ onExit }: CommunitySettingsT) => {
                 activeContent={activeContent}
                 setActiveContent={setActiveContent}
                 setShowContent={setShowContent}
-                onExit={onExit}
               />
               <Content activeContent={activeContent} />
             </>

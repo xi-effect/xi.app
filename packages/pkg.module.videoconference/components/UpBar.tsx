@@ -5,21 +5,21 @@ import { Grid, Settings, External } from '@xipkg/icons';
 
 export const UpBar = () => {
   return (
-    <div className="p-4 w-full flex flex-row items-end">
-      <span className="text-2xl font-semibold text-gray-0">B1.2</span>
-      <span className="ml-2 text-gray-40">Upper-intermediate</span>
+    <div className="flex w-full flex-row items-end p-4">
+      <span className="text-gray-0 text-2xl font-semibold">B1.2</span>
+      <span className="text-gray-40 ml-2">Upper-intermediate</span>
 
-      <button className="h-10 w-[95px] rounded-[20px] bg-gray-100 flex flex-row items-center justify-center gap-2 ml-auto">
+      <button className="ml-auto flex h-10 w-[95px] flex-row items-center justify-center gap-2 rounded-[20px] bg-gray-100">
         <Grid className="fill-gray-0" />
         <span className="text-gray-0">Вид</span>
       </button>
       {/* <button className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center ml-auto">
           <Maximaze className="fill-gray-0" />
         </button> */}
-      <button className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center ml-2">
+      <button className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100">
         <External className="fill-gray-0" />
       </button>
-      <button className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center ml-2">
+      <button className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100">
         <Settings className="fill-gray-0" />
       </button>
     </div>

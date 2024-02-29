@@ -107,7 +107,7 @@ const Item = ({ index, item, setSlideIndex }: any) => {
     return (
       <div
         id={item?.elId}
-        className="group w-full p-2 mt-8 flex flex-col items-start rounded-lg text-gray-90"
+        className="text-gray-90 group mt-8 flex w-full flex-col items-start rounded-lg p-2"
         key={index.toString()}
       >
         <span className="text-[16px] font-semibold">{item.title}</span>
@@ -118,12 +118,12 @@ const Item = ({ index, item, setSlideIndex }: any) => {
   return (
     <div
       id={item?.elId}
-      className="group h-[40px] w-full p-2 flex flex-row items-center rounded-lg text-gray-90 transition-colors ease-in hover:bg-brand-0 hover:text-brand-80 hover:cursor-pointer"
+      className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
       key={index.toString()}
       onClick={handleRouteChange}
     >
       {iconsDict[item.icon]}
-      <span className="text-[14px] font-normal pl-2">{item.label}</span>
+      <span className="pl-2 text-[14px] font-normal">{item.label}</span>
     </div>
   );
 };
@@ -137,7 +137,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   return (
     <div
       id="community-services"
-      className={`flex flex-col h-[calc(100dvh-128px)] sm:mb-[100px] mt-3 px-5 sm:px-1 gap-1 overflow-y-auto ${
+      className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[100px] sm:px-1 ${
         className ?? ''
       }`}
     >

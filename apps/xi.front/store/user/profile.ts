@@ -4,7 +4,13 @@ import { useMainSt } from 'store/main';
 import { UserSettings } from './settings';
 import { UserT } from 'store/models/user';
 import { redirect } from 'next/navigation';
-import { setTimeout } from 'timers';
+
+const welcomePagesPathsDict = {
+  created: '/welcome/user-info',
+  'community-choice': '/welcome/community',
+  'community-create': '/welcome/community-create',
+  'community-invite': '/welcome/community-invite',
+};
 
 type DataUserMethodAnswer = {
   [key: string]: unknown;
@@ -12,9 +18,13 @@ type DataUserMethodAnswer = {
 
 export type UserProfile = {
   user: UserT;
-  updateUser: (value) => void;
-  getUser: () => void;
+  updateUser: (value: { [key: string]: unknown }) => void;
+  getUser: () => { redir?: string, isLogin?: boolean };
 };
+
+type ResponseBody = {
+  onboarding_stage: UserT["onboardingStage"];
+}
 
 export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
   set,
@@ -25,11 +35,12 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     handle: '', // Уникальное имя пользователя, отображается в интерфейсе как основное
     avatar: null, // Аватарка пользователя
     communities: [], // Массив Сообществ
+    onboardingStage: null,
   },
-  updateUser: (value: { [key in keyof UserT]: unknown }) =>
-    set((state) => ({ user: { ...state.user, value } })),
+  updateUser: ({ key: value }: { [key: string]: unknown }) =>
+    set((state) => ({ user: { ...state.user, key: value } })),
   getUser: async () => {
-    const { data, status } = await get({
+    const { data, status } = await get<ResponseBody>({
       service: 'auth',
       path: '/api/users/current/home/',
       config: {
@@ -40,11 +51,14 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
         },
       },
     });
+    console.log("data", data);
+    set((state) => ({ user: { ...state.user, onboardingStage: data["onboarding_stage"] } }));
+
     if (status === 401) {
-      setTimeout(() => useMainSt.getState().setIsLogin(false), 500);
-      console.log('useMainSt.getState().isLogin', useMainSt.getState().isLogin);
+      useMainSt.getState().setIsLogin(false)
     } else {
-      setTimeout(() => useMainSt.getState().setIsLogin(true), 500);
+      // if (data["onboarding_stage"] && data["onboarding_stage"] !== "completed") return { redir: welcomePagesPathsDict[data["onboarding_stage"]], isLogin: true };
+      useMainSt.getState().setIsLogin(true);
     }
   },
 });

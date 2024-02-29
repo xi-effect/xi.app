@@ -27,7 +27,7 @@ const values: ValuesT = {
   1: 0,
 };
 
-export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: BottomBarT) => {
+export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex, }: BottomBarT) => {
   const handleMenu = () => {
     setSlideIndex(values[slideIndex]);
   };
@@ -37,27 +37,27 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
   };
 
   return (
-    <div className={`w-full overflow-auto`}>
+    <div className={`flex md:hidden w-full overflow-auto`}>
       <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
         <div className={`w-full overflow-auto`}>
-          <div className={`sticky pt-4 px-4 top-0 left-0`}>
+          <div className={`sticky left-0 top-0 px-4 pt-4`}>
             <CommunityMenu />
           </div>
           <CommunityItems setSlideIndex={setSlideIndex} />
         </div>
         <div className="h-[calc(100dvh-80px)] overflow-auto">{children}</div>
       </SwipeableViews>
-      <div className="fixed bottom-0 flex flex-row items-center w-screen h-[80px] p-4 bg-gray-0 z-10">
+      <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
         <button
           onClick={handleMenu}
-          className="h-[48px] w-[48px] p-3 flex items-center mr-4 bg-gray-0"
+          className="bg-gray-0 mr-4 flex h-[48px] w-[48px] items-center p-3"
         >
           {slideIndex === 0 ? <Close /> : <Burger />}
         </button>
         <Image src="/assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
         <Modal>
           <ModalTrigger asChild>
-            <div className="h-[32px] w-[32px] flex content-center items-center ml-auto">
+            <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">
               {/* <Avatar size="m" src="/test/avatar.png" className="justify-self-end" /> */}
               <Image
                 style={{
@@ -74,7 +74,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
             <UserSettings onExit={onExit} />
           </ModalContent>
         </Modal>
-        <button className="h-[48px] w-[48px] p-3 flex content-center justify-center ml-4 bg-gray-0 justify-self-end">
+        <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center justify-center justify-self-end p-3">
           <Notification />
         </button>
       </div>

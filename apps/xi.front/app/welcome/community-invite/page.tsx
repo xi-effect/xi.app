@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -6,11 +5,27 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useMedia } from 'pkg.utils';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Input } from '@xipkg/input';
+import { del, put } from 'pkg.utils/fetch';
+import { toast } from 'sonner';
+import { useMainSt } from 'store';
+
+type RequestBody = {};
+
+type ResponseBody = {
+  detail: string;
+};
 
 const FormSchema = z.object({
   invite: z.string({
@@ -21,10 +36,22 @@ const FormSchema = z.object({
 export default function WelcomeCommunityInvite() {
   const isMobile = useMedia('(max-width: 960px)');
 
+  const updateUser = useMainSt((state) => state.updateUser);
+
   const router = useRouter();
 
-  const handleBack = () => {
-    router.push('/welcome/community');
+  const handleBack = async () => {
+    const { data, status } = await del({
+      service: 'auth',
+      path: '/api/onboarding/stages/community-invite/',
+    });
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'community-choice' });
+      router.push('/welcome/community');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -38,15 +65,24 @@ export default function WelcomeCommunityInvite() {
     control,
     watch,
     handleSubmit,
-    trigger,
     formState: { errors },
   } = form;
 
   const watchInvite = watch('invite');
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    trigger();
-    router.push('/welcome/final');
+  const onSubmit = async ({}: z.infer<typeof FormSchema>) => {
+    const { data, status } = await put<RequestBody, ResponseBody>({
+      service: 'auth',
+      path: '/api/onboarding/stages/completed/',
+      body: {},
+    });
+
+    if (status === 204) {
+      updateUser({ onboardingStage: 'completed' });
+      router.push('/welcome/final');
+    } else {
+      toast('Ошибка сервера');
+    }
   };
 
   return (
@@ -104,24 +140,21 @@ export default function WelcomeCommunityInvite() {
           </Form>
         </div>
       </div>
-      {!isMobile && (
-        <div className="w-full m-w-[856px] bg-gray-5">
-          <div className="pt-16 pl-16 h-full w-full relative">
-            <div className="absolute h-[calc(100vh-64px)] w-full">
-              <Image
-                style={{
-                  objectFit: 'cover',
-                  objectPosition: 'left',
-                }}
-                placeholder="blur"
-                alt="interface example"
-                src="/assets/welcome/community-add.png"
-                fill
-              />
-            </div>
+      <div className="hidden md:flex w-full m-w-[856px] bg-gray-5">
+        <div className="pt-16 pl-16 h-full w-full relative">
+          <div className="absolute h-[calc(100vh-64px)] w-full">
+            <Image
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'left',
+              }}
+              alt="interface example"
+              src="/assets/welcome/community-add.png"
+              fill
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

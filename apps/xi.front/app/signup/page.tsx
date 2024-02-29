@@ -10,7 +10,7 @@ export default function SignUpPage() {
 
   return (
     <div className="flex flex-wrap flex-col justify-center content-center w-screen h-[100dvh] xs:h-screen p-1">
-      <div className="flex max-w-[420px] w-full h-[600px] border border-gray-10 rounded-2xl p-8">
+      <div className="flex max-w-[420px] w-full h-[600px] xs:border xs:border-gray-10 xs:rounded-2xl p-8">
         <SignUp onSignUp={onSignUp} />
       </div>
     </div>
