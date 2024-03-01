@@ -7,9 +7,6 @@ import { useTheme } from "next-themes"
 type LogoProps = {
     height: number,
     width: number,
-    
-    //  logoVarian это название файла svg (без расширения),
-    //  в папке public/assets/brand 
     logoVariant: 'navigation' | 'id'
     logoSize: 'default' | 'small'
 }
