@@ -17,6 +17,7 @@ import { Link } from '@xipkg/link';
 import Image from 'next/image';
 import React from 'react';
 import * as z from 'zod';
+import { Logo } from 'pkg.logo'
 
 const password = z
   .string({
@@ -62,12 +63,7 @@ export const NewPassword = () => {
         className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
-          <Image
-            height={22}
-            width={180}
-            alt="xieffect logo"
-            src="/assets/brand/navigationlogo.svg"
-          />
+          <Logo height={22} width={180} logoVariant='navigation' logoSize='default' />
         </div>
         <h1 className="self-center text-2xl font-semibold">Сброс пароля</h1>
         <FormField

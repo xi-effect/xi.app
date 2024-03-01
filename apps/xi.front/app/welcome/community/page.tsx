@@ -8,6 +8,7 @@ import { del, put } from 'pkg.utils/fetch';
 import React from 'react';
 import { toast } from 'sonner';
 import { useMainSt } from 'store';
+import { Logo } from 'pkg.logo'
 
 type RequestBody = {};
 
@@ -74,12 +75,7 @@ export default function WelcomeCommunity() {
       <div className="h-full w-full p-8 flex justify-center content-center">
         <div className="flex flex-col h-full xs:p-8 w-full max-w-[536px]">
           <div className="h-22">
-            <Image
-              height={24}
-              width={202}
-              alt="xieffect logo"
-              src="/assets/brand/navigationlogo.svg"
-            />
+            <Logo height={24} width={202} logoVariant='navigation' logoSize='default' />
           </div>
           <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
             <div className="bg-brand-80 w-1/4 h-1.5 rounded" />

@@ -8,6 +8,7 @@ import { CommunityItems, CommunityMenu } from './';
 import Image from 'next/image';
 
 import { UserSettings } from 'pkg.user.settings';
+import { Logo } from 'pkg.logo';
 
 type MenuT = {
   slideIndex: number;
@@ -19,7 +20,7 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
   return (
     <>
       <div id="header-logo" className="flex h-8 w-fit flex-wrap p-2">
-        <Image src="/assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
+        <Logo height={16} width={134} logoVariant='navigation' logoSize='default' />
       </div>
       <CommunityMenu />
       <CommunityItems setSlideIndex={setSlideIndex} />
