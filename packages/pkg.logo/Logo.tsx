@@ -1,26 +1,22 @@
 'use client'
 
-import React from "react"
 import Image from "next/image";
 import { useTheme } from "next-themes"
+import { ComponentProps } from "react"
 
-type LogoProps = {
-    height: number,
-    width: number,
+type LogoT = {
     logoVariant: 'navigation' | 'id'
     logoSize: 'default' | 'small'
-}
+} & Omit<ComponentProps<typeof Image>, 'src' | 'alt'>;
 
-export const Logo = ({height, width, logoVariant, logoSize}: LogoProps) => {
+export const Logo = ({logoVariant, logoSize, ...rest}: LogoT) => {
    const { resolvedTheme } = useTheme()
 
     return (
           <Image
-            height={height}
-            width={width}
             alt="xieffect logo"
             src={`/assets/brand/${logoVariant}logo-${logoSize}-${resolvedTheme}.svg`}
+            {...rest}
           />
     )
-    
 }
