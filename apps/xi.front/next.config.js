@@ -39,6 +39,7 @@ const nextConfig = {
     'pkg.form.reset-password',
     'pkg.module.videoconference',
     'pkg.avatar.editor',
+    'pkg.logo',
     '@xipkg/form',
     '@xipkg/link',
     '@xipkg/button',
