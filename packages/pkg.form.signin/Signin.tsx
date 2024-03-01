@@ -18,6 +18,7 @@ import { redirect, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
+import { Logo } from 'pkg.logo'
 
 export type SignInT = {
   /**
@@ -81,12 +82,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
         className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
-          <Image
-            height={22}
-            width={180}
-            alt="xieffect logo"
-            src="/assets/brand/navigationlogo.svg"
-          />
+          <Logo height={22} width={180} logoVariant='navigation' logoSize='default' />
         </div>
         <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
         <FormField
