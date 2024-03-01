@@ -5,16 +5,16 @@ import Image from "next/image";
 import { useTheme } from "next-themes"
 
 type LogoProps = {
-    height?: number,
-    width?: number,
+    height: number,
+    width: number,
     
     //  logoVarian это название файла svg (без расширения),
     //  в папке public/assets/brand 
-    logoVariant?: 'navigation' | 'id'
-    logoSize?: 'default' | 'small'
+    logoVariant: 'navigation' | 'id'
+    logoSize: 'default' | 'small'
 }
 
-export const Logo = ({height = 22, width = 180, logoVariant, logoSize}: LogoProps) => {
+export const Logo = ({height, width, logoVariant, logoSize}: LogoProps) => {
    const { resolvedTheme } = useTheme()
 
    if (resolvedTheme === 'light') return (
