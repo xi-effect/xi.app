@@ -25,6 +25,7 @@
     "pkg.form.signup": "*",
     "pkg.spinner": "*",
     "pkg.utils": "*",
+    "pkg.logo": "*",
     "pkg.avatar.editor": "*",
     "@xipkg/icons": "0.8.4",
     "@xipkg/fileuploader": "1.1.0",

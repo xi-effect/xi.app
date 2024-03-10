@@ -10,6 +10,7 @@ import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
 import { UserSettings } from 'pkg.user.settings';
+import { Logo } from 'pkg.logo'
 
 type BottomBarT = {
   slideIndex: number;
@@ -54,7 +55,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex, }: Bott
         >
           {slideIndex === 0 ? <Close /> : <Burger />}
         </button>
-        <Image src="/assets/brand/navigationlogo.svg" alt="xieffect logo" width={134} height={16} />
+        <Logo height={16} width={134} logoVariant='navigation' logoSize='default' />
         <Modal>
           <ModalTrigger asChild>
             <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">

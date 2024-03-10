@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
+import { Logo } from 'pkg.logo'
 
 type FormValues = {
   email: string;
@@ -90,12 +91,7 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
         className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
-          <Image
-            height={22}
-            width={180}
-            alt="xieffect logo"
-            src="/assets/brand/navigationlogo.svg"
-          />
+           <Logo height={22} width={180} logoVariant='navigation' logoSize='default' />
         </div>
         <h1 className="self-center text-2xl font-semibold">Регистрация</h1>
         <FormField
