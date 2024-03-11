@@ -11,12 +11,16 @@ import {
 import { Close } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import Cropper from 'react-easy-crop';
+import { getCroppedImg } from './utils';
+import { put } from 'pkg.utils';
 
 type AvatarEditorT = {
-  children: ReactNode;
+  file: any;
+  open: boolean;
+  onOpenChange: (value: boolean) => void;
 };
 
-export const AvatarEditorComponent = ({ children }: AvatarEditorT) => {
+export const AvatarEditorComponent = ({ file, open, onOpenChange }: AvatarEditorT) => {
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
 
@@ -28,17 +32,60 @@ export const AvatarEditorComponent = ({ children }: AvatarEditorT) => {
     croppedArea: any,
     croppedAreaPixels: { width: number; height: number },
   ) => {
-    console.log(croppedAreaPixels.width / croppedAreaPixels.height);
+    setCroppedAreaPixels(croppedAreaPixels);
   };
 
   const onZoomChange = (zoom: number) => {
     setZoom(zoom);
   };
 
+  const [croppedAreaPixels, setCroppedAreaPixels] = React.useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const showCroppedImage = async () => {
+    try {
+      const croppedImage = (await getCroppedImg(file, croppedAreaPixels)) as Blob;
+      console.log('donee', croppedImage);
+
+      // blobToBinaryString(croppedImage)
+      //   .then(async (binaryString) => {
+      //     console.log('Binary String:', binaryString);
+
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error:', error);
+      //   });
+
+      const form = new FormData();
+      form.append('avatar', croppedImage, 'avatar.webp');
+
+      const { data, status } = await put({
+        service: 'auth',
+        path: '/api/users/current/avatar/',
+        body: form,
+        config: {
+          headers: {
+            // 'Content-Type': 'multipart/form-data',
+          },
+        },
+      });
+
+      console.log('put', data, status);
+
+      // const dat = readFile(croppedImage);
+      // console.log("dat", dat);
+
+      // setCroppedImage(croppedImage)
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
-    <Modal>
-      <ModalTrigger asChild>{children}</ModalTrigger>
-      <ModalContent className="sm:max-w-[600px]">
+    <Modal open={open} onOpenChange={(value) => onOpenChange(value)}>
+      <ModalContent className="z-50 sm:max-w-[600px]">
         <ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />
         </ModalCloseButton>
@@ -47,7 +94,10 @@ export const AvatarEditorComponent = ({ children }: AvatarEditorT) => {
         </ModalHeader>
         <div className="relative h-[300px] w-[calc(100%-48px)]">
           <Cropper
-            image="https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000"
+            image={
+              file ||
+              'https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000'
+            }
             crop={crop}
             cropSize={{ width: 236, height: 236 }}
             zoom={zoom}
@@ -67,11 +117,11 @@ export const AvatarEditorComponent = ({ children }: AvatarEditorT) => {
             minZoom={0.85}
           />
         </div>
-        <ModalFooter className="gap-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-          <Button className="ml-auto" variant="secondary">
+        <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">
+          <Button onClick={() => onOpenChange(false)} className="md:ml-auto" variant="secondary">
             Отменить
           </Button>
-          <Button>Изменить</Button>
+          <Button onClick={() => showCroppedImage()}>Изменить</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
