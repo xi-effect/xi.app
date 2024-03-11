@@ -13,6 +13,7 @@ import { Button } from '@xipkg/button';
 import Cropper from 'react-easy-crop';
 import { getCroppedImg } from './utils';
 import { put } from 'pkg.utils';
+import { toast } from 'sonner';
 
 type AvatarEditorT = {
   file: any;
@@ -47,16 +48,6 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange }: AvatarEditor
   const showCroppedImage = async () => {
     try {
       const croppedImage = (await getCroppedImg(file, croppedAreaPixels)) as Blob;
-      console.log('donee', croppedImage);
-
-      // blobToBinaryString(croppedImage)
-      //   .then(async (binaryString) => {
-      //     console.log('Binary String:', binaryString);
-
-      //   })
-      //   .catch((error) => {
-      //     console.error('Error:', error);
-      //   });
 
       const form = new FormData();
       form.append('avatar', croppedImage, 'avatar.webp');
@@ -66,18 +57,14 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange }: AvatarEditor
         path: '/api/users/current/avatar/',
         body: form,
         config: {
-          headers: {
-            // 'Content-Type': 'multipart/form-data',
-          },
+          headers: {},
         },
       });
 
-      console.log('put', data, status);
-
-      // const dat = readFile(croppedImage);
-      // console.log("dat", dat);
-
-      // setCroppedImage(croppedImage)
+      if (status === 204) {
+        toast('Аватарка успешно загружена');
+        onOpenChange(false);
+      };
     } catch (e) {
       console.error(e);
     }

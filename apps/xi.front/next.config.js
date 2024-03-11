@@ -61,13 +61,11 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: [
-      'cdn.discordapp.com',
-      'localhost:3000',
-      'localhost:5000',
-      'xieffect.ru:5000',
-      'xieffect.ru',
-      'app.xieffect.ru',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'auth.xieffect.ru',
+      },
     ],
   },
   output: 'standalone',

@@ -62,6 +62,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
       },
       config: {
         headers: {
+          'Content-Type': 'application/json',
           'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             : 'false',
@@ -89,6 +90,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
       },
       config: {
         headers: {
+          'Content-Type': 'application/json',
           'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             : 'false',
@@ -112,6 +114,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
       body: {},
       config: {
         headers: {
+          'Content-Type': 'application/json',
           'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             : 'false',

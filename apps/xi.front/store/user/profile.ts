@@ -45,6 +45,7 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
       path: '/api/users/current/home/',
       config: {
         headers: {
+          'Content-Type': 'application/json',
           'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
             : 'false',
