@@ -1,9 +1,8 @@
 import { StateCreator } from 'zustand';
 import { get } from 'pkg.utils';
-import { useMainSt } from 'store/main';
+import { useMainSt } from 'pkg.stores';
 import { UserSettings } from './settings';
-import { UserT } from 'store/models/user';
-import { redirect } from 'next/navigation';
+import { UserT } from 'pkg.models';
 
 const welcomePagesPathsDict = {
   created: '/welcome/user-info',
@@ -23,7 +22,11 @@ export type UserProfile = {
 };
 
 type ResponseBody = {
+  id: UserT["id"];
+  username: UserT["username"];
+  display_name: UserT["displayName"];
   onboarding_stage: UserT["onboardingStage"];
+  theme: UserT["theme"];
 }
 
 export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
@@ -31,11 +34,11 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
 ) => ({
   user: {
     id: null, // ID пользователя, уникален
+    email: '',
     username: '', // Имя пользователя, может быть неуникальным
-    handle: '', // Уникальное имя пользователя, отображается в интерфейсе как основное
-    avatar: null, // Аватарка пользователя
-    communities: [], // Массив Сообществ
+    displayName: '', // Уникальное имя пользователя, отображается в интерфейсе как основное
     onboardingStage: null,
+    theme: '',
   },
   updateUser: ({ key: value }: { [key: string]: unknown }) =>
     set((state) => ({ user: { ...state.user, key: value } })),
@@ -53,7 +56,7 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
       },
     });
     console.log("data", data);
-    set((state) => ({ user: { ...state.user, onboardingStage: data["onboarding_stage"] } }));
+    set((state) => ({ user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme } }));
 
     if (status === 401) {
       useMainSt.getState().setIsLogin(false)

@@ -5,8 +5,6 @@ import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 
 import { CommunityItems, CommunityMenu } from './';
 
-import Image from 'next/image';
-
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 
@@ -20,7 +18,7 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
   return (
     <>
       <div id="header-logo" className="flex h-8 w-fit flex-wrap p-2">
-        <Logo height={16} width={134} logoVariant='navigation' logoSize='default' />
+        <Logo height={16} width={134} logoVariant="navigation" logoSize="default" />
       </div>
       <CommunityMenu />
       <CommunityItems setSlideIndex={setSlideIndex} />

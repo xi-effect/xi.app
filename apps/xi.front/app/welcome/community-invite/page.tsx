@@ -19,7 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@xipkg/input';
 import { del, put } from 'pkg.utils/fetch';
 import { toast } from 'sonner';
-import { useMainSt } from 'store';
+import { useMainSt } from 'pkg.stores';
 import { Logo } from 'pkg.logo';
 
 type RequestBody = {};

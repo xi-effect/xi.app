@@ -20,7 +20,7 @@ import { Input } from '@xipkg/input';
 import { Label } from '@xipkg/label';
 import { FileUploader } from '@xipkg/fileuploader';
 import { toast } from 'sonner';
-import { useMainSt } from 'store';
+import { useMainSt } from 'pkg.stores';
 import { Logo } from 'pkg.logo';
 
 const FormSchema = z.object({

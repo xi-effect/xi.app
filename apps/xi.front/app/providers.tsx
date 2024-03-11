@@ -4,7 +4,7 @@ import { ThemeProvider } from 'next-themes';
 import { redirect, usePathname } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { Toaster } from 'sonner';
-import { useMainSt } from 'store';
+import { useMainSt } from 'pkg.stores';
 import Load from './load';
 
 const mapsOfPathsWithoutNav = [
@@ -86,7 +86,6 @@ export const Providers = ({ children }: ProvidersT) => {
 
   useEffect(() => {
     const { redir, isLogin } = getUser();
-    console.log("redir, isLogin", redir, isLogin);
 
     if (!!redir) redirect(redir);
     if (isLogin === true) setIsLogin(true);

@@ -20,7 +20,8 @@
     "sonner": "1.0.3",
     "pkg.community.channel-create": "*",
     "pkg.user.settings": "*",
-    "pkg.community.settings": "*"
+    "pkg.community.settings": "*",
+    "pkg.models": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

@@ -40,6 +40,8 @@ const nextConfig = {
     'pkg.module.videoconference',
     'pkg.avatar.editor',
     'pkg.logo',
+    'pkg.models',
+    'pkg.stores',
     '@xipkg/form',
     '@xipkg/link',
     '@xipkg/button',

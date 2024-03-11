@@ -2,15 +2,14 @@
 
 import React, { ReactNode } from 'react';
 import { Close, Burger, Notification } from '@xipkg/icons';
-import { Modal, ModalContent, ModalTrigger, ModalCloseButton } from '@xipkg/modal';
+import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 import Image from 'next/image';
-import { useSessionStorage } from 'pkg.utils';
 // @ts-ignore
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
 import { UserSettings } from 'pkg.user.settings';
-import { Logo } from 'pkg.logo'
+import { Logo } from 'pkg.logo';
 
 type BottomBarT = {
   slideIndex: number;
@@ -28,7 +27,7 @@ const values: ValuesT = {
   1: 0,
 };
 
-export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex, }: BottomBarT) => {
+export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: BottomBarT) => {
   const handleMenu = () => {
     setSlideIndex(values[slideIndex]);
   };
@@ -38,7 +37,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex, }: Bott
   };
 
   return (
-    <div className={`flex md:hidden w-full overflow-auto`}>
+    <div className={`flex w-full overflow-auto md:hidden`}>
       <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
         <div className={`w-full overflow-auto`}>
           <div className={`sticky left-0 top-0 px-4 pt-4`}>
@@ -55,7 +54,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex, }: Bott
         >
           {slideIndex === 0 ? <Close /> : <Burger />}
         </button>
-        <Logo height={16} width={134} logoVariant='navigation' logoSize='default' />
+        <Logo height={16} width={134} logoVariant="navigation" logoSize="default" />
         <Modal>
           <ModalTrigger asChild>
             <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMainSt } from 'store/main';
+import { useMainSt } from 'pkg.stores';
 
 import React from 'react';
 import dynamic from 'next/dynamic';
