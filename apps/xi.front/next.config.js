@@ -40,6 +40,8 @@ const nextConfig = {
     'pkg.module.videoconference',
     'pkg.avatar.editor',
     'pkg.logo',
+    'pkg.models',
+    'pkg.stores',
     '@xipkg/form',
     '@xipkg/link',
     '@xipkg/button',
@@ -61,13 +63,11 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: [
-      'cdn.discordapp.com',
-      'localhost:3000',
-      'localhost:5000',
-      'xieffect.ru:5000',
-      'xieffect.ru',
-      'app.xieffect.ru',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'auth.xieffect.ru',
+      },
     ],
   },
   output: 'standalone',

@@ -33,7 +33,6 @@ async function http<T>(
     ...configInit,
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
       ...configInit.headers,
     },
   };
@@ -55,7 +54,8 @@ export async function get<T>({ service, path, config }: GetT) {
 }
 
 export async function post<T, U>({ service, path, body, config }: PostT<T>) {
-  const init = { method: 'post', body: JSON.stringify(body), ...config };
+  console.log("body", body, body instanceof FormData);
+  const init = { method: 'post', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
 
   const { data, status } = await http<U>(service, path, init as RequestInit);
 
@@ -63,7 +63,7 @@ export async function post<T, U>({ service, path, body, config }: PostT<T>) {
 }
 
 export async function put<T, U>({ service, path, body, config }: PutT<T>) {
-  const init = { method: 'put', body: JSON.stringify(body), ...config };
+  const init = { method: 'put', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
   const { data, status } = await http<U>(service, path, init as RequestInit);
 
   return { data, status };

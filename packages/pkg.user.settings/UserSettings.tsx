@@ -8,7 +8,7 @@ type UserSettingsT = {
   onExit: () => void;
 };
 
-export const UserSettings = ({ onExit }: UserSettingsT) => {
+export const UserSettings = ({  onExit }: UserSettingsT) => {
   const isMobile = useMedia('(max-width: 719px)', false);
 
   const [activeContent, setActiveContent] = React.useState<number>(0);

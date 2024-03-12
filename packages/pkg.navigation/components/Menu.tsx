@@ -5,10 +5,9 @@ import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 
 import { CommunityItems, CommunityMenu } from './';
 
-import Image from 'next/image';
-
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
+import { useMainSt } from 'pkg.stores';
 
 type MenuT = {
   slideIndex: number;
@@ -17,10 +16,12 @@ type MenuT = {
 };
 
 export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
+  const user = useMainSt((state) => state.user);
+
   return (
     <>
       <div id="header-logo" className="flex h-8 w-fit flex-wrap p-2">
-        <Logo height={16} width={134} logoVariant='navigation' logoSize='default' />
+        <Logo height={16} width={134} logoVariant="navigation" logoSize="default" />
       </div>
       <CommunityMenu />
       <CommunityItems setSlideIndex={setSlideIndex} />
@@ -31,12 +32,7 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
               id="user-profile-menu"
               className="hover:bg-gray-5 h-[48px] w-full rounded-lg p-2 hover:cursor-pointer"
             >
-              <UserProfile
-                src="/test/avatar.svg"
-                text="Ivan Kovylyaev"
-                label="@ikovylyaev"
-                size="m"
-              />
+              <UserProfile userId={user.id} text={user.displayName} label={user.username} size="m" />
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">

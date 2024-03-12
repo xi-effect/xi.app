@@ -3,12 +3,14 @@ import { Main } from './Main';
 import { PersonalData } from './PersonalData';
 import { Customization } from './Customization';
 import { Secure } from './Secure';
+import { UserT } from 'pkg.models';
 
 type ContentPropsT = {
   activeContent: number;
 };
 
-const contentItems = [<Main />, <PersonalData />, <Customization />, <Secure />];
 export const Content = ({ activeContent }: ContentPropsT) => {
-  return <div className="sm:ml-8 w-full">{contentItems[activeContent]}</div>;
+  const contentItems = [<Main />, <PersonalData />, <Customization />, <Secure />];
+
+  return <div className="w-full sm:ml-8">{contentItems[activeContent]}</div>;
 };

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
-      <body className="overflow-hidden xs:overflow-x-hidden">
+      <body className="overflow-hidden xs:overflow-x-hidden bg-gray-0">
         <Script
           async
           defer
