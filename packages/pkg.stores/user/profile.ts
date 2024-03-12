@@ -21,7 +21,7 @@ export type UserProfile = {
   getUser: () => { redir?: string, isLogin?: boolean };
 };
 
-type ResponseBody = {
+export type ResponseBodyUserT = {
   id: UserT["id"];
   username: UserT["username"];
   display_name: UserT["displayName"];
@@ -43,7 +43,7 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
   updateUser: ({ key: value }: { [key: string]: unknown }) =>
     set((state) => ({ user: { ...state.user, key: value } })),
   getUser: async () => {
-    const { data, status } = await get<ResponseBody>({
+    const { data, status } = await get<ResponseBodyUserT>({
       service: 'auth',
       path: '/api/users/current/home/',
       config: {
