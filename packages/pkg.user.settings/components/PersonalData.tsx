@@ -12,7 +12,7 @@ export const PersonalData = () => {
   return (
     <>
       {!isMobile && <span className="text-3xl font-semibold">Личные данные</span>}
-      <UserPreview />
+      <UserPreview className="mt-4" />
       <div className="border-gray-80 mt-8 flex w-full flex-col rounded-2xl border p-6">
         <div className="flex w-full gap-8">
           <div className="w-full">

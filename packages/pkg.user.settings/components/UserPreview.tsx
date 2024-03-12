@@ -20,7 +20,11 @@ const readFile = (file: File) => {
   });
 };
 
-export const UserPreview = () => {
+type UserPreviewPropsT = {
+  className?: string;
+};
+
+export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   const user = useMainSt((state) => state.user);
 
   const [isAvatarOpen, setIsAvatarOpen] = React.useState(false);
@@ -62,7 +66,7 @@ export const UserPreview = () => {
   const [isShowAvatar, setIsShowAvatar] = React.useState(true);
 
   return (
-    <div className="border-gray-80 flex h-[120px] w-full rounded-2xl border p-6">
+    <div className={`border-gray-80 flex h-[120px] w-full rounded-2xl border p-6 ${className}`}>
       <AvatarEditor
         file={file}
         open={isAvatarOpen}
@@ -103,8 +107,8 @@ export const UserPreview = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="ml-4 flex flex-col justify-center gap-0.5">
-        <span className="text-2xl font-semibold leading-[32px]">Анна Иванова</span>
-        <span className="text-gray-80 text-[16px] leading-[22px]">ivanova.a</span>
+        <span className="text-2xl font-semibold leading-[32px]">{user.displayName}</span>
+        <span className="text-gray-80 text-[16px] leading-[22px]">{user.username}</span>
       </div>
     </div>
   );

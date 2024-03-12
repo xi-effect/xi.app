@@ -10,6 +10,8 @@ import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
+import { UserProfile } from '@xipkg/userprofile';
+import { useMainSt } from 'pkg.stores';
 
 type BottomBarT = {
   slideIndex: number;
@@ -28,6 +30,8 @@ const values: ValuesT = {
 };
 
 export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: BottomBarT) => {
+  const user = useMainSt((state) => state.user);
+
   const handleMenu = () => {
     setSlideIndex(values[slideIndex]);
   };
@@ -58,16 +62,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
         <Modal>
           <ModalTrigger asChild>
             <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">
-              {/* <Avatar size="m" src="/test/avatar.png" className="justify-self-end" /> */}
-              <Image
-                style={{
-                  borderRadius: '50%',
-                }}
-                src="/test/avatar.svg"
-                width={32}
-                height={32}
-                alt="user avatar"
-              />
+              <UserProfile userId={user.id} text="Ivan Kovylyaev" label="@ikovylyaev" size="m" withOutText />
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
