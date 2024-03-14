@@ -62,7 +62,11 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
     setIsAvatarOpen(true);
   };
 
-  const [date, setDate] = React.useState(new Date());
+  const date = React.useRef<'' | Date>('');
+
+  const setDate = (value: Date) => {
+    date.current = value;
+  };
 
   return (
     <div className={`border-gray-80 flex h-[120px] w-full rounded-2xl border p-6 ${className}`}>
@@ -77,14 +81,17 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
         <DropdownMenuTrigger className="cursor-pointer" asChild>
           <Avatar size="xl">
             <AvatarImage
-              src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date}`}
+              src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date.current}`}
               imageProps={{
-                src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date}`,
+                src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date.current}`,
                 alt: 'user avatar',
               }}
               alt="user avatar"
             />
-            <AvatarFallback size="xl" className='bg-gray-5 rounded-[36px]" flex h-[64px] w-[64px] place-items-center justify-center'>
+            <AvatarFallback
+              size="xl"
+              className='bg-gray-5 rounded-[36px]" flex h-[64px] w-[64px] place-items-center justify-center'
+            >
               <Camera size="l" className="fill-gray-60" />
             </AvatarFallback>
           </Avatar>
