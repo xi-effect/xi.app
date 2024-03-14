@@ -44,6 +44,11 @@ export default function WelcomeCommunityCreate() {
     const { data, status } = await del({
       service: 'auth',
       path: '/api/onboarding/stages/community-create/',
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     });
 
     if (status === 204) {
@@ -75,6 +80,11 @@ export default function WelcomeCommunityCreate() {
       service: 'auth',
       path: '/api/onboarding/stages/completed/',
       body: {},
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     });
 
     if (status === 204) {

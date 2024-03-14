@@ -3,7 +3,6 @@
 import { StateCreator } from 'zustand';
 import { post } from 'pkg.utils';
 import { Common } from '../main';
-import { UserT } from 'pkg.models';
 import { ResponseBodyUserT } from './profile';
 
 type Data = { email: string; password: string };
@@ -74,7 +73,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     console.log('onSignIn', data, status);
     if (status === 200) {
       {
-        set((state) => ({ isLogin: true, user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme } }));
+        set((state) => ({ isLogin: true, user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme, email: data.email } }));
         return 200;
       }
 
@@ -106,7 +105,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     console.log('onSignUp', data, status);
     if (status === 200) {
       {
-        set((state) => ({ isLogin: true, user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme } }));
+        set((state) => ({ isLogin: true, user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme, email: data.email } }));
         return 200;
       }
 

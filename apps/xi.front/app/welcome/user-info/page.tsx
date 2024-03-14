@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { put, useMedia } from 'pkg.utils';
+import { AvatarEditor } from 'pkg.avatar.editor';
 import {
   Form,
   FormControl,
@@ -22,6 +23,15 @@ import { FileUploader } from '@xipkg/fileuploader';
 import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
 import { Logo } from 'pkg.logo';
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+
+const readFile = (file: File) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => resolve(reader.result), false);
+    reader.readAsDataURL(file);
+  });
+};
 
 const FormSchema = z.object({
   displayName: z.string({
@@ -38,9 +48,20 @@ type ResponseBody = {
 };
 
 export default function WelcomeUserInfo() {
+  const user = useMainSt((state) => state.user);
+  const updateUser = useMainSt((state) => state.updateUser);
+
   const isMobile = useMedia('(max-width: 960px)');
 
-  const updateUser = useMainSt((state) => state.updateUser);
+  const [isAvatarEditorOpen, setIsAvatarEditorOpen] = React.useState(false);
+  const [file, setFile] = React.useState<any>();
+
+  const handleInput = async (files: File[]) => {
+    let imageDataUrl = await readFile(files[0]);
+
+    setFile(imageDataUrl);
+    setIsAvatarEditorOpen(true);
+  };
 
   const router = useRouter();
 
@@ -67,9 +88,12 @@ export default function WelcomeUserInfo() {
       body: {
         display_name: displayName,
       },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     });
-
-    console.log('data', data);
 
     if (status === 204) {
       updateUser({ onboardingStage: 'community-choice' });
@@ -84,7 +108,7 @@ export default function WelcomeUserInfo() {
       <div className="h-full w-full p-8 flex justify-center content-center">
         <div className="flex flex-col h-full xs:p-8 w-full max-w-[536px]">
           <div className="h-22">
-            <Logo height={24} width={202} logoVariant='navigation' logoSize='default' />
+            <Logo height={24} width={202} logoVariant="navigation" logoSize="default" />
           </div>
           <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
             <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
@@ -96,12 +120,33 @@ export default function WelcomeUserInfo() {
             Давайте познакомимся
           </div>
           <div className="flex flex-row mt-8 h-16">
-            <div className="rounded-[32px] w-16 shrink-0 h-16 bg-brand-80" />
+            <Avatar size="xl">
+              <AvatarImage
+                src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`}
+                imageProps={{
+                  src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`,
+                  alt: 'user avatar',
+                }}
+                alt="user avatar"
+              />
+              <AvatarFallback>{''}</AvatarFallback>
+            </Avatar>
             <div className="ml-4 flex flex-col gap-2">
               <span className="font-medium leading-[22px] text-gray-90 w-full">
                 Изображение профиля
               </span>
-              <FileUploader onChange={() => {}} size="small" />
+              <AvatarEditor
+                file={file}
+                open={isAvatarEditorOpen}
+                onOpenChange={setIsAvatarEditorOpen}
+              />
+              <FileUploader
+                onChange={handleInput}
+                extensions={['webp', 'jpg', 'png']}
+                withError={false}
+                withLargeError={false}
+                size="small"
+              />
             </div>
           </div>
           <Form {...form}>
@@ -127,7 +172,7 @@ export default function WelcomeUserInfo() {
               />
               <Label className="mt-6">Электронная почта</Label>
               <div className="mt-2 leading-[22px] text-gray-50 bg-gray-10 flex flex-row w-full h-12 items-start p-3 rounded-lg">
-                mail@ikovylyaev.com
+                {user.email}
               </div>
               <div className="pt-4 mt-auto flex flex-row gap-6">
                 <Button disabled={watchNickname.length === 0} type="submit" className="w-full">

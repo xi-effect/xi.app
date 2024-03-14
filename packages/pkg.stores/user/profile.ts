@@ -4,17 +4,6 @@ import { useMainSt } from 'pkg.stores';
 import { UserSettings } from './settings';
 import { UserT } from 'pkg.models';
 
-const welcomePagesPathsDict = {
-  created: '/welcome/user-info',
-  'community-choice': '/welcome/community',
-  'community-create': '/welcome/community-create',
-  'community-invite': '/welcome/community-invite',
-};
-
-type DataUserMethodAnswer = {
-  [key: string]: unknown;
-};
-
 export type UserProfile = {
   user: UserT;
   updateUser: (value: { [key: string]: unknown }) => void;
@@ -27,6 +16,7 @@ export type ResponseBodyUserT = {
   display_name: UserT["displayName"];
   onboarding_stage: UserT["onboardingStage"];
   theme: UserT["theme"];
+  email: UserT["email"];
 }
 
 export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
@@ -56,7 +46,7 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
       },
     });
     console.log("data", data);
-    set((state) => ({ user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme } }));
+    set((state) => ({ user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme, email: data.email } }));
 
     if (status === 401) {
       useMainSt.getState().setIsLogin(false)

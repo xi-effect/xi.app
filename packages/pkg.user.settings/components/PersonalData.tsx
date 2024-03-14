@@ -14,13 +14,13 @@ export const PersonalData = () => {
       {!isMobile && <span className="text-3xl font-semibold">Личные данные</span>}
       <UserPreview className="mt-4" />
       <div className="border-gray-80 mt-8 flex w-full flex-col rounded-2xl border p-6">
-        <div className="flex w-full gap-8">
+        <div className="flex w-full gap-8 flex-col md:flex-row">
           <div className="w-full">
             <Label className="">Отображаемое имя</Label>
             <Input className="mt-2 w-full" />
           </div>
           <div className="w-full">
-            <Label>Никнейм</Label>
+            <Label>Имя пользователя</Label>
             <Input className="mt-2 w-full" />
           </div>
         </div>

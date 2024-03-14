@@ -19,10 +19,9 @@ type AvatarEditorT = {
   file: any;
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  setIsShowAvatar: (value: boolean) => void;
 };
 
-export const AvatarEditorComponent = ({ file, open, onOpenChange, setIsShowAvatar }: AvatarEditorT) => {
+export const AvatarEditorComponent = ({ file, open, onOpenChange }: AvatarEditorT) => {
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
 
@@ -63,10 +62,9 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setIsShowAvata
       });
 
       if (status === 204) {
-        toast('Аватарка успешно загружена');
-        setIsShowAvatar(true);
+        toast('Аватарка успешно загружена. В ближайшее время она отобразится на сайте');
         onOpenChange(false);
-      };
+      }
     } catch (e) {
       console.error(e);
     }

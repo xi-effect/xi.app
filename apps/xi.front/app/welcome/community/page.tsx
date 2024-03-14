@@ -8,7 +8,7 @@ import { del, put } from 'pkg.utils/fetch';
 import React from 'react';
 import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
-import { Logo } from 'pkg.logo'
+import { Logo } from 'pkg.logo';
 
 type RequestBody = {};
 
@@ -29,6 +29,11 @@ export default function WelcomeCommunity() {
         service: 'auth',
         path: '/api/onboarding/stages/community-create/',
         body: {},
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
       });
 
       if (status === 204) {
@@ -43,6 +48,11 @@ export default function WelcomeCommunity() {
         service: 'auth',
         path: '/api/onboarding/stages/community-invite/',
         body: {},
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
       });
 
       if (status === 204) {
@@ -58,9 +68,14 @@ export default function WelcomeCommunity() {
     const { data, status } = await del({
       service: 'auth',
       path: '/api/onboarding/stages/community-choice/',
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     });
 
-    console.log("data", data);
+    console.log('data', data);
 
     if (status === 204) {
       updateUser({ onboardingStage: 'created' });
@@ -75,7 +90,7 @@ export default function WelcomeCommunity() {
       <div className="h-full w-full p-8 flex justify-center content-center">
         <div className="flex flex-col h-full xs:p-8 w-full max-w-[536px]">
           <div className="h-22">
-            <Logo height={24} width={202} logoVariant='navigation' logoSize='default' />
+            <Logo height={24} width={202} logoVariant="navigation" logoSize="default" />
           </div>
           <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
             <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
