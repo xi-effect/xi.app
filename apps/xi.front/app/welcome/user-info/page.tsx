@@ -47,7 +47,25 @@ type ResponseBody = {
   detail: string;
 };
 
+const AvatarPreview = ({ date, userId }) => {
+  return (
+    <Avatar size="xl">
+      <AvatarImage
+        src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date}`}
+        imageProps={{
+          src: `https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date}`,
+          alt: 'avatar user',
+        }}
+        alt={'user avatar'}
+      />
+      <AvatarFallback size="xl">{''}</AvatarFallback>
+    </Avatar>
+  );
+};
+
 export default function WelcomeUserInfo() {
+  const [date, setDate] = React.useState(new Date());
+
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
 
@@ -120,17 +138,7 @@ export default function WelcomeUserInfo() {
             Давайте познакомимся
           </div>
           <div className="flex flex-row mt-8 h-16">
-            <Avatar size="xl">
-              <AvatarImage
-                src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`}
-                imageProps={{
-                  src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`,
-                  alt: 'user avatar',
-                }}
-                alt="user avatar"
-              />
-              <AvatarFallback>{''}</AvatarFallback>
-            </Avatar>
+            <AvatarPreview userId={user.id} date={date} />
             <div className="ml-4 flex flex-col gap-2">
               <span className="font-medium leading-[22px] text-gray-90 w-full">
                 Изображение профиля
@@ -139,6 +147,7 @@ export default function WelcomeUserInfo() {
                 file={file}
                 open={isAvatarEditorOpen}
                 onOpenChange={setIsAvatarEditorOpen}
+                setDate={setDate}
               />
               <FileUploader
                 onChange={handleInput}
