@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import {
   Modal,
   ModalCloseButton,
@@ -6,7 +6,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
-  ModalTrigger,
 } from '@xipkg/modal';
 import { Close } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
@@ -19,9 +18,10 @@ type AvatarEditorT = {
   file: any;
   open: boolean;
   onOpenChange: (value: boolean) => void;
+  setDate?: (value: Date) => void;
 };
 
-export const AvatarEditorComponent = ({ file, open, onOpenChange }: AvatarEditorT) => {
+export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: AvatarEditorT) => {
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
 
@@ -64,6 +64,7 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange }: AvatarEditor
       if (status === 204) {
         toast('Аватарка успешно загружена. В ближайшее время она отобразится на сайте');
         onOpenChange(false);
+        if (setDate) setDate(new Date());
       }
     } catch (e) {
       console.error(e);

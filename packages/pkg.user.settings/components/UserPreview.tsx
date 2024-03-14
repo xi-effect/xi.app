@@ -62,22 +62,29 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
     setIsAvatarOpen(true);
   };
 
+  const [date, setDate] = React.useState(new Date());
+
   return (
     <div className={`border-gray-80 flex h-[120px] w-full rounded-2xl border p-6 ${className}`}>
-      <AvatarEditor file={file} open={isAvatarOpen} onOpenChange={setIsAvatarOpen} />
+      <AvatarEditor
+        file={file}
+        open={isAvatarOpen}
+        onOpenChange={setIsAvatarOpen}
+        setDate={setDate}
+      />
       <input className="hidden" ref={inputRef} onChange={handleInput} type="file" />
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger className="cursor-pointer" asChild>
           <Avatar size="xl">
             <AvatarImage
-              src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`}
+              src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date}`}
               imageProps={{
-                src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`,
+                src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date}`,
                 alt: 'user avatar',
               }}
               alt="user avatar"
             />
-            <AvatarFallback className='"bg-gray-5 rounded-[36px]" flex h-[64px] w-[64px] cursor-pointer place-items-center justify-center'>
+            <AvatarFallback size="xl" className='bg-gray-5 rounded-[36px]" flex h-[64px] w-[64px] place-items-center justify-center'>
               <Camera size="l" className="fill-gray-60" />
             </AvatarFallback>
           </Avatar>
