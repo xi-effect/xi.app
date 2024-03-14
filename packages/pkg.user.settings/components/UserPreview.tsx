@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
-import Image from 'next/image';
 import { del } from 'pkg.utils/fetch';
 import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
@@ -56,6 +55,11 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
+    if (event.target.files[0].size > 3 * 1024 * 1024) {
+      toast('Файл слишком большой');
+      return;
+    }
+
     let imageDataUrl = await readFile(event.target.files[0]);
 
     setFile(imageDataUrl);
@@ -99,11 +103,11 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
         <DropdownMenuContent className="w-[220px]">
           <DropdownMenuItem onClick={handleMenuEditClick}>
             <Edit className="mr-2 h-5 w-5" />
-            <span>Обновить фотографию</span>
+            <span className="text-[14px]">Обновить фотографию</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleDeleteAvatar}>
             <Trash className="mr-2 h-5 w-5" />
-            <span>Удалить</span>
+            <span className="text-[14px]">Удалить</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

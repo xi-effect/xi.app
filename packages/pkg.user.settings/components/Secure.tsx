@@ -2,8 +2,10 @@ import { ChevronRight, Key, Mail } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import { ChangePasswordModal } from 'pkg.modal.change-password';
 import { ChangeEmailModal } from 'pkg.modal.change-email';
+import { useMainSt } from 'pkg.stores';
 
 export const Secure = () => {
+  const user = useMainSt((state) => state.user);
   const isMobile = useMedia('(max-width: 719px)', false);
 
   return (
@@ -15,23 +17,23 @@ export const Secure = () => {
           <span className="text-sm font-normal">Видны только вам</span>
         </div>
         <ChangePasswordModal>
-          <button className="flex h-[66px] gap-4 flex-r   ow items-center p-3 bg-transparent hover:bg-gray-5 rounded-xl mt-">
+          <button className="flex-r ow hover:bg-gray-5 mt-   flex h-[66px] items-center gap-4 rounded-xl bg-transparent p-3">
             <Key size="l" className="fill-brand-80" />
-            <div className="flex flex-col items-star">
-              <span className="font-semibold w-fit">Пароль</span>
+            <div className="items-star flex flex-col">
+              <span className="w-fit font-semibold">Пароль</span>
               <span className="text-xs font-normal">Обновлён год назад</span>
             </div>
-            <ChevronRight className="ml-auto fill-gray-80" />
+            <ChevronRight className="fill-gray-80 ml-auto" />
           </button>
         </ChangePasswordModal>
         <ChangeEmailModal>
-          <button className="flex h-[66px] gap-4 flex-row items-center p-3 bg-transparent hover:bg-gray-5 rounded-xl">
+          <button className="hover:bg-gray-5 flex h-[66px] flex-row items-center gap-4 rounded-xl bg-transparent p-3">
             <Mail size="l" className="fill-brand-80" />
-            <div className="flex flex-col items-star">
-              <span className="font-semibold w-fit">Почта</span>
-              <span className="text-xs font-normal">ivanova.a@ikovylyaev.com</span>
+            <div className="items-star flex flex-col">
+              <span className="w-fit font-semibold">Почта</span>
+              <span className="text-xs font-normal">{user.email}</span>
             </div>
-            <ChevronRight className="ml-auto fill-gray-80" />
+            <ChevronRight className="fill-gray-80 ml-auto" />
           </button>
         </ChangeEmailModal>
       </div>

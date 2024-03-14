@@ -75,6 +75,11 @@ export default function WelcomeUserInfo() {
   const [file, setFile] = React.useState<any>();
 
   const handleInput = async (files: File[]) => {
+    if (files[0].size > 3 * 1024 * 1024) {
+      toast('Файл слишком большой');
+      return;
+    }
+
     let imageDataUrl = await readFile(files[0]);
 
     setFile(imageDataUrl);
