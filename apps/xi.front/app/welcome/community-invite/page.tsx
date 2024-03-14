@@ -45,6 +45,11 @@ export default function WelcomeCommunityInvite() {
     const { data, status } = await del({
       service: 'auth',
       path: '/api/onboarding/stages/community-invite/',
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     });
 
     if (status === 204) {
@@ -76,6 +81,11 @@ export default function WelcomeCommunityInvite() {
       service: 'auth',
       path: '/api/onboarding/stages/completed/',
       body: {},
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     });
 
     if (status === 204) {

@@ -42,6 +42,7 @@ const nextConfig = {
     'pkg.logo',
     'pkg.models',
     'pkg.stores',
+    'pkg.avatar.editor',
     '@xipkg/form',
     '@xipkg/link',
     '@xipkg/button',
@@ -57,6 +58,7 @@ const nextConfig = {
     '@xipkg/modal',
     '@xipkg/fileuploader',
     '@xipkg/select',
+    '@xipkg/avatar'
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

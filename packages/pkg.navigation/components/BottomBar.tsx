@@ -62,16 +62,22 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
         <Modal>
           <ModalTrigger asChild>
             <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">
-              <UserProfile userId={user.id} text="Ivan Kovylyaev" label="@ikovylyaev" size="m" withOutText />
+              <UserProfile
+                userId={user.id}
+                text="Ivan Kovylyaev"
+                label="@ikovylyaev"
+                size="m"
+                withOutText
+              />
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
             <UserSettings onExit={onExit} />
           </ModalContent>
         </Modal>
-        <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center justify-center justify-self-end p-3">
+        {/* <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center justify-center justify-self-end p-3">
           <Notification />
-        </button>
+        </button> */}
       </div>
     </div>
   );

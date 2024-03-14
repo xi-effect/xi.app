@@ -63,6 +63,7 @@ export async function post<T, U>({ service, path, body, config }: PostT<T>) {
 }
 
 export async function put<T, U>({ service, path, body, config }: PutT<T>) {
+  console.log("body", body, body instanceof FormData);
   const init = { method: 'put', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
   const { data, status } = await http<U>(service, path, init as RequestInit);
 

@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { del } from 'pkg.utils/fetch';
 import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 
 const readFile = (file: File) => {
   return new Promise((resolve) => {
@@ -48,13 +49,11 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
     });
 
     if (status === 204) {
-      toast('Аватарка удалена');
-      setIsShowAvatar(false);
+      toast('Аватарка удалена. Скоро она исчезнет с сайта');
     }
   };
 
   const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('event', event);
     if (!event.target.files) return;
 
     let imageDataUrl = await readFile(event.target.files[0]);
@@ -63,37 +62,25 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
     setIsAvatarOpen(true);
   };
 
-  const [isShowAvatar, setIsShowAvatar] = React.useState(true);
-
   return (
     <div className={`border-gray-80 flex h-[120px] w-full rounded-2xl border p-6 ${className}`}>
-      <AvatarEditor
-        file={file}
-        open={isAvatarOpen}
-        onOpenChange={setIsAvatarOpen}
-        setIsShowAvatar={setIsShowAvatar}
-      />
+      <AvatarEditor file={file} open={isAvatarOpen} onOpenChange={setIsAvatarOpen} />
       <input className="hidden" ref={inputRef} onChange={handleInput} type="file" />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          {isShowAvatar ? (
-            <Image
+          <Avatar size="xl">
+            <AvatarImage
               src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`}
-              width={72}
-              height={72}
-              alt="user avatar"
-              unoptimized
-              style={{ borderRadius: '36px', cursor: 'pointer' }}
-              onError={(e) => {
-                console.log('e', e);
-                setIsShowAvatar(false);
+              imageProps={{
+                src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp`,
+                alt: 'user avatar',
               }}
+              alt="user avatar"
             />
-          ) : (
-            <button className="bg-gray-5 flex h-[72px] w-[72px] place-items-center justify-center rounded-[36px]">
+            <AvatarFallback className='"bg-gray-5 rounded-[36px]" flex h-[64px] w-[64px] cursor-pointer place-items-center justify-center'>
               <Camera size="l" className="fill-gray-60" />
-            </button>
-          )}
+            </AvatarFallback>
+          </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[220px]">
           <DropdownMenuItem onClick={handleMenuEditClick}>

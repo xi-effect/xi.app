@@ -100,7 +100,7 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
           defaultValue=""
           render={({ field }) => (
             <FormItem className="pt-4">
-              <FormLabel htmlFor="user name">Никнейм</FormLabel>
+              <FormLabel htmlFor="user name">Имя пользователя</FormLabel>
               <FormControl>
                 <Input
                   error={!!errors?.nickname}

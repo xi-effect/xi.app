@@ -137,7 +137,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   return (
     <div
       id="community-services"
-      className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[100px] sm:px-1 ${
+      className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
         className ?? ''
       }`}
     >
