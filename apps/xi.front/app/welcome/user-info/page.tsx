@@ -51,9 +51,9 @@ const AvatarPreview = ({ date, userId }) => {
   return (
     <Avatar size="xl">
       <AvatarImage
-        src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date}`}
+        src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date instanceof Date ? date.getTime() : ''}`}
         imageProps={{
-          src: `https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date}`,
+          src: `https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date instanceof Date ? date.getTime() : ''}`,
           alt: 'avatar user',
         }}
         alt={'user avatar'}
@@ -75,6 +75,8 @@ export default function WelcomeUserInfo() {
   const [file, setFile] = React.useState<any>();
 
   const handleInput = async (files: File[]) => {
+    if (!files) return;
+
     if (files[0].size > 3 * 1024 * 1024) {
       toast('Файл слишком большой');
       return;

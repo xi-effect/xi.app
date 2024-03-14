@@ -85,9 +85,9 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
         <DropdownMenuTrigger className="cursor-pointer" asChild>
           <Avatar size="xl">
             <AvatarImage
-              src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date.current}`}
+              src={`https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`}
               imageProps={{
-                src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date.current}`,
+                src: `https://auth.xieffect.ru/api/users/${user.id}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`,
                 alt: 'user avatar',
               }}
               alt="user avatar"

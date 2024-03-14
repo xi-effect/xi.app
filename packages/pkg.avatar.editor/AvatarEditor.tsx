@@ -13,6 +13,15 @@ import Cropper from 'react-easy-crop';
 import { getCroppedImg } from './utils';
 import { put } from 'pkg.utils';
 import { toast } from 'sonner';
+import { readAndCompressImage } from 'browser-image-resizer';
+
+const config = {
+  quality: 1,
+  width: 256,
+  height: 256,
+  mimeType: 'image/webp'
+};
+
 
 type AvatarEditorT = {
   file: any;
@@ -48,9 +57,14 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
   const showCroppedImage = async () => {
     try {
       const croppedImage = (await getCroppedImg(file, croppedAreaPixels)) as Blob;
+      let f = new File([croppedImage], "avatar.webp");
+
+      let resizedImage = await readAndCompressImage(f, config);
+
+      console.log("resizedImage", resizedImage)
 
       const form = new FormData();
-      form.append('avatar', croppedImage, 'avatar.webp');
+      form.append('avatar', resizedImage, 'avatar.webp');
 
       const { data, status } = await put({
         service: 'auth',
@@ -102,7 +116,7 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
                 width: '100%',
               },
             }}
-            minZoom={0.85}
+            minZoom={0.8}
           />
         </div>
         <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">
