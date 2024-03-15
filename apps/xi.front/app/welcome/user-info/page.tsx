@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { put, useMedia } from 'pkg.utils';
@@ -47,7 +47,12 @@ type ResponseBody = {
   detail: string;
 };
 
-const AvatarPreview = ({ date, userId }) => {
+type AvatarPreviewPropsT = {
+  date: Date | string;
+  userId: number | null;
+};
+
+const AvatarPreview = ({ date, userId }: AvatarPreviewPropsT) => {
   return (
     <Avatar size="xl">
       <AvatarImage
@@ -64,7 +69,7 @@ const AvatarPreview = ({ date, userId }) => {
 };
 
 export default function WelcomeUserInfo() {
-  const [date, setDate] = React.useState(new Date());
+  const [date, setDate] = React.useState('');
 
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);

@@ -34,9 +34,6 @@ export async function getCroppedImg(
     ctx.drawImage(image, 0, 0)
 
     const croppedCanvas = document.createElement('canvas');
-
-    console.log("croppedCanvas", croppedCanvas);
-
     const croppedCtx = croppedCanvas.getContext('2d');
 
     if (!croppedCtx) {
@@ -59,8 +56,6 @@ export async function getCroppedImg(
         pixelCrop.width,
         pixelCrop.height
     )
-
-    console.log("croppedCanvas", croppedCanvas);
 
     // As Base64 string
     // return croppedCanvas.toDataURL('image/webp');

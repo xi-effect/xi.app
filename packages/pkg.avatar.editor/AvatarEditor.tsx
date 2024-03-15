@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { Dispatch, SetStateAction } from 'react';
 import {
   Modal,
   ModalCloseButton,
@@ -13,21 +15,13 @@ import Cropper from 'react-easy-crop';
 import { getCroppedImg } from './utils';
 import { put } from 'pkg.utils';
 import { toast } from 'sonner';
-import { readAndCompressImage } from 'browser-image-resizer';
-
-const config = {
-  quality: 1,
-  width: 256,
-  height: 256,
-  mimeType: 'image/webp'
-};
-
+import Resizer from 'react-image-file-resizer';
 
 type AvatarEditorT = {
   file: any;
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  setDate?: (value: Date) => void;
+  setDate?: Dispatch<SetStateAction<string | Date>>;
 };
 
 export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: AvatarEditorT) => {
@@ -54,14 +48,29 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
     height: number;
   } | null>(null);
 
+  const resizeFile = (file: File) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        256,
+        256,
+        'WEBP',
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        'blob',
+      );
+    });
+
   const showCroppedImage = async () => {
     try {
       const croppedImage = (await getCroppedImg(file, croppedAreaPixels)) as Blob;
-      let f = new File([croppedImage], "avatar.webp");
+      let f = new File([croppedImage], 'avatar.webp');
+      const resizedImage = (await resizeFile(f)) as Blob;
 
-      let resizedImage = await readAndCompressImage(f, config);
-
-      console.log("resizedImage", resizedImage)
+      console.log('resizedImage', resizedImage);
 
       const form = new FormData();
       form.append('avatar', resizedImage, 'avatar.webp');
