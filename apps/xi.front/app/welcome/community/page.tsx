@@ -3,7 +3,7 @@
 import { Button } from '@xipkg/button';
 import { Mail, Plus } from '@xipkg/icons';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { del, put } from 'pkg.utils/fetch';
 import React from 'react';
 import { toast } from 'sonner';
@@ -79,7 +79,7 @@ export default function WelcomeCommunity() {
 
     if (status === 204) {
       updateUser({ onboardingStage: 'created' });
-      router.push('/welcome/user-info');
+      redirect('/welcome/user-info');
     } else {
       toast('Ошибка сервера');
     }

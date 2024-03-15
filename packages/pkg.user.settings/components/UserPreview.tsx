@@ -55,7 +55,7 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
-    if (event.target.files[0].size > 3 * 1024 * 1024) {
+    if (event.target.files[0].size > 5 * 1024 * 1024) {
       toast('Файл слишком большой');
       return;
     }

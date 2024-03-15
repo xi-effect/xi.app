@@ -3,7 +3,7 @@
 import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useMedia } from 'pkg.utils';
 import {
   Form,
@@ -35,8 +35,6 @@ const FormSchema = z.object({
 });
 
 export default function WelcomeCommunityInvite() {
-  const isMobile = useMedia('(max-width: 960px)');
-
   const updateUser = useMainSt((state) => state.updateUser);
 
   const router = useRouter();

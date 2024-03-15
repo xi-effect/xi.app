@@ -23,6 +23,7 @@ const welcomePagesPaths = [
   '/welcome/community',
   '/welcome/community-create',
   '/welcome/community-invite',
+  '/welcome/final',
 ];
 
 const welcomePagesPathsDict = {
@@ -44,6 +45,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
 
   console.log('isLogin', isLogin);
   console.log('onboardingStage', onboardingStage);
+  console.log('pathname', pathname);
 
   // Показываем скелетон, пока запрос на проверку сессии не пришёл
   if (isLogin === null) return <Load />;
@@ -61,7 +63,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     isLogin &&
     !!onboardingStage &&
     onboardingStage === 'completed' &&
-    !pathname.includes('/community/')
+    welcomePagesPaths.includes(pathname)
   )
     redirect('/community/1/home');
 

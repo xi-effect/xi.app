@@ -21,7 +21,7 @@ type AvatarEditorT = {
   file: any;
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  setDate?: Dispatch<SetStateAction<string | Date>>;
+  setDate?: (value: Date) => void;
 };
 
 export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: AvatarEditorT) => {
