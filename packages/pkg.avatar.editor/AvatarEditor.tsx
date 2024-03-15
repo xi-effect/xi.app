@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { Dispatch, SetStateAction } from 'react';
 import {
   Modal,
   ModalCloseButton,
@@ -13,12 +15,13 @@ import Cropper from 'react-easy-crop';
 import { getCroppedImg } from './utils';
 import { put } from 'pkg.utils';
 import { toast } from 'sonner';
+import Resizer from 'react-image-file-resizer';
 
 type AvatarEditorT = {
   file: any;
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  setDate?: (value: Date) => void;
+  setDate?: Dispatch<SetStateAction<string | Date>>;
 };
 
 export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: AvatarEditorT) => {
@@ -45,12 +48,32 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
     height: number;
   } | null>(null);
 
+  const resizeFile = (file: File) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        256,
+        256,
+        'WEBP',
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        'blob',
+      );
+    });
+
   const showCroppedImage = async () => {
     try {
       const croppedImage = (await getCroppedImg(file, croppedAreaPixels)) as Blob;
+      let f = new File([croppedImage], 'avatar.webp');
+      const resizedImage = (await resizeFile(f)) as Blob;
+
+      console.log('resizedImage', resizedImage);
 
       const form = new FormData();
-      form.append('avatar', croppedImage, 'avatar.webp');
+      form.append('avatar', resizedImage, 'avatar.webp');
 
       const { data, status } = await put({
         service: 'auth',
@@ -102,7 +125,7 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
                 width: '100%',
               },
             }}
-            minZoom={0.85}
+            minZoom={0.8}
           />
         </div>
         <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">

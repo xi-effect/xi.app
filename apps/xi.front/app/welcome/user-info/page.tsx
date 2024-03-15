@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { put, useMedia } from 'pkg.utils';
@@ -47,13 +47,18 @@ type ResponseBody = {
   detail: string;
 };
 
-const AvatarPreview = ({ date, userId }) => {
+type AvatarPreviewPropsT = {
+  date: Date | string;
+  userId: number | null;
+};
+
+const AvatarPreview = ({ date, userId }: AvatarPreviewPropsT) => {
   return (
     <Avatar size="xl">
       <AvatarImage
-        src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date}`}
+        src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date instanceof Date ? date.getTime() : ''}`}
         imageProps={{
-          src: `https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date}`,
+          src: `https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date instanceof Date ? date.getTime() : ''}`,
           alt: 'avatar user',
         }}
         alt={'user avatar'}
@@ -64,7 +69,7 @@ const AvatarPreview = ({ date, userId }) => {
 };
 
 export default function WelcomeUserInfo() {
-  const [date, setDate] = React.useState(new Date());
+  const [date, setDate] = React.useState('');
 
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
@@ -75,6 +80,13 @@ export default function WelcomeUserInfo() {
   const [file, setFile] = React.useState<any>();
 
   const handleInput = async (files: File[]) => {
+    if (!files) return;
+
+    if (files[0].size > 3 * 1024 * 1024) {
+      toast('Файл слишком большой');
+      return;
+    }
+
     let imageDataUrl = await readFile(files[0]);
 
     setFile(imageDataUrl);
