@@ -43,19 +43,19 @@ const menuData = [
     icon: 'announce',
     type: '',
     label: 'Объявления',
-    link: '',
+    link: '/community/1/announce/1',
   },
   {
     icon: 'task',
     type: '',
     label: 'Задания',
-    link: '',
+    link: '/community/1/task/1',
   },
   {
     icon: 'chat',
     type: '',
     label: 'Чат',
-    link: '',
+    link: '/community/1/chat/1',
   },
   {
     elId: 'video-item-menu',
@@ -79,7 +79,7 @@ const menuData = [
     icon: 'task',
     type: '',
     label: 'Задания',
-    link: '',
+    link: '/community/1/task/1',
   },
   {
     icon: 'chat',
@@ -116,7 +116,7 @@ const Item = ({ index, item, setSlideIndex }: any) => {
     );
 
   return (
-    <div
+    <li
       id={item?.elId}
       className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
       key={index.toString()}
@@ -124,7 +124,7 @@ const Item = ({ index, item, setSlideIndex }: any) => {
     >
       {iconsDict[item.icon]}
       <span className="pl-2 text-[14px] font-normal">{item.label}</span>
-    </div>
+    </li>
   );
 };
 
@@ -135,7 +135,7 @@ type ItemPropsT = {
 
 export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   return (
-    <div
+    <ul
       id="community-services"
       className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
         className ?? ''
@@ -144,6 +144,6 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
       {menuData.map((item, index) => (
         <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
       ))}
-    </div>
+    </ul>
   );
 };

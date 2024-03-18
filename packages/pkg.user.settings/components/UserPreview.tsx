@@ -26,6 +26,7 @@ type UserPreviewPropsT = {
 
 export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   const user = useMainSt((state) => state.user);
+  console.log("UserProfile", user);
 
   const [isAvatarOpen, setIsAvatarOpen] = React.useState(false);
   const [file, setFile] = React.useState<any>();

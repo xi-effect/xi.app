@@ -3,6 +3,7 @@ import { get } from 'pkg.utils';
 import { useMainSt } from 'pkg.stores';
 import { UserSettings } from './settings';
 import { UserT } from 'pkg.models';
+import { immer } from 'zustand/middleware/immer';
 
 export type UserProfile = {
   user: UserT;
@@ -30,8 +31,8 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     onboardingStage: null,
     theme: '',
   },
-  updateUser: ({ key: value }: { [key: string]: unknown }) =>
-    set((state) => ({ user: { ...state.user, key: value } })),
+  updateUser: (value) =>
+    set((state) => ({ user: { ...state.user, ...value } })),
   getUser: async () => {
     const { data, status } = await get<ResponseBodyUserT>({
       service: 'auth',
