@@ -68,7 +68,7 @@ const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
   return (
     <Form {...form}>
       <form className="space-y-4 p-6 pt-5" onSubmit={handleSubmit(onSubmit)}>
-        {!timer && (
+        {timer && (
           <Timer
             durationSecs={10 * 60}
             getTitle={(t) => `Отправить повторно можно через ${t}`}
@@ -78,11 +78,11 @@ const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
         <FormField
           control={control}
           name="email"
-          render={({ fieldState: { error }, field }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Новый адрес электронной почты</FormLabel>
               <FormControl className="mt-2">
-                <Input {...field} error={!!error} autoComplete="on" />
+                <Input {...field} error={!!errors.email} autoComplete="on" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -115,7 +115,7 @@ const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
           <Button type={'button'} variant={'secondary'}>
             Отменить
           </Button>
-          <Button disabled={!timer} className={'disabled:cursor-not-allowed'} type={'submit'}>
+          <Button disabled={timer} className={'disabled:cursor-not-allowed'} type={'submit'}>
             Изменить
           </Button>
         </M.ModalFooter>
