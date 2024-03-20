@@ -8,9 +8,10 @@ import Form from './components/Form';
 
 type ChangeEmailModalT = PropsWithChildren<{}>;
 
-export const ChangeEmailModal = ({children}: ChangeEmailModalT) => {
-  const [stage, setStage] = useState<{ type: 'form' } | { type: 'success'; email: string }>({
+export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
+  const [stage, setStage] = useState({
     type: 'form',
+    email: null,
   });
 
   return (
@@ -25,21 +26,18 @@ export const ChangeEmailModal = ({children}: ChangeEmailModalT) => {
             <M.ModalHeader>
               <M.ModalTitle>Изменение электронной почты</M.ModalTitle>
             </M.ModalHeader>
-            <Form />
-            <M.ModalFooter className="gap-4 flex justify-end">
-              <Button variant={'secondary'}>Отменить</Button>
-              <Button onClick={() => setStage({ type: 'success', email: 'someemail' })}>
-                Изменить
-              </Button>
-            </M.ModalFooter>
+            <Form handleFormState={setStage} />
           </>
         )) ||
           (stage.type === 'success' && (
-            <div className="p-8 space-y-8">
-              <p className="text-2xl text-center font-semibold text-gray-100">
-                На адрес {stage.email} отправлено письмо с подтверждением
+            <div className="space-y-8 p-8">
+              <p className="text-center text-2xl font-semibold text-gray-100">
+                На адрес {stage.email} отправлено письмо с подтверждением
               </p>
-              <Button onClick={() => setStage({ type: 'form' })} className="w-full mt-4">
+              <Button
+                onClick={() => setStage({ type: 'form', email: null })}
+                className="mt-4 w-full"
+              >
                 Продолжить
               </Button>
             </div>

@@ -1,11 +1,21 @@
 'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useForm } from '@xipkg/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
 import { Input } from '@xipkg/input';
-import { useState } from 'react';
+import { Eyeoff, Eyeon } from '@xipkg/icons';
+import React, { useState } from 'react';
 import * as z from 'zod';
 import Timer from './Timer';
+import { Button } from '@xipkg/button';
+import * as M from '@xipkg/modal';
 
 const schema = z.object({
   email: z
@@ -14,17 +24,38 @@ const schema = z.object({
   password: z.string({ required_error: 'Обязательное поле' }),
 });
 
-interface FormBlockProps {}
+interface IFormBlockProps {
+  handleFormState: any;
+  // (arg: { type: 'success' | 'form'; email: string }) => void
+}
 
-const FormBlock = (props: FormBlockProps) => {
-  const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
-  const { control } = form;
+type FormDataT = {
+  email: string;
+  password: string;
+};
+
+const FormBlock = ({ handleFormState }: IFormBlockProps) => {
+  const [isPasswordShow, setIsPasswordShow] = React.useState(false);
+
+  const changePasswordShow = () => {
+    setIsPasswordShow((prev) => !prev);
+  };
+
+  const form = useForm<FormDataT>({
+    resolver: zodResolver(schema),
+  });
+  const { control, handleSubmit, register } = form;
 
   const [timer, setTimer] = useState(false);
 
+  const onSubmit = (data: FormDataT) => {
+    console.log(data); // Check if form data is being captured correctly
+    handleFormState({ type: 'success', email: data.email });
+  };
+
   return (
     <Form {...form}>
-      <form className="p-6 pt-5 space-y-4" onSubmit={form.handleSubmit(console.log)}>
+      <form className="space-y-4 p-6 pt-5" onSubmit={handleSubmit(onSubmit)}>
         {timer && (
           <Timer
             durationSecs={10 * 60}
@@ -39,7 +70,7 @@ const FormBlock = (props: FormBlockProps) => {
             <FormItem>
               <FormLabel>Новый адрес электронной почты</FormLabel>
               <FormControl className="mt-2">
-                <Input error={!!error} autoComplete="on" type="text" />
+                <Input {...register('email')} error={!!error} autoComplete="on" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -52,12 +83,26 @@ const FormBlock = (props: FormBlockProps) => {
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl className="mt-2">
-                <Input error={!!error} autoComplete="off" type="text" />
+                <Input
+                  {...register('password')}
+                  error={!!error}
+                  autoComplete="off"
+                  afterClassName="cursor-pointer"
+                  type={isPasswordShow ? 'text' : 'password'}
+                  after={isPasswordShow ? <Eyeoff /> : <Eyeon />}
+                  afterProps={{
+                    onClick: changePasswordShow,
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <M.ModalFooter className="flex justify-end gap-4">
+          <Button variant={'secondary'}>Отменить</Button>
+          <Button type="submit">Изменить</Button>
+        </M.ModalFooter>
       </form>
     </Form>
   );
