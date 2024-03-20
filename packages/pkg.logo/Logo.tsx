@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-import { ComponentProps } from 'react';
+import React, { ComponentProps } from 'react';
 
 type LogoT = {
   logoVariant: 'navigation' | 'id';
