@@ -36,11 +36,9 @@ const Timer = (props: TimerProps) => {
   });
 
   return (
-    <div className="rounded-lg p-4 text-red-100 bg-red-0 flex gap-4 items-center">
+    <div className="bg-red-0 flex items-center gap-4 rounded-lg p-4 text-red-100">
       <Clock className="fill-red-100" />
-      <p className="font-semibold">
-        {props.getTitle(formatTime(leftSecs))}
-      </p>
+      <p className="font-semibold">{props.getTitle(formatTime(leftSecs))}</p>
     </div>
   );
 };

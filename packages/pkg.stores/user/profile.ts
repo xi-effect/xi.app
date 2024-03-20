@@ -8,17 +8,17 @@ import { immer } from 'zustand/middleware/immer';
 export type UserProfile = {
   user: UserT;
   updateUser: (value: { [key: string]: unknown }) => void;
-  getUser: () => { redir?: string, isLogin?: boolean };
+  getUser: () => { redir?: string; isLogin?: boolean };
 };
 
 export type ResponseBodyUserT = {
-  id: UserT["id"];
-  username: UserT["username"];
-  display_name: UserT["displayName"];
-  onboarding_stage: UserT["onboardingStage"];
-  theme: UserT["theme"];
-  email: UserT["email"];
-}
+  id: UserT['id'];
+  username: UserT['username'];
+  display_name: UserT['displayName'];
+  onboarding_stage: UserT['onboardingStage'];
+  theme: UserT['theme'];
+  email: UserT['email'];
+};
 
 export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
   set,
@@ -31,8 +31,7 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     onboardingStage: null,
     theme: '',
   },
-  updateUser: (value) =>
-    set((state) => ({ user: { ...state.user, ...value } })),
+  updateUser: (value) => set((state) => ({ user: { ...state.user, ...value } })),
   getUser: async () => {
     const { data, status } = await get<ResponseBodyUserT>({
       service: 'auth',
@@ -46,11 +45,21 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
         },
       },
     });
-    console.log("data", data);
-    set((state) => ({ user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme, email: data.email } }));
+    console.log('data', data);
+    set((state) => ({
+      user: {
+        ...state.user,
+        onboardingStage: data['onboarding_stage'],
+        username: data.username,
+        id: data.id,
+        displayName: data['display_name'],
+        theme: data.theme,
+        email: data.email,
+      },
+    }));
 
     if (status === 401) {
-      useMainSt.getState().setIsLogin(false)
+      useMainSt.getState().setIsLogin(false);
     } else {
       // if (data["onboarding_stage"] && data["onboarding_stage"] !== "completed") return { redir: welcomePagesPathsDict[data["onboarding_stage"]], isLogin: true };
       useMainSt.getState().setIsLogin(true);

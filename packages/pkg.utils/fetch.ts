@@ -54,7 +54,11 @@ export async function get<T>({ service, path, config }: GetT) {
 }
 
 export async function post<T, U>({ service, path, body, config }: PostT<T>) {
-  const init = { method: 'POST', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
+  const init = {
+    method: 'POST',
+    body: body instanceof FormData ? body : JSON.stringify(body),
+    ...config,
+  };
 
   const { data, status } = await http<U>(service, path, init as RequestInit);
 
@@ -62,7 +66,11 @@ export async function post<T, U>({ service, path, body, config }: PostT<T>) {
 }
 
 export async function patch<T, U>({ service, path, body, config }: PostT<T>) {
-  const init = { method: 'PATCH', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
+  const init = {
+    method: 'PATCH',
+    body: body instanceof FormData ? body : JSON.stringify(body),
+    ...config,
+  };
 
   const { data, status } = await http<U>(service, path, init as RequestInit);
 
@@ -70,7 +78,11 @@ export async function patch<T, U>({ service, path, body, config }: PostT<T>) {
 }
 
 export async function put<T, U>({ service, path, body, config }: PutT<T>) {
-  const init = { method: 'PUT', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
+  const init = {
+    method: 'PUT',
+    body: body instanceof FormData ? body : JSON.stringify(body),
+    ...config,
+  };
   const { data, status } = await http<U>(service, path, init as RequestInit);
 
   return { data, status };

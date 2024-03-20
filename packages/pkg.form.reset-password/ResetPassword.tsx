@@ -19,7 +19,7 @@ import { Link } from '@xipkg/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { post } from 'pkg.utils';
-import { Logo } from 'pkg.logo'
+import { Logo } from 'pkg.logo';
 
 const FormSchema = z.object({
   email: z
@@ -70,7 +70,7 @@ export const ResetPassword = () => {
         className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
-          <Logo height={22} width={180} logoVariant='navigation' logoSize='default' />
+          <Logo height={22} width={180} logoVariant="navigation" logoSize="default" />
         </div>
         <h1 className="self-center text-2xl font-semibold">
           {emailSent ? 'Письмо отправлено' : 'Восстановление'}

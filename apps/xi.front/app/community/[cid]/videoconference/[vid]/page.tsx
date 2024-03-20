@@ -6,9 +6,8 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 const VideoConference = dynamic(() =>
-  import('pkg.module.videoconference').then((mod) => mod.VideoConference)
-)
-
+  import('pkg.module.videoconference').then((mod) => mod.VideoConference),
+);
 
 export default function VideoConferenceInCommunity({ params }: { params: { vid: string } }) {
   const getToken = useMainSt((state) => state.getToken);

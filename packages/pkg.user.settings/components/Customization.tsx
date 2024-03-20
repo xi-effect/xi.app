@@ -22,13 +22,13 @@ export const Customization = () => {
         <div className="flex w-full flex-col p-3">
           <span className="text-xl font-semibold">Внешний вид</span>
         </div>
-        <div className="mt-2 flex justify-center items-start w-full flex-col gap-4 p-3 sm:flex-row sm:items-center">
+        <div className="mt-2 flex w-full flex-col items-start justify-center gap-4 p-3 sm:flex-row sm:items-center">
           <div className="flex flex-row gap-4">
             <Palette className="fill-brand-80" />
             <span className="text-base font-semibold leading-[24px]">Тема оформления</span>
           </div>
           <Select value={theme} onValueChange={(value) => setTheme(value)}>
-            <SelectTrigger className="ml-0 sm:ml-auto w-[250px]">
+            <SelectTrigger className="ml-0 w-[250px] sm:ml-auto">
               <SelectValue placeholder="Select a fruit" />
             </SelectTrigger>
             <SelectContent>

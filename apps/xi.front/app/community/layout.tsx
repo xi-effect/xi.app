@@ -9,9 +9,5 @@ const Navigation = dynamic(() => import('pkg.navigation').then((mod) => mod.Navi
 export default function CommunityLayout({ children }) {
   const onSignOut = useMainSt((state) => state.onSignOut);
 
-  return (
-    <Navigation onExit={onSignOut}>
-      {children}
-    </Navigation>
-  );
+  return <Navigation onExit={onSignOut}>{children}</Navigation>;
 }

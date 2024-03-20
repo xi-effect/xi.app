@@ -8,7 +8,7 @@ import Form from './components/Form';
 
 type ChangePasswordModalT = PropsWithChildren<{}>;
 
-export const ChangePasswordModal = ({children}: ChangePasswordModalT) => {
+export const ChangePasswordModal = ({ children }: ChangePasswordModalT) => {
   const [stage, setStage] = useState<'form' | 'success'>('form');
 
   return (
@@ -24,16 +24,16 @@ export const ChangePasswordModal = ({children}: ChangePasswordModalT) => {
               <M.ModalTitle>Изменение пароля</M.ModalTitle>
             </M.ModalHeader>
             <Form />
-            <M.ModalFooter className="gap-4 flex justify-end">
+            <M.ModalFooter className="flex justify-end gap-4">
               <Button variant={'secondary'}>Отменить</Button>
               <Button onClick={() => setStage('success')}>Изменить</Button>
             </M.ModalFooter>
           </>
         )) ||
           (stage === 'success' && (
-            <div className="p-8 space-y-8 border-t border-gray-20">
-              <p className="text-2xl text-center font-semibold text-gray-100">Пароль изменён</p>
-              <Button onClick={() => setStage('success')} className="w-full mt-4">
+            <div className="border-gray-20 space-y-8 border-t p-8">
+              <p className="text-center text-2xl font-semibold text-gray-100">Пароль изменён</p>
+              <Button onClick={() => setStage('success')} className="mt-4 w-full">
                 Продолжить
               </Button>
             </div>
