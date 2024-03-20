@@ -4,35 +4,22 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
 import { PropsWithChildren, useState } from 'react';
-import Form, { FormDataT } from './components/Form';
-import { put } from 'pkg.utils';
+import Form from './components/Form';
+import { useMainSt } from 'pkg.stores';
 
 type ChangeEmailModalT = PropsWithChildren<{}>;
 
+interface IEmailModalStage {
+  type: string;
+  email: string;
+}
+
 export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
-  const [stage, setStage] = useState({
+  const onEmailChange = useMainSt((state) => state.onEmailChange);
+  const [stage, setStage] = useState<IEmailModalStage>({
     type: 'form',
-    email: null,
+    email: '',
   });
-
-  const handleFormAction = async (formData: FormDataT) => {
-    const { data } = await put({
-      service: 'auth',
-      path: '/users/current/email/',
-      body: {
-        password: formData.password.trim().toString(),
-        new_email: formData.email.toLowerCase(),
-      },
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    });
-
-    console.log(formData);
-    // { type: 'success', email: data.email }
-  };
 
   return (
     <M.Modal>
@@ -46,7 +33,7 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
             <M.ModalHeader>
               <M.ModalTitle>Изменение электронной почты</M.ModalTitle>
             </M.ModalHeader>
-            <Form handleFormAction={handleFormAction} />
+            <Form onEmailChange={onEmailChange} setStage={setStage} />
           </>
         )) ||
           (stage.type === 'success' && (
@@ -54,10 +41,7 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
               <p className="text-center text-2xl font-semibold text-gray-100">
                 На адрес {stage.email} отправлено письмо с подтверждением
               </p>
-              <Button
-                onClick={() => setStage({ type: 'form', email: null })}
-                className="mt-4 w-full"
-              >
+              <Button onClick={() => setStage({ type: 'form', email: '' })} className="mt-4 w-full">
                 Продолжить
               </Button>
             </div>

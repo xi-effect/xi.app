@@ -15,18 +15,21 @@ import React, { useState } from 'react';
 import * as z from 'zod';
 import Timer from './Timer';
 import { Button } from '@xipkg/button';
+import { toast } from 'sonner';
 import * as M from '@xipkg/modal';
 
 const schema = z.object({
   email: z
     .string({ required_error: 'Обязательное поле' })
     .email({ message: 'Некорректный формат данных' }),
-  password: z.string({ required_error: 'Обязательное поле' }),
+  password: z.string({ required_error: 'Обязательное поле' }).min(6, {
+    message: 'Минимальная длина пароля - 6 символов',
+  }),
 });
 
 interface IFormBlockProps {
-  handleFormAction: (arg: FormDataT) => void;
-  // (arg: { type: 'success' | 'form'; email: string }) => void
+  onEmailChange: any;
+  setStage: (arg: { type: string; email: string }) => void;
 }
 
 export type FormDataT = {
@@ -34,28 +37,38 @@ export type FormDataT = {
   password: string;
 };
 
-const FormBlock = ({ handleFormAction }: IFormBlockProps) => {
-  const [isPasswordShow, setIsPasswordShow] = React.useState(false);
+const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
+  const form = useForm<FormDataT>({
+    resolver: zodResolver(schema),
+  });
 
+  const [isPasswordShow, setIsPasswordShow] = React.useState(false);
+  const [timer, setTimer] = useState(false);
   const changePasswordShow = () => {
     setIsPasswordShow((prev) => !prev);
   };
 
-  const form = useForm<FormDataT>({
-    resolver: zodResolver(schema),
-  });
-  const { control, handleSubmit, register } = form;
+  const {
+    control,
+    handleSubmit,
+    trigger,
+    setError,
+    formState: { errors },
+  } = form;
 
-  const [timer, setTimer] = useState(false);
-
-  const onSubmit = (data: FormDataT) => {
-    handleFormAction(data);
+  const onSubmit = async (data: FormDataT) => {
+    trigger();
+    const status = await onEmailChange({ ...data, setError });
+    if (status === 200) {
+      setStage({ type: 'success', email: data.email });
+      toast('Вы успешно изменили почту!');
+    }
   };
 
   return (
     <Form {...form}>
       <form className="space-y-4 p-6 pt-5" onSubmit={handleSubmit(onSubmit)}>
-        {timer && (
+        {!timer && (
           <Timer
             durationSecs={10 * 60}
             getTitle={(t) => `Отправить повторно можно через ${t}`}
@@ -78,13 +91,13 @@ const FormBlock = ({ handleFormAction }: IFormBlockProps) => {
         <FormField
           control={control}
           name="password"
-          render={({ fieldState: { error }, field }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl className="mt-2">
                 <Input
                   {...field}
-                  error={!!error}
+                  error={!!errors?.password}
                   autoComplete="off"
                   afterClassName="cursor-pointer"
                   type={isPasswordShow ? 'text' : 'password'}
@@ -99,8 +112,12 @@ const FormBlock = ({ handleFormAction }: IFormBlockProps) => {
           )}
         />
         <M.ModalFooter className="flex justify-end gap-4">
-          <Button variant={'secondary'}>Отменить</Button>
-          <Button type="submit">Изменить</Button>
+          <Button type={'button'} variant={'secondary'}>
+            Отменить
+          </Button>
+          <Button disabled={!timer} className={'disabled:cursor-not-allowed'} type={'submit'}>
+            Изменить
+          </Button>
         </M.ModalFooter>
       </form>
     </Form>
