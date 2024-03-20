@@ -4,7 +4,8 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
 import { PropsWithChildren, useState } from 'react';
-import Form from './components/Form';
+import Form, { FormDataT } from './components/Form';
+import { put } from 'pkg.utils';
 
 type ChangeEmailModalT = PropsWithChildren<{}>;
 
@@ -13,6 +14,25 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
     type: 'form',
     email: null,
   });
+
+  const handleFormAction = async (formData: FormDataT) => {
+    const { data } = await put({
+      service: 'auth',
+      path: '/users/current/email/',
+      body: {
+        password: formData.password.trim().toString(),
+        new_email: formData.email.toLowerCase(),
+      },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+
+    console.log(formData);
+    // { type: 'success', email: data.email }
+  };
 
   return (
     <M.Modal>
@@ -26,7 +46,7 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
             <M.ModalHeader>
               <M.ModalTitle>Изменение электронной почты</M.ModalTitle>
             </M.ModalHeader>
-            <Form handleFormState={setStage} />
+            <Form handleFormAction={handleFormAction} />
           </>
         )) ||
           (stage.type === 'success' && (

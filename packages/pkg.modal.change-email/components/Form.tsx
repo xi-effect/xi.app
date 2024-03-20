@@ -25,16 +25,16 @@ const schema = z.object({
 });
 
 interface IFormBlockProps {
-  handleFormState: any;
+  handleFormAction: (arg: FormDataT) => void;
   // (arg: { type: 'success' | 'form'; email: string }) => void
 }
 
-type FormDataT = {
+export type FormDataT = {
   email: string;
   password: string;
 };
 
-const FormBlock = ({ handleFormState }: IFormBlockProps) => {
+const FormBlock = ({ handleFormAction }: IFormBlockProps) => {
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
   const changePasswordShow = () => {
@@ -49,8 +49,7 @@ const FormBlock = ({ handleFormState }: IFormBlockProps) => {
   const [timer, setTimer] = useState(false);
 
   const onSubmit = (data: FormDataT) => {
-    console.log(data); // Check if form data is being captured correctly
-    handleFormState({ type: 'success', email: data.email });
+    handleFormAction(data);
   };
 
   return (
@@ -66,11 +65,11 @@ const FormBlock = ({ handleFormState }: IFormBlockProps) => {
         <FormField
           control={control}
           name="email"
-          render={({ fieldState: { error } }) => (
+          render={({ fieldState: { error }, field }) => (
             <FormItem>
               <FormLabel>Новый адрес электронной почты</FormLabel>
               <FormControl className="mt-2">
-                <Input {...register('email')} error={!!error} autoComplete="on" />
+                <Input {...field} error={!!error} autoComplete="on" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,12 +78,12 @@ const FormBlock = ({ handleFormState }: IFormBlockProps) => {
         <FormField
           control={control}
           name="password"
-          render={({ fieldState: { error } }) => (
+          render={({ fieldState: { error }, field }) => (
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl className="mt-2">
                 <Input
-                  {...register('password')}
+                  {...field}
                   error={!!error}
                   autoComplete="off"
                   afterClassName="cursor-pointer"
