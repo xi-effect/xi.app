@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+
 'use client';
 
 import {
@@ -11,14 +13,13 @@ import {
   GridLayout,
   useTracks,
   TrackRefContext,
-  CarouselLayout,
 } from '@livekit/components-react';
 import { ConnectionQuality, Room, Track } from 'livekit-client';
 import { HTMLAttributes, useState } from 'react';
 
+import { Button } from '@xipkg/button';
 import { UpBar } from './components/UpBar';
 import { BottomBar } from './components/BottomBar';
-import { Button } from '@xipkg/button';
 
 const serverUrl = 'wss://livekit.xieffect.ru';
 
@@ -40,17 +41,21 @@ type VideoConferenceT = {
 //   <span className="text-2xl font-semibold text-gray-0">B1.2</span>
 //   <span className="ml-2 text-gray-40">Upper-intermediate</span>
 
-//   <button className="h-10 w-[95px] rounded-[20px] bg-gray-100 flex flex-row items-center justify-center gap-2 ml-auto">
+//   <button className="h-10 w-[95px] rounded-[20px]
+// bg-gray-100 flex flex-row items-center justify-center gap-2 ml-auto">
 //     <Grid className="fill-gray-0" />
 //     <span className="text-gray-0">Вид</span>
 //   </button>
-//   {/* <button className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center ml-auto">
+//   {/* <button className="h-10 w-10 rounded-[20px]
+// bg-gray-100 flex flex-row items-center justify-center ml-auto">
 //     <Maximaze className="fill-gray-0" />
 //   </button> */}
-//   <button className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center ml-2">
+//   <button className="h-10 w-10 rounded-[20px]
+// bg-gray-100 flex flex-row items-center justify-center ml-2">
 //     <External className="fill-gray-0" />
 //   </button>
-//   <button className="h-10 w-10 rounded-[20px] bg-gray-100 flex flex-row items-center justify-center ml-2">
+//   <button className="h-10 w-10 rounded-[20px]
+// bg-gray-100 flex flex-row items-center justify-center ml-2">
 //     <Settings className="fill-gray-0" />
 //   </button>
 // </div>
@@ -93,8 +98,8 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
       connect={connect}
       onConnected={() => setIsConnected(true)}
       onDisconnected={handleDisconnect}
-      audio={true}
-      video={true}
+      audio
+      video
       className="h-screen"
     >
       {!isConnected ? (
@@ -136,13 +141,17 @@ export function Stage() {
                   <div className="m-2 flex h-6 w-fit flex-row gap-1 rounded bg-gray-100 p-1">
                     <TrackMutedIndicator source={Track.Source.Microphone} />
                     <TrackMutedIndicator source={track.source} />
-                    {/* Overwrite styles: By passing class names, we can easily overwrite/extend the existing styles. */}
-                    {/* In addition, we can still specify a style attribute and further customize the styles. */}
+                    {/* Overwrite styles: By passing class names, we can easily overwrite/extend the
+                     existing styles. */}
+                    {/* In addition, we can still specify a style attribute and further customize
+                    the styles. */}
                     <ParticipantName
                       className=""
                       // style={{ color: 'blue' }}
                     />
-                    {/* Custom components: Here we replace the provided <ConnectionQualityIndicator />  with our own implementation. */}
+                    {/* Custom components: Here we replace the provided
+                    <ConnectionQualityIndicator />
+                     with our own implementation. */}
                     <UserDefinedConnectionQualityIndicator />
                   </div>
                 </div>
@@ -158,7 +167,8 @@ export function Stage() {
 export function UserDefinedConnectionQualityIndicator(props: HTMLAttributes<HTMLSpanElement>) {
   /**
    *  We use the same React hook that is used internally to build our own component.
-   *  By using this hook, we inherit all the state management and logic and can focus on our implementation.
+   *  By using this hook, we inherit all the state management and logic and can focus on our
+   * implementation.
    */
   const { quality } = useConnectionQualityIndicator();
 
@@ -177,5 +187,7 @@ export function UserDefinedConnectionQualityIndicator(props: HTMLAttributes<HTML
     }
   }
 
-  return <span {...props}> {qualityToText(quality)} </span>;
+  const qualityText = qualityToText(quality);
+
+  return <span {...props}>{qualityText}</span>;
 }

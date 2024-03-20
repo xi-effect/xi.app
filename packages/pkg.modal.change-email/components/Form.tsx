@@ -1,7 +1,15 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useForm } from '@xipkg/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
 import { Input } from '@xipkg/input';
 import { useState } from 'react';
 import * as z from 'zod';
@@ -14,9 +22,7 @@ const schema = z.object({
   password: z.string({ required_error: 'Обязательное поле' }),
 });
 
-interface FormBlockProps {}
-
-const FormBlock = (props: FormBlockProps) => {
+const FormBlock = () => {
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
   const { control } = form;
 
@@ -24,7 +30,7 @@ const FormBlock = (props: FormBlockProps) => {
 
   return (
     <Form {...form}>
-      <form className="p-6 pt-5 space-y-4" onSubmit={form.handleSubmit(console.log)}>
+      <form className="space-y-4 p-6 pt-5" onSubmit={form.handleSubmit(console.log)}>
         {timer && (
           <Timer
             durationSecs={10 * 60}

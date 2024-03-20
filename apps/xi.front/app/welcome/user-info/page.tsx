@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import React from 'react';
+import React, { RefObject } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { put, useMedia } from 'pkg.utils';
@@ -25,13 +25,12 @@ import { useMainSt } from 'pkg.stores';
 import { Logo } from 'pkg.logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 
-const readFile = (file: File) => {
-  return new Promise((resolve) => {
+const readFile = (file: File) =>
+  new Promise((resolve) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => resolve(reader.result), false);
     reader.readAsDataURL(file);
   });
-};
 
 const FormSchema = z.object({
   displayName: z.string({
@@ -48,29 +47,25 @@ type ResponseBody = {
 };
 
 type AvatarPreviewPropsT = {
-  date: Date | string;
+  date: RefObject<{}>;
   userId: number | null;
 };
 
-const AvatarPreview = ({ date, userId }: AvatarPreviewPropsT) => {
-  return (
-    <Avatar size="xl">
-      <AvatarImage
-        src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date instanceof Date ? date.getTime() : ''}`}
-        imageProps={{
-          src: `https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date instanceof Date ? date.getTime() : ''}`,
-          alt: 'avatar user',
-        }}
-        alt={'user avatar'}
-      />
-      <AvatarFallback size="xl">{''}</AvatarFallback>
-    </Avatar>
-  );
-};
+const AvatarPreview = ({ date, userId }: AvatarPreviewPropsT) => (
+  <Avatar size="xl">
+    <AvatarImage
+      src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`}
+      imageProps={{
+        src: `https://auth.xieffect.ru/api/users/${userId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`,
+        alt: 'avatar user',
+      }}
+      alt="user avatar"
+    />
+    <AvatarFallback size="xl" />
+  </Avatar>
+);
 
 export default function WelcomeUserInfo() {
-  const [date, setDate] = React.useState('');
-
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
 
@@ -82,12 +77,12 @@ export default function WelcomeUserInfo() {
   const handleInput = async (files: File[]) => {
     if (!files) return;
 
-    if (files[0].size > 3 * 1024 * 1024) {
+    if (files[0].size > 5 * 1024 * 1024) {
       toast('Файл слишком большой');
       return;
     }
 
-    let imageDataUrl = await readFile(files[0]);
+    const imageDataUrl = await readFile(files[0]);
 
     setFile(imageDataUrl);
     setIsAvatarEditorOpen(true);
@@ -112,7 +107,7 @@ export default function WelcomeUserInfo() {
   const watchNickname = watch('displayName');
 
   const onSubmit = async ({ displayName }: z.infer<typeof FormSchema>) => {
-    const { data, status } = await put<RequestBody, ResponseBody>({
+    const { status } = await put<RequestBody, ResponseBody>({
       service: 'auth',
       path: '/api/onboarding/stages/community-choice/',
       body: {
@@ -131,6 +126,12 @@ export default function WelcomeUserInfo() {
     } else {
       toast('Ошибка сервера');
     }
+  };
+
+  const date = React.useRef<'' | Date>('');
+
+  const setDate = (value: Date) => {
+    date.current = value;
   };
 
   return (

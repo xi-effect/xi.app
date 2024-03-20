@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 
 function formatTime(seconds: number) {
   // Вычисляем минуты и секунды из общего количества секунд
-  let minutes = Math.floor(seconds / 60);
-  let remainingSeconds = seconds % 60;
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
 
   // Добавляем ведущий ноль, если минуты или секунды меньше 10
-  let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  let formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
 
   // Возвращаем отформатированное время
   return `${formattedMinutes}:${formattedSeconds}`;
@@ -20,8 +20,8 @@ interface TimerProps {
   onTimerEnd: () => void;
 }
 
-const Timer = (props: TimerProps) => {
-  const [leftSecs, setSecs] = useState(props.durationSecs);
+const Timer = ({ getTitle, onTimerEnd, durationSecs }: TimerProps) => {
+  const [leftSecs, setSecs] = useState(durationSecs);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -29,18 +29,16 @@ const Timer = (props: TimerProps) => {
         setSecs((p) => p - 1);
       } else {
         clearInterval(t);
-        props.onTimerEnd();
+        onTimerEnd();
       }
     }, 1000);
     return () => clearInterval(t);
   });
 
   return (
-    <div className="rounded-lg p-4 text-red-100 bg-red-0 flex gap-4 items-center">
+    <div className="bg-red-0 flex items-center gap-4 rounded-lg p-4 text-red-100">
       <Clock className="fill-red-100" />
-      <p className="font-semibold">
-        {props.getTitle(formatTime(leftSecs))}
-      </p>
+      <p className="font-semibold">{getTitle(formatTime(leftSecs))}</p>
     </div>
   );
 };

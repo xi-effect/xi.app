@@ -1,14 +1,15 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
+import { useMedia } from 'pkg.utils';
 import { Header } from './components/Header';
 import { Menu } from './components/Menu';
 import { Content } from './components/Content';
-import { useMedia } from 'pkg.utils';
 
 type UserSettingsT = {
   onExit: () => void;
 };
 
-export const UserSettings = ({  onExit }: UserSettingsT) => {
+export const UserSettings = ({ onExit }: UserSettingsT) => {
   const isMobile = useMedia('(max-width: 719px)', false);
 
   const [activeContent, setActiveContent] = React.useState<number>(0);

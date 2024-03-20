@@ -3,7 +3,7 @@
 import { Button } from '@xipkg/button';
 import { Mail, Plus } from '@xipkg/icons';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { del, put } from 'pkg.utils/fetch';
 import React from 'react';
 import { toast } from 'sonner';
@@ -25,7 +25,7 @@ export default function WelcomeCommunity() {
 
   const handleNext = async () => {
     if (tab === 0) {
-      const { data, status } = await put<RequestBody, ResponseBody>({
+      const { status } = await put<RequestBody, ResponseBody>({
         service: 'auth',
         path: '/api/onboarding/stages/community-create/',
         body: {},
@@ -44,7 +44,7 @@ export default function WelcomeCommunity() {
       }
     }
     if (tab === 1) {
-      const { data, status } = await put<RequestBody, ResponseBody>({
+      const { status } = await put<RequestBody, ResponseBody>({
         service: 'auth',
         path: '/api/onboarding/stages/community-invite/',
         body: {},
@@ -65,7 +65,7 @@ export default function WelcomeCommunity() {
   };
 
   const handleBack = async () => {
-    const { data, status } = await del({
+    const { status } = await del({
       service: 'auth',
       path: '/api/onboarding/stages/community-choice/',
       config: {
@@ -75,11 +75,9 @@ export default function WelcomeCommunity() {
       },
     });
 
-    console.log('data', data);
-
     if (status === 204) {
       updateUser({ onboardingStage: 'created' });
-      router.push('/welcome/user-info');
+      redirect('/welcome/user-info');
     } else {
       toast('Ошибка сервера');
     }
@@ -113,8 +111,9 @@ export default function WelcomeCommunity() {
                   ? 'top-[108px] [@media_(min-width:400px)]:top-[86px] h-[108px] [@media_(min-width:357px)]:h-[86px]'
                   : 'top-0 [@media_(min-width:400px)]:h-[86px] h-[108px]'
               } border-solid border-brand-100 bg-brand-0 flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start border rounded-2xl transition-all ease-in duration-300`}
-            ></div>
+            />
             <button
+              type="button"
               onClick={() => setTab(0)}
               className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
             >
@@ -135,6 +134,7 @@ export default function WelcomeCommunity() {
               </div>
             </button>
             <button
+              type="button"
               onClick={() => setTab(1)}
               className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
             >

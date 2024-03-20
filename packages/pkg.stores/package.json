@@ -10,16 +10,18 @@
   "dependencies": {
     "react": "^18.2.0",
     "next": "^13.5.6",
-    "zustand": "^4.3.8"
+    "zustand": "^4.3.8",
+    "pkg.utils": "*",
+    "pkg.models": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "eslint": "^7.32.0",
-    "@xipkg/eslint": "latest",
+    
+    "@xipkg/eslint": "1.1.0",
     "@xipkg/typescript": "latest",
-    "typescript": "^5.1.3"
+    "typescript": "^5.4.2"
   },
   "author": "",
   "description": ""

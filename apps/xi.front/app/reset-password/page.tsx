@@ -1,4 +1,5 @@
 'use client';
+
 import { ResetPassword } from 'pkg.form.reset-password';
 
 export default function ResetPasswordPage() {

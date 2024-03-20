@@ -1,3 +1,5 @@
+/* eslint-disable no-lone-blocks */
+
 'use client';
 
 import { StateCreator } from 'zustand';
@@ -73,15 +75,27 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     console.log('onSignIn', data, status);
     if (status === 200) {
       {
-        set((state) => ({ isLogin: true, user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme, email: data.email } }));
+        set((state) => ({
+          isLogin: true,
+          user: {
+            ...state.user,
+            onboardingStage: data.onboarding_stage,
+            username: data.username,
+            id: data.id,
+            displayName: data.display_name,
+            theme: data.theme,
+            email: data.email,
+          },
+        }));
         return 200;
       }
-
     } else if (data?.detail === 'User not found') {
       setError('email', { type: 'manual', message: 'Не удалось найти аккаунт' });
     } else if (data?.detail === 'Wrong password') {
       setError('password', { type: 'manual', message: 'Неправильный пароль' });
     }
+
+    return 400;
   },
   onSignUp: async ({ nickname, email, password, setError }) => {
     const { data, status } = await post<RequestBodySignUp, ResponseBodySignUp>({
@@ -105,15 +119,27 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     console.log('onSignUp', data, status);
     if (status === 200) {
       {
-        set((state) => ({ isLogin: true, user: { ...state.user, onboardingStage: data["onboarding_stage"], username: data.username, id: data.id, displayName: data["display_name"], theme: data.theme, email: data.email } }));
+        set((state) => ({
+          isLogin: true,
+          user: {
+            ...state.user,
+            onboardingStage: data.onboarding_stage,
+            username: data.username,
+            id: data.id,
+            displayName: data.display_name,
+            theme: data.theme,
+            email: data.email,
+          },
+        }));
         return 200;
       }
-
     } else if (data?.detail === 'Username already in use') {
       setError('nickname', { type: 'manual', message: 'Такой никнейм уже занят' });
     } else if (data?.detail === 'Email already in use') {
       setError('email', { type: 'manual', message: 'Аккаунт с такой почтой уже зарегистрирован' });
     }
+
+    return 400;
   },
   onSignOut: async () => {
     const { data, status } = await post({
@@ -129,7 +155,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         },
       },
     });
-    console.log('status', status);
+    console.log('status', data, status);
     if (status === 204) {
       set(() => ({ isLogin: false }));
     }

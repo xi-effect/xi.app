@@ -1,8 +1,6 @@
+/* eslint-disable react/button-has-type */
 import React from 'react';
-import { Button } from '@xipkg/button';
-import { Camera, ChevronRight, Key, Mail } from '@xipkg/icons';
-import { Input } from '@xipkg/input';
-import { Label } from '@xipkg/label';
+import { ChevronRight, Key, Mail } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 
 export const Secure = () => {

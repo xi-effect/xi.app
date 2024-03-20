@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import { Button } from '@xipkg/button';
 import { Camera } from '@xipkg/icons';
 import { Input } from '@xipkg/input';
@@ -12,7 +13,10 @@ export const Customization = () => {
     <>
       {!isMobile && <span className="text-3xl font-semibold">Персонализация</span>}
       <div className="border-gray-80 flex h-[120px] w-full rounded-2xl border p-6 sm:mt-4">
-        <button className="bg-gray-5 flex h-[72px] w-[72px] place-items-center justify-center rounded-[36px]">
+        <button
+          type="button"
+          className="bg-gray-5 flex h-[72px] w-[72px] place-items-center justify-center rounded-[36px]"
+        >
           <Camera size="l" className="fill-gray-60" />
         </button>
         <div className="ml-4 flex flex-col justify-center gap-0.5">

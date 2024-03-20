@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
 
 import {
@@ -22,24 +25,22 @@ import { CommunityChannelCreate } from 'pkg.community.channel-create';
 import Image from 'next/image';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
+import { Modal, ModalContent } from '@xipkg/modal';
 import { CommunitySettings } from 'pkg.community.settings';
 
-const Avatar = () => {
-  return (
-    <div className="bg-green-0 flex h-8 w-8 flex-col items-center justify-center overflow-hidden rounded-[16px]">
-      <Image
-        style={{
-          borderRadius: '50%',
-        }}
-        src="/assets/avatarrep.svg"
-        width={32}
-        height={32}
-        alt="user avatar"
-      />
-    </div>
-  );
-};
+const Avatar = () => (
+  <div className="bg-green-0 flex h-8 w-8 flex-col items-center justify-center overflow-hidden rounded-[16px]">
+    <Image
+      style={{
+        borderRadius: '50%',
+      }}
+      src="/assets/avatarrep.svg"
+      width={32}
+      height={32}
+      alt="user avatar"
+    />
+  </div>
+);
 
 const DropdownHeader = ({
   setIsOpen,
@@ -47,26 +48,24 @@ const DropdownHeader = ({
 }: {
   setIsOpen: any;
   inDropdown?: boolean;
-}) => {
-  return (
-    <div
-      id="community-profile"
-      onClick={() => setIsOpen((prev: boolean) => !prev)}
-      className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${
-        inDropdown ? '' : 'mt-0 sm:mt-8'
-      } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
-    >
-      <Avatar />
-      <div className="ml-2 self-center text-[16px] font-semibold"> Иванова А. Г. </div>
-      <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
-        <ChevronSmallTop
-          size="s"
-          className={`transition-transform ease-in ${inDropdown ? '' : 'rotate-180'}`}
-        />
-      </div>
+}) => (
+  <div
+    id="community-profile"
+    onClick={() => setIsOpen((prev: boolean) => !prev)}
+    className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${
+      inDropdown ? '' : 'mt-0 sm:mt-8'
+    } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
+  >
+    <Avatar />
+    <div className="ml-2 self-center text-[16px] font-semibold"> Иванова А. Г. </div>
+    <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
+      <ChevronSmallTop
+        size="s"
+        className={`transition-transform ease-in ${inDropdown ? '' : 'rotate-180'}`}
+      />
     </div>
-  );
-};
+  </div>
+);
 
 export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
