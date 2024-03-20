@@ -23,11 +23,11 @@
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "@xipkg/eslint": "latest",
+    "@xipkg/eslint": "1.0.0",
     "@xipkg/tailwind": "0.3.6",
     "@xipkg/typescript": "latest",
-    "eslint": "^7.32.0",
-    "typescript": "^5.1.3"
+    
+    "typescript": "^5.4.2"
   },
   "description": "modal form for change password",
   "author": "xi.effect"
