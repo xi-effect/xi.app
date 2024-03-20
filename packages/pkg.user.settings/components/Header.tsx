@@ -31,7 +31,7 @@ export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT
       )}
       <ModalCloseButton
         variant="full"
-        className="right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 xl:right-[-56px] xl:top-0"
+        className="right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 xl:right-[-56px] xl:top-0 sm:bg-transparent"
       >
         <Close />
       </ModalCloseButton>
