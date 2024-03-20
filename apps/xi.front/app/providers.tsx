@@ -7,15 +7,6 @@ import { Toaster } from 'sonner';
 import { useMainSt } from 'pkg.stores';
 import Load from './load';
 
-const mapsOfPathsWithoutNav = [
-  '/welcome/community',
-  '/welcome/community-create',
-  '/welcome/community-invite',
-  '/welcome/final',
-  '/welcome/user-info',
-  '/signup',
-];
-
 const mapsOfPathsWithoutRedirect = ['/', '/signin', '/signup', '/reset-password'];
 
 const welcomePagesPaths = [
@@ -50,7 +41,8 @@ const AuthProvider = ({ children }: AuthProviderT) => {
   // Показываем скелетон, пока запрос на проверку сессии не пришёл
   if (isLogin === null) return <Load />;
 
-  // Если пользователь не залогинен, то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
+  // Если пользователь не залогинен,
+  // то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
   if (
     !isLogin &&
     !(mapsOfPathsWithoutRedirect.includes(pathname) || pathname.includes('/reset-password/'))
@@ -64,16 +56,18 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     !!onboardingStage &&
     onboardingStage === 'completed' &&
     welcomePagesPaths.includes(pathname)
-  )
+  ) {
     redirect('/community/1/home');
+  }
 
   if (
     isLogin &&
     !!onboardingStage &&
     onboardingStage !== 'completed' &&
     !welcomePagesPaths.includes(pathname)
-  )
+  ) {
     redirect(welcomePagesPathsDict[onboardingStage]);
+  }
 
   return children;
 };
@@ -89,16 +83,14 @@ export const Providers = ({ children }: ProvidersT) => {
   useEffect(() => {
     const { redir, isLogin } = getUser();
 
-    if (!!redir) redirect(redir);
+    if (redir) redirect(redir);
     if (isLogin === true) setIsLogin(true);
   }, []);
 
   return (
-    <>
-      <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
-        <Toaster />
-        <AuthProvider>{children}</AuthProvider>
-      </ThemeProvider>
-    </>
+    <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
+      <Toaster />
+      <AuthProvider>{children}</AuthProvider>
+    </ThemeProvider>
   );
 };

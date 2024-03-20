@@ -1,5 +1,4 @@
 import { Palette } from '@xipkg/icons';
-import React from 'react';
 import { useMedia } from 'pkg.utils';
 import {
   Select,

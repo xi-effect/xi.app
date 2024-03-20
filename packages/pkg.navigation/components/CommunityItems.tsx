@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
 
 import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
 import { ReactNode } from 'react';
-import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { useSessionStorage } from 'pkg.utils';
 
 type IconsDictT = {
   [key: string]: ReactNode;
@@ -103,7 +104,7 @@ const Item = ({ index, item, setSlideIndex }: any) => {
     router.push(item.link);
   };
 
-  if (!!item.title)
+  if (item.title) {
     return (
       <div
         id={item?.elId}
@@ -114,6 +115,7 @@ const Item = ({ index, item, setSlideIndex }: any) => {
         <span className="text-[14px] font-normal">{item.subtitle}</span>
       </div>
     );
+  }
 
   return (
     <li
@@ -133,17 +135,15 @@ type ItemPropsT = {
   className?: string;
 };
 
-export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
-  return (
-    <ul
-      id="community-services"
-      className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
-        className ?? ''
-      }`}
-    >
-      {menuData.map((item, index) => (
-        <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
-      ))}
-    </ul>
-  );
-};
+export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => (
+  <ul
+    id="community-services"
+    className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
+      className ?? ''
+    }`}
+  >
+    {menuData.map((item, index) => (
+      <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
+    ))}
+  </ul>
+);

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { Dispatch, SetStateAction } from 'react';
 import { ArrowLeft, Close } from '@xipkg/icons';
 import { ModalCloseButton } from '@xipkg/modal';
@@ -17,7 +18,11 @@ export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT
   return (
     <div className="relative flex h-[40px] w-full items-center justify-start sm:pb-4">
       {isMobile && showContent && (
-        <button onClick={() => setShowContent(false)} className="h-10 w-10 bg-transparent p-2">
+        <button
+          type="button"
+          onClick={() => setShowContent(false)}
+          className="h-10 w-10 bg-transparent p-2"
+        >
           <ArrowLeft />
         </button>
       )}

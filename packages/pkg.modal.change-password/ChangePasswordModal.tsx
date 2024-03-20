@@ -25,7 +25,7 @@ export const ChangePasswordModal = ({ children }: ChangePasswordModalT) => {
             </M.ModalHeader>
             <Form />
             <M.ModalFooter className="flex justify-end gap-4">
-              <Button variant={'secondary'}>Отменить</Button>
+              <Button variant="secondary">Отменить</Button>
               <Button onClick={() => setStage('success')}>Изменить</Button>
             </M.ModalFooter>
           </>

@@ -45,6 +45,7 @@ export default function WelcomeFinal() {
             target="_blank"
             href="https://xieffect.ru/"
             className="mt-4 border-solid border-gray-20 flex flex-col justify-center p-4 gap-1 w-full items-start border rounded-2xl cursor-pointer"
+            rel="noreferrer"
           >
             <div className="text-xl font-medium leading-[28px] text-gray-80">Почитать справку</div>
             <div className="leading-[22px] text-gray-80">

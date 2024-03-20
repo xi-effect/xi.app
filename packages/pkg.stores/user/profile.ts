@@ -1,9 +1,8 @@
 import { StateCreator } from 'zustand';
 import { get } from 'pkg.utils';
-import { useMainSt } from 'pkg.stores';
-import { UserSettings } from './settings';
 import { UserT } from 'pkg.models';
-import { immer } from 'zustand/middleware/immer';
+import { useMainSt } from '../index';
+import { UserSettings } from './settings';
 
 export type UserProfile = {
   user: UserT;
@@ -49,10 +48,10 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     set((state) => ({
       user: {
         ...state.user,
-        onboardingStage: data['onboarding_stage'],
+        onboardingStage: data.onboarding_stage,
         username: data.username,
         id: data.id,
-        displayName: data['display_name'],
+        displayName: data.display_name,
         theme: data.theme,
         email: data.email,
       },
@@ -61,7 +60,8 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     if (status === 401) {
       useMainSt.getState().setIsLogin(false);
     } else {
-      // if (data["onboarding_stage"] && data["onboarding_stage"] !== "completed") return { redir: welcomePagesPathsDict[data["onboarding_stage"]], isLogin: true };
+      // if (data["onboarding_stage"] && data["onboarding_stage"] !== "completed")
+      // return { redir: welcomePagesPathsDict[data["onboarding_stage"]], isLogin: true };
       useMainSt.getState().setIsLogin(true);
     }
   },

@@ -12,13 +12,12 @@ import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 
-const readFile = (file: File) => {
-  return new Promise((resolve) => {
+const readFile = (file: File) =>
+  new Promise((resolve) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => resolve(reader.result), false);
     reader.readAsDataURL(file);
   });
-};
 
 type UserPreviewPropsT = {
   className?: string;
@@ -51,6 +50,8 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
     if (status === 204) {
       toast('Аватарка удалена. Скоро она исчезнет с сайта');
     }
+
+    console.log('data', data);
   };
 
   const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +62,7 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
       return;
     }
 
-    let imageDataUrl = await readFile(event.target.files[0]);
+    const imageDataUrl = await readFile(event.target.files[0]);
 
     setFile(imageDataUrl);
     setIsAvatarOpen(true);

@@ -1,17 +1,12 @@
 import { UserProfile } from '@xipkg/userprofile';
-import { toast } from 'sonner';
-import { Notification } from '@xipkg/icons';
 import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
-
-import { CommunityItems, CommunityMenu } from './';
 
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
-import { useSessionStorage } from 'pkg.utils';
+import { CommunityItems, CommunityMenu } from '.';
 
 type MenuT = {
-  slideIndex: number;
   setSlideIndex: (value: number) => void;
   onExit: () => void;
 };
@@ -48,7 +43,10 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
         {/* <div
           id="notification-menu"
           onClick={() => toast(`Уведомления пока в разработке`)}
-          className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group mx-1 mt-2 flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
+          className="text-gray-90 hover:bg-brand-0 hover:text-brand-80
+          group mx-1 mt-2 flex h-[40px] w-full flex-row items-center
+          rounded-lg p-2 transition-colors
+          ease-in hover:cursor-pointer"
         >
           <Notification className="group-hover:fill-brand-80 transition-colors ease-in" />
           <span className="pl-2 text-[14px] font-normal">Уведомления</span>

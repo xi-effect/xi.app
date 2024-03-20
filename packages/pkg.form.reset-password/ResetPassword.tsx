@@ -14,7 +14,6 @@ import {
   FormMessage,
   useForm,
 } from '@xipkg/form';
-import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -110,7 +109,7 @@ export const ResetPassword = () => {
                 theme="brand"
                 variant="hover"
                 onClick={() => sendEmail(form.getValues())}
-                href={''}
+                href=""
               >
                 Отправить ещё раз
               </Link>

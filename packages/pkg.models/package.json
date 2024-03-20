@@ -13,7 +13,7 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     
-    "@xipkg/eslint": "1.0.0",
+    "@xipkg/eslint": "1.1.0",
     "@xipkg/typescript": "latest",
     "typescript": "^5.4.2"
   },

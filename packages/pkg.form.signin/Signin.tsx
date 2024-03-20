@@ -83,7 +83,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
         <div className="self-center">
           <Logo height={22} width={180} logoVariant="navigation" logoSize="default" />
         </div>
-        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
+        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
         <FormField
           control={control}
           name="email"

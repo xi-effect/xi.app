@@ -1,3 +1,5 @@
+/* eslint-disable no-irregular-whitespace */
+
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -27,7 +29,7 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
             </M.ModalHeader>
             <Form />
             <M.ModalFooter className="flex justify-end gap-4">
-              <Button variant={'secondary'}>Отменить</Button>
+              <Button variant="secondary">Отменить</Button>
               <Button onClick={() => setStage({ type: 'success', email: 'someemail' })}>
                 Изменить
               </Button>
@@ -37,7 +39,9 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
           (stage.type === 'success' && (
             <div className="space-y-8 p-8">
               <p className="text-center text-2xl font-semibold text-gray-100">
-                На адрес {stage.email} отправлено письмо с подтверждением
+                На адрес
+                {stage.email}
+                отправлено письмо с подтверждением
               </p>
               <Button onClick={() => setStage({ type: 'form' })} className="mt-4 w-full">
                 Продолжить

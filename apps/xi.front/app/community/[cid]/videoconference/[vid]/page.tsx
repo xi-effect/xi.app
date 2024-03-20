@@ -25,9 +25,7 @@ export default function VideoConferenceInCommunity({ params }: { params: { vid: 
           <h3 className="text-xl font-bold">{`id: ${params.vid}`}</h3>
         </>
       ) : (
-        <>
-          <VideoConference token={token} />
-        </>
+        <VideoConference token={token} />
       )}
     </div>
   );

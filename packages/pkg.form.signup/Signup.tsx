@@ -15,15 +15,9 @@ import {
   useForm,
 } from '@xipkg/form';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
-
-type FormValues = {
-  email: string;
-  password: string;
-};
 
 export type SignUpT = {
   /**

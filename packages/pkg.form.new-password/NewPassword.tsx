@@ -14,7 +14,6 @@ import {
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Input } from '@xipkg/input';
 import { Link } from '@xipkg/link';
-import Image from 'next/image';
 import React from 'react';
 import * as z from 'zod';
 import { Logo } from 'pkg.logo';
@@ -47,9 +46,9 @@ export const NewPassword = () => {
     },
   });
 
-  const { control, setError, handleSubmit, trigger } = form;
+  const { control, handleSubmit, trigger } = form;
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = () => {
     trigger();
   };
 

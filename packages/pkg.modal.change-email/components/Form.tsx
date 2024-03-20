@@ -22,9 +22,7 @@ const schema = z.object({
   password: z.string({ required_error: 'Обязательное поле' }),
 });
 
-interface FormBlockProps {}
-
-const FormBlock = (props: FormBlockProps) => {
+const FormBlock = () => {
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
   const { control } = form;
 

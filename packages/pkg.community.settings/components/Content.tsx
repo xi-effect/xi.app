@@ -10,6 +10,6 @@ type ContentPropsT = {
 
 const contentItems = [<Main />, <PersonalData />, <Customization />, <Secure />];
 
-export const Content = ({ activeContent }: ContentPropsT) => {
-  return <div className="w-full sm:ml-8">{contentItems[activeContent]}</div>;
-};
+export const Content = ({ activeContent }: ContentPropsT) => (
+  <div className="w-full sm:ml-8">{contentItems[activeContent]}</div>
+);
