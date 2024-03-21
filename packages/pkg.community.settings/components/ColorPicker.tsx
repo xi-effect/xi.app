@@ -6,20 +6,22 @@ interface ColorPickerProps {
   onChange: (value: string) => void;
 }
 
-const ColorPicker = (props: ColorPickerProps) => {
-  const [currentColor, setCurrentColor] = useState(props.colors[0]);
+const ColorPicker = ({ colors, onChange }: ColorPickerProps) => {
+  const [currentColor, setCurrentColor] = useState(colors[0]);
 
   return (
     <div className="space-y-4">
-      <div style={{ backgroundColor: currentColor }} className="h-16 rounded-lg"></div>
+      <div style={{ backgroundColor: currentColor }} className="h-16 rounded-lg" />
       <div className="flex flex-wrap gap-2">
-        {props.colors.map((el) => (
+        {colors.map((el) => (
           <button
+            type="button"
+            aria-label="Изменить цвет"
             onClick={() => {
               setCurrentColor(el);
-              props.onChange(el);
+              onChange(el);
             }}
-            className="w-6 h-7 rounded-lg"
+            className="grid size-7 place-content-center rounded-lg"
             style={{ backgroundColor: el }}
           >
             {el === currentColor ? <Check className="fill-white" /> : null}

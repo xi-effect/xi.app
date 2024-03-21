@@ -10,24 +10,31 @@ interface OptionSwitchProps {
   className?: string;
 }
 
-const OptionSwitch = (props: OptionSwitchProps) => {
-  const [checked, setChecked] = useState(props.initialChecked);
+const OptionSwitch = ({
+  description,
+  onChange,
+  title,
+  className,
+  initialChecked,
+}: OptionSwitchProps) => {
+  const [checked, setChecked] = useState(initialChecked);
 
   return (
     <button
+      type="button"
       onClick={() => {
         setChecked((p) => {
-          props.onChange(!p);
+          onChange(!p);
           return !p;
         });
       }}
-      className={cn('flex bg-transparent w-full justify-between py-4', props.className)}
+      className={cn('flex w-full justify-between bg-transparent py-4', className)}
     >
       <div className="space-y-2 text-start">
-        <h5 className="font-medium">{props.title}</h5>
-        <p className="text-sm">{props.description}</p>
+        <h5 className="font-medium">{title}</h5>
+        <p className="break-all text-sm">{description}</p>
       </div>
-      <Toggle className="mb-auto" checked={checked}></Toggle>
+      <Toggle className="mb-auto" checked={checked} />
     </button>
   );
 };

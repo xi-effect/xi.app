@@ -23,7 +23,7 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
           showContent={showContent}
           setShowContent={setShowContent}
         />
-        <div className="mt-4 flex flex-row">
+        <div className="mt-4 flex h-full flex-row">
           {isMobile ? (
             <>
               {showContent ? (

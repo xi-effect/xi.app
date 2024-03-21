@@ -2,12 +2,15 @@
 
 import { Close, Plus, Search, Trash } from '@xipkg/icons';
 import { Input } from '@xipkg/input';
+import * as M from '@xipkg/modal';
 import React from 'react';
 import { Tabs } from '@xipkg/tabs';
 import { FormControl, FormItem, FormLabel, FormMessage } from '@xipkg/form';
+import { Button } from '@xipkg/button';
+import AddParticipantsModal from './AddParticipantsModal';
 import ColorPicker from './ColorPicker';
 import OptionSwitch from './OptionSwitch';
-import Image from 'next/image';
+import UserCard from './UserCard';
 
 type RoleT = 'admin' | 'user';
 const mapRoleCyrillic: Record<RoleT, string> = {
@@ -16,113 +19,150 @@ const mapRoleCyrillic: Record<RoleT, string> = {
 };
 
 const tabOptions = ['Настройки', 'Права доступа', 'Участники'] as const;
-type TabOptionT = (typeof tabOptions)[number];
 
 export const PersonalData = () => {
-  const [selectedRole, setSelectedRole] = React.useState<RoleT | null>('admin');
+  const [selectedRole, setSelectedRole] = React.useState<RoleT | undefined>('admin');
 
-  const handleAddRole = () => {};
+  const handleAddRole = () => {
+    setSelectedRole(undefined);
+  };
   const handleDeleteRole = () => {};
   const handleChangeColor = () => {};
+  const handleSelectRole = setSelectedRole;
 
   return (
-    <div className="grid grid-rows-[auto_auto] gap-4 xl:grid-cols-[30%_1fr]">
-      <div className="space-y-4">
-        <div className="flex justify-between">
-          <h1 className="text-2xl font-semibold">Роли</h1>
-          <button onClick={handleAddRole} className="bg-transparent p-2">
-            <Plus />
-          </button>
-        </div>
-        <ul className="space-y-1">
-          {(['admin', 'user'] satisfies RoleT[]).map((el) => (
-            <li>
-              <button
-                className="hover:bg-brand-0 flex w-full gap-3 rounded-lg bg-transparent px-3 py-2 transition"
-                onClick={() => setSelectedRole(el)}
-              >
-                <span className="bg-gray-10 size-6 rounded-full"></span>
-                <p className="font-medium text-gray-100">{mapRoleCyrillic[el]}</p>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="border-gray-30 rounded-2xl border p-6">
-        <div className="flex items-center justify-between gap-6">
-          <h2>
-            {selectedRole
-              ? `Редактировать роль - ${mapRoleCyrillic[selectedRole]}`
-              : `Создать роль`}
-          </h2>
-          <button onClick={handleDeleteRole} className="bg-transparent p-2">
-            <Trash />
-          </button>
-        </div>
-        <Tabs.Root>
-          <Tabs.List>
-            {tabOptions.map((el) => (
-              <Tabs.Trigger value={el}>{el}</Tabs.Trigger>
+    <div className="relative h-full">
+      <div className="absolute inset-0 grid gap-4 overflow-hidden max-xl:grid-rows-[auto_1fr] max-xl:overflow-y-auto xl:grid-cols-[30%_1fr]">
+        <div className="space-y-4">
+          <div className="flex justify-between">
+            <h1 className="text-2xl font-semibold">Роли</h1>
+            <button
+              type="button"
+              aria-label="Добавить"
+              onClick={handleAddRole}
+              className="bg-transparent p-2"
+            >
+              <Plus />
+            </button>
+          </div>
+          <ul className="space-y-1">
+            {(['admin', 'user'] satisfies RoleT[]).map((el) => (
+              <li>
+                <button
+                  type="button"
+                  className={`hover:bg-brand-0 flex w-full gap-3 rounded-lg px-3 py-2 transition ${selectedRole === el ? 'bg-brand-0' : 'bg-transparent'}`}
+                  onClick={() => handleSelectRole(el)}
+                >
+                  <span className="bg-gray-10 size-6 rounded-full" />
+                  <p className="font-medium text-gray-100">{mapRoleCyrillic[el]}</p>
+                </button>
+              </li>
             ))}
-          </Tabs.List>
-          <Tabs.Content className="mt-6 space-y-4 *:space-y-2" value={tabOptions[0]}>
-            <FormItem>
-              <FormLabel>Название роли</FormLabel>
-              <FormControl>
-                <Input type="text" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            <FormItem>
-              <FormLabel>Цвет роли</FormLabel>
-              <FormControl>
-                <ColorPicker
-                  onChange={handleChangeColor}
-                  colors={['#445AFF', '#8208E1', '#029127', '#CB4C0E']}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </Tabs.Content>
-          <Tabs.Content className="space-y-4" value={tabOptions[1]}>
-            {Array.from({ length: 5 }, (_, i) => (
-              <OptionSwitch
-                onChange={() => {}}
-                title="Заголовок"
-                description={'Описание'.repeat(i + 1)}
-              />
-            ))}
-          </Tabs.Content>
-          <Tabs.Content value={tabOptions[2]}>
-            <div className="mt-6 flex gap-3 first:*:grow">
-              <Input placeholder="Поиск по участникам" before={<Search />} />
-              <button className="bg-brand-80 grid place-items-center rounded-md max-xl:size-12">
-                <Plus className="m-2 fill-white xl:hidden" size={'s'} />
-                <span className="text-white max-xl:hidden">Добавить участников</span>
-              </button>
-            </div>
-            <ul className="mt-6">
-              {Array.from({ length: 4 }, (_, i) => (
-                <li>
-                  <div className="flex py-3">
-                    <Image
-                      className="rounded-full"
-                      src="/assets/avatarrep.svg"
-                      alt=""
-                      width={24}
-                      height={24}
-                    />
-                    <p className="ml-2 font-medium text-gray-100">Анна Иванова</p>
-                    <span className="text-gray-60 ml-1">ivanova.a</span>
-                    <button className="ml-auto size-6 rounded-full">
-                      <Close className="p-1" />
-                    </button>
-                  </div>
-                </li>
+          </ul>
+        </div>
+        <div className="border-gray-30 box-border rounded-2xl border p-6 xl:row-span-1">
+          <div className="flex items-center justify-between gap-6">
+            <h2 className="text-xl font-semibold">
+              {selectedRole
+                ? `Редактировать роль - ${mapRoleCyrillic[selectedRole]}`
+                : 'Создать роль'}
+            </h2>
+            {selectedRole && (
+              <M.Modal>
+                <M.ModalTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label="Удалить"
+                    onClick={handleDeleteRole}
+                    className="bg-transparent p-2"
+                  >
+                    <Trash />
+                  </button>
+                </M.ModalTrigger>
+                <M.ModalContent className="rounded-2xl bg-white p-8">
+                  <Button variant="error">Удалить роль</Button>
+                  <M.ModalCloseButton variant="noStyle" asChild>
+                    <Button variant="ghost">Отмена</Button>
+                  </M.ModalCloseButton>
+                </M.ModalContent>
+              </M.Modal>
+            )}
+          </div>
+          <Tabs.Root defaultValue={tabOptions[0]} className="mt-6 xl:h-full">
+            <Tabs.List>
+              {tabOptions.map((el) => (
+                <Tabs.Trigger key={el} value={el}>
+                  {el}
+                </Tabs.Trigger>
               ))}
-            </ul>
-          </Tabs.Content>
-        </Tabs.Root>
+            </Tabs.List>
+            <div className="no-scrollbar relative xl:h-full *:xl:absolute *:xl:inset-0 *:xl:h-full *:xl:overflow-y-auto">
+              <Tabs.Content className="mt-6 space-y-4 *:space-y-2" value={tabOptions[0]}>
+                <FormItem>
+                  <FormLabel>Название роли</FormLabel>
+                  <FormControl>
+                    <Input type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                <FormItem>
+                  <FormLabel>Цвет роли</FormLabel>
+                  <FormControl>
+                    <ColorPicker
+                      onChange={handleChangeColor}
+                      colors={['#445AFF', '#8208E1', '#029127', '#CB4C0E']}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </Tabs.Content>
+              <Tabs.Content className="h-full space-y-4" value={tabOptions[1]}>
+                {Array.from({ length: 12 }, (_, i) => (
+                  <OptionSwitch
+                    onChange={() => {}}
+                    title="Заголовок"
+                    description={'Описание'.repeat(i + 1)}
+                  />
+                ))}
+              </Tabs.Content>
+              <Tabs.Content value={tabOptions[2]}>
+                <div className="mt-6 flex gap-3 first:*:grow">
+                  <Input placeholder="Поиск по участникам" before={<Search />} />
+                  <AddParticipantsModal
+                    subtitle={selectedRole ? mapRoleCyrillic[selectedRole] : ''}
+                  >
+                    <Button>
+                      <Plus className="m-2 fill-white xl:hidden" size="s" />
+                      <span className="font-medium text-white max-xl:hidden">
+                        Добавить участников
+                      </span>
+                    </Button>
+                  </AddParticipantsModal>
+                </div>
+                <ul className="mt-6">
+                  {Array.from({ length: 4 }, (_, i) => (
+                    <li>
+                      <UserCard
+                        login="ivanova.a"
+                        name={`Анна Иванова ${i}`}
+                        avatarSrc="/assets/avatarrep.svg"
+                        after={
+                          <button
+                            type="button"
+                            aria-label="Удалить"
+                            className="ml-auto size-6 rounded-full"
+                          >
+                            <Close className="p-1" />
+                          </button>
+                        }
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </Tabs.Content>
+            </div>
+          </Tabs.Root>
+        </div>
       </div>
     </div>
   );

@@ -78,7 +78,7 @@ type ProvidersT = {
 
 export const Providers = ({ children }: ProvidersT) => {
   const getUser = useMainSt((state) => state.getUser);
-  const setIsLogin = useMainSt((state) => state.setIsLogin);
+  const setIsLogin = useMainSt((state) => state.setIsLogtin);
 
   useEffect(() => {
     const { redir, isLogin } = getUser();
