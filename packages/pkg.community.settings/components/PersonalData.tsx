@@ -23,21 +23,6 @@ export const PersonalData = () => {
           <span className="text-gray-80 text-[16px] leading-[22px]">ivanova.a</span>
         </div>
       </div>
-      <div className="border-gray-80 mt-8 flex w-full flex-col rounded-2xl border p-6">
-        <div className="flex w-full gap-8">
-          <div className="w-full">
-            <Label className="">Отображаемое имя</Label>
-            <Input className="mt-2 w-full" />
-          </div>
-          <div className="w-full">
-            <Label>Никнейм</Label>
-            <Input className="mt-2 w-full" />
-          </div>
-        </div>
-        <div className="mt-8">
-          <Button size="l"> Сохранить </Button>
-        </div>
-      </div>
     </>
   );
 };
