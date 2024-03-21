@@ -7,5 +7,5 @@ module.exports = {
   jsxBracketSameLine: false,
   tabWidth: 2,
   semi: true,
-  plugins: ["prettier-plugin-tailwindcss"]
+  plugins: ['prettier-plugin-tailwindcss'],
 };

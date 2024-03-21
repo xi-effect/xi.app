@@ -3,14 +3,17 @@
   "scripts": {
     "build": "turbo run build --no-daemon",
     "dev": "turbo run dev --concurrency 30",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint -- && node -e \"console.log('script started at: %s', Date())\"",
     "lint-fix": "turbo run lint -- --fix .",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "format-check": "prettier --check \"**/*.{ts,tsx,md}\""
+    "format-check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
-    "@xipkg/eslint": "1.1.0",
+    "@xipkg/eslint": "1.2.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "turbo": "latest"
@@ -21,7 +24,7 @@
     "apps/*",
     "packages/*"
   ],
-  "dependencies": {
-    "cookies-next": "^4.1.1"
+  "lint-staged": {
+    "./package.json": ["npm run lint --"]
   }
 }

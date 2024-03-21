@@ -41,7 +41,7 @@ export default function WelcomeFinal() {
               Ознакомьтесь с основными функциями продукта
             </div>
           </Link>
-          <a
+          <Link
             target="_blank"
             href="https://xieffect.ru/"
             className="mt-4 border-solid border-gray-20 flex flex-col justify-center p-4 gap-1 w-full items-start border rounded-2xl cursor-pointer"
@@ -51,7 +51,7 @@ export default function WelcomeFinal() {
             <div className="leading-[22px] text-gray-80">
               Рассказываем о сервисе понятным языком
             </div>
-          </a>
+          </Link>
           <div className="pt-4 mt-auto">
             <Button onClick={handleNext} className="w-full">
               Начать работать

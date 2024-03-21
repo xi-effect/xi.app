@@ -1,9 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { Button } from '@xipkg/button';
 import { Camera } from '@xipkg/icons';
-import { Input } from '@xipkg/input';
-import { Label } from '@xipkg/label';
-import React from 'react';
 import { useMedia } from 'pkg.utils';
 
 export const Customization = () => {
