@@ -96,7 +96,7 @@ export const PersonalData = () => {
                 </Tabs.Trigger>
               ))}
             </Tabs.List>
-            <div className="no-scrollbar relative xl:h-full *:xl:absolute *:xl:inset-0 *:xl:h-full *:xl:overflow-y-auto">
+            <div className="*:no-scrollbar relative xl:h-full *:xl:absolute *:xl:inset-0 *:xl:h-full *:xl:overflow-y-auto">
               <Tabs.Content className="mt-6 space-y-4 *:space-y-2" value={tabOptions[0]}>
                 <FormItem>
                   <FormLabel>Название роли</FormLabel>
