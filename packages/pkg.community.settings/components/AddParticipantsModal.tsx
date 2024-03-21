@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import * as M from '@xipkg/modal';
-import { Search } from '@xipkg/icons';
+import { Close, Search } from '@xipkg/icons';
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
 import { Checkbox } from '@xipkg/checkbox';
@@ -46,7 +46,9 @@ const AddParticipantsModal = ({ children, subtitle }: AddParticipantsModalProps)
     <M.Modal>
       <M.ModalTrigger asChild>{children}</M.ModalTrigger>
       <M.ModalContent>
-        <M.ModalCloseButton />
+        <M.ModalCloseButton>
+          <Close className="fill-white" />
+        </M.ModalCloseButton>
         <M.ModalHeader>
           <M.ModalTitle>Добавление участников</M.ModalTitle>
           <p className="text-gray-80">{subtitle}</p>
