@@ -13,5 +13,3 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
     </html>
   );
 }
-
-
