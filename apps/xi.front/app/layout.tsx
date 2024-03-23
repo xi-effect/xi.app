@@ -1,9 +1,10 @@
 import '@xipkg/tailwind/index.css';
+
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from './providers';
 import React, { ReactNode } from 'react';
 import Script from 'next/script';
+import { Providers } from './providers';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],

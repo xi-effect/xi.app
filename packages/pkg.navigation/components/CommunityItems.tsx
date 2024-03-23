@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
 
 import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
 import { ReactNode } from 'react';
-import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { useSessionStorage } from 'pkg.utils';
 
 type IconsDictT = {
   [key: string]: ReactNode;
@@ -43,19 +44,19 @@ const menuData = [
     icon: 'announce',
     type: '',
     label: 'Объявления',
-    link: '',
+    link: '/community/1/announce/1',
   },
   {
     icon: 'task',
     type: '',
     label: 'Задания',
-    link: '',
+    link: '/community/1/task/1',
   },
   {
     icon: 'chat',
     type: '',
     label: 'Чат',
-    link: '',
+    link: '/community/1/chat/1',
   },
   {
     elId: 'video-item-menu',
@@ -79,7 +80,7 @@ const menuData = [
     icon: 'task',
     type: '',
     label: 'Задания',
-    link: '',
+    link: '/community/1/task/1',
   },
   {
     icon: 'chat',
@@ -103,7 +104,7 @@ const Item = ({ index, item, setSlideIndex }: any) => {
     router.push(item.link);
   };
 
-  if (!!item.title)
+  if (item.title) {
     return (
       <div
         id={item?.elId}
@@ -114,9 +115,10 @@ const Item = ({ index, item, setSlideIndex }: any) => {
         <span className="text-[14px] font-normal">{item.subtitle}</span>
       </div>
     );
+  }
 
   return (
-    <div
+    <li
       id={item?.elId}
       className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
       key={index.toString()}
@@ -124,7 +126,7 @@ const Item = ({ index, item, setSlideIndex }: any) => {
     >
       {iconsDict[item.icon]}
       <span className="pl-2 text-[14px] font-normal">{item.label}</span>
-    </div>
+    </li>
   );
 };
 
@@ -133,17 +135,15 @@ type ItemPropsT = {
   className?: string;
 };
 
-export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
-  return (
-    <div
-      id="community-services"
-      className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
-        className ?? ''
-      }`}
-    >
-      {menuData.map((item, index) => (
-        <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
-      ))}
-    </div>
-  );
-};
+export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => (
+  <ul
+    id="community-services"
+    className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
+      className ?? ''
+    }`}
+  >
+    {menuData.map((item, index) => (
+      <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
+    ))}
+  </ul>
+);

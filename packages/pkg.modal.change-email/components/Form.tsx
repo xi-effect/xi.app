@@ -41,7 +41,7 @@ const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
   const form = useForm<FormDataT>({
     resolver: zodResolver(schema),
   });
-
+  
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
   const [timer, setTimer] = useState(false);
   const changePasswordShow = () => {

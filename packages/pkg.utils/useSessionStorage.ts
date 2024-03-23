@@ -18,9 +18,8 @@ export const useSessionStorage = <T>(
       if (typeof sessionStorageValue !== 'string') {
         sessionStorage.setItem(key, raw ? String(initialValue) : JSON.stringify(initialValue));
         return initialValue;
-      } else {
-        return raw ? sessionStorageValue : JSON.parse(sessionStorageValue || 'null');
       }
+      return raw ? sessionStorageValue : JSON.parse(sessionStorageValue || 'null');
     } catch {
       // If user is in private mode or has storage restriction
       // sessionStorage can throw. JSON.parse and JSON.stringify

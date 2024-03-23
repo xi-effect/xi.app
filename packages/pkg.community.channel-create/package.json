@@ -5,7 +5,7 @@
   "types": "/index.tsx",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint \"**/*.ts*\""
+    "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@xipkg/button": "1.1.3",
@@ -17,14 +17,14 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "eslint-config-custom": "*",
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "@xipkg/eslint": "latest",
+    "@xipkg/eslint": "1.4.0",
     "@xipkg/tailwind": "0.3.6",
     "@xipkg/typescript": "latest",
-    "eslint": "^7.32.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.4.2"
   },
   "description": "Dialog box for creating a new channel",
   "author": "xi.effect"

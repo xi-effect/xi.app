@@ -14,10 +14,9 @@ import {
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Input } from '@xipkg/input';
 import { Link } from '@xipkg/link';
-import Image from 'next/image';
 import React from 'react';
 import * as z from 'zod';
-import { Logo } from 'pkg.logo'
+import { Logo } from 'pkg.logo';
 
 const password = z
   .string({
@@ -47,9 +46,9 @@ export const NewPassword = () => {
     },
   });
 
-  const { control, setError, handleSubmit, trigger } = form;
+  const { control, handleSubmit, trigger } = form;
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = () => {
     trigger();
   };
 
@@ -63,7 +62,7 @@ export const NewPassword = () => {
         className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
-          <Logo height={22} width={180} logoVariant='navigation' logoSize='default' />
+          <Logo height={22} width={180} logoVariant="navigation" logoSize="default" />
         </div>
         <h1 className="self-center text-2xl font-semibold">Сброс пароля</h1>
         <FormField

@@ -1,2 +1,1 @@
-
-export {ChangeEmailModal} from "./ChangeEmailModal"
+export { ChangeEmailModal } from './ChangeEmailModal';

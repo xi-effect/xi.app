@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import {
   Modal,
   ModalCloseButton,
@@ -12,10 +12,10 @@ import {
 import { Close } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import Cropper from 'react-easy-crop';
-import { getCroppedImg } from './utils';
 import { put } from 'pkg.utils';
 import { toast } from 'sonner';
 import Resizer from 'react-image-file-resizer';
+import { getCroppedImg } from './utils';
 
 type AvatarEditorT = {
   file: any;
@@ -67,7 +67,7 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
   const showCroppedImage = async () => {
     try {
       const croppedImage = (await getCroppedImg(file, croppedAreaPixels)) as Blob;
-      let f = new File([croppedImage], 'avatar.webp');
+      const f = new File([croppedImage], 'avatar.webp');
       const resizedImage = (await resizeFile(f)) as Blob;
 
       console.log('resizedImage', resizedImage);
@@ -83,6 +83,8 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
           headers: {},
         },
       });
+
+      console.log('data', data);
 
       if (status === 204) {
         toast('Аватарка успешно загружена. В ближайшее время она отобразится на сайте');

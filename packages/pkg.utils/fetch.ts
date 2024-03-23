@@ -1,5 +1,4 @@
-type MethodT = 'GET' | 'PUT' | 'POST' | 'DELETE';
-
+/* eslint-disable no-undef */
 type ServicesT = 'backend' | 'auth' | 'live';
 
 type ServicesMapT = {
@@ -43,36 +42,54 @@ async function http<T>(
   const response = await fetch(request);
   const data = await response.json().catch(() => ({}));
 
-  return { data: data, status: response.status };
+  return { data, status: response.status };
 }
 
 export async function get<T>({ service, path, config }: GetT) {
-  const init = { method: 'get', ...config };
+  const init = { method: 'GET', ...config };
   const { data, status } = await http<T>(service, path, init);
 
-  return { data, status };
+  return { status, data };
 }
 
 export async function post<T, U>({ service, path, body, config }: PostT<T>) {
-  console.log("body", body, body instanceof FormData);
-  const init = { method: 'post', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
+  const init = {
+    method: 'POST',
+    body: body instanceof FormData ? body : JSON.stringify(body),
+    ...config,
+  };
 
   const { data, status } = await http<U>(service, path, init as RequestInit);
 
-  return { data, status };
+  return { status, data };
+}
+
+export async function patch<T, U>({ service, path, body, config }: PostT<T>) {
+  const init = {
+    method: 'PATCH',
+    body: body instanceof FormData ? body : JSON.stringify(body),
+    ...config,
+  };
+
+  const { data, status } = await http<U>(service, path, init as RequestInit);
+
+  return { status, data };
 }
 
 export async function put<T, U>({ service, path, body, config }: PutT<T>) {
-  console.log("body", body, body instanceof FormData);
-  const init = { method: 'put', body: body instanceof FormData ? body : JSON.stringify(body), ...config };
+  const init = {
+    method: 'PUT',
+    body: body instanceof FormData ? body : JSON.stringify(body),
+    ...config,
+  };
   const { data, status } = await http<U>(service, path, init as RequestInit);
 
-  return { data, status };
+  return { status, data };
 }
 
 export async function del<T>({ service, path, config }: DelT) {
-  const init = { method: 'delete', ...config };
+  const init = { method: 'DELETE', ...config };
   const { data, status } = await http<T>(service, path, init as RequestInit);
 
-  return { data, status };
+  return { status, data };
 }

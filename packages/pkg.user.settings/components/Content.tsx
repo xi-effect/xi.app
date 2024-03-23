@@ -1,9 +1,7 @@
-import React from 'react';
 import { Main } from './Main';
 import { PersonalData } from './PersonalData';
 import { Customization } from './Customization';
 import { Secure } from './Secure';
-import { UserT } from 'pkg.models';
 
 type ContentPropsT = {
   activeContent: number;
