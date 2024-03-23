@@ -19,9 +19,9 @@ interface IEmailModalStage {
 export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
   const onEmailChange = useMainSt((state) => state.onEmailChange);
   const [stage, setStage] = useState<IEmailModalStage>({
-  type : 'form',
-  email : '',  
-  })
+    type: 'form',
+    email: '',
+  });
 
   return (
     <M.Modal>
@@ -36,12 +36,6 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
               <M.ModalTitle>Изменение электронной почты</M.ModalTitle>
             </M.ModalHeader>
             <Form onEmailChange={onEmailChange} setStage={setStage} />
-            <M.ModalFooter className="flex justify-end gap-4">
-              <Button variant="secondary">Отменить</Button>
-              <Button onClick={() => setStage({ type: 'success', email: 'someemail' })}>
-                Изменить
-              </Button>
-            </M.ModalFooter>
           </>
         )) ||
           (stage.type === 'success' && (
