@@ -3,7 +3,7 @@
 'use client';
 
 import { StateCreator } from 'zustand';
-import { post } from 'pkg.utils';
+import { post, put } from 'pkg.utils';
 import { Common } from '../main';
 import { ResponseBodyUserT } from './profile';
 
@@ -30,6 +30,12 @@ export type Auth = {
     setError: (name: string, error: { type: string; message: string }) => void;
     nickname: string;
   }) => void;
+  onEmailChange: ({
+    email,
+    password,
+  }: Data & {
+    setError: (name: string, error: { type: string; message: string }) => void;
+  }) => void;
   onSignOut: (redirectFn?: (value: string) => void) => void;
 };
 
@@ -51,6 +57,15 @@ type RequestBodySignUp = {
 type ResponseBodySignUp = {
   detail: string;
 } & ResponseBodyUserT;
+
+type RequestBodyChangeEmail = {
+  detail: string;
+} & ResponseBodyUserT;
+
+type ResponseBodyChangeEmail = {
+  new_email: string;
+  password: string;
+};
 
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   isLogin: null,
@@ -158,6 +173,32 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     console.log('status', data, status);
     if (status === 204) {
       set(() => ({ isLogin: false }));
+    }
+  },
+  onEmailChange: async ({ email, password, setError }) => {
+    const { data, status } = await put<ResponseBodyChangeEmail, RequestBodyChangeEmail>({
+      service: 'auth',
+      path: '/api/users/current/email/',
+      body: {
+        new_email: email.toLowerCase(),
+        password: password.trim().toString(),
+      },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+    if (status === 200) {
+      set((state) => ({
+        user: {
+          ...state.user,
+          email: data.email,
+        },
+      }));
+      return 200;
+    } else if (data?.detail === 'Wrong password') {
+      setError('password', { type: 'manual', message: 'Неправильный пароль' });
     }
   },
 });
