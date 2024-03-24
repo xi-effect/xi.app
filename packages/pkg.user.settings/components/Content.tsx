@@ -1,14 +1,27 @@
 import { Main } from './Main';
-import { PersonalData } from './PersonalData';
 import { Customization } from './Customization';
 import { Secure } from './Secure';
 
 type ContentPropsT = {
-  activeContent: number;
+  activeQuery: string;
 };
 
-export const Content = ({ activeContent }: ContentPropsT) => {
-  const contentItems = [<Main />, <PersonalData />, <Customization />, <Secure />];
+export const Content = ({ activeQuery }: ContentPropsT) => {
+  const activeItem = () => {
+    switch (activeQuery) {
+      case 'home':
+        return <Main />;
+      case 'personalInfo':
+        return <Customization />;
+      case 'personalisation':
+        return <Customization />;
+      case 'security':
+        return <Secure />;
+      default:
+        return <Main />;
+    }
+  };
 
-  return <div className="w-full sm:ml-8">{contentItems[activeContent]}</div>;
+  return <div className="w-full sm:ml-8">{activeItem()}</div>;
+  // {contentItems[activeContent]}
 };

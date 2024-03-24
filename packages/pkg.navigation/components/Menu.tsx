@@ -48,7 +48,9 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
                     searchParams,
                     'profileIsOpen',
                     profileIsOpenValue ? String(profileIsOpenValue) : 'true',
-                  ),
+                  ) +
+                  '&' +
+                  createQueryString(searchParams, 'category', 'home'),
               );
             }}
             asChild

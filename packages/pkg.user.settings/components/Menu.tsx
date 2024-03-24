@@ -1,23 +1,30 @@
 import { Account, Exit, Home, Key, Palette } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import React, { Dispatch, SetStateAction } from 'react';
+import { createQueryString } from 'pkg.router.url';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type ItemT = {
   name: string;
+  query: string;
 };
 
 const options: ItemT[] = [
   {
     name: 'Главная',
+    query: 'home',
   },
   {
     name: 'Личные данные',
+    query: 'personalInfo',
   },
   {
     name: 'Персонализация',
+    query: 'personalisation',
   },
   {
     name: 'Безопасность',
+    query: 'security',
   },
   // {
   //   name: 'Звук и видео',
@@ -27,32 +34,42 @@ const options: ItemT[] = [
 type ItemPropsT = {
   index: number;
   item: ItemT;
-  activeContent: number;
-  onMenuItemChange: (value: number) => void;
+  activeQuery: string;
+  onMenuItemChange: (index: number, query: string) => void;
 };
 
-const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
+const Item = ({ index, item, onMenuItemChange }: ItemPropsT) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const isMobile = useMedia('(max-width: 719px)');
+  const category = searchParams.get('category');
+  const isActive = category === item.query && !isMobile;
 
-  const isActive = activeContent === index && !isMobile;
-
-  const getIconClassName = (i: number) =>
-    `transition-colors ease-in ${
-      i === activeContent ? 'fill-brand-80' : 'group-hover:fill-brand-80'
-    }`;
+  const getIconClassName = (q: string) =>
+    `transition-colors ease-in ${q === category ? 'fill-brand-80' : 'group-hover:fill-brand-80'}`;
 
   const iconsDict: React.ReactNode[] = [
-    <Home className={getIconClassName(0)} />,
-    <Account className={getIconClassName(1)} />,
-    <Palette className={getIconClassName(2)} />,
-    <Key className={getIconClassName(3)} />,
+    <Home className={getIconClassName('home')} />,
+    <Account className={getIconClassName('personalInfo')} />,
+    <Palette className={getIconClassName('personalisation')} />,
+    <Key className={getIconClassName('security')} />,
     // <SoundTwo className={getIconClassName(4)} />,
   ];
+
+  const handleClick = () => {
+    onMenuItemChange(index, item.query);
+    router.push(
+      pathname +
+        '?' +
+        createQueryString(searchParams, 'category', item.query ? String(item.query) : ''),
+    );
+  };
 
   return (
     <button
       type="button"
-      onClick={() => onMenuItemChange(index)}
+      onClick={() => handleClick()}
       className={`${
         isActive
           ? 'bg-brand-0 text-brand-80'
@@ -67,14 +84,22 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
 };
 
 type MenuPropsT = {
-  activeContent: number;
+  activeQuery: string;
   setActiveContent: Dispatch<SetStateAction<number>>;
   setShowContent: Dispatch<SetStateAction<boolean>>;
+  setActiveQuery: Dispatch<SetStateAction<string>>;
   onExit: () => void;
 };
 
-export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }: MenuPropsT) => {
-  const handleMenuItem = (index: number) => {
+export const Menu = ({
+  activeQuery,
+  setActiveContent,
+  setActiveQuery,
+  setShowContent,
+  onExit,
+}: MenuPropsT) => {
+  const handleMenuItem = (index: number, query: string) => {
+    setActiveQuery(query);
     setActiveContent(index);
     setShowContent(true);
   };
@@ -90,7 +115,7 @@ export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }
           item={item}
           index={index}
           key={index}
-          activeContent={activeContent}
+          activeQuery={activeQuery}
           onMenuItemChange={handleMenuItem}
         />
       ))}

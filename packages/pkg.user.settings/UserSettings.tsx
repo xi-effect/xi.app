@@ -19,11 +19,14 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-
+  const category = searchParams.get('category');
   const handleClose = () => {
     setShowContent(false);
-    router.push(pathname + '?' + deleteQuery(searchParams, 'profileIsOpen'));
+    const updatedParams = deleteQuery(deleteQuery(searchParams, 'profileIsOpen'), 'category');
+    router.push(pathname + '?' + updatedParams);
   };
+
+  const [activeQuery, setActiveQuery] = React.useState<string>(category ? category : 'home');
 
   return (
     <div className="flex w-full justify-center">
@@ -38,10 +41,11 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
           {isMobile ? (
             <>
               {showContent ? (
-                <Content activeContent={activeContent} />
+                <Content activeQuery={activeQuery} />
               ) : (
                 <Menu
-                  activeContent={activeContent}
+                  setActiveQuery={setActiveQuery}
+                  activeQuery={activeQuery}
                   setActiveContent={setActiveContent}
                   setShowContent={setShowContent}
                   onExit={onExit}
@@ -51,12 +55,13 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
           ) : (
             <>
               <Menu
-                activeContent={activeContent}
+                setActiveQuery={setActiveQuery}
+                activeQuery={activeQuery}
                 setActiveContent={setActiveContent}
                 setShowContent={setShowContent}
                 onExit={onExit}
               />
-              <Content activeContent={activeContent} />
+              <Content activeQuery={activeQuery} />
             </>
           )}
         </div>
