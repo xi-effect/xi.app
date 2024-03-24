@@ -5,6 +5,9 @@ import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
 import { CommunityItems, CommunityMenu } from '.';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { createQueryString } from 'pkg.router.url';
 
 type MenuT = {
   setSlideIndex: (value: number) => void;
@@ -12,7 +15,19 @@ type MenuT = {
 };
 
 export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const user = useMainSt((state) => state.user);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const profileIsOpenValue: string | null = searchParams.get('profileIsOpen');
+
+  useEffect(() => {
+    const profileIsOpen = searchParams.has('profileIsOpen');
+    setMenuIsOpen(profileIsOpen);
+  }, [searchParams]);
 
   return (
     <>
@@ -22,8 +37,22 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
       <CommunityMenu />
       <CommunityItems setSlideIndex={setSlideIndex} />
       <div className="bg-gray-0 fixed bottom-0 flex flex-col pb-6 sm:w-[302px]">
-        <Modal>
-          <ModalTrigger asChild>
+        <Modal open={menuIsOpen}>
+          <ModalTrigger
+            onClick={() => {
+              setMenuIsOpen(true);
+              router.push(
+                pathname +
+                  '?' +
+                  createQueryString(
+                    searchParams,
+                    'profileIsOpen',
+                    profileIsOpenValue ? String(profileIsOpenValue) : 'true',
+                  ),
+              );
+            }}
+            asChild
+          >
             <div
               id="user-profile-menu"
               className="hover:bg-gray-5 h-[48px] w-full rounded-lg p-2 hover:cursor-pointer"

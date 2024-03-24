@@ -1,0 +1,11 @@
+{
+  "extends": "@xipkg/typescript/react-library.json",
+  "include": [
+    "*"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ]
+}

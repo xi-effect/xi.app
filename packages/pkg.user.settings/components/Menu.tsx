@@ -1,4 +1,4 @@
-import { Account, Home, Palette, Key, Exit } from '@xipkg/icons';
+import { Account, Exit, Home, Key, Palette } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import React, { Dispatch, SetStateAction } from 'react';
 
