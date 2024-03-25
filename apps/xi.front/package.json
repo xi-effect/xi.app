@@ -33,6 +33,7 @@
     "pkg.module.videoconference": "*",
     "pkg.navigation": "*",
     "pkg.navigation.layout": "*",
+    "pkg.module.editor": "*",
     "pkg.stores": "*",
     "pkg.utils": "*",
     "react": "^18.2.0",
