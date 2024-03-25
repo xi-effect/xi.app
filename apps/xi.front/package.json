@@ -35,7 +35,7 @@
     "pkg.module.videoconference": "*",
     "pkg.navigation": "*",
     "pkg.navigation.layout": "*",
-    "pkg.router.url": "^0.0.0",
+    "pkg.router.url": "*",
     "pkg.stores": "*",
     "pkg.utils": "*",
     "react": "^18.2.0",
