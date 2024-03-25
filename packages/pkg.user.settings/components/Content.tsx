@@ -21,7 +21,5 @@ export const Content = ({ activeQuery }: ContentPropsT) => {
         return <Main />;
     }
   };
-
   return <div className="w-full sm:ml-8">{activeItem()}</div>;
-  // {contentItems[activeContent]}
 };

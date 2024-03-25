@@ -1,6 +1,5 @@
 import { UserProfile } from '@xipkg/userprofile';
 import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
-
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';

@@ -19,6 +19,7 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
   const category = searchParams.get('category');
   const handleClose = () => {
     setShowContent(false);
