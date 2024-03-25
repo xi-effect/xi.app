@@ -20,8 +20,8 @@ import usersTemplate from '../UsersTemplate/usersTemplate.json';
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
   name: string;
-  colorMain: string;
-  colorSecondary: string;
+  bgColorMain: string;
+  bgColorSecondary: string;
 };
 
 type UserBadgePropsT = UserRoleT & {
@@ -32,17 +32,14 @@ type UserBadgePropsT = UserRoleT & {
 const UserBadge = ({
   name,
   role,
-  colorMain,
-  colorSecondary,
+  bgColorMain,
+  bgColorSecondary,
   handleRoleDelete,
 }: UserBadgePropsT) => {
   return (
     <li>
-      <Badge className="text-xs" style={{ backgroundColor: `var(${colorSecondary})` }}>
-        <span
-          className="mr-2 size-3 rounded-full"
-          style={{ backgroundColor: `var(${colorMain})` }}
-        />
+      <Badge className={`text-xs ${bgColorSecondary}`}>
+        <span className={`mr-2 size-3 rounded-full ${bgColorMain}`} />
         {name.slice(0, 1).toUpperCase() + name.slice(1)}
         <Button
           className="focus:bg-red-80 hover:bg-red-80 group ml-3 h-min rounded-full bg-transparent p-0"
@@ -82,12 +79,12 @@ const UserCard = ({
 }: UserCardPropsT) => {
   // Временный список ролей
   const rolesTemplate = [
-    { name: 'Администратор', colorMain: '--xi-violet-100', colorSecondary: '--xi-violet-20' },
-    { name: 'Преподаватель', colorMain: '--xi-brand-100', colorSecondary: '--xi-brand-0' },
-    { name: 'Студент', colorMain: '--xi-green-100', colorSecondary: '--xi-green-0' },
-    { name: 'Гость', colorMain: '--xi-red-100', colorSecondary: '--xi-red-0' },
-    { name: '1', colorMain: '--xi-gray-80', colorSecondary: '--xi-gray-5' },
-    { name: '2', colorMain: '--xi-gray-80', colorSecondary: '--xi-gray-5' },
+    { name: 'Администратор', bgColorMain: 'bg-violet-100', bgColorSecondary: 'bg-violet-20' },
+    { name: 'Преподаватель', bgColorMain: 'bg-brand-100', bgColorSecondary: 'bg-brand-0' },
+    { name: 'Студент', bgColorMain: 'bg-green-100', bgColorSecondary: 'bg-green-0' },
+    { name: 'Гость', bgColorMain: 'bg-red-100', bgColorSecondary: 'bg-red-0' },
+    { name: '1', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
+    { name: '2', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
   ];
 
   return (
@@ -115,8 +112,8 @@ const UserCard = ({
           {roles.map((role, index) => (
             <UserBadge
               name={role.name}
-              colorMain={role.colorMain}
-              colorSecondary={role.colorSecondary}
+              bgColorMain={role.bgColorMain}
+              bgColorSecondary={role.bgColorSecondary}
               key={index}
               role={role}
               handleRoleDelete={() => handleRoleDelete(user, role)}
@@ -136,10 +133,7 @@ const UserCard = ({
                     className="hover:bg-gray-10 rounded-lg"
                     onClick={() => handleRoleAdd(user, roleTemplate)}
                   >
-                    <span
-                      className="mr-2 size-3 rounded-full"
-                      style={{ backgroundColor: `var(${roleTemplate.colorMain})` }}
-                    />
+                    <span className={`bg mr-2 size-3 rounded-full ${roleTemplate.bgColorMain}`} />
                     <p>{roleTemplate.name}</p>
                   </DropdownMenuItem>
                 ))}

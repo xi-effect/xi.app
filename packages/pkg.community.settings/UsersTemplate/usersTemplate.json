@@ -3,8 +3,8 @@
     "name": "Даниил Сергеев",
     "nickname": "sergeev.d",
     "roles": [
-      { "name": "студент", "colorMain": "--xi-green-100", "colorSecondary": "--xi-green-0" },
-      { "name": "1", "colorMain": "--xi-gray-80", "colorSecondary": "--xi-gray-5" }
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" },
+      { "name": "1", "bgColorMain": "bg-gray-80", "bgColorSecondary": "bg-gray-5" }
     ],
     "isOwner": false
   },
@@ -12,7 +12,7 @@
     "name": "Ксения Любина",
     "nickname": "lybina",
     "roles": [
-      { "name": "студент", "colorMain": "--xi-green-100", "colorSecondary": "--xi-green-0" }
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" }
     ],
     "isOwner": false
   },
@@ -20,7 +20,7 @@
     "name": "Денис Спиридонов",
     "nickname": "dspiridonov",
     "roles": [
-      { "name": "студент", "colorMain": "--xi-green-100", "colorSecondary": "--xi-green-0" }
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" }
     ],
     "isOwner": false
   },
@@ -28,11 +28,11 @@
     "name": "Анна Иванова",
     "nickname": "lybina",
     "roles": [
-      { "name": "преподаватель", "colorMain": "--xi-brand-100", "colorSecondary": "--xi-brand-0" },
+      { "name": "преподаватель", "bgColorMain": "bg-brand-100", "bgColorSecondary": "bg-brand-0" },
       {
         "name": "администратор",
-        "colorMain": "--xi-violet-100",
-        "colorSecondary": "--xi-violet-20"
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
       }
     ],
     "isOwner": true
@@ -43,24 +43,24 @@
     "roles": [
       {
         "name": "администратор",
-        "colorMain": "--xi-violet-100",
-        "colorSecondary": "--xi-violet-20"
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
       },
-      { "name": "студент", "colorMain": "--xi-green-100", "colorSecondary": "--xi-green-0" },
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" },
       {
         "name": "администратор",
-        "colorMain": "--xi-violet-100",
-        "colorSecondary": "--xi-violet-20"
-      },
-      {
-        "name": "администратор",
-        "colorMain": "--xi-violet-100",
-        "colorSecondary": "--xi-violet-20"
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
       },
       {
         "name": "администратор",
-        "colorMain": "--xi-violet-100",
-        "colorSecondary": "--xi-violet-20"
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
+      },
+      {
+        "name": "администратор",
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
       }
     ],
     "isOwner": false
