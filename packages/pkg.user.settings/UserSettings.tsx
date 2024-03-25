@@ -1,5 +1,3 @@
-'use client';
-/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { useMedia } from 'pkg.utils';
 import { Header } from './components/Header';

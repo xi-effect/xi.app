@@ -1,12 +1,15 @@
+'use client';
+
 import { UserProfile } from '@xipkg/userprofile';
 import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 import { UserSettings } from 'pkg.user.settings';
+import { createQueryString } from 'pkg.router.url';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
-import { CommunityItems, CommunityMenu } from '.';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { createQueryString } from 'pkg.router.url';
+import { CommunityMenu } from './CommunityMenu';
+import { CommunityItems } from './CommunityItems';
 
 type MenuT = {
   setSlideIndex: (value: number) => void;
@@ -41,15 +44,7 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
             onClick={() => {
               setMenuIsOpen(true);
               router.push(
-                pathname +
-                  '?' +
-                  createQueryString(
-                    searchParams,
-                    'profileIsOpen',
-                    profileIsOpenValue ? String(profileIsOpenValue) : 'true',
-                  ) +
-                  '&' +
-                  createQueryString(searchParams, 'category', 'home'),
+                `${pathname}?${createQueryString(searchParams, 'profileIsOpen', profileIsOpenValue ? String(profileIsOpenValue) : 'true')}&${createQueryString(searchParams, 'category', 'home')}`,
               );
             }}
             asChild
