@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { useMedia } from 'pkg.utils';
-
 import { Badge } from '@xipkg/badge';
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
@@ -153,8 +151,6 @@ const UserCard = ({
 };
 
 export const Users = () => {
-  const isMobile = useMedia('(max-width: 719px)');
-
   // Временное решение для рендера, удаления, изменения ролей пользователей
   const [users, setUsers] = useState(usersTemplate);
 
@@ -186,7 +182,7 @@ export const Users = () => {
   };
   return (
     <>
-      {!isMobile && <span className="text-3xl font-semibold">Участники</span>}
+      <span className="hidden text-3xl font-semibold sm:inline-block">Участники</span>
       <div className="mt-4">
         <form className="relative">
           <Input
