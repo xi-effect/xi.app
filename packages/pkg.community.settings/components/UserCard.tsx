@@ -18,7 +18,7 @@ const UserCard = ({
 }: UserCardProps) => (
   <div className="flex items-center py-3">
     {before}
-    <Image className="rounded-full" src={avatarSrc} alt="" width={24} height={24} />
+    <Image className="rounded-full" src={avatarSrc} alt="user avatar" width={24} height={24} />
     <p className="ml-2 font-medium text-gray-100">{name}</p>
     <span className="text-gray-60 ml-1">{login}</span>
     {after}

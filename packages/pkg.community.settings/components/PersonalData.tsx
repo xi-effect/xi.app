@@ -47,7 +47,7 @@ export const PersonalData = () => {
           </div>
           <ul className="space-y-1">
             {(['admin', 'user'] satisfies RoleT[]).map((el) => (
-              <li>
+              <li key={el}>
                 <button
                   type="button"
                   className={`hover:bg-brand-0 flex w-full gap-3 rounded-lg px-3 py-2 transition ${selectedRole === el ? 'bg-brand-0' : 'bg-transparent'}`}
@@ -119,6 +119,7 @@ export const PersonalData = () => {
               <Tabs.Content className="h-full space-y-4" value={tabOptions[1]}>
                 {Array.from({ length: 12 }, (_, i) => (
                   <OptionSwitch
+                    key={i}
                     onChange={() => {}}
                     title="Заголовок"
                     description={'Описание'.repeat(i + 1)}
@@ -141,7 +142,7 @@ export const PersonalData = () => {
                 </div>
                 <ul className="mt-6">
                   {Array.from({ length: 4 }, (_, i) => (
-                    <li>
+                    <li key={i}>
                       <UserCard
                         login="ivanova.a"
                         name={`Анна Иванова ${i}`}

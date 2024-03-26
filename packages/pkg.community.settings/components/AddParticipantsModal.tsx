@@ -58,6 +58,7 @@ const AddParticipantsModal = ({ children, subtitle }: AddParticipantsModalProps)
           <div className="mt-4">
             {mockParticipants.map((participant) => (
               <UserCard
+                key={participant.id}
                 before={
                   <Checkbox
                     className="mr-2 !size-5 rounded-md"

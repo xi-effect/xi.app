@@ -15,6 +15,7 @@ const ColorPicker = ({ colors, onChange }: ColorPickerProps) => {
       <div className="flex flex-wrap gap-2">
         {colors.map((el) => (
           <button
+            key={el}
             type="button"
             aria-label="Изменить цвет"
             onClick={() => {
