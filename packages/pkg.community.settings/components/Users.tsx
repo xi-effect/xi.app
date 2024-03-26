@@ -200,7 +200,7 @@ export const Users = () => {
       <div className="mt-4">
         <div className="relative">
           <Input
-            className="border-gray-30 relative size-full border-2 px-11 py-3 placeholder:text-base"
+            className="border-gray-30 size-full border-2 px-11 py-3 placeholder:text-base"
             placeholder="Поиск по участникам"
             onChange={(event) => {
               handleSearch(event);
