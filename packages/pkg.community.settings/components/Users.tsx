@@ -180,14 +180,31 @@ export const Users = () => {
     });
     setUsers(updatedUsers);
   };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.target.value.trim().toLowerCase();
+
+    setUsers(
+      usersTemplate.filter(
+        (user) =>
+          user.name.toLowerCase().startsWith(searchValue) ||
+          user.nickname.toLowerCase().startsWith(searchValue) ||
+          user.name.toLowerCase().split(' ').pop()?.startsWith(searchValue),
+      ),
+    );
+  };
+
   return (
     <>
       <span className="hidden text-3xl font-semibold sm:inline-block">Участники</span>
       <div className="mt-4">
-        <form className="relative">
+        <div className="relative">
           <Input
-            className="border-gray-30 size-full border-2 px-11 py-3 placeholder:text-base"
+            className="border-gray-30 relative size-full border-2 px-11 py-3 placeholder:text-base"
             placeholder="Поиск по участникам"
+            onChange={(event) => {
+              handleSearch(event);
+            }}
           />
           <Button
             type="submit"
@@ -195,7 +212,7 @@ export const Users = () => {
           >
             <Search className="fill-gray-60 size-6" />
           </Button>
-        </form>
+        </div>
 
         <ul className="mt-4 grid gap-4">
           {users.map((user, index) => (
