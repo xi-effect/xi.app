@@ -60,6 +60,8 @@ const nextConfig = {
     '@xipkg/avatar',
     '@xipkg/input',
     '@xipkg/label',
+    '@xipkg/tabs',
+    '@xipkg/toggle',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
