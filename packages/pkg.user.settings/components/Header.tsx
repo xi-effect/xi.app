@@ -10,9 +10,10 @@ type HeaderPropsT = {
   activeItem: number | 'menu';
   showContent: boolean;
   setShowContent: Dispatch<SetStateAction<boolean>>;
+  handleClose: () => void;
 };
 
-export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT) => {
+export const Header = ({ activeItem, showContent, setShowContent, handleClose }: HeaderPropsT) => {
   const isMobile = useMedia('(max-width: 719px)');
 
   return (
@@ -30,6 +31,7 @@ export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT
         <span className="ml-4 font-semibold">{menuLabels[Number(activeItem)]}</span>
       )}
       <ModalCloseButton
+        onClick={() => handleClose()}
         variant="full"
         className="right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 sm:bg-transparent xl:right-[-56px] xl:top-0"
       >

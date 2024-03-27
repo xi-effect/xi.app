@@ -11,6 +11,7 @@
     "@hookform/resolvers": "^3.1.1",
     "pkg.modal.change-email": "*",
     "pkg.modal.change-password": "*",
+    "pkg.router.url": "*",
     "@xipkg/avatar": "1.0.0",
     "@xipkg/button": "1.0.3",
     "@xipkg/form": "^2.0.0",
