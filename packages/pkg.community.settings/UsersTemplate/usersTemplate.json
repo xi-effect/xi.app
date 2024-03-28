@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Даниил Сергеев",
+    "nickname": "sergeev.d",
+    "roles": [
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" },
+      { "name": "1", "bgColorMain": "bg-gray-80", "bgColorSecondary": "bg-gray-5" }
+    ],
+    "isOwner": false
+  },
+  {
+    "name": "Ксения Любина",
+    "nickname": "lybina",
+    "roles": [
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" }
+    ],
+    "isOwner": false
+  },
+  {
+    "name": "Денис Спиридонов",
+    "nickname": "dspiridonov",
+    "roles": [
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" }
+    ],
+    "isOwner": false
+  },
+  {
+    "name": "Анна Иванова",
+    "nickname": "lybina",
+    "roles": [
+      { "name": "преподаватель", "bgColorMain": "bg-brand-100", "bgColorSecondary": "bg-brand-0" },
+      {
+        "name": "администратор",
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
+      }
+    ],
+    "isOwner": true
+  },
+  {
+    "name": "Иван Ковыляев",
+    "nickname": "ikovylyaev",
+    "roles": [
+      {
+        "name": "администратор",
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
+      },
+      { "name": "студент", "bgColorMain": "bg-green-100", "bgColorSecondary": "bg-green-0" },
+      {
+        "name": "администратор",
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
+      },
+      {
+        "name": "администратор",
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
+      },
+      {
+        "name": "администратор",
+        "bgColorMain": "bg-violet-100",
+        "bgColorSecondary": "bg-violet-20"
+      }
+    ],
+    "isOwner": false
+  }
+]
