@@ -3,7 +3,7 @@ import { ArrowLeft, Close } from '@xipkg/icons';
 import { ModalCloseButton } from '@xipkg/modal';
 import { useMedia } from 'pkg.utils';
 
-const menuLabels = ['Главная', 'Личные данные', 'Безопасность', 'Участники'];
+const menuLabels = ['Главная', 'Роли', 'Безопасность', 'Участники'];
 
 type HeaderPropsT = {
   activeItem: number | 'menu';
