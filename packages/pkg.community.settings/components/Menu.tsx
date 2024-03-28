@@ -37,6 +37,7 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
 
   return (
     <button
+      type="button"
       onClick={() => onMenuItemChange(index)}
       className={`${
         isActive
@@ -74,6 +75,7 @@ export const Menu = ({ activeContent, setActiveContent, setShowContent }: MenuPr
         />
       ))}
       <button
+        type="button"
         // onClick={() => handleExit()}
         className="text-gray-60 hover:bg-brand-0 group mt-10 flex h-[40px] w-full flex-row items-center rounded-lg bg-transparent p-2 transition-colors ease-in hover:cursor-pointer hover:text-red-100"
       >

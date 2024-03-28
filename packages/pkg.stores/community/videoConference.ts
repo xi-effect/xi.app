@@ -3,10 +3,6 @@ import { post } from 'pkg.utils';
 import { UserSettings } from '../user/settings';
 import { UserProfile } from '../user/profile';
 
-type DataUserMethodAnswer = {
-  [key: string]: unknown;
-};
-
 export type VideoConference = {
   token: string | null;
   getToken: (id: string) => void;

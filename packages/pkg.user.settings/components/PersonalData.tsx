@@ -1,6 +1,5 @@
 import { Button } from '@xipkg/button';
 import { patch, useMedia } from 'pkg.utils';
-import { UserPreview } from './UserPreview';
 import {
   Form,
   FormControl,
@@ -16,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@xipkg/input';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
+import { UserPreview } from './UserPreview';
 
 const FormSchema = z.object({
   username: z.string({ required_error: 'Обязательное поле' }),
@@ -58,7 +58,7 @@ export const PersonalData = () => {
 
     console.log('data', data, 'status', status);
 
-    if (status == 200) {
+    if (status === 200) {
       toast('Данные успешно обновлены');
       updateUser({ username: formData.username });
       updateUser({ displayName: formData.displayName });

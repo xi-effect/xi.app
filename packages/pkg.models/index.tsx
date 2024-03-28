@@ -1,3 +1,3 @@
-import { UserT } from "./user";
+import { UserT } from './user';
 
 export type { UserT };

@@ -4,29 +4,29 @@
 #   https://github.com/micromatch/picomatch#basic-globbing
 
 # Можно использовать все фишки YAML-я:
-#   https://ru.wikipedia.org/wiki/YAML#%D0%A1%D0%B8%D0%BD%D1%82%D0%B0%D0%BA%D1%81%D0%B8%D1%81
+# https://ru.wikipedia.org/wiki/YAML#%D0%A1%D0%B8%D0%BD%D1%82%D0%B0%D0%BA%D1%81%D0%B8%D1%81
 
 # Имена последних объектов (xi_front_files, lintable_files) лучше не менять
 
-config_files: &config_files  # изменения тут обязательно запускают все пайплайны
-  - ".github/workflows/*"
-  - "package.json"
-  - "package-lock.json"
-  - "**/package.json"
-  - "**/package-lock.json"
+config_files: &config_files # изменения тут обязательно запускают все пайплайны
+  - '.github/workflows/*'
+  - 'package.json'
+  - 'package-lock.json'
+  - '**/package.json'
+  - '**/package-lock.json'
 
-app_common_files: &app_common_files  # тригерят оба билда (и депой в main-ветке)
+app_common_files: &app_common_files # тригерят оба билда (и депой в main-ветке)
   - *config_files
-  - "packages/**"
-  - "Dockerfile"
-  - "turbo.json"
+  - 'packages/**'
+  - 'Dockerfile'
+  - 'turbo.json'
 
-xi_front_files:  # запускает билд (и депой в main-ветке) для xi.front
+xi_front_files: # запускает билд (и депой в main-ветке) для xi.front
   - *app_common_files
-  - "apps/xi.front/**"
+  - 'apps/xi.front/**'
 
-lintable_files:  # запускает прогон линтера
+lintable_files: # запускает прогон линтера
   - *config_files
-  - "**.[jt]s"
-  - "**.[jt]sx"
-  - "**.md"
+  - '**.[jt]s'
+  - '**.[jt]sx'
+  - '**.md'

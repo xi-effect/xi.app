@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import { ChevronRight, Key, Mail } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import { ChangePasswordModal } from 'pkg.modal.change-password';
@@ -17,7 +18,10 @@ export const Secure = () => {
           <span className="text-sm font-normal">Видны только вам</span>
         </div>
         <ChangePasswordModal>
-          <button className="flex-r ow hover:bg-gray-5 mt-   flex h-[66px] items-center gap-4 rounded-xl bg-transparent p-3">
+          <button
+            type="button"
+            className="hover:bg-gray-5 flex h-[66px] flex-row items-center gap-4 rounded-xl bg-transparent p-3"
+          >
             <Key size="l" className="fill-brand-80" />
             <div className="items-star flex flex-col">
               <span className="w-fit font-semibold">Пароль</span>
@@ -27,7 +31,10 @@ export const Secure = () => {
           </button>
         </ChangePasswordModal>
         <ChangeEmailModal>
-          <button className="hover:bg-gray-5 flex h-[66px] flex-row items-center gap-4 rounded-xl bg-transparent p-3">
+          <button
+            type="button"
+            className="hover:bg-gray-5 flex h-[66px] flex-row items-center gap-4 rounded-xl bg-transparent p-3"
+          >
             <Mail size="l" className="fill-brand-80" />
             <div className="items-star flex flex-col">
               <span className="w-fit font-semibold">Почта</span>
