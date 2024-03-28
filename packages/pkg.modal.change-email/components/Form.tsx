@@ -1,30 +1,74 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useForm } from '@xipkg/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useForm,
+} from '@xipkg/form';
 import { Input } from '@xipkg/input';
-import { useState } from 'react';
+import { Eyeoff, Eyeon } from '@xipkg/icons';
+import React, { useState } from 'react';
 import * as z from 'zod';
+import { Button } from '@xipkg/button';
+import { toast } from 'sonner';
+import * as M from '@xipkg/modal';
 import Timer from './Timer';
 
 const schema = z.object({
   email: z
     .string({ required_error: 'Обязательное поле' })
     .email({ message: 'Некорректный формат данных' }),
-  password: z.string({ required_error: 'Обязательное поле' }),
+  password: z.string({ required_error: 'Обязательное поле' }).min(6, {
+    message: 'Минимальная длина пароля - 6 символов',
+  }),
 });
 
-interface FormBlockProps {}
+interface IFormBlockProps {
+  onEmailChange: any;
+  setStage: (arg: { type: string; email: string }) => void;
+}
 
-const FormBlock = (props: FormBlockProps) => {
-  const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
-  const { control } = form;
+export type FormDataT = {
+  email: string;
+  password: string;
+};
 
+const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
+  const form = useForm<FormDataT>({
+    resolver: zodResolver(schema),
+  });
+
+  const [isPasswordShow, setIsPasswordShow] = React.useState(false);
   const [timer, setTimer] = useState(false);
+  const changePasswordShow = () => {
+    setIsPasswordShow((prev) => !prev);
+  };
+
+  const {
+    control,
+    handleSubmit,
+    trigger,
+    setError,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = async (data: FormDataT) => {
+    trigger();
+    const status = await onEmailChange({ ...data, setError });
+    if (status === 200) {
+      setStage({ type: 'success', email: data.email });
+      toast('Вы успешно изменили почту!');
+    }
+  };
 
   return (
     <Form {...form}>
-      <form className="p-6 pt-5 space-y-4" onSubmit={form.handleSubmit(console.log)}>
+      <form className="space-y-4 p-6 pt-5" onSubmit={handleSubmit(onSubmit)}>
         {timer && (
           <Timer
             durationSecs={10 * 60}
@@ -35,11 +79,11 @@ const FormBlock = (props: FormBlockProps) => {
         <FormField
           control={control}
           name="email"
-          render={({ fieldState: { error } }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Новый адрес электронной почты</FormLabel>
               <FormControl className="mt-2">
-                <Input error={!!error} autoComplete="on" type="text" />
+                <Input {...field} error={!!errors.email} autoComplete="on" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -48,16 +92,34 @@ const FormBlock = (props: FormBlockProps) => {
         <FormField
           control={control}
           name="password"
-          render={({ fieldState: { error } }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Пароль</FormLabel>
               <FormControl className="mt-2">
-                <Input error={!!error} autoComplete="off" type="text" />
+                <Input
+                  {...field}
+                  error={!!errors?.password}
+                  autoComplete="off"
+                  afterClassName="cursor-pointer"
+                  type={isPasswordShow ? 'text' : 'password'}
+                  after={isPasswordShow ? <Eyeoff /> : <Eyeon />}
+                  afterProps={{
+                    onClick: changePasswordShow,
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <M.ModalFooter className="flex justify-end gap-4">
+          <Button type="button" variant="secondary">
+            Отменить
+          </Button>
+          <Button disabled={timer} className="disabled:cursor-not-allowed" type="submit">
+            Изменить
+          </Button>
+        </M.ModalFooter>
       </form>
     </Form>
   );

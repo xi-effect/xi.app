@@ -1,17 +1,16 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { Close, Burger, Notification } from '@xipkg/icons';
+import { Close, Burger } from '@xipkg/icons';
 import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
-import Image from 'next/image';
 // @ts-ignore
 import SwipeableViews from 'react-swipeable-views-react-18-fix';
-import { CommunityMenu } from './CommunityMenu';
-import { CommunityItems } from './CommunityItems';
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 import { UserProfile } from '@xipkg/userprofile';
 import { useMainSt } from 'pkg.stores';
+import { CommunityItems } from './CommunityItems';
+import { CommunityMenu } from './CommunityMenu';
 
 type BottomBarT = {
   slideIndex: number;
@@ -41,10 +40,10 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
   };
 
   return (
-    <div className={`flex w-full overflow-auto md:hidden`}>
+    <div className="flex w-full overflow-auto md:hidden">
       <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
-        <div className={`w-full overflow-auto`}>
-          <div className={`sticky left-0 top-0 px-4 pt-4`}>
+        <div className="w-full overflow-auto">
+          <div className="sticky left-0 top-0 px-4 pt-4">
             <CommunityMenu />
           </div>
           <CommunityItems setSlideIndex={setSlideIndex} />
@@ -53,6 +52,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
       </SwipeableViews>
       <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
         <button
+          type="button"
           onClick={handleMenu}
           className="bg-gray-0 mr-4 flex h-[48px] w-[48px] items-center p-3"
         >
@@ -75,7 +75,8 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
             <UserSettings onExit={onExit} />
           </ModalContent>
         </Modal>
-        {/* <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center justify-center justify-self-end p-3">
+        {/* <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center
+        //justify-center justify-self-end p-3">
           <Notification />
         </button> */}
       </div>

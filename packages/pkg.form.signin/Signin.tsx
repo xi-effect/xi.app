@@ -17,7 +17,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
-import { Logo } from 'pkg.logo'
+import { Logo } from 'pkg.logo';
 
 export type SignInT = {
   /**
@@ -81,9 +81,9 @@ export const SignIn = ({ onSignIn }: SignInT) => {
         className="flex h-full w-full flex-col justify-items-start space-y-4"
       >
         <div className="self-center">
-          <Logo height={22} width={180} logoVariant='navigation' logoSize='default' />
+          <Logo height={22} width={180} logoVariant="navigation" logoSize="default" />
         </div>
-        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
+        <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
         <FormField
           control={control}
           name="email"

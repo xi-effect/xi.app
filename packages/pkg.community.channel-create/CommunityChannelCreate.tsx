@@ -6,7 +6,6 @@ import {
   ModalHeader,
   ModalFooter,
   ModalTitle,
-  ModalDescription,
   ModalCloseButton,
 } from '@xipkg/modal';
 import { Input } from '@xipkg/input';
@@ -18,7 +17,7 @@ import { ActionsSheetButton } from './components/ActionsSheetButton';
 interface CommunityChannelCreateT {
   children: ReactNode;
 }
-//border-[6px] создает визуал радио-кнопки, по дизайну ширина 6px у обводки синий.
+// border-[6px] создает визуал радио-кнопки, по дизайну ширина 6px у обводки синий.
 const classBtnActive = 'border-[6px] border-solid border-brand-80';
 const classBtnNotActive = 'border border-solid border-gray-30';
 
@@ -69,7 +68,7 @@ export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) =>
           </div>
           <div className="space-y-4">
             <Label className="text-[16px] font-medium text-gray-100">Тип</Label>
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-auto">
               {actionsSheetList.map((item, index) => (
                 <ActionsSheetButton
                   key={index}

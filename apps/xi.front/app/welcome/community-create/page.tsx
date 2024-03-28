@@ -3,7 +3,7 @@
 import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { put } from 'pkg.utils';
 import {
   Form,
@@ -41,7 +41,7 @@ export default function WelcomeCommunityCreate() {
   const router = useRouter();
 
   const handleBack = async () => {
-    const { data, status } = await del({
+    const { status } = await del({
       service: 'auth',
       path: '/api/onboarding/stages/community-create/',
       config: {
@@ -75,8 +75,8 @@ export default function WelcomeCommunityCreate() {
 
   const watchCommunity = watch('community');
 
-  const onSubmit = async ({ community }: z.infer<typeof FormSchema>) => {
-    const { data, status } = await put<RequestBody, ResponseBody>({
+  const onSubmit = async () => {
+    const { status } = await put<RequestBody, ResponseBody>({
       service: 'auth',
       path: '/api/onboarding/stages/completed/',
       body: {},
@@ -100,7 +100,7 @@ export default function WelcomeCommunityCreate() {
       <div className="h-full w-full p-8 flex justify-center content-center">
         <div className="flex flex-col h-full xs:p-8 w-full max-w-[536px]">
           <div className="h-22">
-            <Logo height={24} width={202} logoVariant='navigation' logoSize='default' />
+            <Logo height={24} width={202} logoVariant="navigation" logoSize="default" />
           </div>
           <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
             <div className="bg-brand-80 w-1/4 h-1.5 rounded" />

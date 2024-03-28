@@ -1,4 +1,4 @@
-import { Account, Home, Palette, Key, SoundTwo, Exit } from '@xipkg/icons';
+import { Account, Home, Palette, Key, Exit } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import React, { Dispatch, SetStateAction } from 'react';
 
@@ -51,6 +51,7 @@ const Item = ({ index, item, activeContent, onMenuItemChange }: ItemPropsT) => {
 
   return (
     <button
+      type="button"
       onClick={() => onMenuItemChange(index)}
       className={`${
         isActive
@@ -94,6 +95,7 @@ export const Menu = ({ activeContent, setActiveContent, setShowContent, onExit }
         />
       ))}
       <button
+        type="button"
         onClick={() => handleExit()}
         className="text-gray-60 hover:bg-red-0 group mt-10 flex h-[40px] w-full flex-row items-center rounded-lg bg-transparent p-2 transition-colors ease-in hover:cursor-pointer hover:text-red-100"
       >

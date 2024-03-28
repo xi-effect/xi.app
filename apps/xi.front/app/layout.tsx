@@ -1,9 +1,10 @@
 import '@xipkg/tailwind/index.css';
+
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from './providers';
 import React, { ReactNode } from 'react';
 import Script from 'next/script';
+import { Providers } from './providers';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -15,7 +16,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'xi.effect',
-  description: 'Гибкий образовательный инструмент для репетиторов и малого бизнеса',
+  description:
+    'Приложение для репетиторов и малого бизнеса, всё необходимое для учёбы в одном месте',
   manifest: '/manifest.webmanifest',
   keywords: [
     'xi.effect',

@@ -32,12 +32,12 @@ const nextConfig = {
   },
   transpilePackages: [
     'pkg.theme',
-    'pkg.spinner',
     'pkg.utils',
     'pkg.form.signin',
     'pkg.form.signup',
     'pkg.form.reset-password',
     'pkg.module.videoconference',
+    'pkg.module.editor',
     'pkg.avatar.editor',
     'pkg.logo',
     'pkg.models',
@@ -58,7 +58,11 @@ const nextConfig = {
     '@xipkg/modal',
     '@xipkg/fileuploader',
     '@xipkg/select',
-    '@xipkg/avatar'
+    '@xipkg/avatar',
+    '@xipkg/input',
+    '@xipkg/label',
+    '@xipkg/tabs',
+    '@xipkg/toggle',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

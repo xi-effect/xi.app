@@ -1,5 +1,10 @@
 {
   "extends": "@xipkg/typescript/react-library.json",
-  "include": ["*", "../pkg.form.new-password/components/PasswordInput.tsx", "../pkg.form.new-password/components/ProgressLine.tsx", "../pkg.form.new-password/NewPassword.tsx"],
+  "include": [
+    "*",
+    "../pkg.form.new-password/components/PasswordInput.tsx",
+    "../pkg.form.new-password/components/ProgressLine.tsx",
+    "../pkg.form.new-password/NewPassword.tsx"
+  ],
   "exclude": ["dist", "build", "node_modules"]
 }

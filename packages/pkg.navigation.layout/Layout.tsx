@@ -1,7 +1,6 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { toast } from 'sonner';
 
 type LayoutProp = {
   header: ReactNode;
