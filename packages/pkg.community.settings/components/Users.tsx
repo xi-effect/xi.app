@@ -14,6 +14,7 @@ import {
 
 // JSON со временным списком пользователей
 import usersTemplate from '../UsersTemplate/usersTemplate.json';
+import { useDebouncedFunction } from 'pkg.utils';
 
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
@@ -109,11 +110,11 @@ const UserCard = ({
         <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {roles.map((role, index) => (
             <UserBadge
+              role={role}
+              key={index}
               name={role.name}
               bgColorMain={role.bgColorMain}
               bgColorSecondary={role.bgColorSecondary}
-              key={index}
-              role={role}
               handleRoleDelete={() => handleRoleDelete(user, role)}
             />
           ))}
@@ -181,7 +182,7 @@ export const Users = () => {
     setUsers(updatedUsers);
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const setFilteredUsers = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value.trim().toLowerCase();
 
     setUsers(
@@ -192,6 +193,12 @@ export const Users = () => {
           user.name.toLowerCase().split(' ').pop()?.startsWith(searchValue),
       ),
     );
+  };
+
+  const debauncedUsersSearch = useDebouncedFunction(setFilteredUsers, 300);
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    debauncedUsersSearch(event);
   };
 
   return (
@@ -217,15 +224,15 @@ export const Users = () => {
         <ul className="mt-4 grid gap-4">
           {users.map((user, index) => (
             <UserCard
+              user={user}
+              key={index}
               name={user.name}
-              nickname={user.nickname}
               roles={user.roles}
               isOwner={user.isOwner}
-              key={index}
-              user={user}
-              handleUserDelete={handleUserDelete}
-              handleRoleDelete={handleRoleDelete}
+              nickname={user.nickname}
               handleRoleAdd={handleRoleAdd}
+              handleRoleDelete={handleRoleDelete}
+              handleUserDelete={handleUserDelete}
             />
           ))}
         </ul>
