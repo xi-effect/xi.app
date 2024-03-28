@@ -12,8 +12,6 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { makeNodeId, withNodeId } from './plugins/withNodeId';
 import { toPx } from './utils/toPx';
 
-import './styles.css';
-
 const initialValue = [
   {
     id: makeNodeId(),
@@ -190,8 +188,7 @@ const SortableElement = ({ attributes, element, children, renderElement }: any) 
       <Sortable sortable={sortable}>
         <button
           type="button"
-          // className="flex h-5 w-5 items-center justify-center bg-none cursor-grab"
-          className="handle"
+          className="flex h-5 w-5 cursor-grab items-center justify-center bg-none pt-2"
           contentEditable={false}
           {...sortable.listeners}
         >
@@ -205,12 +202,13 @@ const SortableElement = ({ attributes, element, children, renderElement }: any) 
 
 const Sortable = ({ sortable, children }: any) => (
   <div
-    className="sortable"
+    className="z-0 flex w-full"
     {...sortable.attributes}
     ref={sortable.setNodeRef}
     style={{
       transition: sortable.transition,
       '--translate-y': toPx(sortable.transform?.y),
+      transform: 'translate3d(0, var(--translate-y, 0), 0)',
       pointerEvents: sortable.isSorting ? 'none' : undefined,
       opacity: sortable.isDragging ? 0 : 1,
     }}
@@ -230,10 +228,9 @@ const DragOverlayContent = ({ element }: any) => {
   }, []);
 
   return (
-    <div className="drag-overlay">
-      <button type="button">
-        {' '}
-        {/** className="flex h-5 w-5 items-center justify-center bg-none"  */}⠿
+    <div className="flex py-2">
+      <button className="flex h-5 w-5 items-center justify-center bg-none" type="button">
+        ⠿
       </button>
       <Slate editor={editor} initialValue={value}>
         <Editable readOnly renderElement={renderElementContent} />
