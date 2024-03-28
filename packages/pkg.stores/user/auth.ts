@@ -197,8 +197,11 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         },
       }));
       return 200;
-    } else if (data?.detail === 'Wrong password') {
+    }
+    if (data?.detail === 'Wrong password') {
       setError('password', { type: 'manual', message: 'Неправильный пароль' });
     }
+
+    return 400;
   },
 });

@@ -6,8 +6,8 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
 import { PropsWithChildren, useState } from 'react';
-import Form from './components/Form';
 import { useMainSt } from 'pkg.stores';
+import Form from './components/Form';
 
 type ChangeEmailModalT = PropsWithChildren<{}>;
 
