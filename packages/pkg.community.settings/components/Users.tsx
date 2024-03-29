@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { Badge } from '@xipkg/badge';
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
+import { useDebouncedFunction } from '@xipkg/utils';
 import { Avatar, AvatarImage, AvatarFallback } from '@xipkg/avatar';
 import { Close, CrossCircle, Plus, Search, Crown } from '@xipkg/icons';
 import {
@@ -14,7 +15,6 @@ import {
 
 // JSON со временным списком пользователей
 import usersTemplate from '../UsersTemplate/usersTemplate.json';
-import { useDebouncedFunction } from 'pkg.utils';
 
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
@@ -34,22 +34,20 @@ const UserBadge = ({
   bgColorMain,
   bgColorSecondary,
   handleRoleDelete,
-}: UserBadgePropsT) => {
-  return (
-    <li>
-      <Badge className={`text-xs ${bgColorSecondary}`}>
-        <span className={`mr-2 size-3 rounded-full ${bgColorMain}`} />
-        {name.slice(0, 1).toUpperCase() + name.slice(1)}
-        <Button
-          className="focus:bg-red-80 hover:bg-red-80 group ml-3 h-min rounded-full bg-transparent p-0"
-          onClick={() => handleRoleDelete(role)}
-        >
-          <CrossCircle className="group-hover:fill-gray-0 group-focus:fill-gray-0 !size-3" />
-        </Button>
-      </Badge>
-    </li>
-  );
-};
+}: UserBadgePropsT) => (
+  <li>
+    <Badge className={`text-xs ${bgColorSecondary}`}>
+      <span className={`mr-2 size-3 rounded-full ${bgColorMain}`} />
+      {name.slice(0, 1).toUpperCase() + name.slice(1)}
+      <Button
+        className="focus:bg-red-80 hover:bg-red-80 group ml-3 h-min rounded-full bg-transparent p-0"
+        onClick={() => handleRoleDelete(role)}
+      >
+        <CrossCircle className="group-hover:fill-gray-0 group-focus:fill-gray-0 !size-3" />
+      </Button>
+    </Badge>
+  </li>
+);
 
 // Временные типы для Пользователя и для пропсов Карточки пользователя
 type UserT = {
@@ -92,9 +90,9 @@ const UserCard = ({
         <div className="flex items-center self-start">
           <Avatar size="s">
             <AvatarImage
-              src={`https://auth.xieffect.ru/api/users/3/avatar.webp`}
+              src="https://auth.xieffect.ru/api/users/3/avatar.webp"
               imageProps={{
-                src: `https://auth.xieffect.ru/api/users/3/avatar.webp`,
+                src: 'https://auth.xieffect.ru/api/users/3/avatar.webp',
                 alt: '@shadcn',
               }}
               alt="@shadcn"
