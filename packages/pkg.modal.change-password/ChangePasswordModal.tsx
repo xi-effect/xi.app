@@ -23,17 +23,17 @@ export const ChangePasswordModal = ({ children }: ChangePasswordModalT) => {
             <M.ModalHeader>
               <M.ModalTitle>Изменение пароля</M.ModalTitle>
             </M.ModalHeader>
-            <Form />
-            <M.ModalFooter className="flex justify-end gap-4">
+            <Form setStage={setStage} />
+            {/* <M.ModalFooter className="flex justify-end gap-4">
               <Button variant="secondary">Отменить</Button>
               <Button onClick={() => setStage('success')}>Изменить</Button>
-            </M.ModalFooter>
+            </M.ModalFooter> */}
           </>
         )) ||
           (stage === 'success' && (
             <div className="border-gray-20 space-y-8 border-t p-8">
               <p className="text-center text-2xl font-semibold text-gray-100">Пароль изменён</p>
-              <Button onClick={() => setStage('success')} className="mt-4 w-full">
+              <Button onClick={() => setStage('form')} className="mt-4 w-full">
                 Продолжить
               </Button>
             </div>
