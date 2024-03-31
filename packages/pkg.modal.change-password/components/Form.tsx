@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { put } from 'pkg.utils/fetch';
 import { toast } from 'sonner';
@@ -14,6 +15,7 @@ import {
 } from '@xipkg/form';
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
+import { Eyeoff, Eyeon } from '@xipkg/icons';
 import * as z from 'zod';
 
 const schema = z
@@ -29,9 +31,10 @@ const schema = z
 
 type FormProps = {
   setStage: (stage: 'form' | 'success') => void;
+  onOpenChange: (value: boolean) => void;
 };
 
-const FormBlock = ({ setStage }: FormProps) => {
+const FormBlock = ({ setStage, onOpenChange }: FormProps) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -72,6 +75,19 @@ const FormBlock = ({ setStage }: FormProps) => {
     }
   };
 
+  const [isPasswordShow, setIsPasswordShow] = React.useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
+
+  const changePasswordShow = (fieldId: keyof typeof isPasswordShow) => {
+    setIsPasswordShow((prev) => ({
+      ...prev,
+      [fieldId]: !prev[fieldId],
+    }));
+  };
+
   return (
     <Form {...form}>
       <form className="space-y-4 p-6 pt-5" onSubmit={handleSubmit(onSubmit)}>
@@ -82,7 +98,24 @@ const FormBlock = ({ setStage }: FormProps) => {
             <FormItem>
               <FormLabel>Текущий пароль</FormLabel>
               <FormControl className="mt-2">
-                <Input {...field} error={!!error} autoComplete="off" type="password" />
+                <Input
+                  {...field}
+                  error={!!error}
+                  autoComplete="off"
+                  type={isPasswordShow.currentPassword ? 'text' : 'password'}
+                  afterClassName="cursor-pointer"
+                  after={
+                    isPasswordShow ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
+                  afterProps={{
+                    onClick: () => changePasswordShow('currentPassword'),
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +128,24 @@ const FormBlock = ({ setStage }: FormProps) => {
             <FormItem>
               <FormLabel>Новый пароль</FormLabel>
               <FormControl className="mt-2">
-                <Input {...field} error={!!error} autoComplete="off" type="password" />
+                <Input
+                  {...field}
+                  error={!!error}
+                  autoComplete="off"
+                  type={isPasswordShow.newPassword ? 'text' : 'password'}
+                  afterClassName="cursor-pointer"
+                  after={
+                    isPasswordShow ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
+                  afterProps={{
+                    onClick: () => changePasswordShow('newPassword'),
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -108,14 +158,33 @@ const FormBlock = ({ setStage }: FormProps) => {
             <FormItem>
               <FormLabel>Подтвердите пароль</FormLabel>
               <FormControl className="mt-2">
-                <Input {...field} error={!!error} autoComplete="off" type="password" />
+                <Input
+                  {...field}
+                  error={!!error}
+                  autoComplete="off"
+                  type={isPasswordShow.confirmPassword ? 'text' : 'password'}
+                  afterClassName="cursor-pointer"
+                  after={
+                    isPasswordShow ? (
+                      <Eyeoff className="fill-gray-60" />
+                    ) : (
+                      <Eyeon className="fill-gray-60" />
+                    )
+                  }
+                  afterProps={{
+                    onClick: () => changePasswordShow('confirmPassword'),
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <div className="flex justify-end gap-4">
-          <Button variant="secondary">Отменить</Button>
+          <Button onClick={() => onOpenChange(false)} variant="secondary">
+            Отменить
+          </Button>
           <Button type="submit">Изменить</Button>
         </div>
       </form>
