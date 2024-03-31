@@ -52,8 +52,8 @@ export default function WelcomeCommunityCreate() {
     });
 
     if (status === 204) {
-      updateUser({ onboardingStage: 'community-choise' });
-      router.push('/welcome/community');
+      updateUser({ onboardingStage: 'completed' });
+      router.push('/welcome/final');
     } else {
       toast('Ошибка сервера');
     }

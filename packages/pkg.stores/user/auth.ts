@@ -23,12 +23,12 @@ export type Auth = {
   onSignUp: ({
     email,
     password,
-    nickname,
+    username,
     redirectFn,
   }: Data & {
     redirectFn: (value: string) => void;
     setError: (name: string, error: { type: string; message: string }) => void;
-    nickname: string;
+    username: string;
   }) => void;
   onEmailChange: ({
     email,
@@ -112,14 +112,14 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
 
     return 400;
   },
-  onSignUp: async ({ nickname, email, password, setError }) => {
+  onSignUp: async ({ username, email, password, setError }) => {
     const { data, status } = await post<RequestBodySignUp, ResponseBodySignUp>({
       service: 'auth',
       path: '/api/signup/',
       body: {
         email: email.toLowerCase(),
         password: password.trim().toString(),
-        username: nickname,
+        username,
       },
       config: {
         headers: {

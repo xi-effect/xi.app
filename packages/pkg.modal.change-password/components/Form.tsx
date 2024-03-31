@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { put } from 'pkg.utils/fetch';
+import { put } from 'pkg.utils';
 import { toast } from 'sonner';
 import {
   Form,
