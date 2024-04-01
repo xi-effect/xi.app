@@ -14,7 +14,7 @@ const welcomePagesPaths = [
   '/welcome/community',
   '/welcome/community-create',
   '/welcome/community-invite',
-  '/welcome/final',
+  // '/welcome/final',
 ];
 
 const welcomePagesPathsDict = {
@@ -64,6 +64,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     isLogin &&
     !!onboardingStage &&
     onboardingStage !== 'completed' &&
+    onboardingStage !== 'final' &&
     !welcomePagesPaths.includes(pathname)
   ) {
     redirect(welcomePagesPathsDict[onboardingStage]);
@@ -78,13 +79,9 @@ type ProvidersT = {
 
 export const Providers = ({ children }: ProvidersT) => {
   const getUser = useMainSt((state) => state.getUser);
-  const setIsLogin = useMainSt((state) => state.setIsLogin);
 
   useEffect(() => {
-    const { redir, isLogin } = getUser();
-
-    if (redir) redirect(redir);
-    if (isLogin === true) setIsLogin(true);
+    getUser();
   }, []);
 
   return (

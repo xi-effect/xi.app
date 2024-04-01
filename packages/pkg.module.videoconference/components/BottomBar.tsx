@@ -27,7 +27,7 @@ const MicrophoneButton = () => (
   >
     <Microphone className="fill-red-0" />
   </TrackToggle>
-  );
+);
 
 const CameraButton = () => (
   <TrackToggle
@@ -37,7 +37,7 @@ const CameraButton = () => (
   >
     <Conference className="fill-red-0" />
   </TrackToggle>
-  );
+);
 
 const ShareButton = () => (
   <TrackToggle
@@ -47,7 +47,7 @@ const ShareButton = () => (
   >
     <Screenshare className="fill-red-0" />
   </TrackToggle>
-  );
+);
 
 const GroupButton = () => (
   <TrackToggle
@@ -57,7 +57,7 @@ const GroupButton = () => (
   >
     <Group className="fill-red-0" />
   </TrackToggle>
-  );
+);
 
 const ChatButton = () => (
   <TrackToggle
@@ -67,7 +67,7 @@ const ChatButton = () => (
   >
     <Chat className="fill-red-0" />
   </TrackToggle>
-  );
+);
 
 const HandButton = () => (
   <TrackToggle
@@ -78,7 +78,7 @@ const HandButton = () => (
   >
     <Hand className="fill-red-0" />
   </TrackToggle>
-  );
+);
 
 export const BottomBar = () => (
   <div className="flex w-full flex-row justify-between p-4">
@@ -95,4 +95,4 @@ export const BottomBar = () => (
     </div>
     <DisconnectButton />
   </div>
-  );
+);

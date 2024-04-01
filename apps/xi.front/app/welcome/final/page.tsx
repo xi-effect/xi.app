@@ -1,16 +1,24 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Logo } from 'pkg.logo';
+import { useMainSt } from 'pkg.stores';
 
 export default function WelcomeFinal() {
+  const updateUser = useMainSt((state) => state.updateUser);
+  const getUser = useMainSt((state) => state.getUser);
   const router = useRouter();
 
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const handleNext = () => {
+    updateUser({ onboardingStage: 'completed' });
     router.push('/community/1/home');
   };
 
@@ -41,7 +49,7 @@ export default function WelcomeFinal() {
               Ознакомьтесь с основными функциями продукта
             </div>
           </Link>
-          <a
+          <Link
             target="_blank"
             href="https://xieffect.ru/"
             className="mt-4 border-solid border-gray-20 flex flex-col justify-center p-4 gap-1 w-full items-start border rounded-2xl cursor-pointer"
@@ -51,7 +59,7 @@ export default function WelcomeFinal() {
             <div className="leading-[22px] text-gray-80">
               Рассказываем о сервисе понятным языком
             </div>
-          </a>
+          </Link>
           <div className="pt-4 mt-auto">
             <Button onClick={handleNext} className="w-full">
               Начать работать

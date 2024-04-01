@@ -1,5 +1,9 @@
 {
   "extends": "@xipkg/typescript/react-library.json",
   "include": ["*"],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
 }

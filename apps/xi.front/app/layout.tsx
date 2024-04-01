@@ -16,7 +16,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'xi.effect',
-  description: 'Гибкий образовательный инструмент для репетиторов и малого бизнеса',
+  description:
+    'Приложение для репетиторов и малого бизнеса, всё необходимое для учёбы в одном месте',
   manifest: '/manifest.webmanifest',
   keywords: [
     'xi.effect',

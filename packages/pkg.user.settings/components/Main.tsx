@@ -1,5 +1,3 @@
 import { UserPreview } from './UserPreview';
 
-export const Main = () => (
-  <UserPreview />
-  );
+export const Main = () => <UserPreview />;
