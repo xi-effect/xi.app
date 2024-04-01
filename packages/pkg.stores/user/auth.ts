@@ -149,7 +149,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         return 200;
       }
     } else if (data?.detail === 'Username already in use') {
-      setError('nickname', { type: 'manual', message: 'Такое имя пользователя уже занято' });
+      setError('username', { type: 'manual', message: 'Такое имя пользователя уже занято' });
     } else if (data?.detail === 'Email already in use') {
       setError('email', { type: 'manual', message: 'Аккаунт с такой почтой уже зарегистрирован' });
     }
