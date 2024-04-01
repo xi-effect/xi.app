@@ -1,3 +1,4 @@
+import React from "react";
 import type {LocalAudioTrack, LocalVideoTrack} from 'livekit-client';
 import {facingModeFromLocalTrack, Track} from 'livekit-client';
 import {LocalUserChoices} from '@livekit/components-core';
@@ -7,7 +8,8 @@ import {
     usePersistentUserChoices,
     usePreviewTracks,
 } from '@livekit/components-react';
-import React from 'react';
+
+import {Conference, Microphone} from "@xipkg/icons";
 
 export interface PreJoinProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onError'> {
@@ -152,51 +154,53 @@ export function PreJoin({
     }, [username, videoEnabled, handleValidation, audioEnabled, audioDeviceId, videoDeviceId]);
 
     return (
-        <div className="my-10" {...htmlProps}>
-            <h2 className="font-sans text-2xl mb-4 font-medium">Присоединиться к конференции</h2>
-            <div className="relative">
-                {videoTrack && videoEnabled && (
-                    <div>
-                        <video
-                            className="rounded-[16px]"
-                            ref={videoEl}
-                            width="737"
-                            height="476"
-                            data-lk-facing-mode={facingMode}
-                        />
-                    </div>
-                )}
-                {(!videoTrack || !videoEnabled) && (
-                    <div className="bg-gray-100 w-[737px] h-[476px] items-center rounded-[16px] flex justify-center">
-                        <ParticipantPlaceholder/>
-                    </div>
-                )}
+        <div  {...htmlProps}>
+            <div className={'relative'}>
+                <div className={'w-[737px] h-[476px]'}>
+                    {videoTrack && videoEnabled && (
+                        <div className={'w-[737px] h-[476px]'}>
+                            <video
+                                className="rounded-[16px]"
+                                ref={videoEl}
+                                data-lk-facing-mode={facingMode}
+                            />
+                        </div>
 
+                    )}
+                    {(!videoTrack || !videoEnabled) && (
+                        <div
+                            className="bg-gray-100 w-full h-full items-center rounded-[16px] flex justify-center">
+                            <ParticipantPlaceholder/>
+                        </div>
+                    )}
+                </div>
                 <div className="absolute bottom-5 left-5">
                     <div className="flex gap-1 bg-gray-100 rounded-[24px] p-1">
                         <div
-                            className={`border-4 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} rounded-full p-4`}
+                            className={`border-4 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
                         >
                             <TrackToggle
-                                className="bg-transparent text-white scale-125"
+                                className="bg-transparent text-white"
                                 initialState={audioEnabled}
+                                showIcon={false}
                                 source={Track.Source.Microphone}
                                 onChange={(enabled) => setAudioEnabled(enabled)}
                             >
-                                {micLabel}
+                                <Microphone width={25} className="fill-red-0"/>
                             </TrackToggle>
                         </div>
                         <div
-                            className={`border-4 ${videoEnabled ? 'border-green-60' : 'border-red-60'} text-center rounded-full p-4`}
+                            className={`border-4 ${videoEnabled ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
                         >
                             <TrackToggle
-                                showIcon
-                                className="bg-transparent text-white scale-125"
+                                showIcon={false}
+
+                                className="bg-transparent text-white"
                                 initialState={videoEnabled}
                                 source={Track.Source.Camera}
                                 onChange={(enabled) => setVideoEnabled(enabled)}
                             >
-                                {camLabel}
+                                <Conference width={214} className="fill-red-0"/>
                             </TrackToggle>
                         </div>
                     </div>
