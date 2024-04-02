@@ -43,7 +43,8 @@ export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice
           <RoomAudioRenderer />
           {isConnected && <Stage />}
         </div>
-        <BottomBar />
+        {/* eslint-disable-next-line max-len */}
+        <BottomBar audioEnable={userChoice?.audioEnabled || false} videoEnable={userChoice?.videoEnabled || false} />
       </LiveKitRoom>
     );
 }
@@ -60,8 +61,8 @@ export function Stage() {
           <TrackRefContext.Consumer>
             {(track) =>
                             track && (
-                            <div className="text-gray-5 bg-gray-80 h-full w-full min-w-[320px]">
-                              {isTrackReference(track) ? <VideoTrack {...track} /> :
+                            <div className="text-gray-5 h-full w-full min-w-[320px]">
+                              {isTrackReference(track) ? <VideoTrack className="rounded-[16px] border-none" {...track} /> :
                               <p>Camera placeholder</p>}
                               <div className="m-2 flex h-6 w-fit flex-row gap-1 rounded bg-gray-100 p-1">
                                 <TrackMutedIndicator source={Track.Source.Microphone} />

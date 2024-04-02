@@ -6,37 +6,45 @@ import { TrackToggle, useDisconnectButton } from '@livekit/components-react';
 import { Chat, Conference, Endcall, Group, Hand, Microphone, Screenshare } from '@xipkg/icons';
 
 const DisconnectButton = () => {
-  const { buttonProps } = useDisconnectButton({});
+    const { buttonProps } = useDisconnectButton({});
 
-  return (
-    <button
-      type="button"
-      {...buttonProps}
-      className="bg-red-80 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] hover:bg-red-100"
-    >
-      <Endcall className="fill-gray-0" />
-    </button>
-  );
+    return (
+      <button
+        type="button"
+        {...buttonProps}
+        className="bg-red-80 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] hover:bg-red-100"
+      >
+        <Endcall className="fill-gray-0" />
+      </button>
+    );
 };
 
-const MicrophoneButton = () => (
-  <TrackToggle
-    source={Track.Source.Microphone}
-    showIcon={false}
-    className="flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100"
+const MicrophoneButton = ({ audioEnable }: { audioEnable: boolean }) => (
+  <div
+    className={`border-4 ${audioEnable ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
   >
-    <Microphone className="fill-red-0" />
-  </TrackToggle>
+    <TrackToggle
+      source={Track.Source.Microphone}
+      showIcon={false}
+      className="bg-transparent"
+    >
+      <Microphone className="fill-red-0" />
+    </TrackToggle>
+  </div>
 );
 
-const CameraButton = () => (
-  <TrackToggle
-    source={Track.Source.Camera}
-    showIcon={false}
-    className="ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100"
+const CameraButton = ({ videoEnable }: { videoEnable: boolean }) => (
+  <div
+    className={`border-4 ${videoEnable ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
   >
-    <Conference className="fill-red-0" />
-  </TrackToggle>
+    <TrackToggle
+      source={Track.Source.Camera}
+      showIcon={false}
+      className="bg-transparent"
+    >
+      <Conference className="fill-red-0" />
+    </TrackToggle>
+  </div>
 );
 
 const ShareButton = () => (
@@ -80,11 +88,16 @@ const HandButton = () => (
   </TrackToggle>
 );
 
-export const BottomBar = () => (
+interface IBottomBar {
+    audioEnable: boolean,
+    videoEnable: boolean
+}
+
+export const BottomBar = ({ audioEnable, videoEnable }: IBottomBar) => (
   <div className="flex w-full flex-row justify-between p-4">
     <div className="flex flex-row">
-      <MicrophoneButton />
-      <CameraButton />
+      <MicrophoneButton audioEnable={audioEnable} />
+      <CameraButton videoEnable={videoEnable} />
       <ShareButton />
     </div>
 
@@ -94,5 +107,4 @@ export const BottomBar = () => (
       <HandButton />
     </div>
     <DisconnectButton />
-  </div>
-);
+  </div>);

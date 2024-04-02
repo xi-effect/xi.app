@@ -31,14 +31,17 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
     return (
         // eslint-disable-next-line react/jsx-no-useless-fragment
       <>
-        {isStarted ? <ActiveRoom
-          userChoice={userChoice}
-          room={room}
-          connectInfo={{ connect, setConnect }}
-          isConnectInfo={{ isConnected, setIsConnected }}
-          token={token}
-        /> :
-        <PreJoinSection connect={connect} setConnect={setConnect} setUserChoice={setUserChoice} />
+        {isStarted ?
+          <div className="bg-gray-100">
+            <ActiveRoom
+              userChoice={userChoice}
+              room={room}
+              connectInfo={{ connect, setConnect }}
+              isConnectInfo={{ isConnected, setIsConnected }}
+              token={token}
+            />
+          </div> :
+          <PreJoinSection connect={connect} setConnect={setConnect} setUserChoice={setUserChoice} />
 
             }
       </>
