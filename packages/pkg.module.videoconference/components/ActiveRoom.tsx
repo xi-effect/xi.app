@@ -14,10 +14,12 @@ import { HTMLAttributes } from 'react';
 import { ConnectionQuality, Track } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
-import { serverUrl } from '../VideoConference';
+// eslint-disable-next-line import/named
+import { serverUrl, ILocalUserChoice } from '../VideoConference';
 import { ISettingsRoom } from '../types/types';
 
-export function ActiveRoom({ token, room, connectInfo, isConnectInfo }: ISettingsRoom) {
+// eslint-disable-next-line max-len
+export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice }: ISettingsRoom & {userChoice : ILocalUserChoice | undefined}) {
     const { connect, setConnect } = connectInfo;
     const { isConnected, setIsConnected } = isConnectInfo;
     const handleDisconnect = () => {
@@ -32,8 +34,8 @@ export function ActiveRoom({ token, room, connectInfo, isConnectInfo }: ISetting
         connect={connect}
         onConnected={() => setIsConnected(true)}
         onDisconnected={handleDisconnect}
-        audio
-        video
+        audio={userChoice?.audioEnabled}
+        video={userChoice?.videoEnabled}
         className="h-screen"
       >
         <UpBar />

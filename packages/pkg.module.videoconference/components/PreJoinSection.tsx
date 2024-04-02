@@ -8,10 +8,11 @@ import { PreJoin } from './PreJoin';
 
 interface IPreJoinSection {
     connect: boolean,
-    setConnect: (arg: (prev: boolean) => boolean) => void
+    setConnect: (arg: (prev: boolean) => boolean) => void,
+    setUserChoice : (arg : { audioEnabled: boolean, videoEnabled: boolean }) => void | undefined
 }
 
-export function PreJoinSection({ setConnect, connect }: IPreJoinSection) {
+export function PreJoinSection({ setConnect, connect, setUserChoice }: IPreJoinSection) {
     const videoControl = useMediaDeviceSelect({
         kind: 'videoinput',
     });
@@ -25,7 +26,8 @@ export function PreJoinSection({ setConnect, connect }: IPreJoinSection) {
       <div>
         <h2 className="font-sans text-2xl mb-4 font-medium">Присоединиться к конференции</h2>
         <div className="w-full my-10 px-4 gap-12 flex">
-          <PreJoin defaults={{ videoEnabled: true, audioEnabled: true }} />
+          {/* eslint-disable-next-line max-len */}
+          <PreJoin setUserChoice={setUserChoice} defaults={{ videoEnabled: true, audioEnabled: true }} />
           <div className="w-[737px]">
             <div className="p-5 border border-gray-30  rounded-[16px]">
               {!connect ?
