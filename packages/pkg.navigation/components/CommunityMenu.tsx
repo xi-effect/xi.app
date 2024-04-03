@@ -12,7 +12,7 @@ import {
   Settings,
   Objects,
 } from '@xipkg/icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,14 +27,43 @@ import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { Modal, ModalContent } from '@xipkg/modal';
 import { CommunitySettings } from 'pkg.community.settings';
+import { useParams } from 'next/navigation';
 
-const Avatar = () => (
+const communitiesTemplate = [
+  {
+    name: 'Иванова А.Г.',
+    avatar: '/assets/avatarrep.svg',
+    id: '1',
+    isOwner: true,
+  },
+  {
+    name: 'Мое пространство',
+    avatar: '/assets/avatarrep.svg',
+    id: '2',
+    isOwner: false,
+  },
+  {
+    name: 'Изучаем фронтенд',
+    avatar: '/assets/avatarrep.svg',
+    id: '3',
+    isOwner: false,
+  },
+];
+
+type CommunityTemplateT = {
+  name: string;
+  avatar: string;
+  id: string;
+  isOwner: boolean;
+};
+
+const Avatar = ({ avatar }: { avatar: string }) => (
   <div className="bg-green-0 flex h-8 w-8 flex-col items-center justify-center overflow-hidden rounded-[16px]">
     <Image
       style={{
         borderRadius: '50%',
       }}
-      src="/assets/avatarrep.svg"
+      src={avatar}
       width={32}
       height={32}
       alt="user avatar"
@@ -45,9 +74,13 @@ const Avatar = () => (
 const DropdownHeader = ({
   setIsOpen,
   inDropdown = false,
+  name,
+  avatar,
 }: {
   setIsOpen: any;
   inDropdown?: boolean;
+  name: string;
+  avatar: string;
 }) => (
   <div
     id="community-profile"
@@ -56,8 +89,8 @@ const DropdownHeader = ({
       inDropdown ? '' : 'mt-0 sm:mt-8'
     } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
   >
-    <Avatar />
-    <div className="ml-2 self-center text-[16px] font-semibold"> Иванова А. Г. </div>
+    <Avatar avatar={avatar} />
+    <div className="ml-2 self-center text-[16px] font-semibold">{name}</div>
     <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
       <ChevronSmallTop
         size="s"
@@ -70,6 +103,21 @@ const DropdownHeader = ({
 export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
+
+  const params = useParams();
+  const [currentCommunity, setCurrentCommunity] = useState<CommunityTemplateT>();
+  const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
+
+  useEffect(() => {
+    const currentCommunity = communitiesTemplate.find((community) => community.id === params.cid);
+    const otherCommunities = communitiesTemplate.filter((community) => community.id !== params.cid);
+    setCurrentCommunity(currentCommunity);
+    setOtherCommunities(otherCommunities);
+  }, [params]);
+
+  useEffect(() => {
+    console.log(currentCommunity);
+  }, [currentCommunity]);
 
   const driverAction = () => {
     setIsOpen(false);
@@ -154,54 +202,161 @@ export const CommunityMenu = () => {
         </ModalContent>
       </Modal>
       <DropdownMenu open={isOpen}>
-        <DropdownMenuTrigger asChild>
-          <div>
-            <DropdownHeader setIsOpen={setIsOpen} />
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          onInteractOutside={handleClose}
-          className="relative right-[1px] top-[-57px] w-[calc(100vw-22px)] sm:w-[312px]"
-        >
-          <div className="bg-gray-5 rounded-lg">
-            <DropdownHeader setIsOpen={setIsOpen} inDropdown />
-            <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px]">
-              <span>Пройти обучение</span>
-              <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="group sm:w-[302px]">
-              <span>Пригласить людей</span>
-              <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setIsOpenCommunitySettings(true);
-                handleClose();
-              }}
-              className="group sm:w-[302px]"
+        {currentCommunity && (
+          <>
+            <DropdownMenuTrigger asChild>
+              <div>
+                <DropdownHeader
+                  setIsOpen={setIsOpen}
+                  name={currentCommunity.name}
+                  avatar={currentCommunity.avatar}
+                />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              onInteractOutside={handleClose}
+              className="relative right-[1px] top-[-57px] w-[calc(100vw-22px)] sm:w-[312px]"
             >
-              <span>Настройки сообщества</span>
-              <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="group sm:w-[302px]">
-              <CommunityChannelCreate>
-                <span>Создать канал</span>
-                <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-              </CommunityChannelCreate>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="group sm:w-[302px]">
-              <span>Создать категорию</span>
-              <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="group sm:w-[302px]" error>
-              <span>Покинуть сообщество</span>
-              <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
-            </DropdownMenuItem>
-          </div>
-        </DropdownMenuContent>
+              <div className="bg-gray-5 rounded-lg">
+                <DropdownHeader
+                  setIsOpen={setIsOpen}
+                  inDropdown
+                  name={currentCommunity.name}
+                  avatar={currentCommunity.avatar}
+                />
+                {currentCommunity.isOwner && (
+                  <>
+                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px]">
+                      <span>Пройти обучение</span>
+                      <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="group sm:w-[302px]">
+                      <span>Пригласить людей</span>
+                      <PeopleInvite
+                        size="s"
+                        className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                      />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setIsOpenCommunitySettings(true);
+                        handleClose();
+                      }}
+                      className="group sm:w-[302px]"
+                    >
+                      <span>Настройки сообщества</span>
+                      <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="group sm:w-[302px]">
+                      <CommunityChannelCreate>
+                        <span>Создать канал</span>
+                        <ChannelAdd
+                          size="s"
+                          className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                        />
+                      </CommunityChannelCreate>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="group sm:w-[302px]">
+                      <span>Создать категорию</span>
+                      <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+                <DropdownMenuItem className="group sm:w-[302px]" error>
+                  <span>Покинуть сообщество</span>
+                  <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
+                </DropdownMenuItem>
+              </div>
+              {otherCommunities &&
+                otherCommunities.map((community, index) => (
+                  <DropdownMenu key={index}>
+                    <DropdownMenuTrigger asChild>
+                      <div>
+                        <DropdownHeader
+                          setIsOpen={setIsOpen}
+                          name={community.name}
+                          avatar={community.avatar}
+                        />
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      onInteractOutside={handleClose}
+                      className="relative right-[1px] top-[-57px] w-[calc(100vw-22px)] sm:w-[312px]"
+                    >
+                      <div className="bg-gray-5 rounded-lg">
+                        <DropdownHeader
+                          setIsOpen={setIsOpen}
+                          inDropdown
+                          name={community.name}
+                          avatar={community.avatar}
+                        />
+                        {community.isOwner && (
+                          <>
+                            <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px]">
+                              <span>Пройти обучение</span>
+                              <Objects
+                                size="s"
+                                className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                              />
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="group sm:w-[302px]">
+                              <span>Пригласить людей</span>
+                              <PeopleInvite
+                                size="s"
+                                className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                              />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setIsOpenCommunitySettings(true);
+                                handleClose();
+                              }}
+                              className="group sm:w-[302px]"
+                            >
+                              <span>Настройки сообщества</span>
+                              <Settings
+                                size="s"
+                                className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                              />
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="group sm:w-[302px]">
+                              <CommunityChannelCreate>
+                                <span>Создать канал</span>
+                                <ChannelAdd
+                                  size="s"
+                                  className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                                />
+                              </CommunityChannelCreate>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="group sm:w-[302px]">
+                              <span>Создать категорию</span>
+                              <CategoryAdd
+                                size="s"
+                                className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                              />
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                          </>
+                        )}
+                        <DropdownMenuItem className="group sm:w-[302px]" error>
+                          <span>Покинуть сообщество</span>
+                          <Exit
+                            size="s"
+                            className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4"
+                          />
+                        </DropdownMenuItem>
+                      </div>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ))}
+            </DropdownMenuContent>
+          </>
+        )}
       </DropdownMenu>
     </>
   );
