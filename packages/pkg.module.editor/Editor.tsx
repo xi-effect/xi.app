@@ -1,106 +1,45 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ComponentProps,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+} from '@xipkg/dropdown';
 import { createEditor, Transforms } from 'slate';
-import { Slate, withReact, Editable, ReactEditor, DefaultElement } from 'slate-react';
+import { Move, Plus } from '@xipkg/icons';
+import {
+  Slate,
+  withReact,
+  Editable,
+  ReactEditor,
+  DefaultElement,
+  RenderElementProps,
+} from 'slate-react';
 import { withHistory } from 'slate-history';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
-import { makeNodeId, withNodeId } from './plugins/withNodeId';
+import { withNodeId } from './plugins/withNodeId';
 import { toPx } from './utils/toPx';
-
-const initialValue = [
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: 'In music theory, an interval is a difference in pitch between two sounds. An interval may be described as horizontal, linear, or melodic if it refers to successively sounding tones, such as two adjacent pitches in a melody, and vertical or harmonic if it pertains to simultaneously sounding tones, such as in a chord.',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '0. Perfect unison',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: 'Major sixth',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '6. Tritone',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '3. Minor third',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '2. Major second',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '1. Minor second',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '10. Minor seventh',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '4. Major third',
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    children: [
-      {
-        text: '7. Perfect fifth',
-      },
-    ],
-  },
-];
+import { mockInitialValue } from './const';
 
 const useEditor = () => useMemo(() => withNodeId(withHistory(withReact(createEditor()))), []);
 
-export const Editor = () => {
+export const EditorRoot = () => {
   const editor = useEditor();
 
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(mockInitialValue);
   const [activeId, setActiveId] = useState(null);
   const activeElement = editor.children.find((x: any) => x.id === activeId);
 
@@ -137,9 +76,16 @@ export const Editor = () => {
     window.getSelection()?.empty();
   };
 
-  const renderElement = useCallback((props: any) => {
+  const renderElement = useCallback((props: RenderElementProps) => {
     const isTopLevel = ReactEditor.findPath(editor, props.element).length === 1;
 
+    if (props.element.type === 'code') {
+      return (
+        <pre {...props.attributes}>
+          <code>{props.children}</code>
+        </pre>
+      );
+    }
     return isTopLevel ? (
       <SortableElement {...props} renderElement={renderElementContent} />
     ) : (
@@ -150,25 +96,33 @@ export const Editor = () => {
   const items = useMemo(() => editor.children.map((element: any) => element.id), [editor.children]);
 
   return (
-    // @ts-ignore
-    <Slate editor={editor} initialValue={value} onChange={setValue}>
-      <DndContext
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragCancel={handleDragCancel}
-        modifiers={[restrictToVerticalAxis]}
-      >
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <Editable className="flex flex-col gap-2 p-2" renderElement={renderElement} />
-        </SortableContext>
-        {createPortal(
-          <DragOverlay>
-            {activeElement && <DragOverlayContent element={activeElement} />}
-          </DragOverlay>,
-          document.body,
-        )}
-      </DndContext>
-    </Slate>
+    <DropdownMenu>
+      {/* @ts-ignore */}
+      <Slate editor={editor} initialValue={value} onChange={setValue}>
+        <DndContext
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragCancel={handleDragCancel}
+          modifiers={[restrictToVerticalAxis]}
+        >
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            <Editable className="flex flex-col gap-2 p-2" renderElement={renderElement} />
+          </SortableContext>
+          {createPortal(
+            <DragOverlay>
+              {activeElement && <DragOverlayContent element={activeElement} />}
+            </DragOverlay>,
+            document.body,
+          )}
+        </DndContext>
+      </Slate>
+      <DropdownMenuPortal>
+        <DropdownMenuContent side="right">
+          <DropdownMenuItem>Текст</DropdownMenuItem>
+          <DropdownMenuItem>Заголовок 1</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenuPortal>
+    </DropdownMenu>
   );
 };
 
@@ -186,14 +140,7 @@ const SortableElement = ({ attributes, element, children, renderElement }: any) 
   return (
     <div {...attributes}>
       <Sortable sortable={sortable}>
-        <button
-          type="button"
-          className="flex h-5 w-5 cursor-grab items-center justify-center bg-none pt-2"
-          contentEditable={false}
-          {...sortable.listeners}
-        >
-          ⠿
-        </button>
+        <CellControls moveProps={sortable.listeners} />
         <div>{renderElement({ element, children })}</div>
       </Sortable>
     </div>
@@ -228,13 +175,24 @@ const DragOverlayContent = ({ element }: any) => {
   }, []);
 
   return (
-    <div className="flex py-2">
-      <button className="flex h-5 w-5 items-center justify-center bg-none" type="button">
-        ⠿
-      </button>
+    <div className="flex">
+      <CellControls moveProps={{}} />
       <Slate editor={editor} initialValue={value}>
         <Editable readOnly renderElement={renderElementContent} />
       </Slate>
     </div>
   );
 };
+
+const CellControls = ({ moveProps }: Partial<Record<'moveProps', ComponentProps<'button'>>>) => (
+  <div className="flex *:grid *:size-5 *:place-content-center *:bg-transparent">
+    <DropdownMenuTrigger asChild>
+      <button aria-label="add cell above" type="button">
+        <Plus />
+      </button>
+    </DropdownMenuTrigger>
+    <button {...moveProps} aria-label="move" type="button">
+      <Move />
+    </button>
+  </div>
+);
