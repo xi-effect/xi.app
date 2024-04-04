@@ -11,6 +11,7 @@ import {
   PeopleInvite,
   Settings,
   Objects,
+  Plus,
 } from '@xipkg/icons';
 import React, { useEffect, useState } from 'react';
 import {
@@ -30,6 +31,7 @@ import { CommunitySettings } from 'pkg.community.settings';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
+// Временный список мок-сообществ
 const communitiesTemplate = [
   {
     name: 'Иванова А.Г.',
@@ -101,11 +103,18 @@ const DropdownHeader = ({
   </div>
 );
 
-const CommunityLink = ({ community }: { community: CommunityTemplateT }) => (
+const CommunityLink = ({
+  community,
+  handleClose,
+}: {
+  community: CommunityTemplateT;
+  handleClose: () => void;
+}) => (
   <Link
     href={{
       pathname: `/community/${community.id}/home`,
     }}
+    onClick={handleClose}
     className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[302px]"
   >
     <Avatar avatar={community.avatar} />
@@ -117,7 +126,10 @@ export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
 
+  // Берем [cid] из URL
   const params = useParams();
+  // Делим все сообщества пользователя на ту, на странице который мы сейчас
+  // и на остальные
   const [currentCommunity, setCurrentCommunity] = useState<CommunityTemplateT>();
   const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
 
@@ -127,10 +139,6 @@ export const CommunityMenu = () => {
     setCurrentCommunity(currentCommunity);
     setOtherCommunities(otherCommunities);
   }, [params]);
-
-  useEffect(() => {
-    console.log(currentCommunity);
-  }, [currentCommunity]);
 
   const driverAction = () => {
     setIsOpen(false);
@@ -286,10 +294,15 @@ export const CommunityMenu = () => {
               {otherCommunities && (
                 <div className="mt-2">
                   {otherCommunities.map((community, index) => (
-                    <CommunityLink key={index} community={community} />
+                    <CommunityLink key={index} community={community} handleClose={handleClose} />
                   ))}
                 </div>
               )}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="group text-gray-50 sm:w-[302px]">
+                <span>Присоединиться к сообществу</span>
+                <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </>
         )}
