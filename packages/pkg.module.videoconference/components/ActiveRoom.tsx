@@ -17,6 +17,7 @@ import { BottomBar } from './BottomBar';
 // eslint-disable-next-line import/named
 import { serverUrl, ILocalUserChoice } from '../VideoConference';
 import { ISettingsRoom } from '../types/types';
+// import { ControlBar } from './ControlBar';
 
 // eslint-disable-next-line max-len
 export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice }: ISettingsRoom & {userChoice : ILocalUserChoice | undefined}) {
@@ -43,8 +44,7 @@ export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice
           <RoomAudioRenderer />
           {isConnected && <Stage />}
         </div>
-        {/* eslint-disable-next-line max-len */}
-        <BottomBar audioEnable={userChoice?.audioEnabled || false} videoEnable={userChoice?.videoEnabled || false} />
+        <BottomBar />
       </LiveKitRoom>
     );
 }

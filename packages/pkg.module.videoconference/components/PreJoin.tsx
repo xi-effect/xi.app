@@ -13,6 +13,7 @@ import { Conference, Microphone } from '@xipkg/icons';
 
 export interface PreJoinProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onError'> {
+    // eslint-disable-next-line react/no-unused-prop-types
     onSubmit?: (values: LocalUserChoices) => void;
     onValidate?: (values: LocalUserChoices) => boolean;
     onError?: (error: Error) => void;
@@ -45,7 +46,6 @@ export function PreJoin({
                             userLabel = 'Username',
                             persistUserChoices = true,
                             defaultUserChoices,
-                            ...htmlProps
                         }: PreJoinProps) {
     const [userChoices, setUserChoices] = React.useState(defaultUserChoices);
 

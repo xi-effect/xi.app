@@ -1,13 +1,21 @@
 'use client';
 
+import '@livekit/components-styles';
 import React from 'react';
+import {
+    ControlBarProps,
+    // MediaDeviceMenu,
+    useDisconnectButton, useLocalParticipantPermissions,
+    usePersistentUserChoices,
+} from '@livekit/components-react';
+import { Chat, Endcall, Group, Hand } from '@xipkg/icons';
 import { Track } from 'livekit-client';
-import { TrackToggle, useDisconnectButton } from '@livekit/components-react';
-import { Chat, Conference, Endcall, Group, Hand, Microphone, Screenshare } from '@xipkg/icons';
+import { supportsScreenSharing } from '@livekit/components-core';
+import { TrackToggle } from '../utility/TrackToggle';
+import { ActionButton } from './ActionButton';
 
 const DisconnectButton = () => {
     const { buttonProps } = useDisconnectButton({});
-
     return (
       <button
         type="button"
@@ -19,92 +27,114 @@ const DisconnectButton = () => {
     );
 };
 
-const MicrophoneButton = ({ audioEnable }: { audioEnable: boolean }) => (
-  <div
-    className={`border-4 ${audioEnable ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
-  >
-    <TrackToggle
-      source={Track.Source.Microphone}
-      showIcon={false}
-      className="bg-transparent"
-    >
-      <Microphone className="fill-red-0" />
-    </TrackToggle>
-  </div>
-);
+export const BottomBar = ({
+                              variation,
+                              controls,
+                              saveUserChoices = true,
+                          }: ControlBarProps) => {
+    const visibleControls = { leave: true, ...controls };
 
-const CameraButton = ({ videoEnable }: { videoEnable: boolean }) => (
-  <div
-    className={`border-4 ${videoEnable ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
-  >
-    <TrackToggle
-      source={Track.Source.Camera}
-      showIcon={false}
-      className="bg-transparent"
-    >
-      <Conference className="fill-red-0" />
-    </TrackToggle>
-  </div>
-);
+    const localPermissions = useLocalParticipantPermissions();
 
-const ShareButton = () => (
-  <TrackToggle
-    source={Track.Source.ScreenShare}
-    showIcon={false}
-    className="ml-8 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100"
-  >
-    <Screenshare className="fill-red-0" />
-  </TrackToggle>
-);
+    if (!localPermissions) {
+        visibleControls.camera = false;
+        visibleControls.chat = false;
+        visibleControls.microphone = false;
+        visibleControls.screenShare = false;
+    } else {
+        visibleControls.camera ??= localPermissions.canPublish;
+        visibleControls.microphone ??= localPermissions.canPublish;
+        visibleControls.screenShare ??= localPermissions.canPublish;
+        visibleControls.chat ??= localPermissions.canPublishData && controls?.chat;
+    }
+    React.useMemo(
+        () => variation === 'minimal' || variation === 'verbose',
+        [variation],
+    );
+    const showText = React.useMemo(
+        () => variation === 'textOnly' || variation === 'verbose',
+        [variation],
+    );
+    const {
+        saveAudioInputEnabled,
+        saveVideoInputEnabled,
+        // saveAudioInputDeviceId,
+        // saveVideoInputDeviceId,
+    } = usePersistentUserChoices({ preventSave: !saveUserChoices });
 
-const GroupButton = () => (
-  <TrackToggle
-    source={Track.Source.Camera}
-    showIcon={false}
-    className="flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
-  >
-    <Group className="fill-red-0" />
-  </TrackToggle>
-);
+    const browserSupportsScreenSharing = supportsScreenSharing();
+    const [isScreenShareEnabled, setIsScreenShareEnabled] = React.useState(false);
 
-const ChatButton = () => (
-  <TrackToggle
-    source={Track.Source.Camera}
-    showIcon={false}
-    className="flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
-  >
-    <Chat className="fill-red-0" />
-  </TrackToggle>
-);
+    const microphoneOnChange = React.useCallback(
+        (enabled: boolean, isUserInitiated: boolean) =>
+            isUserInitiated ? saveAudioInputEnabled(enabled) : null,
+        [saveAudioInputEnabled],
+    );
 
-const HandButton = () => (
-  <TrackToggle
-    source={Track.Source.Camera}
-    showIcon={false}
-    className="flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
-    aria-label="Поднять руку"
-  >
-    <Hand className="fill-red-0" />
-  </TrackToggle>
-);
+    const cameraOnChange = React.useCallback(
+        (enabled: boolean, isUserInitiated: boolean) =>
+            isUserInitiated ? saveVideoInputEnabled(enabled) : null,
+        [saveVideoInputEnabled],
+    );
+    const onScreenShareChange = React.useCallback(
+        (enabled: boolean) => {
+            setIsScreenShareEnabled(enabled);
+        },
+        [setIsScreenShareEnabled],
+    );
+    return (
+      <div className="flex w-full flex-row justify-between p-4">
+        <div className="flex flex-row gap-4">
+          <div className="flex gap-1">
+            <div>
+              <TrackToggle
+                source={Track.Source.Microphone}
+                onChange={microphoneOnChange}
+              >
+                {showText && 'Microphone'}
+              </TrackToggle>
+              {/* <div className="text-white"> */}
+              {/*  <MediaDeviceMenu */}
+              {/*    kind="audioinput" */}
+              {/* eslint-disable-next-line max-len */}
+              {/*    onActiveDeviceChange={(_kind, deviceId) => saveAudioInputDeviceId(deviceId ?? '')} */}
+              {/*  /> */}
+              {/* </div> */}
+            </div>
+            {visibleControls.camera && (
+            <div>
+              {/* eslint-disable-next-line max-len */}
+              <TrackToggle source={Track.Source.Camera} onChange={cameraOnChange}>
+                {showText && 'Camera'}
+              </TrackToggle>
+              {/* <div> */}
+              {/*  <MediaDeviceMenu */}
+              {/*    kind="videoinput" */}
+              {/* eslint-disable-next-line max-len */}
+              {/*    onActiveDeviceChange={(_kind, deviceId) => saveVideoInputDeviceId(deviceId ?? '')} */}
+              {/*  /> */}
+              {/* </div> */}
+            </div>
+                )}
+          </div>
+          <div>
+            {visibleControls.screenShare && browserSupportsScreenSharing && (
+            <TrackToggle
+              source={Track.Source.ScreenShare}
+              captureOptions={{ audio: true, selfBrowserSurface: 'include' }}
+              onChange={onScreenShareChange}
+            >
+              {showText && (isScreenShareEnabled ? 'Stop screen share' : 'Share screen')}
+            </TrackToggle>
+                )}
+          </div>
+        </div>
 
-interface IBottomBar {
-    audioEnable: boolean,
-    videoEnable: boolean
-}
-
-export const BottomBar = ({ audioEnable, videoEnable }: IBottomBar) => (
-  <div className="flex w-full flex-row justify-between p-4">
-    <div className="flex flex-row">
-      <MicrophoneButton audioEnable={audioEnable} />
-      <CameraButton videoEnable={videoEnable} />
-      <ShareButton />
-    </div>
-
-    <div className="flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] bg-gray-100 p-1">
-      <GroupButton />
-      <ChatButton />
-      <HandButton />
-    </div>
-    <DisconnectButton />
-  </div>);
+        <div className="flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] bg-gray-100 p-1">
+          <ActionButton icon={<Group className="fill-red-0" />} withBorder={false} />
+          <ActionButton icon={<Chat className="fill-red-0" />} withBorder={false} />
+          <ActionButton icon={<Hand className="fill-red-0" />} withBorder={false} />
+        </div>
+        <DisconnectButton />
+      </div>);
+};
