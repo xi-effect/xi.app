@@ -1,16 +1,24 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Logo } from 'pkg.logo';
+import { useMainSt } from 'pkg.stores';
 
 export default function WelcomeFinal() {
+  const updateUser = useMainSt((state) => state.updateUser);
+  const getUser = useMainSt((state) => state.getUser);
   const router = useRouter();
 
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const handleNext = () => {
+    updateUser({ onboardingStage: 'completed' });
     router.push('/community/1/home');
   };
 

@@ -36,6 +36,7 @@
     "pkg.navigation": "*",
     "pkg.navigation.layout": "*",
     "pkg.router.url": "*",
+    "pkg.module.editor": "*",
     "pkg.stores": "*",
     "pkg.utils": "*",
     "react": "^18.2.0",

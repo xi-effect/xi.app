@@ -6,13 +6,16 @@ import * as M from '@xipkg/modal';
 import { PropsWithChildren, useState } from 'react';
 import Form from './components/Form';
 
-type ChangePasswordModalT = PropsWithChildren<{}>;
+type ChangePasswordModalT = PropsWithChildren<{
+  open: boolean;
+  onOpenChange: (value: boolean) => void;
+}>;
 
-export const ChangePasswordModal = ({ children }: ChangePasswordModalT) => {
+export const ChangePasswordModal = ({ open, onOpenChange, children }: ChangePasswordModalT) => {
   const [stage, setStage] = useState<'form' | 'success'>('form');
 
   return (
-    <M.Modal>
+    <M.Modal open={open} onOpenChange={(value) => onOpenChange(value)}>
       <M.ModalTrigger asChild>{children}</M.ModalTrigger>
       <M.ModalContent>
         {(stage === 'form' && (
@@ -23,17 +26,23 @@ export const ChangePasswordModal = ({ children }: ChangePasswordModalT) => {
             <M.ModalHeader>
               <M.ModalTitle>Изменение пароля</M.ModalTitle>
             </M.ModalHeader>
-            <Form />
-            <M.ModalFooter className="flex justify-end gap-4">
+            <Form setStage={setStage} onOpenChange={onOpenChange} />
+            {/* <M.ModalFooter className="flex justify-end gap-4">
               <Button variant="secondary">Отменить</Button>
               <Button onClick={() => setStage('success')}>Изменить</Button>
-            </M.ModalFooter>
+            </M.ModalFooter> */}
           </>
         )) ||
           (stage === 'success' && (
             <div className="border-gray-20 space-y-8 border-t p-8">
               <p className="text-center text-2xl font-semibold text-gray-100">Пароль изменён</p>
-              <Button onClick={() => setStage('success')} className="mt-4 w-full">
+              <Button
+                onClick={() => {
+                  onOpenChange(false);
+                  setStage('form');
+                }}
+                className="mt-4 w-full"
+              >
                 Продолжить
               </Button>
             </div>

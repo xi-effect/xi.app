@@ -6,13 +6,21 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
 import { PropsWithChildren, useState } from 'react';
+import { useMainSt } from 'pkg.stores';
 import Form from './components/Form';
 
 type ChangeEmailModalT = PropsWithChildren<{}>;
 
+interface IEmailModalStage {
+  type: string;
+  email: string;
+}
+
 export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
-  const [stage, setStage] = useState<{ type: 'form' } | { type: 'success'; email: string }>({
+  const onEmailChange = useMainSt((state) => state.onEmailChange);
+  const [stage, setStage] = useState<IEmailModalStage>({
     type: 'form',
+    email: '',
   });
 
   return (
@@ -27,23 +35,15 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
             <M.ModalHeader>
               <M.ModalTitle>Изменение электронной почты</M.ModalTitle>
             </M.ModalHeader>
-            <Form />
-            <M.ModalFooter className="flex justify-end gap-4">
-              <Button variant="secondary">Отменить</Button>
-              <Button onClick={() => setStage({ type: 'success', email: 'someemail' })}>
-                Изменить
-              </Button>
-            </M.ModalFooter>
+            <Form onEmailChange={onEmailChange} setStage={setStage} />
           </>
         )) ||
           (stage.type === 'success' && (
             <div className="space-y-8 p-8">
               <p className="text-center text-2xl font-semibold text-gray-100">
-                На адрес
-                {stage.email}
-                отправлено письмо с подтверждением
+                На адрес {stage.email} отправлено письмо с подтверждением
               </p>
-              <Button onClick={() => setStage({ type: 'form' })} className="mt-4 w-full">
+              <Button onClick={() => setStage({ type: 'form', email: '' })} className="mt-4 w-full">
                 Продолжить
               </Button>
             </div>

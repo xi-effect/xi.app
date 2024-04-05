@@ -52,7 +52,7 @@ export default function WelcomeCommunityCreate() {
     });
 
     if (status === 204) {
-      updateUser({ onboardingStage: 'community-choise' });
+      updateUser({ onboardingStage: 'community-choice' });
       router.push('/welcome/community');
     } else {
       toast('Ошибка сервера');
@@ -88,7 +88,7 @@ export default function WelcomeCommunityCreate() {
     });
 
     if (status === 204) {
-      updateUser({ onboardingStage: 'completed' });
+      updateUser({ onboardingStage: 'final' });
       router.push('/welcome/final');
     } else {
       toast('Ошибка сервера');

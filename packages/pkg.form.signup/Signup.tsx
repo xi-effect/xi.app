@@ -27,13 +27,20 @@ export type SignUpT = {
 };
 
 const FormSchema = z.object({
-  nickname: z
+  username: z
     .string()
     .min(1, {
       message: 'Обязательное поле',
     })
-    .min(5, {
-      message: 'Минимальная длина - 5 символов',
+    .min(4, {
+      message: 'Минимальная длина - 4 символов',
+    })
+    .max(30, {
+      message: 'Максимальная длина - 30 символов',
+    })
+    .regex(/^[a-z0-9_.]+$/, {
+      message:
+        'Используйте только латинский алфавит, в нижнем регистре, цифры или знаки: "_" или "."',
     }),
   email: z
     .string({
@@ -90,14 +97,14 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
         <h1 className="self-center text-2xl font-semibold">Регистрация</h1>
         <FormField
           control={control}
-          name="nickname"
+          name="username"
           defaultValue=""
           render={({ field }) => (
             <FormItem className="pt-4">
               <FormLabel htmlFor="user name">Имя пользователя</FormLabel>
               <FormControl>
                 <Input
-                  error={!!errors?.nickname}
+                  error={!!errors?.username}
                   autoComplete="off"
                   type="text"
                   id="user name"

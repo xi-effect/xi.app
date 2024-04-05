@@ -68,7 +68,7 @@ export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) =>
           </div>
           <div className="space-y-4">
             <Label className="text-[16px] font-medium text-gray-100">Тип</Label>
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-auto">
               {actionsSheetList.map((item, index) => (
                 <ActionsSheetButton
                   key={index}

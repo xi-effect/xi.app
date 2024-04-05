@@ -3,7 +3,7 @@
 'use client';
 
 import { StateCreator } from 'zustand';
-import { post } from 'pkg.utils';
+import { post, put } from 'pkg.utils';
 import { Common } from '../main';
 import { ResponseBodyUserT } from './profile';
 
@@ -23,12 +23,18 @@ export type Auth = {
   onSignUp: ({
     email,
     password,
-    nickname,
+    username,
     redirectFn,
   }: Data & {
     redirectFn: (value: string) => void;
     setError: (name: string, error: { type: string; message: string }) => void;
-    nickname: string;
+    username: string;
+  }) => void;
+  onEmailChange: ({
+    email,
+    password,
+  }: Data & {
+    setError: (name: string, error: { type: string; message: string }) => void;
   }) => void;
   onSignOut: (redirectFn?: (value: string) => void) => void;
 };
@@ -51,6 +57,15 @@ type RequestBodySignUp = {
 type ResponseBodySignUp = {
   detail: string;
 } & ResponseBodyUserT;
+
+type RequestBodyChangeEmail = {
+  detail: string;
+} & ResponseBodyUserT;
+
+type ResponseBodyChangeEmail = {
+  new_email: string;
+  password: string;
+};
 
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   isLogin: null,
@@ -97,14 +112,14 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
 
     return 400;
   },
-  onSignUp: async ({ nickname, email, password, setError }) => {
+  onSignUp: async ({ username, email, password, setError }) => {
     const { data, status } = await post<RequestBodySignUp, ResponseBodySignUp>({
       service: 'auth',
       path: '/api/signup/',
       body: {
         email: email.toLowerCase(),
         password: password.trim().toString(),
-        username: nickname,
+        username,
       },
       config: {
         headers: {
@@ -134,7 +149,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         return 200;
       }
     } else if (data?.detail === 'Username already in use') {
-      setError('nickname', { type: 'manual', message: 'Такое имя пользователя уже занято' });
+      setError('username', { type: 'manual', message: 'Такое имя пользователя уже занято' });
     } else if (data?.detail === 'Email already in use') {
       setError('email', { type: 'manual', message: 'Аккаунт с такой почтой уже зарегистрирован' });
     }
@@ -159,5 +174,34 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     if (status === 204) {
       set(() => ({ isLogin: false }));
     }
+  },
+  onEmailChange: async ({ email, password, setError }) => {
+    const { data, status } = await put<ResponseBodyChangeEmail, RequestBodyChangeEmail>({
+      service: 'auth',
+      path: '/api/users/current/email/',
+      body: {
+        new_email: email.toLowerCase(),
+        password: password.trim().toString(),
+      },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+    if (status === 200) {
+      set((state) => ({
+        user: {
+          ...state.user,
+          email: data.email,
+        },
+      }));
+      return 200;
+    }
+    if (data?.detail === 'Wrong password') {
+      setError('password', { type: 'manual', message: 'Неправильный пароль' });
+    }
+
+    return 400;
   },
 });

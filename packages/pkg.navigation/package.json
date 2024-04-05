@@ -11,7 +11,7 @@
     "@xipkg/avatar": "0.1.2",
     "@xipkg/dropdown": "1.2.0",
     "@xipkg/icons": "0.8.4",
-    "@xipkg/userprofile": "2.0.1",
+    "@xipkg/userprofile": "2.2.0",
     "@xipkg/modal": "1.1.2",
     "driver.js": "^1.3.1",
     "next": "^13.5.6",
