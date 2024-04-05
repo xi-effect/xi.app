@@ -2,22 +2,17 @@ import {
     GridLayout,
     isTrackReference,
     LiveKitRoom,
-    ParticipantName,
-    RoomAudioRenderer,
-    TrackMutedIndicator,
     TrackRefContext,
     useConnectionQualityIndicator,
     useTracks,
-    VideoTrack,
 } from '@livekit/components-react';
-import { HTMLAttributes } from 'react';
+import React, { HTMLAttributes } from 'react';
 import { ConnectionQuality, Track } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
-// eslint-disable-next-line import/named
 import { serverUrl, ILocalUserChoice } from '../VideoConference';
 import { ISettingsRoom } from '../types/types';
-// import { ControlBar } from './ControlBar';
+import { VideoConference } from './VideoTrack';
 
 // eslint-disable-next-line max-len
 export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice }: ISettingsRoom & {userChoice : ILocalUserChoice | undefined}) {
@@ -41,7 +36,6 @@ export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice
       >
         <UpBar />
         <div className="flex h-[calc(100vh-152px)] flex-row px-8 py-4">
-          <RoomAudioRenderer />
           {isConnected && <Stage />}
         </div>
         <BottomBar />
@@ -62,16 +56,17 @@ export function Stage() {
             {(track) =>
                             track && (
                             <div className="text-gray-5 h-full w-full min-w-[320px]">
-                              {isTrackReference(track) ? <VideoTrack className="rounded-[16px] border-none" {...track} /> :
+                              {isTrackReference(track) ? <VideoConference className="rounded-[16px] h-auto border-none" {...track} /> :
                               <p>Camera placeholder</p>}
-                              <div className="m-2 flex h-6 w-fit flex-row gap-1 rounded bg-gray-100 p-1">
-                                <TrackMutedIndicator source={Track.Source.Microphone} />
-                                <TrackMutedIndicator source={track.source} />
-                                <ParticipantName
-                                  className=""
-                                />
-                                <UserDefinedConnectionQualityIndicator />
-                              </div>
+                                {/* eslint-disable-next-line max-len */}
+                              {/* <div className="m-2 flex h-6 w-fit flex-row gap-1 rounded bg-gray-100 p-1"> */}
+                              {/*  <TrackMutedIndicator source={Track.Source.Microphone} /> */}
+                              {/*  <TrackMutedIndicator source={track.source} /> */}
+                              {/*  <ParticipantName */}
+                              {/*    className="" */}
+                              {/*  /> */}
+                              {/*  <UserDefinedConnectionQualityIndicator /> */}
+                              {/* </div> */}
                             </div>
                             )
                         }
