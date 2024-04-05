@@ -128,7 +128,7 @@ export const CommunityMenu = () => {
 
   // Берем [cid] из URL
   const params = useParams();
-  // Делим все сообщества пользователя на ту, на странице который мы сейчас
+  // Делим все сообщества пользователя на то, на странице которого мы сейчас
   // и на остальные
   const [currentCommunity, setCurrentCommunity] = useState<CommunityTemplateT>();
   const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
