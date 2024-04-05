@@ -115,7 +115,7 @@ const CommunityLink = ({
       pathname: `/community/${community.id}/home`,
     }}
     onClick={handleClose}
-    className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[302px]"
+    className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
   >
     <Avatar avatar={community.avatar} />
     <div className="ml-2 self-center text-[16px] font-semibold">{community.name}</div>
