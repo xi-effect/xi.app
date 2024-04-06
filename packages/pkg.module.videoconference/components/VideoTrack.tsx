@@ -15,19 +15,11 @@ import {
     GridLayout,
     LayoutContextProvider,
     MessageFormatter, RoomAudioRenderer,
+    VideoConferenceProps,
     useCreateLayoutContext,
     usePinnedTracks,
     useTracks,
 } from '@livekit/components-react';
-// import { useWarnAboutMissingStyles } from '@livekit/components-react/dist/hooks/useWarnAboutMissingStyles';
-
-export interface VideoConferenceProps extends React.HTMLAttributes<HTMLDivElement> {
-    chatMessageFormatter?: MessageFormatter;
-    chatMessageEncoder?: MessageEncoder;
-    chatMessageDecoder?: MessageDecoder;
-    /** @alpha */
-    SettingsComponent?: React.ComponentType;
-}
 
 export function VideoConference({
                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars

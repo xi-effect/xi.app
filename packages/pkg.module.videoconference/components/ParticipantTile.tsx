@@ -4,37 +4,9 @@ import type { Participant, TrackPublication } from 'livekit-client';
 import { Track } from 'livekit-client';
 import type { ParticipantClickEvent, TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
-import { AudioTrack, ConnectionQualityIndicator, FocusToggle, LockLockedIcon, ParticipantContext, ParticipantName, ParticipantPlaceholder, ScreenShareIcon, TrackMutedIndicator, TrackRefContext, VideoTrack, useEnsureParticipant, useFeatureContext, useIsEncrypted, useIsSpeaking, useMaybeLayoutContext, useMaybeParticipantContext, useMaybeTrackRefContext, useParticipantTile } from '@livekit/components-react';
+import { AudioTrack, ConnectionQualityIndicator, FocusToggle, LockLockedIcon , ParticipantContext, ParticipantContextIfNeeded, ParticipantName, ParticipantPlaceholder, ParticipantTileProps, ScreenShareIcon, TrackMutedIndicator, TrackRefContext, VideoTrack, useEnsureParticipant, useFeatureContext, useIsEncrypted, useIsSpeaking, useMaybeLayoutContext, useMaybeParticipantContext, useMaybeTrackRefContext, useParticipantTile } from '@livekit/components-react';
 
-/**
- * The `ParticipantContextIfNeeded` component only creates a `ParticipantContext`
- * if there is no `ParticipantContext` already.
- * @example
- * ```tsx
- * <ParticipantContextIfNeeded participant={trackReference.participant}>
- *  ...
- * </ParticipantContextIfNeeded>
- * ```
- * @public
- */
-export function ParticipantContextIfNeeded(
-  props: React.PropsWithChildren<{
-    participant?: Participant;
-  }>,
-) {
-  const hasContext = !!useMaybeParticipantContext();
-  return props.participant && !hasContext ? (
-    <ParticipantContext.Provider value={props.participant}>
-      {props.children}
-    </ParticipantContext.Provider>
-  ) : (
-    <>{props.children}</>
-  );
-}
 
-/**
- * Only create a `TrackRefContext` if there is no `TrackRefContext` already.
- */
 function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
     trackRef?: TrackReferenceOrPlaceholder;
@@ -48,36 +20,8 @@ function TrackRefContextIfNeeded(
   );
 }
 
-/** @public */
-export interface ParticipantTileProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** The track reference to display. */
-  trackRef?: TrackReferenceOrPlaceholder;
-  disableSpeakingIndicator?: boolean;
-  /** @deprecated This parameter will be removed in a future version use `trackRef` instead. */
-  participant?: Participant;
-  /** @deprecated This parameter will be removed in a future version use `trackRef` instead. */
-  source?: Track.Source;
-  /** @deprecated This parameter will be removed in a future version use `trackRef` instead. */
-  publication?: TrackPublication;
-  onParticipantClick?: (event: ParticipantClickEvent) => void;
-}
 
-/**
- * The `ParticipantTile` component is the base utility wrapper for displaying a visual representation of a participant.
- * This component can be used as a child of the `TrackLoop` component or by passing a track reference as property.
- *
- * @example Using the `ParticipantTile` component with a track reference:
- * ```tsx
- * <ParticipantTile trackRef={trackRef} />
- * ```
- * @example Using the `ParticipantTile` component as a child of the `TrackLoop` component:
- * ```tsx
- * <TrackLoop>
- *  <ParticipantTile />
- * </TrackLoop>
- * ```
- * @public
- */
+
 export function ParticipantTile({
   trackRef,
   participant,
