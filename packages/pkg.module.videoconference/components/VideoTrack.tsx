@@ -4,15 +4,17 @@ import type {
     TrackReferenceOrPlaceholder,
     WidgetState,
 } from '@livekit/components-core';
+import '@livekit/components-styles';
 import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/components-core';
 import { RoomEvent, Track } from 'livekit-client';
 import * as React from 'react';
+import { ParticipantTile } from './ParticipantTile'
 import {
     CarouselLayout, ConnectionStateToast, FocusLayout,
     FocusLayoutContainer,
     GridLayout,
     LayoutContextProvider,
-    MessageFormatter, ParticipantTile, RoomAudioRenderer,
+    MessageFormatter, RoomAudioRenderer,
     useCreateLayoutContext,
     usePinnedTracks,
     useTracks,

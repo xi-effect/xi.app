@@ -51,14 +51,11 @@ export function Stage() {
 
     return (
       <div className="flex w-full flex-row overflow-hidden">
-        <GridLayout tracks={tracks}>
+        {/* <GridLayout tracks={tracks}>
           <TrackRefContext.Consumer>
-            {(track) =>
-                            track && (
+            {(track) => */}
                             <div className="text-gray-5 h-full w-full min-w-[320px]">
-                              {isTrackReference(track) ? <VideoConference className="rounded-[16px] h-auto border-none" {...track} /> :
-                              <p>Camera placeholder</p>}
-                                {/* eslint-disable-next-line max-len */}
+                             <VideoConference className="rounded-[16px] border-none" /> 
                               {/* <div className="m-2 flex h-6 w-fit flex-row gap-1 rounded bg-gray-100 p-1"> */}
                               {/*  <TrackMutedIndicator source={Track.Source.Microphone} /> */}
                               {/*  <TrackMutedIndicator source={track.source} /> */}
@@ -68,10 +65,9 @@ export function Stage() {
                               {/*  <UserDefinedConnectionQualityIndicator /> */}
                               {/* </div> */}
                             </div>
-                            )
-                        }
+                        {/* }
           </TrackRefContext.Consumer>
-        </GridLayout>
+        </GridLayout> */}
       </div>
     );
 }
