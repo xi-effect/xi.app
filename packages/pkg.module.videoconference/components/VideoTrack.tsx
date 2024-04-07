@@ -9,8 +9,9 @@ import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/componen
 import { RoomEvent, Track } from 'livekit-client';
 import * as React from 'react';
 import { ParticipantTile } from './ParticipantTile'
+import {FocusLayout} from './FoucsLayout'
 import {
-    CarouselLayout, ConnectionStateToast, FocusLayout,
+    CarouselLayout, ConnectionStateToast,
     FocusLayoutContainer,
     GridLayout,
     LayoutContextProvider,

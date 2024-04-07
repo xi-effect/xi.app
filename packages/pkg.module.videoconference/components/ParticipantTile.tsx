@@ -4,8 +4,8 @@ import type { Participant, TrackPublication } from 'livekit-client';
 import { Track } from 'livekit-client';
 import type { ParticipantClickEvent, TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
-import { AudioTrack, ConnectionQualityIndicator, FocusToggle, LockLockedIcon , ParticipantContext, ParticipantContextIfNeeded, ParticipantName, ParticipantPlaceholder, ParticipantTileProps, ScreenShareIcon, TrackMutedIndicator, TrackRefContext, VideoTrack, useEnsureParticipant, useFeatureContext, useIsEncrypted, useIsSpeaking, useMaybeLayoutContext, useMaybeParticipantContext, useMaybeTrackRefContext, useParticipantTile } from '@livekit/components-react';
-
+import { AudioTrack, ConnectionQualityIndicator, FocusToggle, LockLockedIcon , ParticipantContext, ParticipantContextIfNeeded,  ParticipantName,  ParticipantPlaceholder, ParticipantTileProps, ScreenShareIcon, TrackMutedIndicator, TrackRefContext, VideoTrack, useEnsureParticipant, useFeatureContext, useIsEncrypted, useIsSpeaking, useMaybeLayoutContext, useMaybeParticipantContext, useMaybeTrackRefContext, useParticipantTile } from '@livekit/components-react';
+// import {ParticipantName} from './ParticipantName'
 
 function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -76,7 +76,7 @@ export function ParticipantTile({
     <div style={{ position: 'relative' }} {...elementProps}>
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
-          <div className={`${isSpeaking ? 'border-4 border-green-60' : '' } rounded-[8px]`}>
+          <div className={`${isSpeaking ? 'border-4 border-green-60' : '' } rounded-[8px] h-full`}>
           {children ?? (
             <>
               {isTrackReference(trackReference) &&
@@ -96,33 +96,35 @@ export function ParticipantTile({
                   />
                 )
               )}
-              <div className="lk-participant-placeholder">
-                <ParticipantPlaceholder />
+              <div className="lk-participant-placeholder h-fit">
+                <ParticipantPlaceholder /> 
+                {/* **** */}
               </div>
-              <div className="lk-participant-metadata">
-                <div className="lk-participant-metadata-item">
+              <div className="lk-participant-metadata p-1">
+                <div className=" bg-transperent">
                   {trackReference.source === Track.Source.Camera ? (
-                    <>
-                      {isEncrypted && <LockLockedIcon style={{ marginRight: '0.25rem' }} />}
+                    <div className='flex gap-[6px] items-center bg-gray-100 py-[4px] px-[8px] rounded-[4px]'>
+                      {isEncrypted && <LockLockedIcon style={{ background : 'transperent' }} />}
                       <TrackMutedIndicator
                         source={Track.Source.Microphone}
                         show={'muted'}
+                        style={{ marginRight: '0.25rem' , background : 'transperent' }}
                       ></TrackMutedIndicator>
                       <ParticipantName />
-                    </>
+                    </div>
                   ) : (
-                    <>
+                    <div className='flex gap-[6px] items-center bg-gray-100 py-[4px] px-[8px] rounded-[4px]'>
                       <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
                       <ParticipantName>&apos;s screen</ParticipantName>
-                    </>
+                    </div>
                   )}
                 </div>
-                <ConnectionQualityIndicator className="lk-participant-metadata-item" />
+                <ConnectionQualityIndicator className="bg-transperent" />
               </div>
             </>
           )}
           </div>
-          <FocusToggle trackRef={trackReference} />
+          <FocusToggle style={{background : "transparent", padding : '5px'}} trackRef={trackReference} />
         </ParticipantContextIfNeeded>
       </TrackRefContextIfNeeded>
     </div>
