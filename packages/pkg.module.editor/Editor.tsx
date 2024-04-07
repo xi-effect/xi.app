@@ -1,12 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import {
-  ComponentProps,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,59 +10,26 @@ import {
 } from '@xipkg/dropdown';
 import { createEditor, Transforms } from 'slate';
 import { Move, Plus } from '@xipkg/icons';
-import {
-  Slate,
-  withReact,
-  Editable,
-  ReactEditor,
-  DefaultElement,
-  RenderElementProps,
-} from 'slate-react';
+import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
-import { withNodeId } from './plugins/withNodeId';
+import { makeNodeId, withNodeId } from './plugins/withNodeId';
 import { toPx } from './utils/toPx';
-import { mockInitialValue } from './const';
+import editorElements, { EditorElementOptions, EditorElementType } from './const/editorElements';
+import mockValues from './const/mockValues';
 
 const useEditor = () => useMemo(() => withNodeId(withHistory(withReact(createEditor()))), []);
 
 export const EditorRoot = () => {
   const editor = useEditor();
 
-  const [value, setValue] = useState(mockInitialValue);
-  const [activeId, setActiveId] = useState(null);
-  const activeElement = editor.children.find((x: any) => x.id === activeId);
-
-  const handleDragStart = (event: any) => {
-    if (event.active) {
-      clearSelection();
-      setActiveId(event.active.id);
-    }
-  };
-
-  const handleDragEnd = (event: any) => {
-    const overId = event.over?.id;
-    const overIndex = editor.children.findIndex((x: any) => x.id === overId);
-
-    if (overId !== activeId && overIndex !== -1) {
-      Transforms.moveNodes(editor, {
-        at: [],
-        // @ts-ignore
-        match: (node) => node.id === activeId,
-        to: [overIndex],
-      });
-    }
-
-    setActiveId(null);
-  };
-
-  const handleDragCancel = () => {
-    setActiveId(null);
-  };
+  const [value, setValue] = useState(mockValues);
+  const [draggingElementId, setDraggingElementId] = useState<string>();
+  const activeElement = editor.children.find((x) => x.id === draggingElementId);
 
   const clearSelection = () => {
     ReactEditor.blur(editor);
@@ -79,13 +40,6 @@ export const EditorRoot = () => {
   const renderElement = useCallback((props: RenderElementProps) => {
     const isTopLevel = ReactEditor.findPath(editor, props.element).length === 1;
 
-    if (props.element.type === 'code') {
-      return (
-        <pre {...props.attributes}>
-          <code>{props.children}</code>
-        </pre>
-      );
-    }
     return isTopLevel ? (
       <SortableElement {...props} renderElement={renderElementContent} />
     ) : (
@@ -93,20 +47,50 @@ export const EditorRoot = () => {
     );
   }, []);
 
-  const items = useMemo(() => editor.children.map((element: any) => element.id), [editor.children]);
+  const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
+
+  const handleDropdownSelect = (type: EditorElementType) => {
+    const id = makeNodeId();
+    Transforms.insertNodes(editor, [{ id, type, children: [{ text: '', id: makeNodeId() }] }], {
+      at: [editor.children.length],
+    });
+  };
 
   return (
     <DropdownMenu>
       {/* @ts-ignore */}
       <Slate editor={editor} initialValue={value} onChange={setValue}>
         <DndContext
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onDragCancel={handleDragCancel}
+          onDragStart={(event) => {
+            if (event.active) {
+              clearSelection();
+              setDraggingElementId(`${event.active.id}`);
+            }
+          }}
+          onDragEnd={(event) => {
+            const overId = event.over?.id;
+            const overIndex = editor.children.findIndex((x) => x.id === overId);
+
+            if (overId !== draggingElementId && overIndex !== -1) {
+              Transforms.moveNodes(editor, {
+                at: [],
+                match: (node) => node.id === draggingElementId,
+                to: [overIndex],
+              });
+            }
+
+            setDraggingElementId(undefined);
+          }}
+          onDragCancel={() => {
+            setDraggingElementId(undefined);
+          }}
           modifiers={[restrictToVerticalAxis]}
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <Editable className="flex flex-col gap-2 p-2" renderElement={renderElement} />
+            <Editable
+              className="flex flex-col gap-2 p-2 text-gray-100"
+              renderElement={renderElement}
+            />
           </SortableContext>
           {createPortal(
             <DragOverlay>
@@ -118,15 +102,33 @@ export const EditorRoot = () => {
       </Slate>
       <DropdownMenuPortal>
         <DropdownMenuContent side="right">
-          <DropdownMenuItem>Текст</DropdownMenuItem>
-          <DropdownMenuItem>Заголовок 1</DropdownMenuItem>
+          {(Object.entries(editorElements) as Array<[EditorElementType, EditorElementOptions]>).map(
+            ([type, opt]) => (
+              <DropdownMenuItem
+                className="gap-2"
+                key={type}
+                onSelect={() => handleDropdownSelect(type)}
+              >
+                <opt.icon />
+                <span className="text-sm">{opt.label}</span>
+              </DropdownMenuItem>
+            ),
+          )}
         </DropdownMenuContent>
       </DropdownMenuPortal>
     </DropdownMenu>
   );
 };
 
-const renderElementContent = (props: any) => <DefaultElement {...props} />;
+const renderElementContent = (props: RenderElementProps) => {
+  const option = editorElements[props.element.type];
+  if (!option) {
+    console.warn('Unknown element type', props.element.type);
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    return <></>;
+  }
+  return option.render(props);
+};
 
 const SortableElement = ({ attributes, element, children, renderElement }: any) => {
   const sortable = useSortable({
@@ -141,7 +143,7 @@ const SortableElement = ({ attributes, element, children, renderElement }: any) 
     <div {...attributes}>
       <Sortable sortable={sortable}>
         <CellControls moveProps={sortable.listeners} />
-        <div>{renderElement({ element, children })}</div>
+        <div className="ml-2">{renderElement({ element, children })}</div>
       </Sortable>
     </div>
   );
@@ -185,7 +187,7 @@ const DragOverlayContent = ({ element }: any) => {
 };
 
 const CellControls = ({ moveProps }: Partial<Record<'moveProps', ComponentProps<'button'>>>) => (
-  <div className="flex *:grid *:size-5 *:place-content-center *:bg-transparent">
+  <div className="flex items-center *:grid *:size-5 *:place-content-center *:bg-transparent">
     <DropdownMenuTrigger asChild>
       <button aria-label="add cell above" type="button">
         <Plus />
