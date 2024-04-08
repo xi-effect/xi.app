@@ -10,5 +10,12 @@ const Announce = dynamic(() =>
 export default function AnnouncePostPage({ params }: { params: { vid: string } }) {
   console.log('params', params);
 
-  return <Announce />;
+  return (
+    <Announce
+      postTitle="Победа на чемпионате"
+      postText={undefined}
+      date="4 мая 2022"
+      author="Юшкевич О.А."
+    />
+  );
 }
