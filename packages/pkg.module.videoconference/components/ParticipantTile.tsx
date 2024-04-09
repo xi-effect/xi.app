@@ -18,8 +18,6 @@ function TrackRefContextIfNeeded(
   );
 }
 
-
-
 export function ParticipantTile({
   trackRef,
   participant,

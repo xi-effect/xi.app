@@ -31,7 +31,7 @@ export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice
         className="h-screen"
       >
         <UpBar />
-        <div className="flex h-[calc(100vh-152px)] flex-row px-8 py-4">
+        <div className="flex h-[100vh] flex-row px-8 py-4">
           {isConnected && <Stage />}
         </div>
         <BottomBar />

@@ -81,7 +81,8 @@ export const BottomBar = ({
         [setIsScreenShareEnabled],
     );
     return (
-      <div className="flex w-full flex-row justify-between p-4">
+      <div className="absolute bottom-6 w-full">
+        <div className="flex w-full flex-row justify-between p-4">
         <div className="flex flex-row gap-4">
           <div className="flex gap-1">
             <div>
@@ -134,5 +135,7 @@ export const BottomBar = ({
           <ActionButton icon={<Hand className="fill-red-0" />} withBorder={false} />
         </div>
         <DisconnectButton />
-      </div>);
+      </div>
+      </div>
+      );
 };
