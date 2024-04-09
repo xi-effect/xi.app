@@ -32,7 +32,7 @@
     "pkg.form.signup": "*",
     "pkg.logo": "*",
     "pkg.models": "*",
-    "pkg.module.announces": "^0.0.0",
+    "pkg.module.announces": "*",
     "pkg.module.editor": "*",
     "pkg.module.videoconference": "*",
     "pkg.navigation": "*",
