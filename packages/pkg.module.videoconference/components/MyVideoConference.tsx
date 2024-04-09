@@ -1,10 +1,9 @@
 import { CarouselLayout, useTracks } from '@livekit/components-react';
 import { Track } from 'livekit-client';
+import * as React from 'react';
 import { ParticipantTile } from './ParticipantTile';
 
 export const MyVideoConference = () => {
-    // `useTracks` returns all camera and screen share tracks. If a user
-    // joins without a published camera track, a placeholder track is returned.
     const tracks = useTracks(
         [
             { source: Track.Source.Camera, withPlaceholder: true },

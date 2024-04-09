@@ -1,11 +1,9 @@
 import '@livekit/components-styles';
 import * as React from 'react';
-import type { Participant, TrackPublication } from 'livekit-client';
 import { Track } from 'livekit-client';
-import type { ParticipantClickEvent, TrackReferenceOrPlaceholder } from '@livekit/components-core';
+import type {  TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
-import { AudioTrack, ConnectionQualityIndicator, FocusToggle, LockLockedIcon , ParticipantContext, ParticipantContextIfNeeded,  ParticipantName,  ParticipantPlaceholder, ParticipantTileProps, ScreenShareIcon, TrackMutedIndicator, TrackRefContext, VideoTrack, useEnsureParticipant, useFeatureContext, useIsEncrypted, useIsSpeaking, useMaybeLayoutContext, useMaybeParticipantContext, useMaybeTrackRefContext, useParticipantTile } from '@livekit/components-react';
-// import {ParticipantName} from './ParticipantName'
+import { AudioTrack, ConnectionQualityIndicator, FocusToggle, LockLockedIcon , ParticipantContextIfNeeded,  ParticipantName,  ParticipantPlaceholder, ParticipantTileProps, ScreenShareIcon, TrackMutedIndicator, TrackRefContext, VideoTrack, useEnsureParticipant, useFeatureContext, useIsEncrypted, useIsSpeaking, useMaybeLayoutContext, useMaybeTrackRefContext, useParticipantTile } from '@livekit/components-react';
 
 function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{

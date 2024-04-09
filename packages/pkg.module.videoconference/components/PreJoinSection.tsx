@@ -1,7 +1,6 @@
 import { Button } from '@xipkg/button';
 import React from 'react';
 import { useMediaDeviceSelect } from '@livekit/components-react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@xipkg/select';
 import { Conference, Microphone, SoundTwo } from '@xipkg/icons';
 import { PreJoin } from './PreJoin';
@@ -63,7 +62,7 @@ export function PreJoinSection({ setConnect, connect, setUserChoice }: IPreJoinS
                   <SelectContent className="w-full">
                     <SelectGroup>
                       {audioControl.devices.map((device) =>
-                        <SelectItem
+                        <SelectItem key={device.deviceId}
                           onSelect={() => audioControl.setActiveMediaDevice(device.deviceId)}
                           value={device.deviceId}
                         >{device.label}

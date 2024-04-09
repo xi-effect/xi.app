@@ -1,6 +1,4 @@
 import type {
-    MessageDecoder,
-    MessageEncoder,
     TrackReferenceOrPlaceholder,
     WidgetState,
 } from '@livekit/components-core';
@@ -9,13 +7,13 @@ import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/componen
 import { RoomEvent, Track } from 'livekit-client';
 import * as React from 'react';
 import { ParticipantTile } from './ParticipantTile'
-import {FocusLayout} from './FoucsLayout'
+import {FocusLayout} from './FocusLayout'
 import {
     CarouselLayout, ConnectionStateToast,
     FocusLayoutContainer,
     GridLayout,
     LayoutContextProvider,
-    MessageFormatter, RoomAudioRenderer,
+     RoomAudioRenderer,
     VideoConferenceProps,
     useCreateLayoutContext,
     usePinnedTracks,
@@ -30,13 +28,8 @@ export function VideoConference({
                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                     chatMessageEncoder,
                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                    SettingsComponent,
                                     ...props
                                 }: VideoConferenceProps) {
-    const [widgetState, setWidgetState] = React.useState<WidgetState>({
-        showChat: false,
-        unreadMessages: 0,
-    });
     const lastAutoFocusedScreenShareTrack = React.useRef<TrackReferenceOrPlaceholder | null>(null);
 
     const tracks = useTracks(
@@ -49,7 +42,6 @@ export function VideoConference({
 
     const widgetUpdate = (state: WidgetState) => {
         log.debug('updating widget state', state);
-        setWidgetState(state);
     };
 
     const layoutContext = useCreateLayoutContext();
@@ -89,14 +81,12 @@ export function VideoConference({
         focusTrack?.publication?.trackSid,
     ]);
 
-    // useWarnAboutMissingStyles();
 
     return (
       <div className="lk-video-conference" {...props}>
         {isWeb() && (
         <LayoutContextProvider
           value={layoutContext}
-                    // onPinChange={handleFocusStateChange}
           onWidgetChange={widgetUpdate}
         >
           <div className="lk-video-conference-inner">
@@ -116,14 +106,7 @@ export function VideoConference({
                             </FocusLayoutContainer>
                           </div>
                         )}
-            {/* <ControlBar controls={{ chat: true, settings: !!SettingsComponent }} /> */}
           </div>
-          {/* <Chat */}
-          {/*  style={{ display: widgetState.showChat ? 'grid' : 'none' }} */}
-          {/*  messageFormatter={chatMessageFormatter} */}
-          {/*  messageEncoder={chatMessageEncoder} */}
-          {/*  messageDecoder={chatMessageDecoder} */}
-          {/* /> */}
         </LayoutContextProvider>
             )}
         <RoomAudioRenderer />

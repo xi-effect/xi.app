@@ -3,7 +3,6 @@
 import React from 'react';
 import {
     ControlBarProps,
-    // MediaDeviceMenu,
     useDisconnectButton, useLocalParticipantPermissions,
     usePersistentUserChoices,
 } from '@livekit/components-react';

@@ -172,11 +172,11 @@ export function PreJoin({
     return (
       <div>
         <div className="relative">
-          <div className="w-[737px] h-[476px]">
+          <div className='min-w-[737px] h-full'>
             {videoTrack && videoEnabled && (
-            <div className="w-[737px] h-[476px]">
+            <div>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-              <video
+              <video 
                 className="rounded-[16px]"
                 ref={videoEl}
                 data-lk-facing-mode={facingMode}
@@ -186,7 +186,7 @@ export function PreJoin({
                     )}
             {(!videoTrack || !videoEnabled) && (
             <div
-              className="bg-gray-100 w-full h-full items-center rounded-[16px] flex justify-center"
+              className="bg-gray-100 min-h-[476px] w-full h-full items-center rounded-[16px] flex justify-center"
             >
               <ParticipantPlaceholder />
             </div>

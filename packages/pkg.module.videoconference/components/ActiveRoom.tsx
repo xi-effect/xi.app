@@ -1,13 +1,9 @@
 import {
-    GridLayout,
-    isTrackReference,
     LiveKitRoom,
-    TrackRefContext,
     useConnectionQualityIndicator,
-    useTracks,
 } from '@livekit/components-react';
 import React, { HTMLAttributes } from 'react';
-import { ConnectionQuality, Track } from 'livekit-client';
+import { ConnectionQuality } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
 import { serverUrl, ILocalUserChoice } from '../VideoConference';
@@ -44,40 +40,16 @@ export function ActiveRoom({ token, room, connectInfo, isConnectInfo, userChoice
 }
 
 export function Stage() {
-    const tracks = useTracks([
-        { source: Track.Source.Camera, withPlaceholder: true },
-        { source: Track.Source.ScreenShare, withPlaceholder: false },
-    ]);
-
     return (
-      <div className="flex w-full flex-row overflow-hidden">
-        {/* <GridLayout tracks={tracks}>
-          <TrackRefContext.Consumer>
-            {(track) => */}
-                            <div className="text-gray-5 h-full w-full min-w-[320px]">
+      <div className="overflow-hidden">
+                            <div className="text-gray-5 w-full min-w-[320px]">
                              <VideoConference className="rounded-[16px] border-none" /> 
-                              {/* <div className="m-2 flex h-6 w-fit flex-row gap-1 rounded bg-gray-100 p-1"> */}
-                              {/*  <TrackMutedIndicator source={Track.Source.Microphone} /> */}
-                              {/*  <TrackMutedIndicator source={track.source} /> */}
-                              {/*  <ParticipantName */}
-                              {/*    className="" */}
-                              {/*  /> */}
-                              {/*  <UserDefinedConnectionQualityIndicator /> */}
-                              {/* </div> */}
                             </div>
-                        {/* }
-          </TrackRefContext.Consumer>
-        </GridLayout> */}
       </div>
     );
 }
 
 export function UserDefinedConnectionQualityIndicator(props: HTMLAttributes<HTMLSpanElement>) {
-    /**
-     *  We use the same React hook that is used internally to build our own component.
-     *  By using this hook, we inherit all the state management and logic and can focus on our
-     * implementation.
-     */
     const { quality } = useConnectionQualityIndicator();
 
     function qualityToText(quality: ConnectionQuality): string {

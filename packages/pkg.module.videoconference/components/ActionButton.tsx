@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import * as React from 'react';
 
 export interface IActionButton {
     icon : ReactNode,
