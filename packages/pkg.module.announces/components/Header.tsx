@@ -38,13 +38,12 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         <h1 className="text-3xl font-semibold max-[520px]:text-2xl sm:inline-block sm:text-4xl">
           Объявления
         </h1>
-        <div className="relative hidden w-[250px] md:block">
+        <div className="hidden w-[250px] p-4 md:block">
           <Input
-            className="border-gray-30 size-full h-8 border-2 pb-3 pl-7 pr-2 pt-2 text-sm placeholder:text-base"
+            className="placeholder:text-base"
+            variant="s"
             placeholder="Поиск"
-            before={
-              <Search className="fill-gray-60 absolute -left-1 -top-1 flex h-4 w-4 items-center" />
-            }
+            before={<Search size="s" className="fill-gray-60" />}
             onChange={(event) => {
               handleSearch(event);
             }}
