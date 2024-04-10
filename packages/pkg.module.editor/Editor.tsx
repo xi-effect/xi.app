@@ -17,10 +17,17 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { createPortal } from 'react-dom';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
-import { makeNodeId, withNodeId } from './plugins/withNodeId';
+import { withNodeId } from './plugins/withNodeId';
 import { toPx } from './utils/toPx';
-import editorElements, { EditorElementOptions, EditorElementType } from './const/editorElements';
+import {
+  EditorElementType,
+  EditorRootElementOptions,
+  createDefaultElement,
+  renderElement,
+  rootElementTypes,
+} from './const/editorElements';
 import mockValues from './const/mockValues';
+import getElement from './const/getElement';
 
 const useEditor = () => useMemo(() => withNodeId(withHistory(withReact(createEditor()))), []);
 
@@ -50,8 +57,7 @@ export const EditorRoot = () => {
   const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
 
   const handleDropdownSelect = (type: EditorElementType) => {
-    const id = makeNodeId();
-    Transforms.insertNodes(editor, [{ id, type, children: [{ text: '', id: makeNodeId() }] }], {
+    Transforms.insertNodes(editor, getElement[type]?.() || createDefaultElement(type), {
       at: [editor.children.length],
     });
   };
@@ -102,18 +108,18 @@ export const EditorRoot = () => {
       </Slate>
       <DropdownMenuPortal>
         <DropdownMenuContent side="right">
-          {(Object.entries(editorElements) as Array<[EditorElementType, EditorElementOptions]>).map(
-            ([type, opt]) => (
-              <DropdownMenuItem
-                className="gap-2"
-                key={type}
-                onSelect={() => handleDropdownSelect(type)}
-              >
-                <opt.icon />
-                <span className="text-sm">{opt.label}</span>
-              </DropdownMenuItem>
-            ),
-          )}
+          {(
+            Object.entries(rootElementTypes) as Array<[EditorElementType, EditorRootElementOptions]>
+          ).map(([type, opt]) => (
+            <DropdownMenuItem
+              className="gap-2"
+              key={type}
+              onSelect={() => handleDropdownSelect(type)}
+            >
+              <opt.icon />
+              <span className="text-sm">{opt.label}</span>
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenuPortal>
     </DropdownMenu>
@@ -121,13 +127,13 @@ export const EditorRoot = () => {
 };
 
 const renderElementContent = (props: RenderElementProps) => {
-  const option = editorElements[props.element.type];
-  if (!option) {
+  const renderFn = renderElement[props.element.type];
+  if (!renderFn) {
     console.warn('Unknown element type', props.element.type);
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return <></>;
   }
-  return option.render(props);
+  return renderFn(props);
 };
 
 const SortableElement = ({ attributes, element, children, renderElement }: any) => {
