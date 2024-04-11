@@ -45,8 +45,7 @@ export function PreJoinSection({ setConnect, connect, setUserChoice }: IPreJoinS
                 <SelectContent className="w-full">
                   <SelectGroup>
                     {videoControl.devices.map((device) =>
-                      <SelectItem value={device.deviceId}>{device.label}</SelectItem>,
-                                    )}
+                      <SelectItem key={device.deviceId} value={device.deviceId}>{device.label}</SelectItem>  )}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -79,7 +78,7 @@ export function PreJoinSection({ setConnect, connect, setUserChoice }: IPreJoinS
                   <SelectContent className="w-full">
                     <SelectGroup>
                       {dinamicControl.devices.map((device) =>
-                        <SelectItem
+                        <SelectItem key={device.deviceId}
                           onSelect={() => dinamicControl.setActiveMediaDevice(device.deviceId)}
                           value={device.deviceId}
                         >{device.label}

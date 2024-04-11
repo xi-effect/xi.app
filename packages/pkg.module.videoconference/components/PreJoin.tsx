@@ -145,6 +145,7 @@ export function PreJoin({
         };
     }, [videoTrack]);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isValid, setIsValid] = React.useState<boolean>();
 
     const handleValidation = React.useCallback(
@@ -175,7 +176,6 @@ export function PreJoin({
           <div className='min-w-[737px] h-full'>
             {videoTrack && videoEnabled && (
             <div>
-                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
               <video 
                 className="rounded-[16px]"
                 ref={videoEl}

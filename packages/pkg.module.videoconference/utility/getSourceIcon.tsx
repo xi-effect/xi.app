@@ -1,6 +1,7 @@
 import { Track } from 'livekit-client';
 import { Conference, Microphone, Screenshare } from '@xipkg/icons';
 import { ActionButton } from '../components/ActionButton';
+import * as React from 'react'
 
 export function getSourceIcon(source: Track.Source, enabled: boolean) {
     switch (source) {
