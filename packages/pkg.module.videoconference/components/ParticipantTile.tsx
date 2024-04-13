@@ -1,53 +1,151 @@
+import '@livekit/components-styles';
 import React from 'react';
-import { AspectRatio } from '@xipkg/aspect-ratio';
+import { Track } from 'livekit-client';
+import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
+import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
 import {
+  AudioTrack,
   ConnectionQualityIndicator,
+  FocusToggle,
+  LockLockedIcon,
+  ParticipantContextIfNeeded,
   ParticipantName,
-  TrackLoop,
+  ParticipantPlaceholder,
+  ParticipantTileProps,
+  ScreenShareIcon,
+  TrackMutedIndicator,
   TrackRefContext,
   VideoTrack,
-  isTrackReference,
-  useTracks,
+  useEnsureParticipant,
+  useFeatureContext,
+  useIsEncrypted,
+  useIsSpeaking,
+  useMaybeLayoutContext,
+  useMaybeTrackRefContext,
+  useParticipantTile,
 } from '@livekit/components-react';
-import { Track } from 'livekit-client';
 
-export const ParticipantTile = () => {
-  const tracks = useTracks(
-    [
-      { source: Track.Source.Camera, withPlaceholder: true },
-      { source: Track.Source.ScreenShare, withPlaceholder: false },
-    ],
-    { onlySubscribed: false },
+function TrackRefContextIfNeeded(
+  props: React.PropsWithChildren<{
+    trackRef?: TrackReferenceOrPlaceholder;
+  }>,
+) {
+  const hasContext = !!useMaybeTrackRefContext();
+  return props.trackRef && !hasContext ? (
+    <TrackRefContext.Provider value={props.trackRef}>{props.children}</TrackRefContext.Provider>
+  ) : (
+    <>{props.children}</>
+  );
+}
+
+export function ParticipantTile({
+  trackRef,
+  participant,
+  children,
+  source = Track.Source.Camera,
+  onParticipantClick,
+  publication,
+  disableSpeakingIndicator,
+  ...htmlProps
+}: ParticipantTileProps) {
+  // TODO: remove deprecated props and refactor in a future version.
+  const maybeTrackRef = useMaybeTrackRefContext();
+  const p = useEnsureParticipant(participant);
+  const isSpeaking = useIsSpeaking(participant);
+  const trackReference: TrackReferenceOrPlaceholder = React.useMemo(() => {
+    return {
+      participant: trackRef?.participant ?? maybeTrackRef?.participant ?? p,
+      source: trackRef?.source ?? maybeTrackRef?.source ?? source,
+      publication: trackRef?.publication ?? maybeTrackRef?.publication ?? publication,
+    };
+  }, [maybeTrackRef, p, publication, source, trackRef]);
+
+  const { elementProps } = useParticipantTile<HTMLDivElement>({
+    participant: trackReference.participant,
+    htmlProps,
+    source: trackReference.source,
+    publication: trackReference.publication,
+    disableSpeakingIndicator,
+    onParticipantClick,
+  });
+  const isEncrypted = useIsEncrypted(p);
+  const layoutContext = useMaybeLayoutContext();
+
+  const autoManageSubscription = useFeatureContext()?.autoSubscription;
+
+  const handleSubscribe = React.useCallback(
+    (subscribed: boolean) => {
+      if (
+        trackReference.source &&
+        !subscribed &&
+        layoutContext &&
+        layoutContext.pin.dispatch &&
+        isTrackReferencePinned(trackReference, layoutContext.pin.state)
+      ) {
+        layoutContext.pin.dispatch({ msg: 'clear_pin' });
+      }
+    },
+    [trackReference, layoutContext],
   );
 
   return (
-    <TrackLoop tracks={tracks}>
-      <TrackRefContext.Consumer>
-        {(track) =>
-          track && (
-            <AspectRatio
-              ratio={16 / 9}
-              className="bg-orange-20 h-full min-h-[90px] w-full min-w-[160px]"
-            >
-              {isTrackReference(track) ? <VideoTrack {...track} /> : <p>Camera placeholder</p>}
-              <div>
-                <div style={{ display: 'flex' }}>
-                  {/* <TrackMutedIndicator>2</TrackMutedIndicator> */}
+    <div style={{ position: 'relative' }} {...elementProps}>
+      <TrackRefContextIfNeeded trackRef={trackReference}>
+        <ParticipantContextIfNeeded participant={trackReference.participant}>
+          <div className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}>
+            {children ?? (
+              <>
+                {isTrackReference(trackReference) &&
+                (trackReference.publication?.kind === 'video' ||
+                  trackReference.source === Track.Source.Camera ||
+                  trackReference.source === Track.Source.ScreenShare) ? (
+                  <VideoTrack
+                    trackRef={trackReference}
+                    onSubscriptionStatusChanged={handleSubscribe}
+                    manageSubscription={autoManageSubscription}
+                  />
+                ) : (
+                  isTrackReference(trackReference) && (
+                    <AudioTrack
+                      trackRef={trackReference}
+                      onSubscriptionStatusChanged={handleSubscribe}
+                    />
+                  )
+                )}
+                <div className="lk-participant-placeholder h-fit">
+                  <ParticipantPlaceholder />
+                  {/* **** */}
                 </div>
-                {/* Overwrite styles: By passing class names, we can
-                easily overwrite/extend the existing styles. */}
-                {/* In addition, we can still specify a style attribute and
-                further customize the styles. */}
-                <ParticipantName />
-                {/* Custom components: Here
-                we replace the provided <ConnectionQualityIndicator />
-                with our own implementation. */}
-                <ConnectionQualityIndicator />
-              </div>
-            </AspectRatio>
-          )
-        }
-      </TrackRefContext.Consumer>
-    </TrackLoop>
+                <div className="lk-participant-metadata p-1">
+                  <div className=" bg-transperent">
+                    {trackReference.source === Track.Source.Camera ? (
+                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-100 px-[8px] py-[4px]">
+                        {isEncrypted && <LockLockedIcon style={{ background: 'transperent' }} />}
+                        <TrackMutedIndicator
+                          source={Track.Source.Microphone}
+                          show={'muted'}
+                          style={{ marginRight: '0.25rem', background: 'transperent' }}
+                        ></TrackMutedIndicator>
+                        <ParticipantName />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-100 px-[8px] py-[4px]">
+                        <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
+                        <ParticipantName>&apos;s screen</ParticipantName>
+                      </div>
+                    )}
+                  </div>
+                  <ConnectionQualityIndicator className="bg-transperent" />
+                </div>
+              </>
+            )}
+          </div>
+          <FocusToggle
+            style={{ background: 'transparent', padding: '5px' }}
+            trackRef={trackReference}
+          />
+        </ParticipantContextIfNeeded>
+      </TrackRefContextIfNeeded>
+    </div>
   );
-};
+}

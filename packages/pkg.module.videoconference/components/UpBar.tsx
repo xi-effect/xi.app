@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-
 'use client';
 
 import React from 'react';
@@ -17,10 +15,6 @@ export const UpBar = () => (
       <Grid className="fill-gray-0" />
       <span className="text-gray-0">Вид</span>
     </button>
-    {/* <button className="h-10 w-10 rounded-[20px]
-    bg-gray-100 flex flex-row items-center justify-center ml-auto">
-          <Maximaze className="fill-gray-0" />
-        </button> */}
     <button
       type="button"
       className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
