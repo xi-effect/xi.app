@@ -3,18 +3,14 @@
   "scripts": {
     "build": "turbo run build --no-daemon",
     "dev": "turbo run dev --concurrency 30",
-    "lint": "turbo run lint -- \"**/*.{ts,tsx}\"",
-    "lint-fix": "turbo run lint -- --fix .",
-    "format": "prettier --write .",
-    "format-check": "prettier --check .",
-    "prepare": "husky install"
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format-check": "prettier --check \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
-    "@xipkg/eslint": "1.4.0",
-    "eslint": "^8.57.0",
-    "husky": "^9.0.11",
-    "prettier": "3.2.5",
+    "@xipkg/eslint": "latest",
+    "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "turbo": "latest"
   },
@@ -23,5 +19,11 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@xipkg/icons": "^0.9.3",
+    "@xipkg/input": "^0.1.1",
+    "lodash": "^4.17.21",
+    "pkg.module.announces": "^0.0.0"
+  }
 }

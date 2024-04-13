@@ -30,6 +30,11 @@ export const createVideoConferenceSt: StateCreator<
       body: {
         room_name: id,
       },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     });
     console.log('fetchData', data);
     set(() => ({ token: data?.token ?? '' }));

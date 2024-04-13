@@ -44,7 +44,7 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
         },
       },
     });
-    console.log('data', data);
+    console.log('getUser', data);
     set((state) => ({
       user: {
         ...state.user,
@@ -60,8 +60,6 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
     if (status === 401) {
       useMainSt.getState().setIsLogin(false);
     } else {
-      // if (data["onboarding_stage"] && data["onboarding_stage"] !== "completed")
-      // return { redir: welcomePagesPathsDict[data["onboarding_stage"]], isLogin: true };
       useMainSt.getState().setIsLogin(true);
     }
   },

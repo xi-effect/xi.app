@@ -1,4 +1,5 @@
 'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
@@ -13,10 +14,10 @@ import { Input } from '@xipkg/input';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import React, { useState } from 'react';
 import * as z from 'zod';
-import Timer from './Timer';
 import { Button } from '@xipkg/button';
 import { toast } from 'sonner';
 import * as M from '@xipkg/modal';
+import Timer from './Timer';
 
 const schema = z.object({
   email: z
@@ -41,7 +42,7 @@ const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
   const form = useForm<FormDataT>({
     resolver: zodResolver(schema),
   });
-  
+
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
   const [timer, setTimer] = useState(false);
   const changePasswordShow = () => {
@@ -112,10 +113,10 @@ const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
           )}
         />
         <M.ModalFooter className="flex justify-end gap-4">
-          <Button type={'button'} variant={'secondary'}>
+          <Button type="button" variant="secondary">
             Отменить
           </Button>
-          <Button disabled={timer} className={'disabled:cursor-not-allowed'} type={'submit'}>
+          <Button disabled={timer} className="disabled:cursor-not-allowed" type="submit">
             Изменить
           </Button>
         </M.ModalFooter>

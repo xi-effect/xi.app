@@ -1,4 +1,5 @@
 /* eslint-disable no-irregular-whitespace */
+import React from 'react';
 import { ChevronRight, Key, Mail } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import { ChangePasswordModal } from 'pkg.modal.change-password';
@@ -9,6 +10,8 @@ export const Secure = () => {
   const user = useMainSt((state) => state.user);
   const isMobile = useMedia('(max-width: 719px)', false);
 
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = React.useState(false);
+
   return (
     <>
       {!isMobile && <span className="text-3xl font-semibold">Безопасность</span>}
@@ -17,7 +20,10 @@ export const Secure = () => {
           <span className="text-xl font-semibold">Данные аккаунта</span>
           <span className="text-sm font-normal">Видны только вам</span>
         </div>
-        <ChangePasswordModal>
+        <ChangePasswordModal
+          open={isChangePasswordModalOpen}
+          onOpenChange={setIsChangePasswordModalOpen}
+        >
           <button
             type="button"
             className="hover:bg-gray-5 flex h-[66px] flex-row items-center gap-4 rounded-xl bg-transparent p-3"

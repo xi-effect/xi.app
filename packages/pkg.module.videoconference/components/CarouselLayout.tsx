@@ -1,8 +1,9 @@
+import React from 'react';
 import { getScrollBarWidth } from '@livekit/components-core';
 import '@livekit/components-styles';
 import { CarouselLayoutProps, TrackLoop, useVisualStableUpdate } from '@livekit/components-react';
-import * as React from 'react';
-import {useSize} from '../utility/useSize'
+import { useSize } from '../utility/useSize';
+
 const MIN_HEIGHT = 130;
 const MIN_WIDTH = 140;
 const MIN_VISIBLE_TILES = 1;
@@ -47,7 +48,7 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   }, [maxVisibleTiles, carouselOrientation]);
 
   return (
-    <aside key={carouselOrientation} className='lk-carousel' ref={asideEl} {...props}>
+    <aside key={carouselOrientation} className="lk-carousel" ref={asideEl} {...props}>
       <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
     </aside>
   );

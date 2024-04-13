@@ -86,7 +86,7 @@ export default function WelcomeCommunityInvite() {
     });
 
     if (status === 204) {
-      updateUser({ onboardingStage: 'completed' });
+      updateUser({ onboardingStage: 'final' });
       router.push('/welcome/final');
     } else {
       toast('Ошибка сервера');

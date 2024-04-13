@@ -1,9 +1,29 @@
 import '@livekit/components-styles';
-import * as React from 'react';
+import React from 'react';
 import { Track } from 'livekit-client';
-import type {  TrackReferenceOrPlaceholder } from '@livekit/components-core';
+import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
-import { AudioTrack, ConnectionQualityIndicator, FocusToggle, LockLockedIcon , ParticipantContextIfNeeded,  ParticipantName,  ParticipantPlaceholder, ParticipantTileProps, ScreenShareIcon, TrackMutedIndicator, TrackRefContext, VideoTrack, useEnsureParticipant, useFeatureContext, useIsEncrypted, useIsSpeaking, useMaybeLayoutContext, useMaybeTrackRefContext, useParticipantTile } from '@livekit/components-react';
+import {
+  AudioTrack,
+  ConnectionQualityIndicator,
+  FocusToggle,
+  LockLockedIcon,
+  ParticipantContextIfNeeded,
+  ParticipantName,
+  ParticipantPlaceholder,
+  ParticipantTileProps,
+  ScreenShareIcon,
+  TrackMutedIndicator,
+  TrackRefContext,
+  VideoTrack,
+  useEnsureParticipant,
+  useFeatureContext,
+  useIsEncrypted,
+  useIsSpeaking,
+  useMaybeLayoutContext,
+  useMaybeTrackRefContext,
+  useParticipantTile,
+} from '@livekit/components-react';
 
 function TrackRefContextIfNeeded(
   props: React.PropsWithChildren<{
@@ -72,55 +92,58 @@ export function ParticipantTile({
     <div style={{ position: 'relative' }} {...elementProps}>
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
-          <div className={`${isSpeaking ? 'border-4 border-green-60' : '' } rounded-[8px] h-full`}>
-          {children ?? (
-            <>
-              {isTrackReference(trackReference) &&
-              (trackReference.publication?.kind === 'video' ||
-                trackReference.source === Track.Source.Camera ||
-                trackReference.source === Track.Source.ScreenShare) ? (
-                <VideoTrack
-                  trackRef={trackReference}
-                  onSubscriptionStatusChanged={handleSubscribe}
-                  manageSubscription={autoManageSubscription}
-                />
-              ) : (
-                isTrackReference(trackReference) && (
-                  <AudioTrack
+          <div className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}>
+            {children ?? (
+              <>
+                {isTrackReference(trackReference) &&
+                (trackReference.publication?.kind === 'video' ||
+                  trackReference.source === Track.Source.Camera ||
+                  trackReference.source === Track.Source.ScreenShare) ? (
+                  <VideoTrack
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
+                    manageSubscription={autoManageSubscription}
                   />
-                )
-              )}
-              <div className="lk-participant-placeholder h-fit">
-                <ParticipantPlaceholder /> 
-                {/* **** */}
-              </div>
-              <div className="lk-participant-metadata p-1">
-                <div className=" bg-transperent">
-                  {trackReference.source === Track.Source.Camera ? (
-                    <div className='flex gap-[6px] items-center bg-gray-100 py-[4px] px-[8px] rounded-[4px]'>
-                      {isEncrypted && <LockLockedIcon style={{ background : 'transperent' }} />}
-                      <TrackMutedIndicator
-                        source={Track.Source.Microphone}
-                        show={'muted'}
-                        style={{ marginRight: '0.25rem' , background : 'transperent' }}
-                      ></TrackMutedIndicator>
-                      <ParticipantName />
-                    </div>
-                  ) : (
-                    <div className='flex gap-[6px] items-center bg-gray-100 py-[4px] px-[8px] rounded-[4px]'>
-                      <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
-                      <ParticipantName>&apos;s screen</ParticipantName>
-                    </div>
-                  )}
+                ) : (
+                  isTrackReference(trackReference) && (
+                    <AudioTrack
+                      trackRef={trackReference}
+                      onSubscriptionStatusChanged={handleSubscribe}
+                    />
+                  )
+                )}
+                <div className="lk-participant-placeholder h-fit">
+                  <ParticipantPlaceholder />
+                  {/* **** */}
                 </div>
-                <ConnectionQualityIndicator className="bg-transperent" />
-              </div>
-            </>
-          )}
+                <div className="lk-participant-metadata p-1">
+                  <div className=" bg-transperent">
+                    {trackReference.source === Track.Source.Camera ? (
+                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-100 px-[8px] py-[4px]">
+                        {isEncrypted && <LockLockedIcon style={{ background: 'transperent' }} />}
+                        <TrackMutedIndicator
+                          source={Track.Source.Microphone}
+                          show={'muted'}
+                          style={{ marginRight: '0.25rem', background: 'transperent' }}
+                        ></TrackMutedIndicator>
+                        <ParticipantName />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-100 px-[8px] py-[4px]">
+                        <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
+                        <ParticipantName>&apos;s screen</ParticipantName>
+                      </div>
+                    )}
+                  </div>
+                  <ConnectionQualityIndicator className="bg-transperent" />
+                </div>
+              </>
+            )}
           </div>
-          <FocusToggle style={{background : "transparent", padding : '5px'}} trackRef={trackReference} />
+          <FocusToggle
+            style={{ background: 'transparent', padding: '5px' }}
+            trackRef={trackReference}
+          />
         </ParticipantContextIfNeeded>
       </TrackRefContextIfNeeded>
     </div>

@@ -11,5 +11,6 @@ export type UserT = {
     | 'community-create'
     | 'community-invite'
     | 'completed'
+    | 'final' // Значение только на фронтенде
     | null; // Статус прохождения welcome страниц (то, что после регистрации)
 };

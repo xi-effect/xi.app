@@ -6,6 +6,17 @@
 import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
 import { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import {
+  DndContext,
+  useSensors,
+  useSensor,
+  MouseSensor,
+  TouchSensor,
+  KeyboardSensor,
+} from '@dnd-kit/core';
+
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { coordinateGetter } from '../utils/multipleContainersKeyboardCoordinates';
 
 type IconsDictT = {
   [key: string]: ReactNode;
@@ -24,73 +35,116 @@ const iconsDict: IconsDictT = {
 
 const menuData = [
   {
+    elId: '1',
     icon: 'announce',
-    type: '',
+    type: 'announce',
     label: 'Объявления',
     link: '',
   },
   {
+    elId: '2',
     icon: 'calendar',
-    type: '',
+    type: 'calendar',
     label: 'Календарь',
     link: '',
   },
   {
-    elId: 'subitems-menu',
+    elId: '3',
     title: 'B1.2',
     subtitle: 'Intermediate',
+    isCategory: true,
+    channels: [
+      {
+        elId: '31',
+        icon: 'announce',
+        type: 'announce',
+        label: 'Объявления',
+        link: '/community/1/announce/1',
+      },
+      {
+        elId: '32',
+        icon: 'task',
+        type: 'task',
+        label: 'Задания',
+        link: '/community/1/task/1',
+      },
+    ],
   },
   {
+    elId: '4',
     icon: 'announce',
-    type: '',
+    type: 'announce',
     label: 'Объявления',
     link: '/community/1/announce/1',
   },
   {
+    elId: '5',
     icon: 'task',
-    type: '',
+    type: 'task',
     label: 'Задания',
     link: '/community/1/task/1',
   },
   {
+    elId: '6',
     icon: 'chat',
-    type: '',
+    type: 'chat',
     label: 'Чат',
     link: '/community/1/chat/1',
   },
   {
-    elId: 'video-item-menu',
+    elId: '7',
     icon: 'camera',
-    type: '',
+    type: 'videoconference',
     label: 'Видеоконференция',
     link: '/community/1/videoconference/1',
   },
   {
+    elId: '8',
     title: 'B2',
-    subtitle: 'Upper-intermediate',
+    subtitle: 'Intermediate',
+    isCategory: true,
+    channels: [
+      {
+        elId: '81',
+        icon: 'announce',
+        type: '',
+        label: 'Объявления',
+        link: '/community/1/announce/1',
+      },
+      {
+        elId: '82',
+        icon: 'task',
+        type: '',
+        label: 'Задания',
+        link: '/community/1/task/1',
+      },
+    ],
   },
   {
+    elId: '9',
     icon: 'announce',
-    type: '',
+    type: 'announce',
     label: 'Объявления',
     link: '',
   },
   {
-    elId: 'chat-item-menu',
+    elId: '10',
     icon: 'task',
-    type: '',
+    type: 'task',
     label: 'Задания',
     link: '/community/1/task/1',
   },
   {
+    elId: '11',
     icon: 'chat',
-    type: '',
+    type: 'chat',
     label: 'Чат',
     link: '',
   },
   {
+    elId: '12',
     icon: 'camera',
-    type: '',
+    type: 'videconference',
     label: 'Видеоконференция',
     link: '',
   },
@@ -135,15 +189,32 @@ type ItemPropsT = {
   className?: string;
 };
 
-export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => (
-  <ul
-    id="community-services"
-    className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
-      className ?? ''
-    }`}
-  >
-    {menuData.map((item, index) => (
-      <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
-    ))}
-  </ul>
-);
+export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter,
+    }),
+  );
+
+  return (
+    <DndContext sensors={sensors}>
+      <ul
+        id="community-services"
+        className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
+          className ?? ''
+        }`}
+      >
+        <SortableContext
+          items={[...menuData.map((item) => item.elId)]}
+          strategy={verticalListSortingStrategy}
+        >
+          {menuData.map((item, index) => (
+            <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
+          ))}
+        </SortableContext>
+      </ul>
+    </DndContext>
+  );
+};
