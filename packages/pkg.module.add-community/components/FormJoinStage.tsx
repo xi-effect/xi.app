@@ -21,6 +21,7 @@ const schema = z.object({
 
 type FormJoinProps = {
   setStage: (stage: 'create' | 'join') => void;
+  onOpenChange: (value: boolean) => void;
 };
 
 const FormJoinBlock = ({ setStage }: FormJoinProps) => {

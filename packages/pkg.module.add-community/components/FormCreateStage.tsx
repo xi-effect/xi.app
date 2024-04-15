@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -13,30 +12,15 @@ import {
 } from '@xipkg/form';
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
-import * as z from 'zod';
 
-const schema = z
-  .object({
-    currentPassword: z.string({ required_error: 'Обязательное поле' }),
-    newPassword: z.string().min(6, { message: 'Пароль должен содержать минимум 6 символов' }),
-    confirmPassword: z.string().min(1, { message: 'Обязательное поле' }),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'Пароли не совпадают',
-    path: ['confirmPassword'],
-  });
+// type FormCreateProps = {
+//   onOpenChange: (value: boolean) => void;
+// };
 
-type FormCreateProps = {
-  onOpenChange: (value: boolean) => void;
-};
-
-const FormCreateBlock = ({ onOpenChange }: FormCreateProps) => {
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+const FormCreateBlock = () => {
+  const form = useForm({
     defaultValues: {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
+      name: '',
     },
   });
   const { control } = form;
@@ -57,7 +41,9 @@ const FormCreateBlock = ({ onOpenChange }: FormCreateProps) => {
             </FormItem>
           )}
         />
-        <Button className="w-full mt-6" type="submit">Создать</Button>
+        <Button className="mt-6 w-full" type="submit">
+          Создать
+        </Button>
       </form>
     </Form>
   );
