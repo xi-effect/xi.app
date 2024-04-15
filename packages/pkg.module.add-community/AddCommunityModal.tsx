@@ -47,7 +47,9 @@ export const AddCommunityModal = ({ open, onOpenChange, children }: AddCommunity
                 <Close className="fill-gray-80 sm:fill-gray-0" />
               </M.ModalCloseButton>
               <M.ModalHeader>
-                <M.ModalTitle className="max-w-60">Присоединение к сообществу</M.ModalTitle>
+                <M.ModalTitle className="max-w-60 min-[450px]:max-w-full">
+                  Присоединение к сообществу
+                </M.ModalTitle>
               </M.ModalHeader>
               <FormJoin setStage={setStage} onOpenChange={onOpenChange} />
             </>
