@@ -32,6 +32,7 @@
     "pkg.form.signup": "*",
     "pkg.logo": "*",
     "pkg.models": "*",
+    "pkg.module.add-community": "*",
     "pkg.module.announces": "*",
     "pkg.module.editor": "*",
     "pkg.module.videoconference": "*",
