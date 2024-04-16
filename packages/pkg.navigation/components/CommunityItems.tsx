@@ -4,7 +4,7 @@
 'use client';
 
 import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   DndContext,
@@ -12,8 +12,13 @@ import {
   useSensor,
   MouseSensor,
   TouchSensor,
+  closestCorners,
   KeyboardSensor,
+  PointerSensor,
 } from '@dnd-kit/core';
+import { CSS } from "@dnd-kit/utilities";
+
+import { arrayMove, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable";
 
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { coordinateGetter } from '../utils/multipleContainersKeyboardCoordinates';
@@ -150,7 +155,14 @@ const menuData = [
   },
 ];
 
-const Item = ({ index, item, setSlideIndex }: any) => {
+const Item = ({ index, item , id,  setSlideIndex }: any) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
   const router = useRouter();
 
   const handleRouteChange = () => {
@@ -160,7 +172,10 @@ const Item = ({ index, item, setSlideIndex }: any) => {
 
   if (item.title) {
     return (
-      <div
+      <div ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
         id={item?.elId}
         className="text-gray-90 group mt-8 flex w-full flex-col items-start rounded-lg p-2"
         key={index.toString()}
@@ -172,7 +187,10 @@ const Item = ({ index, item, setSlideIndex }: any) => {
   }
 
   return (
-    <li
+    <li ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
       id={item?.elId}
       className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
       key={index.toString()}
@@ -190,16 +208,32 @@ type ItemPropsT = {
 };
 
 export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
+  const [menu , setMenu ] = useState(menuData)
+  
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
+    useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
-      coordinateGetter,
-    }),
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
   );
+  const getTaskPos = (id : string) => menu.findIndex((item) => item.elId === id);
+
+  const handleDragEnd = (event : any) => {
+    const { active, over } = event;
+
+    if (active.id === over.id) return;
+    console.log(active.id === over.id)
+
+    setMenu((menus) => {
+      const originalPos = getTaskPos(active.id);
+      const newPos = getTaskPos(over.id);
+
+      return arrayMove(menus, originalPos, newPos);
+    });
+  };
 
   return (
-    <DndContext sensors={sensors}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
       <ul
         id="community-services"
         className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
@@ -207,11 +241,11 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
         }`}
       >
         <SortableContext
-          items={[...menuData.map((item) => item.elId)]}
+          items={[...menu.map((item) => item.elId)]}
           strategy={verticalListSortingStrategy}
         >
-          {menuData.map((item, index) => (
-            <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
+          {menu.map((item, index) => (
+            <Item item={item} index={index} id={item.elId} key={index} setSlideIndex={setSlideIndex} />
           ))}
         </SortableContext>
       </ul>
