@@ -5,6 +5,7 @@ import { useMedia } from 'pkg.utils';
 import { ChangePasswordModal } from 'pkg.modal.change-password';
 import { ChangeEmailModal } from 'pkg.modal.change-email';
 import { useMainSt } from 'pkg.stores';
+import { ConfirmEmail } from './ConfirmEmail';
 
 export const Secure = () => {
   const user = useMainSt((state) => state.user);
@@ -15,6 +16,7 @@ export const Secure = () => {
   return (
     <>
       {!isMobile && <span className="text-3xl font-semibold">Безопасность</span>}
+      <ConfirmEmail buttonText="Оправить повторно" />
       <div className="border-gray-80 flex w-full flex-col rounded-2xl border p-1 sm:mt-4">
         <div className="flex w-full flex-col p-3">
           <span className="text-xl font-semibold">Данные аккаунта</span>
