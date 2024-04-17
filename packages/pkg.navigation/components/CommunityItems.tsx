@@ -3,204 +3,137 @@
 
 'use client';
 
-import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
-import { ReactNode, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { ReactNode, useMemo, useState } from 'react';
+import {CategoryCard } from './CategoryCard'
+import {ColumnContainer} from './ColumnContainer'
+import { IColumn , ICategory } from './types'
 import {
   DndContext,
   useSensors,
   useSensor,
-  MouseSensor,
-  TouchSensor,
   closestCorners,
   KeyboardSensor,
   PointerSensor,
+  DragOverlay,
+  DragOverEvent,
+  DragStartEvent,
+  DragEndEvent,
 } from '@dnd-kit/core';
-import { CSS } from "@dnd-kit/utilities";
 
-import { arrayMove, sortableKeyboardCoordinates, useSortable } from "@dnd-kit/sortable";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { coordinateGetter } from '../utils/multipleContainersKeyboardCoordinates';
+import { createPortal } from 'react-dom';
 
-type IconsDictT = {
-  [key: string]: ReactNode;
-};
-
-const iconClassName = 'transition-colors ease-in group-hover:fill-brand-80';
-
-const iconsDict: IconsDictT = {
-  announce: <Announce className={iconClassName} />,
-  calendar: <Calendar className={iconClassName} />,
-  updates: <Updates className={iconClassName} />,
-  task: <Task className={iconClassName} />,
-  chat: <Chat className={iconClassName} />,
-  camera: <Conference className={iconClassName} />,
-};
-
-const menuData = [
+let defaultCols: IColumn[] = [
   {
-    elId: '1',
-    icon: 'announce',
-    type: 'announce',
-    label: 'Объявления',
-    link: '',
+    title : '',
+    subtitle : '',
+    id : 'empty'
   },
   {
-    elId: '2',
-    icon: 'calendar',
-    type: 'calendar',
-    label: 'Календарь',
-    link: '',
-  },
-  {
-    elId: '3',
     title: 'B1.2',
     subtitle: 'Intermediate',
-    isCategory: true,
-    channels: [
-      {
-        elId: '31',
-        icon: 'announce',
-        type: 'announce',
-        label: 'Объявления',
-        link: '/community/1/announce/1',
-      },
-      {
-        elId: '32',
-        icon: 'task',
-        type: 'task',
-        label: 'Задания',
-        link: '/community/1/task/1',
-      },
-    ],
+    id: "B1.2",
   },
   {
-    elId: '4',
+    title: 'B2.0',
+    subtitle: 'Intermediate',
+    id: "B2.0",
+  },
+];
+
+let defaultTasks: ICategory[] = [
+  {
+    elId: "1",
+    columnId: "B1.2",
     icon: 'announce',
     type: 'announce',
     label: 'Объявления',
     link: '/community/1/announce/1',
   },
   {
-    elId: '5',
+    elId: '2',
     icon: 'task',
     type: 'task',
+    columnId : 'B1.2',
     label: 'Задания',
     link: '/community/1/task/1',
   },
   {
-    elId: '6',
+    elId: '3',
     icon: 'chat',
     type: 'chat',
+    columnId : 'B1.2',
     label: 'Чат',
     link: '/community/1/chat/1',
   },
   {
-    elId: '7',
+    elId: '4',
     icon: 'camera',
+    type: 'videoconference',
+    columnId : 'B1.2',
+    label: 'Видеоконференция',
+    link: '/community/1/videoconference/1',
+  },
+  {
+    elId: '5',
+    icon: 'announce',
+    columnId : 'B2.0',
+    type: 'announce',
+    label: 'Объявления',
+    link: '/community/1/announce/1',
+  },
+  {
+    elId: '6',
+    icon: 'task',
+    type: 'task',
+    columnId : 'B2.0',
+    label: 'Задания',
+    link: '/community/1/task/1',
+  },
+  {
+    elId: '7',
+    icon: 'chat',
+    type: 'chat',
+    columnId : 'B2.0',
+    label: 'Чат',
+    link: '/community/1/chat/1',
+  },
+  {
+    elId: '8',
+    icon: 'camera',
+    columnId : 'B2.0',
     type: 'videoconference',
     label: 'Видеоконференция',
     link: '/community/1/videoconference/1',
   },
   {
-    elId: '8',
-    title: 'B2',
-    subtitle: 'Intermediate',
-    isCategory: true,
-    channels: [
-      {
-        elId: '81',
-        icon: 'announce',
-        type: '',
-        label: 'Объявления',
-        link: '/community/1/announce/1',
-      },
-      {
-        elId: '82',
-        icon: 'task',
-        type: '',
-        label: 'Задания',
-        link: '/community/1/task/1',
-      },
-    ],
+    elId: '9',
+    icon: 'home',
+    columnId : 'empty',
+    type: 'home',
+    label: 'Главная',
+    link: '/community/1/home',
   },
   {
-    elId: '9',
+    elId: '10',
     icon: 'announce',
+    columnId : 'empty',
     type: 'announce',
     label: 'Объявления',
     link: '',
   },
   {
-    elId: '10',
-    icon: 'task',
-    type: 'task',
-    label: 'Задания',
-    link: '/community/1/task/1',
-  },
-  {
     elId: '11',
-    icon: 'chat',
-    type: 'chat',
-    label: 'Чат',
+    icon: 'calendar',
+    columnId : 'empty',
+    type: 'calendar',
+    label: 'Календарь',
     link: '',
   },
-  {
-    elId: '12',
-    icon: 'camera',
-    type: 'videconference',
-    label: 'Видеоконференция',
-    link: '',
-  },
+
 ];
-
-const Item = ({ index, item , id,  setSlideIndex }: any) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
-
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-  };
-  const router = useRouter();
-
-  const handleRouteChange = () => {
-    setSlideIndex(1);
-    router.push(item.link);
-  };
-
-  if (item.title) {
-    return (
-      <div ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-        id={item?.elId}
-        className="text-gray-90 group mt-8 flex w-full flex-col items-start rounded-lg p-2"
-        key={index.toString()}
-      >
-        <span className="text-[16px] font-semibold">{item.title}</span>
-        <span className="text-[14px] font-normal">{item.subtitle}</span>
-      </div>
-    );
-  }
-
-  return (
-    <li ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      id={item?.elId}
-      className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
-      key={index.toString()}
-      onClick={handleRouteChange}
-    >
-      {iconsDict[item.icon]}
-      <span className="pl-2 text-[14px] font-normal">{item.label}</span>
-    </li>
-  );
-};
 
 type ItemPropsT = {
   setSlideIndex: (value: number) => void;
@@ -208,47 +141,149 @@ type ItemPropsT = {
 };
 
 export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
-  const [menu , setMenu ] = useState(menuData)
-  
+  const [columns, setColumns] = useState<IColumn[]>(defaultCols);
+  const [categories, setCategories] = useState<ICategory[]>(defaultTasks);
+  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+
+  const [activeColumn, setActiveColumn] = useState<IColumn | null>(null);
+
+  const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
+
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
     })
   );
-  const getTaskPos = (id : string) => menu.findIndex((item) => item.elId === id);
-
-  const handleDragEnd = (event : any) => {
-    const { active, over } = event;
-
-    if (active.id === over.id) return;
-    console.log(active.id === over.id)
-
-    setMenu((menus) => {
-      const originalPos = getTaskPos(active.id);
-      const newPos = getTaskPos(over.id);
-
-      return arrayMove(menus, originalPos, newPos);
-    });
-  };
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
+    <DndContext
+        sensors={sensors}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+      >
       <ul
         id="community-services"
         className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
           className ?? ''
         }`}
       >
-        <SortableContext
-          items={[...menu.map((item) => item.elId)]}
-          strategy={verticalListSortingStrategy}
-        >
-          {menu.map((item, index) => (
-            <Item item={item} index={index} id={item.elId} key={index} setSlideIndex={setSlideIndex} />
-          ))}
-        </SortableContext>
+        <SortableContext items={columnsId}>
+              {columns.map((col) => (
+                <div className='my-2'>
+                  <ColumnContainer  setSlideIndex={setSlideIndex}
+                  key={col.id}
+                  column={col}
+                  categories={categories.filter((task) => task.columnId === col.id)}
+                  />
+                </div>
+              ))}
+            </SortableContext>
       </ul>
+      {createPortal(
+          <DragOverlay>
+            {activeColumn && (
+              <ColumnContainer setSlideIndex={setSlideIndex}
+                column={activeColumn}
+         
+                categories={categories.filter(
+                  (task) => task.columnId === activeColumn.id
+                )}
+              />
+            )}
+            {activeCategory && (
+              <CategoryCard setSlideIndex={setSlideIndex}
+                category={activeCategory}
+              />
+            )}
+          </DragOverlay>,
+          document.body
+        )}
     </DndContext>
   );
-};
+
+  
+  function onDragStart(event: DragStartEvent) {
+    if (event.active.data.current?.type === "Column") {
+      setActiveColumn(event.active.data.current.column);
+      return;
+    }
+  
+    if (event.active.data.current?.type === "Category") {
+      setActiveCategory(event.active.data.current.task);
+      return;
+    }
+  }
+  
+  function onDragEnd(event: DragEndEvent) {
+    setActiveColumn(null);
+    setActiveCategory(null);
+  
+    const { active, over } = event;
+    if (!over) return;
+  
+    const activeId = active.id;
+    const overId = over.id;
+  
+    if (activeId === overId) return;
+  
+    const isActiveAColumn = active.data.current?.type === "Column";
+    if (!isActiveAColumn) return;
+  
+    console.log("DRAG END");
+  
+    setColumns((columns) => {
+      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+  
+      const overColumnIndex = columns.findIndex((col) => col.id === overId);
+  
+      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+    });
+  }
+  
+  function onDragOver(event: DragOverEvent) {
+    const { active, over } = event;
+    if (!over) return;
+  
+    const activeId = active.id;
+    const overId = over.id;
+  
+    if (activeId === overId) return;
+  
+    const isActiveATask = active.data.current?.type === "Category";
+    const isOverATask = over.data.current?.type === "Category";
+  
+    if (!isActiveATask) return;
+  
+    // Im dropping a Task over another Task
+    if (isActiveATask && isOverATask) {
+      setCategories((categories) => {
+        const activeIndex = categories.findIndex((t) => t.elId === activeId);
+        const overIndex = categories.findIndex((t) => t.elId === overId);
+  
+        if (categories[activeIndex].columnId != categories[overIndex].columnId) {
+          // Fix introduced after video recording
+         categories[activeIndex].columnId = categories[overIndex].columnId;
+          return arrayMove(categories, activeIndex, overIndex - 1);
+        }
+  
+        return arrayMove(categories, activeIndex, overIndex);
+      });
+    }
+  
+    const isOverAColumn = over.data.current?.type === "Column";
+  
+    // Im dropping a Task over a column
+    if (isActiveATask && isOverAColumn) {
+      setCategories((categories) => {
+        const activeIndex = categories.findIndex((t) => t.elId === activeId);
+        categories[activeIndex].columnId = overId;
+        console.log("DROPPING TASK OVER COLUMN", { activeIndex });
+        return arrayMove(categories, activeIndex, activeIndex);
+      });
+    }
+  }
+}
+
