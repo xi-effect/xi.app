@@ -4,7 +4,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from "@dnd-kit/utilities";
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Announce, Calendar, Chat, Conference, Home, Task, Updates } from '@xipkg/icons';
+import { Announce, Calendar, Chat, Conference, Home, Task, Updates , Move} from '@xipkg/icons';
 
 interface Props {
     category : ICategory;
@@ -27,6 +27,7 @@ interface Props {
   };
 
 export function CategoryCard({category , setSlideIndex} : Props) {  
+    const [mouseOver , setMouseOver] = useState(false);
     const {
         setNodeRef,
         attributes,
@@ -57,28 +58,31 @@ export function CategoryCard({category , setSlideIndex} : Props) {
 
     //   if (isDragging) {
     //     return (
-    //       <div
+    //       <div className='w-[60px] border-b-green-50'
     //         ref={setNodeRef}
     //         style={style}
-    //         className="
-    //         opacity-30
-    //       bg-blue-50 p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-rose-500  cursor-grab relative
-    //       "
     //       />
     //     );
     //   }
 
       return (
-        <div
+        <div 
+        onMouseEnter={() => setMouseOver(true)}
+        onMouseLeave={() => setMouseOver(false)}
           ref={setNodeRef}
           style={style}
           {...attributes}
           {...listeners}
           onClick={() => handleRouteChange() }
-          className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
         >
-          {iconsDict[category.icon]}
-        <span className="pl-2 text-[14px] font-normal">{category.label}</span>
+            <div className='justify-between  text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer'>
+                <div className='flex items-center'>
+                {iconsDict[category.icon]}
+                 <span className="pl-2 text-[14px] font-normal">{category.label}</span>
+                </div>
+                {mouseOver ? <Move/> : null}
+            </div>
+        
         </div>
       );
 }
