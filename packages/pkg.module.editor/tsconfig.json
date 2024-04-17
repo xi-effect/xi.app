@@ -1,5 +1,5 @@
 {
   "extends": "@xipkg/typescript/react-library.json",
-  "include": ["*", "const/mockValues.ts"],
+  "include": ["*", "const/mockValues.ts", "utils/createNode.tsx", "utils/renderElement.tsx"],
   "exclude": ["dist", "build", "node_modules"]
 }

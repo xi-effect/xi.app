@@ -16,20 +16,29 @@ import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-
+import isImageUrl from './utils/isImageUrl';
+import createDefaultNode from './utils/createDefaultNode';
+import rootElements, { type EditorRootElementOptions } from './const/rootElements';
 import { withNodeId } from './plugins/withNodeId';
 import { toPx } from './utils/toPx';
-import {
-  EditorElementType,
-  EditorRootElementOptions,
-  createDefaultElement,
-  renderElement,
-  rootElementTypes,
-} from './const/editorElements';
 import mockValues from './const/mockValues';
-import getElement from './const/getElement';
+import normalizeQuoteNode from './plugins/normalizeQuoteNode';
+import { type CommonCustomElementType } from './slate';
+import renderElementContent from './utils/renderElement';
+import createNode from './utils/createNode';
 
-const useEditor = () => useMemo(() => withNodeId(withHistory(withReact(createEditor()))), []);
+const useEditor = () =>
+  useMemo(() => {
+    const editor = withNodeId(withHistory(withReact(createEditor())));
+
+    const { normalizeNode } = editor;
+
+    editor.normalizeNode = (node, opt) => {
+      normalizeQuoteNode(editor, node, opt);
+      normalizeNode(node, opt);
+    };
+    return editor;
+  }, []);
 
 export const EditorRoot = () => {
   const editor = useEditor();
@@ -56,8 +65,8 @@ export const EditorRoot = () => {
 
   const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
 
-  const handleDropdownSelect = (type: EditorElementType) => {
-    Transforms.insertNodes(editor, getElement[type]?.() || createDefaultElement(type), {
+  const handleDropdownSelect = (type: CommonCustomElementType) => {
+    Transforms.insertNodes(editor, createDefaultNode(type), {
       at: [editor.children.length],
     });
   };
@@ -94,6 +103,24 @@ export const EditorRoot = () => {
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             <Editable
+              onKeyDown={(event) => {
+                if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+                  event.preventDefault();
+
+                  navigator.clipboard
+                    .readText()
+                    .then((text) => {
+                      if (isImageUrl(text)) {
+                        Transforms.insertNodes(editor, createNode({ type: 'image', url: text }), {
+                          at: [editor.children.length],
+                        });
+                      }
+                    })
+                    .catch((err) => {
+                      console.error('Failed to paste image:', err);
+                    });
+                }
+              }}
               className="flex flex-col gap-2 p-2 text-gray-100"
               renderElement={renderElement}
             />
@@ -109,7 +136,9 @@ export const EditorRoot = () => {
       <DropdownMenuPortal>
         <DropdownMenuContent side="right">
           {(
-            Object.entries(rootElementTypes) as Array<[EditorElementType, EditorRootElementOptions]>
+            Object.entries(rootElements) as Array<
+              [CommonCustomElementType, EditorRootElementOptions]
+            >
           ).map(([type, opt]) => (
             <DropdownMenuItem
               className="gap-2"
@@ -124,16 +153,6 @@ export const EditorRoot = () => {
       </DropdownMenuPortal>
     </DropdownMenu>
   );
-};
-
-const renderElementContent = (props: RenderElementProps) => {
-  const renderFn = renderElement[props.element.type];
-  if (!renderFn) {
-    console.warn('Unknown element type', props.element.type);
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    return <></>;
-  }
-  return renderFn(props);
 };
 
 const SortableElement = ({ attributes, element, children, renderElement }: any) => {

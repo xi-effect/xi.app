@@ -1,13 +1,12 @@
 /* eslint-disable no-param-reassign */
 
-import { BaseEditor, Element } from 'slate';
+import { BaseEditor, Element, Node } from 'slate';
 import { nanoid } from 'nanoid';
 
 export const makeNodeId = () => nanoid(16);
 
-export const assignIdRecursively = (node: any) => {
+export const assignIdRecursively = (node: Node) => {
   if (Element.isElement(node)) {
-    // @ts-ignore
     node.id = makeNodeId();
     node.children.forEach(assignIdRecursively);
   }
@@ -23,7 +22,6 @@ export const withNodeId = <E extends BaseEditor>(editor: E) => {
     }
 
     if (operation.type === 'split_node') {
-      // @ts-ignore
       operation.properties.id = makeNodeId();
       return apply(operation);
     }
