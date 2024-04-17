@@ -1,14 +1,25 @@
+import React, { ReactElement } from 'react';
 import { Main } from './Main';
-import { PersonalData } from './PersonalData';
 import { Customization } from './Customization';
 import { Secure } from './Secure';
+import { PersonalData } from './PersonalData';
 
-type ContentPropsT = {
-  activeContent: number;
+interface IComponentMap {
+  [key: string]: ReactElement;
+}
+
+const componentMap: IComponentMap = {
+  home: <Main />,
+  personalInfo: <PersonalData />,
+  personalisation: <Customization />,
+  security: <Secure />,
 };
 
-export const Content = ({ activeContent }: ContentPropsT) => {
-  const contentItems = [<Main />, <PersonalData />, <Customization />, <Secure />];
+type ContentPropsT = {
+  activeQuery: string;
+};
 
-  return <div className="w-full sm:ml-8">{contentItems[activeContent]}</div>;
+export const Content = ({ activeQuery }: ContentPropsT) => {
+  const activeItem = componentMap[activeQuery] || <Main />;
+  return <div className="w-full sm:ml-8">{activeItem}</div>;
 };

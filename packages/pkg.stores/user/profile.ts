@@ -44,7 +44,7 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
         },
       },
     });
-    console.log('data', data);
+    console.log('getUser', data);
     set((state) => ({
       user: {
         ...state.user,

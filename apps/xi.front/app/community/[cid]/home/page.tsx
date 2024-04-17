@@ -3,7 +3,6 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-
 import Image from 'next/image';
 import Link from 'next/link';
 

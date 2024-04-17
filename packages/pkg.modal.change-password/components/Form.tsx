@@ -105,7 +105,7 @@ const FormBlock = ({ setStage, onOpenChange }: FormProps) => {
                   type={isPasswordShow.currentPassword ? 'text' : 'password'}
                   afterClassName="cursor-pointer"
                   after={
-                    isPasswordShow ? (
+                    isPasswordShow.currentPassword ? (
                       <Eyeoff className="fill-gray-60" />
                     ) : (
                       <Eyeon className="fill-gray-60" />
@@ -135,7 +135,7 @@ const FormBlock = ({ setStage, onOpenChange }: FormProps) => {
                   type={isPasswordShow.newPassword ? 'text' : 'password'}
                   afterClassName="cursor-pointer"
                   after={
-                    isPasswordShow ? (
+                    isPasswordShow.newPassword ? (
                       <Eyeoff className="fill-gray-60" />
                     ) : (
                       <Eyeon className="fill-gray-60" />
@@ -165,7 +165,7 @@ const FormBlock = ({ setStage, onOpenChange }: FormProps) => {
                   type={isPasswordShow.confirmPassword ? 'text' : 'password'}
                   afterClassName="cursor-pointer"
                   after={
-                    isPasswordShow ? (
+                    isPasswordShow.confirmPassword ? (
                       <Eyeoff className="fill-gray-60" />
                     ) : (
                       <Eyeon className="fill-gray-60" />
