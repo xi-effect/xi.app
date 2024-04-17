@@ -30,6 +30,7 @@ export function ColumnContainer({column , categories , setSlideIndex} : Props) {
           type: "Column",
           column,
         },
+        disabled : column.isStatic
       });
 
       const style = {

@@ -29,7 +29,8 @@ let defaultCols: IColumn[] = [
   {
     title : '',
     subtitle : '',
-    id : 'empty'
+    id : 'empty',
+    isStatic : true
   },
   {
     title: 'B1.2',
