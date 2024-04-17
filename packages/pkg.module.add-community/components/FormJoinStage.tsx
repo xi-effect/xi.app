@@ -16,12 +16,12 @@ import { Button } from '@xipkg/button';
 import * as z from 'zod';
 
 const schema = z.object({
-  link: z.string().min(6, { message: 'Пароль должен содержать минимум 6 символов' }),
+  link: z.string().url({ message: 'Неправильный формат ссылки' }),
 });
 
 type FormJoinProps = {
   setStage: (stage: 'create' | 'join') => void;
-  onOpenChange: (value: boolean) => void;
+  onOpenChange?: (value: boolean) => void;
 };
 
 const FormJoinBlock = ({ setStage }: FormJoinProps) => {
@@ -50,18 +50,19 @@ const FormJoinBlock = ({ setStage }: FormJoinProps) => {
                   type="text"
                   placeholder="https://xieffect.ru/invite/"
                   className="mb-6"
-                  {...field}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="border-gray-20 flex flex-col justify-end gap-4 border-t-[1px] pt-6 sm:flex">
+        <div className="border-gray-20 flex flex-col justify-end gap-4 border-t-[1px] pt-6 min-[700px]:flex-row">
           <Button onClick={() => setStage('create')} variant="secondary">
             Отменить
           </Button>
-          <Button type="submit">Присоединиться</Button>
+          <Button type="submit" className="order-first min-[700px]:order-last">
+            Присоединиться
+          </Button>
         </div>
       </form>
     </Form>

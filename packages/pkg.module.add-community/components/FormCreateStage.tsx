@@ -35,7 +35,7 @@ const FormCreateBlock = () => {
             <FormItem>
               <FormLabel>Название</FormLabel>
               <FormControl className="mt-2">
-                <Input {...field} error={!!error} autoComplete="off" type="text" {...field} />
+                <Input {...field} error={!!error} autoComplete="off" type="text" />
               </FormControl>
               <FormMessage />
             </FormItem>
