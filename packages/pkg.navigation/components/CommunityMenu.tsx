@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
+import { InviteCommunityModal } from 'pkg.modal.invite-community';
 
 import Image from 'next/image';
 import { driver } from 'driver.js';
@@ -253,11 +254,13 @@ export const CommunityMenu = () => {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="group sm:w-[302px]">
-                      <span>Пригласить людей</span>
-                      <PeopleInvite
-                        size="s"
-                        className="ml-auto h-4 w-4 group-hover:fill-gray-100"
-                      />
+                      <InviteCommunityModal>
+                        <span>Пригласить людей</span>
+                        <PeopleInvite
+                          size="s"
+                          className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                        />
+                      </InviteCommunityModal>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => {
