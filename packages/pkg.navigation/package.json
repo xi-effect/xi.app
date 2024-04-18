@@ -22,6 +22,7 @@
     "pkg.community.channel-create": "*",
     "pkg.user.settings": "*",
     "pkg.community.settings": "*",
+    "pkg.modal.invite-community": "*",
     "pkg.models": "*",
     "pkg.logo": "*",
     "pkg.stores": "*",
