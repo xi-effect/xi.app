@@ -100,6 +100,9 @@ export default function FormBlock() {
                 </FormDescription>
                 <FormControl>
                   <DatePicker
+                    popoverProps={{ modal: true }}
+                    popoverTriggerProps={{}}
+                    popoverContentProps={{}}
                     mode="single"
                     className="mt-2"
                     selected={date}
@@ -112,14 +115,13 @@ export default function FormBlock() {
                         setDate(selectedDate);
                       }
                     }}
-                    popoverProps={{ modal: true }}
                   >
                     <Input
                       className="cursor-pointer"
                       {...field}
                       value={
                         form.getValues('date')
-                          ? format(form.getValues('date'), 'PPP', { locale: ru })
+                          ? format((form.getValues('date') ?? '').toString(), 'PPP', { locale: ru })
                           : ''
                       }
                       after={<Calendar className="fill-gray-60 h-6 w-6" />}
