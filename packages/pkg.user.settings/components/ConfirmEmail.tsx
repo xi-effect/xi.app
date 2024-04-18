@@ -10,7 +10,7 @@ export const ConfirmEmail = ({ buttonText } : ItemPropsT) => (
       <span className="text-sm font-semibold mb-1">Почта не подтверждена</span>
       <span className="text-xs font-normal mb-4">Подтверждение адреса электронной почты требуется для защиты аккаунта и восстановления доступа</span>
       <span className="text-xs font-normal mb-1">Письмо не пришло?</span>
-      <Button variant="secondary" size="s">{buttonText}</Button>
+      <Button variant="secondary-error" size="s">{buttonText}</Button>
     </div>
     <div className="hidden sm:flex items-end mr-4 md:mr-9">
       <svg width="214" height="130" fill="none">
