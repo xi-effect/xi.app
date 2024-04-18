@@ -30,7 +30,6 @@ let defaultCols: IColumn[] = [
     title : '',
     subtitle : '',
     id : 'empty',
-    isStatic : true
   },
   {
     title: 'B1.2',
@@ -44,7 +43,7 @@ let defaultCols: IColumn[] = [
   },
 ];
 
-let defaultTasks: ICategory[] = [
+let defaultCategory: ICategory[] = [
   {
     elId: "1",
     columnId: "B1.2",
@@ -143,7 +142,7 @@ type ItemPropsT = {
 
 export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   const [columns, setColumns] = useState<IColumn[]>(defaultCols);
-  const [categories, setCategories] = useState<ICategory[]>(defaultTasks);
+  const [categories, setCategories] = useState<ICategory[]>(defaultCategory);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
   const [activeColumn, setActiveColumn] = useState<IColumn | null>(null);
@@ -166,12 +165,11 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
         onDragOver={onDragOver}
       >
       <ul
-        id="community-services"
         className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
           className ?? ''
         }`}
       >
-        <SortableContext items={columnsId}>
+        <SortableContext  strategy={verticalListSortingStrategy} items={columnsId}>
               {columns.map((col) => (
                 <div className='my-2'>
                   <ColumnContainer  setSlideIndex={setSlideIndex}
@@ -183,25 +181,6 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
               ))}
             </SortableContext>
       </ul>
-      {createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <ColumnContainer setSlideIndex={setSlideIndex}
-                column={activeColumn}
-         
-                categories={categories.filter(
-                  (task) => task.columnId === activeColumn.id
-                )}
-              />
-            )}
-            {activeCategory && (
-              <CategoryCard setSlideIndex={setSlideIndex}
-                category={activeCategory}
-              />
-            )}
-          </DragOverlay>,
-          document.body
-        )}
     </DndContext>
   );
 
@@ -232,8 +211,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   
     const isActiveAColumn = active.data.current?.type === "Column";
     if (!isActiveAColumn) return;
-  
-    console.log("DRAG END");
+
   
     setColumns((columns) => {
       const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
@@ -265,24 +243,11 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
         const overIndex = categories.findIndex((t) => t.elId === overId);
   
         if (categories[activeIndex].columnId != categories[overIndex].columnId) {
-          // Fix introduced after video recording
          categories[activeIndex].columnId = categories[overIndex].columnId;
           return arrayMove(categories, activeIndex, overIndex - 1);
         }
   
         return arrayMove(categories, activeIndex, overIndex);
-      });
-    }
-  
-    const isOverAColumn = over.data.current?.type === "Column";
-  
-    // Im dropping a Task over a column
-    if (isActiveATask && isOverAColumn) {
-      setCategories((categories) => {
-        const activeIndex = categories.findIndex((t) => t.elId === activeId);
-        categories[activeIndex].columnId = overId;
-        console.log("DROPPING TASK OVER COLUMN", { activeIndex });
-        return arrayMove(categories, activeIndex, activeIndex);
       });
     }
   }

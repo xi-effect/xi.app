@@ -26,7 +26,7 @@ interface Props {
     home : <Home className={iconClassName}/>
   };
 
-export function CategoryCard({category , setSlideIndex} : Props) {  
+export function CategoryCard({category , setSlideIndex } : Props) {  
     const [mouseOver , setMouseOver] = useState(false);
     const {
         setNodeRef,
@@ -34,7 +34,7 @@ export function CategoryCard({category , setSlideIndex} : Props) {
         listeners,
         transform,
         transition,
-        isDragging,
+        isDragging, 
       } = useSortable({
         id: category.elId,
         data: {
@@ -55,15 +55,9 @@ export function CategoryCard({category , setSlideIndex} : Props) {
         transform: CSS.Transform.toString(transform),
       };
     
-
-    //   if (isDragging) {
-    //     return (
-    //       <div className='w-[60px] border-b-green-50'
-    //         ref={setNodeRef}
-    //         style={style}
-    //       />
-    //     );
-    //   }
+              // <div
+              //   className="absolute bg-brand-80 h-[4px] rounded-[2px] w-full border-brand-80 border-2"
+              //  ></div>
 
       return (
         <div 
@@ -71,8 +65,7 @@ export function CategoryCard({category , setSlideIndex} : Props) {
         onMouseLeave={() => setMouseOver(false)}
           ref={setNodeRef}
           style={style}
-          {...attributes}
-          {...listeners}
+        
           onClick={() => handleRouteChange() }
         >
             <div className='justify-between  text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer'>
@@ -80,9 +73,8 @@ export function CategoryCard({category , setSlideIndex} : Props) {
                 {iconsDict[category.icon]}
                  <span className="pl-2 text-[14px] font-normal">{category.label}</span>
                 </div>
-                {mouseOver ? <Move/> : null}
+                {mouseOver ? <div {...attributes} {...listeners}> <Move/></div> : null}
             </div>
-        
         </div>
       );
 }

@@ -1,5 +1,4 @@
 export interface IColumn {
-    isStatic? : boolean,
     title : string,
     subtitle : string,
     id : string
