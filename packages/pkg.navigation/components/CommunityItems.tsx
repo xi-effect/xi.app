@@ -144,7 +144,6 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   const [columns, setColumns] = useState<IColumn[]>(defaultCols);
   const [categories, setCategories] = useState<ICategory[]>(defaultCategory);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
-
   const [activeColumn, setActiveColumn] = useState<IColumn | null>(null);
 
   const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
@@ -181,6 +180,12 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
               ))}
             </SortableContext>
       </ul>
+      {createPortal(
+          <DragOverlay>
+              <div className='h-[4px] z-100 bg-brand-80 rounded-[4px] border-b-brand-80'></div>
+          </DragOverlay>,
+          document.body
+        )}
     </DndContext>
   );
 

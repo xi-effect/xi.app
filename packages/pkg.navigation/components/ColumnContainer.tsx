@@ -4,7 +4,6 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 import { CategoryCard } from "./CategoryCard";
-import { Move } from "@xipkg/icons";
 
 interface Props {
     column : IColumn;
@@ -42,7 +41,7 @@ export function ColumnContainer({column , categories , setSlideIndex} : Props) {
       };
 
     return (
-        <div
+        <div className="relative"
           ref={setNodeRef}
           style={style}
           onMouseEnter={() => setMouseOver(true)}
@@ -53,12 +52,9 @@ export function ColumnContainer({column , categories , setSlideIndex} : Props) {
             {...attributes}
             {...listeners}
           >
-            <div className="flex justify-between items-center">
             <div className="flex pl-4 flex-col items-start">
                 <span className="text-[16px] font-semibold">{column.title}</span>
                 <span className="text-[14px] font-normal">{column.subtitle}</span>
-            </div> 
-                {mouseOver ? <div {...attributes} {...listeners}> <Move/></div> : null}
             </div>
           </div>
     
@@ -66,7 +62,7 @@ export function ColumnContainer({column , categories , setSlideIndex} : Props) {
           <div className="flex flex-grow flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto">
             <SortableContext strategy={verticalListSortingStrategy} items={categoriesIds}>
               {categories.map((category : ICategory) => (
-                <CategoryCard 
+                  <CategoryCard 
                   setSlideIndex={setSlideIndex}
                   key={category.elId}
                   category={category}

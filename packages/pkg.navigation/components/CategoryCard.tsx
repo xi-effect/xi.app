@@ -5,10 +5,11 @@ import { CSS } from "@dnd-kit/utilities";
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Announce, Calendar, Chat, Conference, Home, Task, Updates , Move} from '@xipkg/icons';
+import { DragOverlay } from '@dnd-kit/core';
 
 interface Props {
     category : ICategory;
-    setSlideIndex : any
+    setSlideIndex? : any
   }
   type IconsDictT = {
     [key: string]: ReactNode;
@@ -49,15 +50,20 @@ export function CategoryCard({category , setSlideIndex } : Props) {
       setSlideIndex(1);
       router.push(category.link);
     };
+      if (isDragging){
+        return <div className='justify-between bg-gray-10 text-gray-90  group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in '>
+                <div className='flex items-center'>
+                {iconsDict[category.icon]}
+                 <span className="pl-2 text-[14px] font-normal">{category.label}</span>
+                </div>
+                <div><Move/></div>
+            </div>
+      }
 
       const style = {
         transition,
         transform: CSS.Transform.toString(transform),
       };
-    
-              // <div
-              //   className="absolute bg-brand-80 h-[4px] rounded-[2px] w-full border-brand-80 border-2"
-              //  ></div>
 
       return (
         <div 
