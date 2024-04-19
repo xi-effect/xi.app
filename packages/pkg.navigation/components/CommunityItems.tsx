@@ -3,16 +3,13 @@
 
 'use client';
 
-import { ReactNode, useMemo, useState } from 'react';
-import {CategoryCard } from './CategoryCard'
+import { useMemo, useState } from 'react';
 import {ColumnContainer} from './ColumnContainer'
-import { IColumn , ICategory } from './types'
+import { IColumn , IChannel } from './types'
 import {
   DndContext,
   useSensors,
   useSensor,
-  closestCorners,
-  KeyboardSensor,
   PointerSensor,
   DragOverlay,
   DragOverEvent,
@@ -20,7 +17,7 @@ import {
   DragEndEvent,
 } from '@dnd-kit/core';
 
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { arrayMove } from "@dnd-kit/sortable";
 
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
@@ -43,7 +40,7 @@ let defaultCols: IColumn[] = [
   },
 ];
 
-let defaultCategory: ICategory[] = [
+let defaultChannels: IChannel[] = [
   {
     elId: "1",
     columnId: "B1.2",
@@ -142,11 +139,10 @@ type ItemPropsT = {
 
 export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   const [columns, setColumns] = useState<IColumn[]>(defaultCols);
-  const [categories, setCategories] = useState<ICategory[]>(defaultCategory);
+  const [channels, setChannels] = useState<IChannel[]>(defaultChannels);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
   const [activeColumn, setActiveColumn] = useState<IColumn | null>(null);
-
-  const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
+  const [activeChannel, setActiveChannel] = useState<IChannel | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -174,7 +170,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
                   <ColumnContainer  setSlideIndex={setSlideIndex}
                   key={col.id}
                   column={col}
-                  categories={categories.filter((task) => task.columnId === col.id)}
+                  channels={channels.filter((channel) => channel.columnId === col.id)}
                   />
                 </div>
               ))}
@@ -196,15 +192,15 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
       return;
     }
   
-    if (event.active.data.current?.type === "Category") {
-      setActiveCategory(event.active.data.current.task);
+    if (event.active.data.current?.type === "Channel") {
+      setActiveChannel(event.active.data.current.task);
       return;
     }
   }
   
   function onDragEnd(event: DragEndEvent) {
     setActiveColumn(null);
-    setActiveCategory(null);
+    setActiveChannel(null);
   
     const { active, over } = event;
     if (!over) return;
@@ -236,23 +232,22 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   
     if (activeId === overId) return;
   
-    const isActiveATask = active.data.current?.type === "Category";
-    const isOverATask = over.data.current?.type === "Category";
+    const isActiveAChannel = active.data.current?.type === "Channel";
+    const isOverAChannel = over.data.current?.type === "Channel";
   
-    if (!isActiveATask) return;
+    if (!isActiveAChannel) return;
   
-    // Im dropping a Task over another Task
-    if (isActiveATask && isOverATask) {
-      setCategories((categories) => {
-        const activeIndex = categories.findIndex((t) => t.elId === activeId);
-        const overIndex = categories.findIndex((t) => t.elId === overId);
+    if (isActiveAChannel && isOverAChannel) {
+      setChannels((channels) => {
+        const activeIndex = channels.findIndex((t) => t.elId === activeId);
+        const overIndex = channels.findIndex((t) => t.elId === overId);
   
-        if (categories[activeIndex].columnId != categories[overIndex].columnId) {
-         categories[activeIndex].columnId = categories[overIndex].columnId;
-          return arrayMove(categories, activeIndex, overIndex - 1);
+        if (channels[activeIndex].columnId != channels[overIndex].columnId) {
+          channels[activeIndex].columnId = channels[overIndex].columnId;
+          return arrayMove(channels, activeIndex, overIndex - 1);
         }
   
-        return arrayMove(categories, activeIndex, overIndex);
+        return arrayMove(channels, activeIndex, overIndex);
       });
     }
   }

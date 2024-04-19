@@ -1,14 +1,14 @@
 import { ReactNode, useState } from 'react';
-import { ICategory } from './types'
+import { IChannel } from './types'
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from "@dnd-kit/utilities";
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Announce, Calendar, Chat, Conference, Home, Task, Updates , Move} from '@xipkg/icons';
-import { DragOverlay } from '@dnd-kit/core';
+
 
 interface Props {
-    category : ICategory;
+    category : IChannel;
     setSlideIndex? : any
   }
   type IconsDictT = {
@@ -27,7 +27,7 @@ interface Props {
     home : <Home className={iconClassName}/>
   };
 
-export function CategoryCard({category , setSlideIndex } : Props) {  
+export function Channel({category , setSlideIndex } : Props) {  
     const [mouseOver , setMouseOver] = useState(false);
     const {
         setNodeRef,
@@ -39,7 +39,7 @@ export function CategoryCard({category , setSlideIndex } : Props) {
       } = useSortable({
         id: category.elId,
         data: {
-          type: "Category",
+          type: "Channel",
           category,
         },
       });

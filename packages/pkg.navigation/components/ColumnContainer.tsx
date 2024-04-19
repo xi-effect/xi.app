@@ -1,24 +1,23 @@
 import { useMemo, useState } from "react";
-import { ICategory, IColumn } from "./types";
+import { IChannel, IColumn } from "./types";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
-import { CategoryCard } from "./CategoryCard";
+import { Channel } from "./Channel";
 
 interface Props {
     column : IColumn;
-    categories : ICategory[]
+    channels : IChannel[]
     setSlideIndex : any
-    activeCategory? : ICategory | null
+    activeCategory? : IChannel | null
     activeColumn? : IColumn | null 
 }
 
-export function ColumnContainer({column , categories , setSlideIndex} : Props) {
+export function ColumnContainer({column , channels , setSlideIndex} : Props) {
   const [mouseOver , setMouseOver] = useState(false);
-    const categoriesIds = useMemo(() => {
-        return categories.map((category : ICategory) => category.elId);
-      }, [categories]);
-
+    const channelsIds = useMemo(() => {
+        return channels.map((channel : IChannel) => channel.elId);
+      }, [channels]);
 
       const {
         setNodeRef,
@@ -26,7 +25,6 @@ export function ColumnContainer({column , categories , setSlideIndex} : Props) {
         listeners,
         transform,
         transition,
-        isDragging,
       } = useSortable({
         id: column.id,
         data: {
@@ -60,9 +58,9 @@ export function ColumnContainer({column , categories , setSlideIndex} : Props) {
     
           {/* Column task container */}
           <div className="flex flex-grow flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto">
-            <SortableContext strategy={verticalListSortingStrategy} items={categoriesIds}>
-              {categories.map((category : ICategory) => (
-                  <CategoryCard 
+            <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
+              {channels.map((category : IChannel) => (
+                  <Channel
                   setSlideIndex={setSlideIndex}
                   key={category.elId}
                   category={category}

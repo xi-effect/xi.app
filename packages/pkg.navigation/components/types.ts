@@ -4,7 +4,7 @@ export interface IColumn {
     id : string
   }
   
- export interface ICategory {
+ export interface IChannel {
     elId : string,
     columnId : string,
     icon: string,
