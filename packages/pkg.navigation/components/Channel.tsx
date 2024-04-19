@@ -50,15 +50,7 @@ export function Channel({category , setSlideIndex } : Props) {
       setSlideIndex(1);
       router.push(category.link);
     };
-      if (isDragging){
-        return <div className='justify-between bg-gray-10 text-gray-90  group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in '>
-                <div className='flex items-center'>
-                {iconsDict[category.icon]}
-                 <span className="pl-2 text-[14px] font-normal">{category.label}</span>
-                </div>
-                <div><Move/></div>
-            </div>
-      }
+      
 
       const style = {
         transition,

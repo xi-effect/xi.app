@@ -24,6 +24,7 @@ export function ColumnContainer({column , channels , setSlideIndex} : Props) {
         attributes,
         listeners,
         transform,
+        isDragging,
         transition,
       } = useSortable({
         id: column.id,
@@ -59,7 +60,7 @@ export function ColumnContainer({column , channels , setSlideIndex} : Props) {
           {/* Column task container */}
           <div className="flex flex-grow flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto">
             <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
-              {channels.map((category : IChannel) => (
+              {!isDragging && channels.map((category : IChannel) => (
                   <Channel
                   setSlideIndex={setSlideIndex}
                   key={category.elId}

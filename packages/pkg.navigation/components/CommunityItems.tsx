@@ -164,7 +164,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
           className ?? ''
         }`}
       >
-        <SortableContext  strategy={verticalListSortingStrategy} items={columnsId}>
+        <SortableContext strategy={verticalListSortingStrategy} items={columnsId}>
               {columns.map((col) => (
                 <div className='my-2'>
                   <ColumnContainer  setSlideIndex={setSlideIndex}
@@ -176,12 +176,6 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
               ))}
             </SortableContext>
       </ul>
-      {createPortal(
-          <DragOverlay>
-              <div className='h-[4px] z-100 bg-brand-80 rounded-[4px] border-b-brand-80'></div>
-          </DragOverlay>,
-          document.body
-        )}
     </DndContext>
   );
 
