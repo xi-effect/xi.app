@@ -15,11 +15,11 @@ import {
   DragOverEvent,
   DragStartEvent,
   DragEndEvent,
+  MeasuringStrategy,
 } from '@dnd-kit/core';
-
 import { arrayMove } from "@dnd-kit/sortable";
-
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { Channel } from './Channel';
 import { createPortal } from 'react-dom';
 
 let defaultCols: IColumn[] = [
@@ -153,7 +153,11 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
   );
 
   return (
-    <DndContext
+    <DndContext measuring={{
+      droppable: {
+        strategy: MeasuringStrategy.Always,
+      },
+    }}
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
@@ -176,6 +180,24 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
               ))}
             </SortableContext>
       </ul>
+      {createPortal(
+          <DragOverlay>
+            {activeColumn && (
+                <ColumnContainer
+                column={activeColumn}
+                channels={channels.filter(
+                  (task) => task.columnId === activeColumn.id
+                )}
+              />
+            )}
+            {activeChannel && (
+                <Channel
+                channel={activeChannel}
+              />
+            )}
+          </DragOverlay>,
+          document.body
+        )}
     </DndContext>
   );
 
@@ -187,7 +209,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
     }
   
     if (event.active.data.current?.type === "Channel") {
-      setActiveChannel(event.active.data.current.task);
+      setActiveChannel(event.active.data.current.channel);
       return;
     }
   }

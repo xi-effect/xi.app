@@ -8,7 +8,7 @@ import { Announce, Calendar, Chat, Conference, Home, Task, Updates , Move} from 
 
 
 interface Props {
-    category : IChannel;
+    channel : IChannel;
     setSlideIndex? : any
   }
   type IconsDictT = {
@@ -27,7 +27,7 @@ interface Props {
     home : <Home className={iconClassName}/>
   };
 
-export function Channel({category , setSlideIndex } : Props) {  
+export function Channel({channel , setSlideIndex } : Props) {  
     const [mouseOver , setMouseOver] = useState(false);
     const {
         setNodeRef,
@@ -37,10 +37,10 @@ export function Channel({category , setSlideIndex } : Props) {
         transition,
         isDragging, 
       } = useSortable({
-        id: category.elId,
+        id: channel.elId,
         data: {
           type: "Channel",
-          category,
+          channel,
         },
       });
 
@@ -48,7 +48,7 @@ export function Channel({category , setSlideIndex } : Props) {
   
     const handleRouteChange = () => {
       setSlideIndex(1);
-      router.push(category.link);
+      router.push(channel.link);
     };
       
 
@@ -56,6 +56,10 @@ export function Channel({category , setSlideIndex } : Props) {
         transition,
         transform: CSS.Transform.toString(transform),
       };
+
+      if (isDragging) {
+        return <div ref={setNodeRef}  style={style} className="h-[4px] rounded-[2px] border-b-brand-80 bg-brand-80"></div>
+      }
 
       return (
         <div 
@@ -68,8 +72,8 @@ export function Channel({category , setSlideIndex } : Props) {
         >
             <div className='justify-between  text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer'>
                 <div className='flex items-center'>
-                {iconsDict[category.icon]}
-                 <span className="pl-2 text-[14px] font-normal">{category.label}</span>
+                {iconsDict[channel.icon]}
+                 <span className="pl-2 text-[14px] font-normal">{channel.label}</span>
                 </div>
                 {mouseOver ? <div {...attributes} {...listeners}> <Move/></div> : null}
             </div>

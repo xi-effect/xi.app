@@ -8,13 +8,10 @@ import { Channel } from "./Channel";
 interface Props {
     column : IColumn;
     channels : IChannel[]
-    setSlideIndex : any
-    activeCategory? : IChannel | null
-    activeColumn? : IColumn | null 
+    setSlideIndex? : any
 }
 
 export function ColumnContainer({column , channels , setSlideIndex} : Props) {
-  const [mouseOver , setMouseOver] = useState(false);
     const channelsIds = useMemo(() => {
         return channels.map((channel : IChannel) => channel.elId);
       }, [channels]);
@@ -24,8 +21,8 @@ export function ColumnContainer({column , channels , setSlideIndex} : Props) {
         attributes,
         listeners,
         transform,
-        isDragging,
         transition,
+        isDragging,
       } = useSortable({
         id: column.id,
         data: {
@@ -34,19 +31,21 @@ export function ColumnContainer({column , channels , setSlideIndex} : Props) {
         },
       });
 
+
       const style = {
         transition,
         transform: CSS.Transform.toString(transform),
       };
 
+      if (isDragging) {
+        return <div ref={setNodeRef}  style={style} className="h-[4px] rounded-[2px] border-b-brand-80 bg-brand-80"></div>
+      }
+
     return (
         <div className="relative"
           ref={setNodeRef}
           style={style}
-          onMouseEnter={() => setMouseOver(true)}
-          onMouseLeave={() => setMouseOver(false)}
         >
-          {/* Column title */}
           <div
             {...attributes}
             {...listeners}
@@ -56,17 +55,15 @@ export function ColumnContainer({column , channels , setSlideIndex} : Props) {
                 <span className="text-[14px] font-normal">{column.subtitle}</span>
             </div>
           </div>
-    
-          {/* Column task container */}
           <div className="flex flex-grow flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto">
             <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
-              {!isDragging && channels.map((category : IChannel) => (
-                  <Channel
+              {channels.map((channel : IChannel) => {
+               return <Channel
                   setSlideIndex={setSlideIndex}
-                  key={category.elId}
-                  category={category}
+                  key={channel.elId}
+                  channel={channel}
                 />
-              ))}
+              })}
             </SortableContext>
           </div>
         </div>
