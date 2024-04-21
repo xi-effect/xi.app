@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
-import { AddCommunityModal } from 'pkg.module.add-community';
+import { AddCommunityModal } from '../../pkg.module.add-community';
 
 import {
   CategoryAdd,
@@ -250,7 +250,7 @@ export const CommunityMenu = () => {
                 />
                 {currentCommunity.isOwner && (
                   <>
-                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px]">
+                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px] hidden md:flex">
                       <span>Пройти обучение</span>
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
