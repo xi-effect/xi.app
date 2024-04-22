@@ -1,3 +1,5 @@
+/* eslint-disable no-irregular-whitespace */
+
 import React, { useState } from 'react';
 
 import * as z from 'zod';

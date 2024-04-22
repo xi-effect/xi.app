@@ -1,6 +1,6 @@
 'use client';
 
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
