@@ -32,6 +32,7 @@ import { Modal, ModalContent } from '@xipkg/modal';
 import { CommunitySettings } from 'pkg.community.settings';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { CategoryCreate } from 'pkg.form.category-create/CategoryCreate';
 
 // Временный список мок-сообществ
 const communitiesTemplate = [
@@ -283,8 +284,13 @@ export const CommunityMenu = () => {
                       </CommunityChannelCreate>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="group sm:w-[302px]">
-                      <span>Создать категорию</span>
-                      <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                      <CategoryCreate>
+                        <span>Создать категорию</span>
+                        <CategoryAdd
+                          size="s"
+                          className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                        />
+                      </CategoryCreate>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </>
