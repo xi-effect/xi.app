@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { IChannel, IColumn } from "./types";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -33,16 +33,17 @@ export function ColumnContainer({column , channels , setSlideIndex} : IColumnCon
 
 
       const style = {
+        height : `${channels.length * 60}px`,
         transition,
         transform: CSS.Transform.toString(transform),
       };
 
       if (isDragging) {
-        return <div ref={setNodeRef}  style={style} className="h-[4px] rounded-[2px] border-b-brand-80 bg-brand-80"></div>
+        return <div ref={setNodeRef}  style={style} className="max-h-[4px] rounded-[2px] border-b-brand-80 bg-brand-80"></div>
       }
 
     return (
-        <div className="relative"
+        <div
           ref={setNodeRef}
           style={style}
         >

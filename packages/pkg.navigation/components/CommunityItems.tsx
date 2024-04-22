@@ -16,6 +16,7 @@ import {
   DragStartEvent,
   DragEndEvent,
   MeasuringStrategy,
+  closestCorners,
 } from '@dnd-kit/core';
 import { arrayMove } from "@dnd-kit/sortable";
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -141,6 +142,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
   const [columns, setColumns] = useState<IColumn[]>(defaultCols);
   const [channels, setChannels] = useState<IChannel[]>(defaultChannels);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+  const channelsIds = useMemo(() => channels.map((channel) => channel.elId) , [channels])
   const [activeColumn, setActiveColumn] = useState<IColumn | null>(null);
   const [activeChannel, setActiveChannel] = useState<IChannel | null>(null);
 
@@ -158,6 +160,8 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
         strategy: MeasuringStrategy.Always,
       },
     }}
+        autoScroll={false}
+        collisionDetection={closestCorners} 
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
@@ -178,7 +182,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
                   />
                 </div>
               ))}
-            </SortableContext>
+        </SortableContext>
       </ul>
       {createPortal(
           <DragOverlay>
@@ -191,15 +195,19 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
               />
             )}
             {activeChannel && (
-                <Channel
+              <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
+              <Channel
                 channel={activeChannel}
               />
+              </SortableContext>
             )}
           </DragOverlay>,
           document.body
         )}
     </DndContext>
   );
+
+  
 
   
   function onDragStart(event: DragStartEvent) {
