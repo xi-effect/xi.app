@@ -7,17 +7,18 @@ import { useRouter } from 'next/navigation';
 import { Announce, Calendar, Chat, Conference, Home, Task, Updates , Move} from '@xipkg/icons';
 
 
-interface Props {
+interface IChannelProps {
     channel : IChannel;
-    setSlideIndex? : any
-  }
-  type IconsDictT = {
-    [key: string]: ReactNode;
-  };
+    setSlideIndex? : (arg : number) => void
+}
+
+interface IIconsDict {
+  [key: string]: ReactNode;
+};
 
   const iconClassName = 'transition-colors ease-in group-hover:fill-brand-80';
 
-  const iconsDict: IconsDictT = {
+  const iconsDict: IIconsDict = {
     announce: <Announce className={iconClassName} />,
     calendar: <Calendar className={iconClassName} />,
     updates: <Updates className={iconClassName} />,
@@ -27,7 +28,7 @@ interface Props {
     home : <Home className={iconClassName}/>
   };
 
-export function Channel({channel , setSlideIndex } : Props) {  
+export function Channel({channel , setSlideIndex } : IChannelProps) {  
     const [mouseOver , setMouseOver] = useState(false);
     const {
         setNodeRef,
@@ -47,7 +48,7 @@ export function Channel({channel , setSlideIndex } : Props) {
       const router = useRouter();
   
     const handleRouteChange = () => {
-      setSlideIndex(1);
+      setSlideIndex && setSlideIndex(1);
       router.push(channel.link);
     };
       

@@ -5,13 +5,13 @@ import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 import { Channel } from "./Channel";
 
-interface Props {
+interface IColumnContainer {
     column : IColumn;
     channels : IChannel[]
-    setSlideIndex? : any
+    setSlideIndex? : (arg : number) => void
 }
 
-export function ColumnContainer({column , channels , setSlideIndex} : Props) {
+export function ColumnContainer({column , channels , setSlideIndex} : IColumnContainer) {
     const channelsIds = useMemo(() => {
         return channels.map((channel : IChannel) => channel.elId);
       }, [channels]);

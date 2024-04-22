@@ -132,12 +132,12 @@ let defaultChannels: IChannel[] = [
 
 ];
 
-type ItemPropsT = {
+interface ICommunityItems {
   setSlideIndex: (value: number) => void;
   className?: string;
 };
 
-export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
+export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) => {
   const [columns, setColumns] = useState<IColumn[]>(defaultCols);
   const [channels, setChannels] = useState<IChannel[]>(defaultChannels);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
