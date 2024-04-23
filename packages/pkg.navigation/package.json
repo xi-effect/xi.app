@@ -29,7 +29,8 @@
     "pkg.models": "*",
     "pkg.logo": "*",
     "pkg.stores": "*",
-    "pkg.utils": "*"
+    "pkg.utils": "*",
+    "pkg.module.add-community": "*"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
