@@ -29,8 +29,8 @@ interface IIconsDict {
   };
 
 export function Channel({channel , setSlideIndex } : IChannelProps) {  
-    const [mouseOver , setMouseOver] = useState(false);
-    const {
+  const [mouseOver , setMouseOver] = useState(false);
+  const {
         setNodeRef,
         attributes,
         listeners,
@@ -47,14 +47,14 @@ export function Channel({channel , setSlideIndex } : IChannelProps) {
 
       const router = useRouter();
   
-    const handleRouteChange = () => {
+      const handleRouteChange = () => {
       setSlideIndex && setSlideIndex(1);
       router.push(channel.link);
-    };
+      };
       
 
       const style = {
-        height : '35px',
+        height : '40px',
         transition,
         transform: CSS.Transform.toString(transform),
       };
@@ -74,7 +74,7 @@ export function Channel({channel , setSlideIndex } : IChannelProps) {
         
           onClick={() => handleRouteChange() }
         >
-            <div className='justify-between  text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer'>
+            <div className='justify-between text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer'>
                 <div className='flex items-center'>
                 {iconsDict[channel.icon]}
                  <span className="pl-2 text-[14px] font-normal">{channel.label}</span>

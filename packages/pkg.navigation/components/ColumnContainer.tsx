@@ -12,6 +12,7 @@ interface IColumnContainer {
 }
 
 export function ColumnContainer({column , channels , setSlideIndex} : IColumnContainer) {
+    const { title , subtitle , id } = column
     const channelsIds = useMemo(() => {
         return channels.map((channel : IChannel) => channel.elId);
       }, [channels]);
@@ -24,25 +25,24 @@ export function ColumnContainer({column , channels , setSlideIndex} : IColumnCon
         transition,
         isDragging,
       } = useSortable({
-        id: column.id,
+        id: id,
         data: {
           type: "Column",
           column,
         },
       });
 
-      const columnStyle = {
+    const columnStyle = {
         minHeight : '100px',
         transition,
         transform: CSS.Transform.toString(transform),
-      };
+    };
 
-      if (isDragging) {
+    if (isDragging) {
         return <div style={columnStyle} ref={setNodeRef}>
             <div className="h-[4px] rounded-[2px] border-b-brand-80 bg-brand-80"></div>
-        </div>
-        
-      }
+        </div>  
+    }
 
     return (
         <div
@@ -53,12 +53,14 @@ export function ColumnContainer({column , channels , setSlideIndex} : IColumnCon
             {...attributes}
             {...listeners}
           >
-            <div className="flex pl-4 flex-col items-start">
-                <span className="text-[16px] font-semibold">{column.title}</span>
-                <span className="text-[14px] font-normal">{column.subtitle}</span>
+          { title && subtitle && 
+            <div className="flex p-2  flex-col items-start">
+                <span className="text-[16px] font-semibold">{title}</span>
+                <span className="text-[14px] font-normal">{subtitle}</span>
             </div>
+          }
           </div>
-          <div className="flex flex-grow flex-col gap-2 p-2 overflow-x-hidden overflow-y-hidden">
+          <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
             <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
               {channels.map((channel : IChannel) => {
                return <Channel
