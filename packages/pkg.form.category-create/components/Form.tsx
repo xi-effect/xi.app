@@ -1,4 +1,4 @@
-'use client';
+/* eslint-disable no-irregular-whitespace */
 
 import React from 'react';
 import * as z from 'zod';
