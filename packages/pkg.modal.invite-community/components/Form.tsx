@@ -79,6 +79,16 @@ export default function FormBlock() {
     },
   });
 
+  // Взял типизацию из react-day-picker
+  type Matcher = boolean | ((date: Date) => boolean) | Date | Date[];
+
+  // Отключаем все предыдущие даты перед текущей
+  const dateMatcher: Matcher = (selectedDate: Date) => {
+    const today = new Date().setHours(0, 0, 0, 0);
+    const selectedDay = new Date(selectedDate).setHours(0, 0, 0, 0);
+    return selectedDay < today;
+  };
+
   function onSubmit(values: z.infer<typeof FormSchema>) {
     console.log(values);
   }
@@ -96,8 +106,9 @@ export default function FormBlock() {
                 <FormDescription className="text-sm">
                   Для приглашения без ограничения оставить пустым
                 </FormDescription>
-                <FormControl className="mt-2">
+                <FormControl>
                   <Input
+                    className="mt-2"
                     placeholder="от 1 до 99"
                     {...field}
                     max={99}
@@ -123,8 +134,9 @@ export default function FormBlock() {
                   <FormDescription className="text-sm">
                     Для приглашения без ограничения оставить пустым
                   </FormDescription>
-                  <FormControl>
+                  <FormControl className="mt-2">
                     <DatePicker
+                      disabled={dateMatcher}
                       popoverProps={{ modal: true }}
                       popoverTriggerProps={{}}
                       popoverContentProps={{}}
@@ -144,7 +156,7 @@ export default function FormBlock() {
                       }}
                     >
                       <Input
-                        className="cursor-pointer"
+                        className="mt-2 cursor-pointer"
                         {...field}
                         value={
                           form.getValues('date')
@@ -210,7 +222,7 @@ export default function FormBlock() {
                       <DropdownMenuTrigger asChild>
                         <Input
                           placeholder="Выберите роль"
-                          className="text-gray-0 cursor-pointer"
+                          className="text-gray-0 mt-2 cursor-pointer"
                           {...field}
                           value={
                             form.getValues('roles')
