@@ -15,7 +15,7 @@ export const CategoryCreate = ({ children }: CategoryCreatePropsT) => {
       <M.ModalTrigger className="flex w-full items-center justify-between bg-transparent">
         {children}
       </M.ModalTrigger>
-      <M.ModalContent className="w-full max-w-[600px] rounded-2xl">
+      <M.ModalContent className="w-full max-w-[600px] gap-6 rounded-2xl">
         <M.ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />
         </M.ModalCloseButton>

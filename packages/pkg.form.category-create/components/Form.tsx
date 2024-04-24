@@ -11,24 +11,26 @@ import { Toggle } from '@xipkg/toggle';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 
 const FormSchema = z.object({
-  title: z.string(),
+  title: z.string().min(1, { message: 'Поле не должно быть пустым' }),
   subtitle: z.string(),
-  privateToggle: z.boolean().default(false),
+  isPrivate: z.boolean().default(false),
 });
 
+type FormSchemaT = z.infer<typeof FormSchema>;
+
 export default function FormBlock() {
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: '',
       subtitle: '',
-      privateToggle: false,
+      isPrivate: false,
     },
   });
 
-  const onSubmit = () => {
-    console.log('123');
-  };
+  function onSubmit(values: FormSchemaT) {
+    console.log(values);
+  }
 
   return (
     <Form {...form}>
@@ -67,11 +69,15 @@ export default function FormBlock() {
             </div>
             <FormField
               control={form.control}
-              name="privateToggle"
-              render={({ field }) => (
+              name="isPrivate"
+              render={() => (
                 <FormItem>
                   <FormControl>
-                    <Toggle size="l" checked={field.value} onCheckedChange={field.onChange} />
+                    <Toggle
+                      size="l"
+                      checked={form.getValues('isPrivate')}
+                      onCheckedChange={(isChecked) => form.setValue('isPrivate', isChecked)}
+                    />
                   </FormControl>
                 </FormItem>
               )}
