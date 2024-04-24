@@ -4,8 +4,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import {ColumnContainer} from './ColumnContainer'
-import { IColumn , IChannel } from './types'
+import { CategoryContainer } from './CategoryContainer'
+import { IChannel, ICategory } from './types'
 import {
   DndContext,
   useSensors,
@@ -23,7 +23,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Channel } from './Channel';
 import { createPortal } from 'react-dom';
 
-let defaultCols: IColumn[] = [
+let defaultCategories: ICategory[] = [
   {
     title : '',
     subtitle : '',
@@ -44,7 +44,7 @@ let defaultCols: IColumn[] = [
 let defaultChannels: IChannel[] = [
   {
     elId: "1",
-    columnId: "B1.2",
+    categoryId: "B1.2",
     icon: 'announce',
     type: 'announce',
     label: 'Объявления',
@@ -54,7 +54,7 @@ let defaultChannels: IChannel[] = [
     elId: '2',
     icon: 'task',
     type: 'task',
-    columnId : 'B1.2',
+    categoryId : 'B1.2',
     label: 'Задания',
     link: '/community/1/task/1',
   },
@@ -62,7 +62,7 @@ let defaultChannels: IChannel[] = [
     elId: '3',
     icon: 'chat',
     type: 'chat',
-    columnId : 'B1.2',
+    categoryId : 'B1.2',
     label: 'Чат',
     link: '/community/1/chat/1',
   },
@@ -70,14 +70,14 @@ let defaultChannels: IChannel[] = [
     elId: '4',
     icon: 'camera',
     type: 'videoconference',
-    columnId : 'B1.2',
+    categoryId : 'B1.2',
     label: 'Видеоконференция',
     link: '/community/1/videoconference/1',
   },
   {
     elId: '5',
     icon: 'announce',
-    columnId : 'B2.0',
+    categoryId : 'B2.0',
     type: 'announce',
     label: 'Объявления',
     link: '/community/1/announce/1',
@@ -86,7 +86,7 @@ let defaultChannels: IChannel[] = [
     elId: '6',
     icon: 'task',
     type: 'task',
-    columnId : 'B2.0',
+    categoryId : 'B2.0',
     label: 'Задания',
     link: '/community/1/task/1',
   },
@@ -94,14 +94,14 @@ let defaultChannels: IChannel[] = [
     elId: '7',
     icon: 'chat',
     type: 'chat',
-    columnId : 'B2.0',
+    categoryId : 'B2.0',
     label: 'Чат',
     link: '/community/1/chat/1',
   },
   {
     elId: '8',
     icon: 'camera',
-    columnId : 'B2.0',
+    categoryId : 'B2.0',
     type: 'videoconference',
     label: 'Видеоконференция',
     link: '/community/1/videoconference/1',
@@ -109,7 +109,7 @@ let defaultChannels: IChannel[] = [
   {
     elId: '9',
     icon: 'home',
-    columnId : 'empty',
+    categoryId : 'empty',
     type: 'home',
     label: 'Главная',
     link: '/community/1/home',
@@ -117,7 +117,7 @@ let defaultChannels: IChannel[] = [
   {
     elId: '10',
     icon: 'announce',
-    columnId : 'empty',
+    categoryId : 'empty',
     type: 'announce',
     label: 'Объявления',
     link: '',
@@ -125,7 +125,7 @@ let defaultChannels: IChannel[] = [
   {
     elId: '11',
     icon: 'calendar',
-    columnId : 'empty',
+    categoryId : 'empty',
     type: 'calendar',
     label: 'Календарь',
     link: '',
@@ -139,11 +139,11 @@ interface ICommunityItems {
 };
 
 export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) => {
-  const [columns, setColumns] = useState<IColumn[]>(defaultCols);
+  const [categories, setCategories] = useState<ICategory[]>(defaultCategories);
   const [channels, setChannels] = useState<IChannel[]>(defaultChannels);
-  const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+  const categoryIds = useMemo(() => categories.map((cat) => cat.id), [categories]);
   const channelsIds = useMemo(() => channels.map((channel) => channel.elId) , [channels])
-  const [activeColumn, setActiveColumn] = useState<IColumn | null>(null);
+  const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
   const [activeChannel, setActiveChannel] = useState<IChannel | null>(null);
 
   const sensors = useSensors(
@@ -172,13 +172,13 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
           className ?? ''
         }`}
       >
-        <SortableContext strategy={verticalListSortingStrategy} items={columnsId}>
-              {columns.map((col) => (
+        <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+              {categories.map((cat) => (
                 <div className='my-2'>
-                  <ColumnContainer  setSlideIndex={setSlideIndex}
-                  key={col.id}
-                  column={col}
-                  channels={channels.filter((channel) => channel.columnId === col.id)}
+                  <CategoryContainer setSlideIndex={setSlideIndex}
+                  key={cat.id}
+                  category={cat}
+                  channels={channels.filter((channel) => channel.categoryId === cat.id)}
                   />
                 </div>
               ))}
@@ -186,11 +186,11 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
       </ul>
       {createPortal(
           <DragOverlay>
-            {activeColumn && (
-                <ColumnContainer
-                column={activeColumn}
+            {activeCategory && (
+                <CategoryContainer
+                category={activeCategory}
                 channels={channels.filter(
-                  (task) => task.columnId === activeColumn.id
+                  (channel) => channel.categoryId === activeCategory.id
                 )}
               />
             )}
@@ -208,8 +208,8 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
   );
 
   function onDragStart(event: DragStartEvent) {
-    if (event.active.data.current?.type === "Column") {
-      setActiveColumn(event.active.data.current.column);
+    if (event.active.data.current?.type === "Category") {
+      setActiveCategory(event.active.data.current.category);
       return;
     }
     
@@ -221,7 +221,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
   
   
   function onDragEnd(event: DragEndEvent) {
-    setActiveColumn(null);
+    setActiveCategory(null);
     setActiveChannel(null);
   
     const { active, over } = event;
@@ -232,16 +232,16 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
   
     if (activeId === overId) return;
   
-    const isActiveAColumn = active.data.current?.type === "Column";
-    if (!isActiveAColumn) return;
+    const isActiveACategory = active.data.current?.type === "Category";
+    if (!isActiveACategory) return;
 
   
-    setColumns((columns) => {
-      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+    setCategories((category) => {
+      const activeCategoryIndex = categories.findIndex((cat) => cat.id === activeId);
   
-      const overColumnIndex = columns.findIndex((col) => col.id === overId);
+      const overCategoryIndex = categories.findIndex((cat) => cat.id === overId);
   
-      return arrayMove(columns, activeColumnIndex, overColumnIndex);
+      return arrayMove(category, activeCategoryIndex, overCategoryIndex);
     });
   }
   
@@ -262,11 +262,11 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
 
     if (isActiveAChannel && isOverAChannel) {
       setChannels((channels) => {
-        const activeIndex = channels.findIndex((t) => t.elId === activeId);
-        const overIndex = channels.findIndex((t) => t.elId === overId);
+        const activeIndex = channels.findIndex((channel) => channel.elId === activeId);
+        const overIndex = channels.findIndex((channel) => channel.elId === overId);
   
-        if (channels[activeIndex].columnId != channels[overIndex].columnId) {
-          channels[activeIndex].columnId = channels[overIndex].columnId;
+        if (channels[activeIndex].categoryId != channels[overIndex].categoryId) {
+          channels[activeIndex].categoryId = channels[overIndex].categoryId;
           return arrayMove(channels, activeIndex, 0);
           // overIndex - 1
         }
@@ -275,8 +275,8 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
       });
     } else if (isActiveAChannel && !isOverAChannel) {
       setChannels((channels) => {
-        const activeIndex = channels.findIndex((t) => t.elId === activeId);
-        channels[activeIndex].columnId = String(overId);
+        const activeIndex = channels.findIndex((channel) => channel.elId === activeId);
+        channels[activeIndex].categoryId = String(overId);
         return arrayMove(channels, activeIndex, 0);
       });
     }

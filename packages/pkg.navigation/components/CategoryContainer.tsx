@@ -1,18 +1,18 @@
 import { useMemo } from "react";
-import { IChannel, IColumn } from "./types";
+import { IChannel, ICategory } from "./types";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 import { Channel } from "./Channel";
 
-interface IColumnContainer {
-    column : IColumn;
+interface ICategoryContainer {
+    category : ICategory;
     channels : IChannel[]
     setSlideIndex? : (arg : number) => void
 }
 
-export function ColumnContainer({column , channels , setSlideIndex} : IColumnContainer) {
-    const { title , subtitle , id } = column
+export function CategoryContainer({category , channels , setSlideIndex} : ICategoryContainer) {
+    const { title , subtitle , id } = category
     const channelsIds = useMemo(() => {
         return channels.map((channel : IChannel) => channel.elId);
       }, [channels]);
@@ -27,19 +27,19 @@ export function ColumnContainer({column , channels , setSlideIndex} : IColumnCon
       } = useSortable({
         id: id,
         data: {
-          type: "Column",
-          column,
+          type: "Category",
+          category,
         },
       });
 
-    const columnStyle = {
+    const categoryStyle = {
         minHeight : '100px',
         transition,
         transform: CSS.Transform.toString(transform),
     };
 
     if (isDragging) {
-        return <div style={columnStyle} ref={setNodeRef}>
+        return <div style={categoryStyle} ref={setNodeRef}>
             <div className="h-[4px] rounded-[2px] border-b-brand-80 bg-brand-80"></div>
         </div>  
     }
@@ -47,7 +47,7 @@ export function ColumnContainer({column , channels , setSlideIndex} : IColumnCon
     return (
         <div
           ref={setNodeRef}
-          style={columnStyle}
+          style={categoryStyle}
         >
           <div
             {...attributes}
