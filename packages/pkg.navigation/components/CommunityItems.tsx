@@ -207,20 +207,18 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
     </DndContext>
   );
 
-  
-
-  
   function onDragStart(event: DragStartEvent) {
     if (event.active.data.current?.type === "Column") {
       setActiveColumn(event.active.data.current.column);
       return;
     }
-  
+    
     if (event.active.data.current?.type === "Channel") {
       setActiveChannel(event.active.data.current.channel);
       return;
     }
   }
+  
   
   function onDragEnd(event: DragEndEvent) {
     setActiveColumn(null);
@@ -247,20 +245,21 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
     });
   }
   
+  
   function onDragOver(event: DragOverEvent) {
     const { active, over } = event;
     if (!over) return;
   
-    const activeId = active.id;
-    const overId = over.id;
+    const activeId = active?.id;
+    const overId = over?.id;
   
     if (activeId === overId) return;
   
     const isActiveAChannel = active.data.current?.type === "Channel";
     const isOverAChannel = over.data.current?.type === "Channel";
-  
+
     if (!isActiveAChannel) return;
-  
+
     if (isActiveAChannel && isOverAChannel) {
       setChannels((channels) => {
         const activeIndex = channels.findIndex((t) => t.elId === activeId);
@@ -268,10 +267,17 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
   
         if (channels[activeIndex].columnId != channels[overIndex].columnId) {
           channels[activeIndex].columnId = channels[overIndex].columnId;
-          return arrayMove(channels, activeIndex, overIndex - 1);
+          return arrayMove(channels, activeIndex, 0);
+          // overIndex - 1
         }
   
         return arrayMove(channels, activeIndex, overIndex);
+      });
+    } else if (isActiveAChannel && !isOverAChannel) {
+      setChannels((channels) => {
+        const activeIndex = channels.findIndex((t) => t.elId === activeId);
+        channels[activeIndex].columnId = String(overId);
+        return arrayMove(channels, activeIndex, 0);
       });
     }
   }
