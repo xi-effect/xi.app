@@ -3,7 +3,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
+import { Modal, ModalContent } from '@xipkg/modal';
+import { CategoryCreate } from 'pkg.modal.category-create';
+import { CommunitySettings } from 'pkg.community.settings';
 import { AddCommunityModal } from 'pkg.module.add-community';
+import { CommunityChannelCreate } from 'pkg.community.channel-create';
 
 import {
   CategoryAdd,
@@ -23,16 +27,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
-import { CommunityChannelCreate } from 'pkg.community.channel-create';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import { Modal, ModalContent } from '@xipkg/modal';
-import { CommunitySettings } from 'pkg.community.settings';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { CategoryCreate } from 'pkg.form.category-create/CategoryCreate';
 
 // Временный список мок-сообществ
 const communitiesTemplate = [
