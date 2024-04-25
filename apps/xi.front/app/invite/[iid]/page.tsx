@@ -1,6 +1,6 @@
 'use client';
 
-import { RefObject, useRef } from 'react';
+import { RefObject, useRef, ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 
 import { useMainSt } from 'pkg.stores';
@@ -20,6 +20,11 @@ type UserRoleProps = {
   name: string;
   roleColor: string;
   roleType: string;
+};
+
+type AuthProviderProps = {
+  iid: string;
+  children: ReactNode;
 };
 
 // Отправляем запрос, получаем следующие данные:
@@ -60,13 +65,14 @@ const AvatarPreview = ({ date, communityId }: AvatarPreviewProps) => (
   </Avatar>
 );
 
-function AuthProvider({ iid }: { iid: string }) {
+const AuthProvider = ({ iid, children }: AuthProviderProps) => {
   const isLogin = useMainSt((state) => state.isLogin);
 
   if (isLogin === null) return <Load />;
+  if (!isLogin) redirect(`/signin?iid=${iid}`);
 
-  if (!isLogin) redirect(`/signin?iid=${iid}&community=${communityName}`);
-}
+  return children;
+};
 
 export default function InvitePage({ params }: { params: { iid: string } }) {
   const date = useRef(new Date());
@@ -76,8 +82,7 @@ export default function InvitePage({ params }: { params: { iid: string } }) {
   };
 
   return (
-    <>
-      <AuthProvider iid={params.iid} />
+    <AuthProvider iid={params.iid}>
       {isInviteValid ? (
         <div className="flex flex-col w-full h-full items-center pt-[100px] max-[420px]:px-4">
           <Logo height={16} width={136} logoVariant="navigation" logoSize="default" />
@@ -110,6 +115,6 @@ export default function InvitePage({ params }: { params: { iid: string } }) {
           <p className="text-base text-gray-80 mt-4">{errorDescription}</p>
         </div>
       )}
-    </>
+    </AuthProvider>
   );
 }
