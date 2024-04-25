@@ -49,7 +49,11 @@ const FormSchema = z.object({
   roles: z.array(RoleSchema),
 });
 
-export default function FormBlock() {
+type FormBlockPropsT = {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
   // Временный список ролей
   const rolesTemplate = [
     { name: 'Администратор', bgColorMain: 'bg-violet-100', bgColorSecondary: 'bg-violet-20' },
@@ -281,7 +285,12 @@ export default function FormBlock() {
             <Button className="h-12 px-6" type="submit">
               Создать
             </Button>
-            <Button variant="secondary" className="h-12 px-6" type="button">
+            <Button
+              variant="secondary"
+              className="h-12 px-6"
+              type="button"
+              onClick={() => setIsOpen(false)}
+            >
               Отменить
             </Button>
           </div>
