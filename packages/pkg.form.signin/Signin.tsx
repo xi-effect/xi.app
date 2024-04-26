@@ -43,12 +43,12 @@ const FormSchema = z.object({
     }),
 });
 
-const invationMessage = (communityName: string) => {
+const InvitationMessage = ({ communityName }: { communityName: string }) => {
   return (
     <div className="bg-bkgd-main rounded-lg p-4">
       <p className="text-brand-100 text-sm">
         Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь
-        или зарегистрируйтесь
+        или зарегистрируйтесь.
       </p>
     </div>
   );
@@ -97,7 +97,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
           <Logo height={22} width={180} logoVariant="navigation" logoSize="default" />
         </div>
         <h1 className="self-center text-2xl font-semibold">Вход в аккаунт</h1>
-        {communityName ? invationMessage(communityName) : ''}
+        {communityName && <InvitationMessage communityName={communityName} />}
         <FormField
           control={control}
           name="email"
