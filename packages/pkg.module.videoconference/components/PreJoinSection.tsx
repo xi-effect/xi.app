@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 import { Button } from '@xipkg/button';
 import React from 'react';
 import { useMediaDeviceSelect } from '@livekit/components-react';

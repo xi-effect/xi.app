@@ -14,11 +14,7 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   const asideEl = React.useRef<HTMLDivElement>(null);
   const [prevTiles, setPrevTiles] = React.useState(0);
   const { width, height } = useSize(asideEl);
-  const carouselOrientation = orientation
-    ? orientation
-    : height >= width
-      ? 'vertical'
-      : 'horizontal';
+  const carouselOrientation = orientation || (height >= width ? 'vertical' : 'horizontal');
 
   const tileSpan =
     carouselOrientation === 'vertical'
