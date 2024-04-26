@@ -126,6 +126,7 @@ const CommunityLink = ({
 export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
+  const [isInviteCommunityModalOpen, setIsInviteCommunityModalOpen] = React.useState(false);
 
   // Берем [cid] из URL
   const params = useParams();
@@ -223,6 +224,10 @@ export const CommunityMenu = () => {
           <CommunitySettings />
         </ModalContent>
       </Modal>
+      <InviteCommunityModal
+        open={isInviteCommunityModalOpen}
+        onOpenChange={() => setIsInviteCommunityModalOpen((prev) => !prev)}
+      />
       <DropdownMenu open={isOpen}>
         {currentCommunity && (
           <>
@@ -253,14 +258,15 @@ export const CommunityMenu = () => {
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="group sm:w-[302px]">
-                      <InviteCommunityModal>
-                        <span>Пригласить людей</span>
-                        <PeopleInvite
-                          size="s"
-                          className="ml-auto h-4 w-4 group-hover:fill-gray-100"
-                        />
-                      </InviteCommunityModal>
+                    <DropdownMenuItem
+                      className="group sm:w-[302px]"
+                      onClick={() => setIsInviteCommunityModalOpen((prev) => !prev)}
+                    >
+                      <span>Пригласить людей</span>
+                      <PeopleInvite
+                        size="s"
+                        className="ml-auto h-4 w-4 group-hover:fill-gray-100"
+                      />
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => {
