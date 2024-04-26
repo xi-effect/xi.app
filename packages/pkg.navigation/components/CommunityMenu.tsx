@@ -130,6 +130,7 @@ export const CommunityMenu = () => {
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
   const [isAddCommunityModalOpen, setIsAddCommunityModalOpen] = React.useState(false);
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
+  const [isCommunityChannelCreateOpen, setIsCommunityChannelCreateOpen] = React.useState(false);
 
   // Берем [cid] из URL
   const params = useParams();
@@ -231,6 +232,10 @@ export const CommunityMenu = () => {
         open={isCategoryCreateOpen}
         onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
       />
+      <CommunityChannelCreate
+        open={isCommunityChannelCreateOpen}
+        onOpenChange={() => setIsCommunityChannelCreateOpen((prev) => !prev)}
+      />
       <DropdownMenu open={isOpen}>
         {currentCommunity && (
           <>
@@ -279,14 +284,12 @@ export const CommunityMenu = () => {
                       <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="group sm:w-[302px]">
-                      <CommunityChannelCreate>
-                        <span>Создать канал</span>
-                        <ChannelAdd
-                          size="s"
-                          className="ml-auto h-4 w-4 group-hover:fill-gray-100"
-                        />
-                      </CommunityChannelCreate>
+                    <DropdownMenuItem
+                      className="group sm:w-[302px]"
+                      onClick={() => setIsCommunityChannelCreateOpen((prev) => !prev)}
+                    >
+                      <span>Создать канал</span>
+                      <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="group sm:w-[302px]"
