@@ -86,7 +86,7 @@ export default function FormBlock() {
         </div>
         <M.ModalFooter className="mt-6">
           <Button className="w-full" type="submit">
-            Сохранить
+            Создать
           </Button>
         </M.ModalFooter>
       </form>

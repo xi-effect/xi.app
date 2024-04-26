@@ -129,6 +129,7 @@ export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
   const [isAddCommunityModalOpen, setIsAddCommunityModalOpen] = React.useState(false);
+  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
 
   // Берем [cid] из URL
   const params = useParams();
@@ -226,6 +227,10 @@ export const CommunityMenu = () => {
           <CommunitySettings />
         </ModalContent>
       </Modal>
+      <CategoryCreate
+        open={isCategoryCreateOpen}
+        onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
+      />
       <DropdownMenu open={isOpen}>
         {currentCommunity && (
           <>
@@ -283,14 +288,12 @@ export const CommunityMenu = () => {
                         />
                       </CommunityChannelCreate>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="group sm:w-[302px]">
-                      <CategoryCreate>
-                        <span>Создать категорию</span>
-                        <CategoryAdd
-                          size="s"
-                          className="ml-auto h-4 w-4 group-hover:fill-gray-100"
-                        />
-                      </CategoryCreate>
+                    <DropdownMenuItem
+                      className="group sm:w-[302px]"
+                      onClick={() => setIsCategoryCreateOpen((prev) => !prev)}
+                    >
+                      <span>Создать категорию</span>
+                      <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </>
