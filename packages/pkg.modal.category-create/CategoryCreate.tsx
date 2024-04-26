@@ -1,21 +1,17 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import * as M from '@xipkg/modal';
 import { Close } from '@xipkg/icons';
 import Form from './components/Form';
 
 type CategoryCreatePropsT = {
-  // children: ReactNode;
   open: boolean;
   onOpenChange: (value: React.SetStateAction<boolean>) => void;
 };
 
 export const CategoryCreate = ({ open, onOpenChange }: CategoryCreatePropsT) => (
   <M.Modal open={open} onOpenChange={onOpenChange}>
-    {/* <M.ModalTrigger className="flex w-full items-center justify-between bg-transparent">
-      {children}
-    </M.ModalTrigger> */}
     <M.ModalContent className="w-full max-w-[600px] gap-6 rounded-2xl">
       <M.ModalCloseButton>
         <Close className="fill-gray-80 sm:fill-gray-0" />
