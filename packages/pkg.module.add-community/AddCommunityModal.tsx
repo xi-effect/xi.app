@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
