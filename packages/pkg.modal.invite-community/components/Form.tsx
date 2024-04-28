@@ -13,7 +13,7 @@ import { Button } from '@xipkg/button';
 import { Calendar, Plus } from '@xipkg/icons';
 import { DatePicker } from '@xipkg/datepicker';
 import {
-  Form,
+  Form as FormComponent,
   FormControl,
   FormDescription,
   FormField,
@@ -53,7 +53,7 @@ type FormBlockPropsT = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
+export const Form = ({ setIsOpen }: FormBlockPropsT) => {
   // Временный список ролей
   const rolesTemplate = [
     { name: 'Администратор', bgColorMain: 'bg-violet-100', bgColorSecondary: 'bg-violet-20' },
@@ -65,10 +65,32 @@ export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
   ];
 
   // Создаю список выбора часов для дропдауна
-  const timeOptions = Array.from({ length: 24 }, (_, i) => {
-    const hour = i.toString().padStart(2, '0');
-    return `${hour}:00`;
-  });
+  const timeOptions = [
+    '00:00',
+    '01:00',
+    '02:00',
+    '03:00',
+    '04:00',
+    '05:00',
+    '06:00',
+    '07:00',
+    '08:00',
+    '09:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+    '21:00',
+    '22:00',
+    '23:00',
+  ];
 
   const [date, setDate] = useState<Date>();
   const [unusedRoles, setUnusedRoles] = useState<typeof rolesTemplate>(rolesTemplate);
@@ -87,8 +109,9 @@ export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
   type Matcher = boolean | ((date: Date) => boolean) | Date | Date[];
 
   // Отключаем все предыдущие даты перед текущей
+  const currentDate = new Date();
   const dateMatcher: Matcher = (selectedDate: Date) => {
-    const today = new Date().setHours(0, 0, 0, 0);
+    const today = currentDate.setHours(0, 0, 0, 0);
     const selectedDay = new Date(selectedDate).setHours(0, 0, 0, 0);
     return selectedDay < today;
   };
@@ -98,7 +121,7 @@ export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
   }
 
   return (
-    <Form {...form}>
+    <FormComponent {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
         <div className="grid gap-6 px-6">
           <FormField
@@ -115,7 +138,6 @@ export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
                     className="mt-2"
                     placeholder="от 1 до 99"
                     {...field}
-                    max={99}
                     maxLength={2}
                     onChange={(event) => {
                       const inputValue = event.target.value;
@@ -140,10 +162,9 @@ export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
                   </FormDescription>
                   <FormControl className="mt-2">
                     <DatePicker
+                      fromMonth={currentDate}
                       disabled={dateMatcher}
                       popoverProps={{ modal: true }}
-                      popoverTriggerProps={{}}
-                      popoverContentProps={{}}
                       mode="single"
                       className="mt-2 w-full"
                       selected={date}
@@ -299,6 +320,6 @@ export default function FormBlock({ setIsOpen }: FormBlockPropsT) {
           </Button>
         </M.ModalFooter>
       </form>
-    </Form>
+    </FormComponent>
   );
-}
+};

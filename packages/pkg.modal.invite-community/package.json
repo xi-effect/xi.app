@@ -11,7 +11,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@xipkg/badge": "^0.1.0",
     "@xipkg/button": "^1.1.3",
-    "@xipkg/datepicker": "^0.1.0",
+    "@xipkg/datepicker": "^0.2.0",
     "@xipkg/dropdown": "^1.2.0",
     "@xipkg/form": "^2.0.0",
     "@xipkg/icons": "^0.8.6",
