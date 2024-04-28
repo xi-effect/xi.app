@@ -95,7 +95,7 @@ const rolesTemplate = [
 type Matcher = boolean | ((date: Date) => boolean) | Date | Date[];
 
 export const Form = ({ setIsOpen }: FormBlockPropsT) => {
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<Date | undefined>();
   const [unusedRoles, setUnusedRoles] = useState<typeof rolesTemplate>(rolesTemplate);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -323,6 +323,7 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
             variant="ghost"
             onClick={() => {
               form.reset();
+              setDate(undefined);
               setUnusedRoles(rolesTemplate);
             }}
             className="order-1 h-12 w-full px-6 md:order-2 md:w-max"
