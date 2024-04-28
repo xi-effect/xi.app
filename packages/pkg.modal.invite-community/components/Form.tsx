@@ -192,7 +192,9 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
                                 })
                               : ''
                           }
-                          after={<Calendar className="fill-gray-60 h-6 w-6" />}
+                          after={
+                            <Calendar className="fill-gray-60 pointer-events-none absolute right-0 h-6 w-6" />
+                          }
                         />
                       </DatePicker>
                     </FormControl>
