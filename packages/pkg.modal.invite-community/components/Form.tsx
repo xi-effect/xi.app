@@ -53,45 +53,48 @@ type FormBlockPropsT = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+// Создаю список выбора часов для дропдауна
+const timeOptions = [
+  '00:00',
+  '01:00',
+  '02:00',
+  '03:00',
+  '04:00',
+  '05:00',
+  '06:00',
+  '07:00',
+  '08:00',
+  '09:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+  '18:00',
+  '19:00',
+  '20:00',
+  '21:00',
+  '22:00',
+  '23:00',
+];
+
+// Временный список ролей
+const rolesTemplate = [
+  { name: 'Администратор', bgColorMain: 'bg-violet-100', bgColorSecondary: 'bg-violet-20' },
+  { name: 'Преподаватель', bgColorMain: 'bg-brand-100', bgColorSecondary: 'bg-brand-0' },
+  { name: 'Студент', bgColorMain: 'bg-green-100', bgColorSecondary: 'bg-green-0' },
+  { name: 'Гость', bgColorMain: 'bg-red-100', bgColorSecondary: 'bg-red-0' },
+  { name: '1', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
+  { name: '2', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
+];
+
+// Взял типизацию из react-day-picker
+type Matcher = boolean | ((date: Date) => boolean) | Date | Date[];
+
 export const Form = ({ setIsOpen }: FormBlockPropsT) => {
-  // Временный список ролей
-  const rolesTemplate = [
-    { name: 'Администратор', bgColorMain: 'bg-violet-100', bgColorSecondary: 'bg-violet-20' },
-    { name: 'Преподаватель', bgColorMain: 'bg-brand-100', bgColorSecondary: 'bg-brand-0' },
-    { name: 'Студент', bgColorMain: 'bg-green-100', bgColorSecondary: 'bg-green-0' },
-    { name: 'Гость', bgColorMain: 'bg-red-100', bgColorSecondary: 'bg-red-0' },
-    { name: '1', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
-    { name: '2', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
-  ];
-
-  // Создаю список выбора часов для дропдауна
-  const timeOptions = [
-    '00:00',
-    '01:00',
-    '02:00',
-    '03:00',
-    '04:00',
-    '05:00',
-    '06:00',
-    '07:00',
-    '08:00',
-    '09:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00',
-    '23:00',
-  ];
-
   const [date, setDate] = useState<Date>();
   const [unusedRoles, setUnusedRoles] = useState<typeof rolesTemplate>(rolesTemplate);
 
@@ -104,9 +107,6 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
       roles: [],
     },
   });
-
-  // Взял типизацию из react-day-picker
-  type Matcher = boolean | ((date: Date) => boolean) | Date | Date[];
 
   // Отключаем все предыдущие даты перед текущей
   const currentDate = new Date();
@@ -207,7 +207,7 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
                       <DropdownMenuTrigger asChild>
                         <Input
                           {...field}
-                          className={`w-[100px] cursor-pointer disabled:pointer-events-none`}
+                          className="w-[100px] cursor-pointer disabled:pointer-events-none"
                           disabled={form.getValues('date') === ''}
                           value={
                             form.getValues('date') && (form.getValues('time') || '00:00')
