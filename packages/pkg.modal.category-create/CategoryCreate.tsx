@@ -3,7 +3,7 @@
 import React from 'react';
 import * as M from '@xipkg/modal';
 import { Close } from '@xipkg/icons';
-import Form from './components/Form';
+import { Form } from './components/Form';
 
 type CategoryCreatePropsT = {
   open: boolean;

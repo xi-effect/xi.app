@@ -8,32 +8,61 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
 import { Toggle } from '@xipkg/toggle';
-import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
+import {
+  Form as FormComponent,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  useForm,
+} from '@xipkg/form';
+import { Checkbox } from '@xipkg/checkbox';
 
 const FormSchema = z.object({
   title: z.string().min(1, { message: 'Поле не должно быть пустым' }),
   subtitle: z.string(),
+  channels: z.array(z.string()).default([]),
   isPrivate: z.boolean().default(false),
 });
 
 type FormSchemaT = z.infer<typeof FormSchema>;
 
-export default function FormBlock() {
+export const Form = () => {
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: '',
       subtitle: '',
+      channels: [],
       isPrivate: false,
     },
   });
+
+  // Варианты каналов, которые можно добавить
+  const channelsOptions = ['Объявления', 'Задания', 'Видеоконференции', 'Чат со студентами'];
+
+  // Функция добавления/удаления каналов из channels
+  function toggleChannels(channelName: string, isChannel: boolean | string) {
+    const channelsValue = form.getValues('channels');
+    console.log(isChannel);
+
+    if (isChannel) {
+      form.setValue('channels', [...channelsValue, channelName]);
+      return;
+    }
+
+    // Если isChannel === false, удаляем указанный канал из массива
+    const updatedChannels = channelsValue.filter((channel) => channel != channelName);
+    form.setValue('channels', updatedChannels);
+  }
 
   function onSubmit(values: FormSchemaT) {
     console.log(values);
   }
 
   return (
-    <Form {...form}>
+    <FormComponent {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-6 px-6">
           <FormField
@@ -57,6 +86,25 @@ export default function FormBlock() {
                 <FormControl className="mt-2">
                   <Input {...field} />
                 </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="channels"
+            render={() => (
+              <FormItem>
+                <FormLabel>Каналы</FormLabel>
+                <FormDescription>Какие каналы будут созданы автоматически</FormDescription>
+                <div className="grid">
+                  {channelsOptions.map((channel) => (
+                    <FormControl key={channel}>
+                      <Checkbox onCheckedChange={(isChecked) => toggleChannels(channel, isChecked)}>
+                        {channel}
+                      </Checkbox>
+                    </FormControl>
+                  ))}
+                </div>
               </FormItem>
             )}
           />
@@ -90,6 +138,6 @@ export default function FormBlock() {
           </Button>
         </M.ModalFooter>
       </form>
-    </Form>
+    </FormComponent>
   );
-}
+};

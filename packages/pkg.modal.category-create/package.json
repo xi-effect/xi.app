@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@xipkg/button": "^1.2.0",
+    "@xipkg/checkbox": "^2.0.0",
     "@xipkg/form": "^2.0.0",
     "@xipkg/input": "^0.1.1",
     "@xipkg/modal": "^1.5.0",
