@@ -14,7 +14,7 @@ type InviteCommunityModalPropsT = {
 
 export const InviteCommunityModal = ({ open, onOpenChange }: InviteCommunityModalPropsT) => (
   <M.Modal open={open} onOpenChange={onOpenChange}>
-    <M.ModalContent className="w-full max-w-[600px] rounded-2xl">
+    <M.ModalContent className="w-full max-w-[639px] rounded-2xl">
       <M.ModalCloseButton>
         <Close className="fill-gray-80 sm:fill-gray-0" />
       </M.ModalCloseButton>

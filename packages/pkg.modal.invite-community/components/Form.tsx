@@ -150,115 +150,116 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
               </FormItem>
             )}
           />
-          <div className="flex gap-2">
-            <FormField
-              name="date"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Ограничение по времени</FormLabel>
-                  <FormDescription className="text-sm">
-                    Для приглашения без ограничения оставить пустым
-                  </FormDescription>
-                  <FormControl className="mt-2">
-                    <DatePicker
-                      fromMonth={currentDate}
-                      disabled={dateMatcher}
-                      popoverProps={{ modal: true }}
-                      mode="single"
-                      className="mt-2 w-full"
-                      selected={date}
-                      onSelect={(selectedDate: Date | undefined) => {
-                        if (selectedDate) {
-                          form.setValue(
-                            'date',
-                            format(selectedDate, 'yyyy-MM-dd', {
-                              locale: ru,
-                            }),
-                          );
-                          setDate(selectedDate);
-                        }
-                      }}
-                    >
-                      <Input
-                        className="mt-2 cursor-pointer"
-                        {...field}
-                        value={
-                          form.getValues('date')
-                            ? format((form.getValues('date') ?? '').toString(), 'PPP', {
+          <div>
+            <FormLabel>Ограничение по времени</FormLabel>
+            <FormDescription className="text-sm">
+              Для приглашения без ограничения оставить пустым
+            </FormDescription>
+
+            <div className="flex gap-2">
+              <FormField
+                name="date"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl className="mt-2">
+                      <DatePicker
+                        fromMonth={currentDate}
+                        disabled={dateMatcher}
+                        popoverProps={{ modal: true }}
+                        mode="single"
+                        className="mt-2 w-full"
+                        selected={date}
+                        onSelect={(selectedDate: Date | undefined) => {
+                          if (selectedDate) {
+                            form.setValue(
+                              'date',
+                              format(selectedDate, 'yyyy-MM-dd', {
                                 locale: ru,
-                              })
-                            : ''
-                        }
-                        after={<Calendar className="fill-gray-60 h-6 w-6" />}
-                      />
-                    </DatePicker>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="time"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="mt-auto">
-                  <FormControl aria-disabled>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                              }),
+                            );
+                            setDate(selectedDate);
+                          }
+                        }}
+                      >
                         <Input
+                          className="mt-2 cursor-pointer"
                           {...field}
-                          className="w-[100px] cursor-pointer disabled:pointer-events-none"
-                          disabled={form.getValues('date') === ''}
                           value={
-                            form.getValues('date') && (form.getValues('time') || '00:00')
-                              ? form.getValues('time') || '00:00'
+                            form.getValues('date')
+                              ? format((form.getValues('date') ?? '').toString(), 'PPP', {
+                                  locale: ru,
+                                })
                               : ''
                           }
+                          after={<Calendar className="fill-gray-60 h-6 w-6" />}
                         />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="max-h-[200px] overflow-scroll">
-                        {timeOptions.map((option, index) => (
-                          <DropdownMenuItem
-                            key={index}
-                            className="hover:bg-gray-10 rounded-lg"
-                            onClick={() => {
-                              form.setValue('time', option);
-                            }}
-                          >
-                            <p>{option}</p>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                      </DatePicker>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="time"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="mt-auto">
+                    <FormControl aria-disabled>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Input
+                            {...field}
+                            className="w-[100px] cursor-pointer disabled:pointer-events-none"
+                            disabled={form.getValues('date') === ''}
+                            value={
+                              form.getValues('date') && (form.getValues('time') || '00:00')
+                                ? form.getValues('time') || '00:00'
+                                : ''
+                            }
+                          />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="max-h-[200px] overflow-scroll">
+                          {timeOptions.map((option, index) => (
+                            <DropdownMenuItem
+                              key={index}
+                              className="hover:bg-gray-10 rounded-lg"
+                              onClick={() => {
+                                form.setValue('time', option);
+                              }}
+                            >
+                              <p>{option}</p>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <FormField
             name="roles"
             control={form.control}
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Роли</FormLabel>
-                <div className="relative">
+                <div className="relative flex-wrap">
                   <FormControl>
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                      <DropdownMenuTrigger
+                        asChild
+                        disabled={unusedRoles.length === 0}
+                        className=" disabled:bg-transparent"
+                      >
                         <Input
+                          disabled={unusedRoles.length === 0}
                           placeholder="Выберите роль"
-                          className="text-gray-0 mt-2 cursor-pointer"
-                          {...field}
-                          value={
-                            form.getValues('roles')
-                              ? form
-                                  .getValues('roles')
-                                  .map((role) => role.name)
-                                  .join(', ')
-                              : ''
-                          }
+                          className="mt-2 cursor-pointer"
                           after={
-                            <Plus className="bg-brand-80 fill-gray-0 absolute right-0 h-6 w-6 rounded-lg p-1" />
+                            <Plus
+                              className={`${unusedRoles.length === 0 ? 'bg-gray-30' : 'bg-brand-80'} fill-gray-0 pointer-events-none absolute right-0 h-6 w-6 rounded-lg p-1`}
+                            />
                           }
                         />
                       </DropdownMenuTrigger>
@@ -282,7 +283,7 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
                     </DropdownMenu>
                   </FormControl>
                   {form.getValues('roles').length > 0 && (
-                    <ul className="pointer-events-none absolute inset-0 z-50 flex h-full w-full items-center gap-2 px-3 pr-11">
+                    <ul className="pointer-events-none absolute inset-0 z-50 flex h-full w-full flex-wrap items-center gap-2 px-3 pr-11">
                       {form.getValues('roles').map((role, index) => (
                         <li
                           key={index}
@@ -301,8 +302,8 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
             )}
           />
         </div>
-        <M.ModalFooter className="flex justify-between">
-          <div className="flex gap-4">
+        <M.ModalFooter className="flex flex-col justify-between gap-4 md:flex-row md:gap-0">
+          <div className="order-2 flex flex-col gap-4 md:order-1 md:flex-row">
             <Button className="h-12 px-6" type="submit">
               Создать
             </Button>
@@ -315,7 +316,15 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
               Отменить
             </Button>
           </div>
-          <Button type="reset" variant="ghost" onClick={() => form.reset()} className="h-12 px-6">
+          <Button
+            type="reset"
+            variant="ghost"
+            onClick={() => {
+              form.reset();
+              setUnusedRoles(rolesTemplate);
+            }}
+            className="order-1 h-12 w-full px-6 md:order-2 md:w-max"
+          >
             Очистить
           </Button>
         </M.ModalFooter>
