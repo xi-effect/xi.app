@@ -27,4 +27,4 @@ jobs:
   lint:
     needs: analyze_files
     if: needs.analyze_files.outputs.lintable_files == 'true'
-    uses: xi-effect/xieffect-actions/.github/workflows/front-lint-and-format.yml@main
+    uses: xi-effect/xi.actions/.github/workflows/front-lint-and-format.yml@main

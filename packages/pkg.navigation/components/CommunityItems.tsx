@@ -1,220 +1,272 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
 'use client';
 
-import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
-import { ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import { CategoryContainer } from './CategoryContainer';
+import React from 'react';
+import { IChannel, ICategory } from './types';
 import {
   DndContext,
   useSensors,
   useSensor,
-  MouseSensor,
-  TouchSensor,
-  KeyboardSensor,
+  PointerSensor,
+  DragOverlay,
+  DragOverEvent,
+  DragStartEvent,
+  DragEndEvent,
+  MeasuringStrategy,
+  closestCorners,
 } from '@dnd-kit/core';
-
+import { arrayMove } from '@dnd-kit/sortable';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { coordinateGetter } from '../utils/multipleContainersKeyboardCoordinates';
+import { Channel } from './Channel';
+import { createPortal } from 'react-dom';
 
-type IconsDictT = {
-  [key: string]: ReactNode;
-};
-
-const iconClassName = 'transition-colors ease-in group-hover:fill-brand-80';
-
-const iconsDict: IconsDictT = {
-  announce: <Announce className={iconClassName} />,
-  calendar: <Calendar className={iconClassName} />,
-  updates: <Updates className={iconClassName} />,
-  task: <Task className={iconClassName} />,
-  chat: <Chat className={iconClassName} />,
-  camera: <Conference className={iconClassName} />,
-};
-
-const menuData = [
+const defaultCategories: ICategory[] = [
   {
-    elId: '1',
-    icon: 'announce',
-    type: 'announce',
-    label: 'Объявления',
-    link: '',
+    title: '',
+    subtitle: '',
+    id: 'empty',
   },
   {
-    elId: '2',
-    icon: 'calendar',
-    type: 'calendar',
-    label: 'Календарь',
-    link: '',
-  },
-  {
-    elId: '3',
     title: 'B1.2',
     subtitle: 'Intermediate',
-    isCategory: true,
-    channels: [
-      {
-        elId: '31',
-        icon: 'announce',
-        type: 'announce',
-        label: 'Объявления',
-        link: '/community/1/announce/1',
-      },
-      {
-        elId: '32',
-        icon: 'task',
-        type: 'task',
-        label: 'Задания',
-        link: '/community/1/task/1',
-      },
-    ],
+    id: 'B1.2',
   },
   {
-    elId: '4',
+    title: 'B2.0',
+    subtitle: 'Intermediate',
+    id: 'B2.0',
+  },
+];
+
+const defaultChannels: IChannel[] = [
+  {
+    elId: '1',
+    categoryId: 'B1.2',
     icon: 'announce',
     type: 'announce',
     label: 'Объявления',
     link: '/community/1/announce/1',
   },
   {
-    elId: '5',
+    elId: '2',
     icon: 'task',
     type: 'task',
+    categoryId: 'B1.2',
     label: 'Задания',
     link: '/community/1/task/1',
   },
   {
-    elId: '6',
+    elId: '3',
     icon: 'chat',
     type: 'chat',
+    categoryId: 'B1.2',
     label: 'Чат',
     link: '/community/1/chat/1',
   },
   {
-    elId: '7',
+    elId: '4',
     icon: 'camera',
+    type: 'videoconference',
+    categoryId: 'B1.2',
+    label: 'Видеоконференция',
+    link: '/community/1/videoconference/1',
+  },
+  {
+    elId: '5',
+    icon: 'announce',
+    categoryId: 'B2.0',
+    type: 'announce',
+    label: 'Объявления',
+    link: '/community/1/announce/1',
+  },
+  {
+    elId: '6',
+    icon: 'task',
+    type: 'task',
+    categoryId: 'B2.0',
+    label: 'Задания',
+    link: '/community/1/task/1',
+  },
+  {
+    elId: '7',
+    icon: 'chat',
+    type: 'chat',
+    categoryId: 'B2.0',
+    label: 'Чат',
+    link: '/community/1/chat/1',
+  },
+  {
+    elId: '8',
+    icon: 'camera',
+    categoryId: 'B2.0',
     type: 'videoconference',
     label: 'Видеоконференция',
     link: '/community/1/videoconference/1',
   },
   {
-    elId: '8',
-    title: 'B2',
-    subtitle: 'Intermediate',
-    isCategory: true,
-    channels: [
-      {
-        elId: '81',
-        icon: 'announce',
-        type: '',
-        label: 'Объявления',
-        link: '/community/1/announce/1',
-      },
-      {
-        elId: '82',
-        icon: 'task',
-        type: '',
-        label: 'Задания',
-        link: '/community/1/task/1',
-      },
-    ],
+    elId: '9',
+    icon: 'home',
+    categoryId: 'empty',
+    type: 'home',
+    label: 'Главная',
+    link: '/community/1/home',
   },
   {
-    elId: '9',
+    elId: '10',
     icon: 'announce',
+    categoryId: 'empty',
     type: 'announce',
     label: 'Объявления',
     link: '',
   },
   {
-    elId: '10',
-    icon: 'task',
-    type: 'task',
-    label: 'Задания',
-    link: '/community/1/task/1',
-  },
-  {
     elId: '11',
-    icon: 'chat',
-    type: 'chat',
-    label: 'Чат',
-    link: '',
-  },
-  {
-    elId: '12',
-    icon: 'camera',
-    type: 'videconference',
-    label: 'Видеоконференция',
+    icon: 'calendar',
+    categoryId: 'empty',
+    type: 'calendar',
+    label: 'Календарь',
     link: '',
   },
 ];
 
-const Item = ({ index, item, setSlideIndex }: any) => {
-  const router = useRouter();
-
-  const handleRouteChange = () => {
-    setSlideIndex(1);
-    router.push(item.link);
-  };
-
-  if (item.title) {
-    return (
-      <div
-        id={item?.elId}
-        className="text-gray-90 group mt-8 flex w-full flex-col items-start rounded-lg p-2"
-        key={index.toString()}
-      >
-        <span className="text-[16px] font-semibold">{item.title}</span>
-        <span className="text-[14px] font-normal">{item.subtitle}</span>
-      </div>
-    );
-  }
-
-  return (
-    <li
-      id={item?.elId}
-      className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
-      key={index.toString()}
-      onClick={handleRouteChange}
-    >
-      {iconsDict[item.icon]}
-      <span className="pl-2 text-[14px] font-normal">{item.label}</span>
-    </li>
-  );
-};
-
-type ItemPropsT = {
+interface ICommunityItems {
   setSlideIndex: (value: number) => void;
   className?: string;
-};
+}
 
-export const CommunityItems = ({ className, setSlideIndex }: ItemPropsT) => {
+export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) => {
+  const [categories, setCategories] = useState<ICategory[]>(defaultCategories);
+  const [channels, setChannels] = useState<IChannel[]>(defaultChannels);
+  const categoryIds = useMemo(() => categories.map((cat) => cat.id), [categories]);
+  const channelsIds = useMemo(() => channels.map((channel) => channel.elId), [channels]);
+  const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
+  const [activeChannel, setActiveChannel] = useState<IChannel | null>(null);
+
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter,
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
     }),
   );
 
   return (
-    <DndContext sensors={sensors}>
+    <DndContext
+      measuring={{
+        droppable: {
+          strategy: MeasuringStrategy.Always,
+        },
+      }}
+      autoScroll={false}
+      collisionDetection={closestCorners}
+      sensors={sensors}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
+    >
       <ul
-        id="community-services"
         className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
           className ?? ''
         }`}
       >
-        <SortableContext
-          items={[...menuData.map((item) => item.elId)]}
-          strategy={verticalListSortingStrategy}
-        >
-          {menuData.map((item, index) => (
-            <Item item={item} index={index} key={index} setSlideIndex={setSlideIndex} />
+        <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+          {categories.map((cat) => (
+            <div key={cat.id} className="my-2">
+              <CategoryContainer
+                setSlideIndex={setSlideIndex}
+                category={cat}
+                channels={channels.filter((channel) => channel.categoryId === cat.id)}
+              />
+            </div>
           ))}
         </SortableContext>
       </ul>
+      {createPortal(
+        <DragOverlay>
+          {activeCategory && (
+            <CategoryContainer
+              category={activeCategory}
+              channels={channels.filter((channel) => channel.categoryId === activeCategory.id)}
+            />
+          )}
+          {activeChannel && (
+            <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
+              <Channel channel={activeChannel} />
+            </SortableContext>
+          )}
+        </DragOverlay>,
+        document.body,
+      )}
     </DndContext>
   );
+
+  function onDragStart(event: DragStartEvent): void {
+    const currentType = event.active.data.current?.type;
+    if (currentType === 'Category') {
+      setActiveCategory(event.active.data.current?.category);
+    } else if (currentType === 'Channel') {
+      setActiveChannel(event.active.data.current?.channel);
+    }
+  }
+
+  function onDragEnd(event: DragEndEvent): void {
+    setActiveCategory(null);
+    setActiveChannel(null);
+
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    if (activeId === overId) return;
+
+    const isActiveACategory = active.data.current?.type === 'Category';
+    if (!isActiveACategory) return;
+
+    setCategories((categories) => {
+      const activeCategoryIndex = categories.findIndex((cat) => cat.id === activeId);
+      const overCategoryIndex = categories.findIndex((cat) => cat.id === overId);
+      return arrayMove(categories, activeCategoryIndex, overCategoryIndex);
+    });
+  }
+
+  function onDragOver(event: DragOverEvent): void {
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active?.id as string;
+    const overId = over?.id as string;
+
+    if (activeId === overId) return;
+
+    const isActiveAChannel = active.data.current?.type === ('Channel' as string);
+    const isOverAChannel = over.data.current?.type === ('Channel' as string);
+
+    if (!isActiveAChannel) return;
+
+    if (isActiveAChannel && isOverAChannel) {
+      setChannels((channels: IChannel[]) => {
+        const activeIndex = channels.findIndex(
+          (channel: IChannel) => channel.elId === activeId,
+        ) as number;
+        const overIndex = channels.findIndex(
+          (channel: IChannel) => channel.elId === overId,
+        ) as number;
+
+        if (channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
+          channels[activeIndex].categoryId = channels[overIndex].categoryId;
+          return arrayMove(channels, activeIndex, overIndex);
+        }
+        return arrayMove(channels, activeIndex, overIndex);
+      });
+    } else if (isActiveAChannel && !isOverAChannel) {
+      setChannels((channels: IChannel[]) => {
+        const activeIndex = channels.findIndex((channel: IChannel) => channel.elId === activeId);
+        channels[activeIndex].categoryId = overId;
+        return arrayMove(channels, activeIndex, 0);
+      });
+    }
+  }
 };

@@ -1,7 +1,9 @@
+'use client';
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
-'use client';
+import { AddCommunityModal } from 'pkg.module.add-community';
 
 import {
   CategoryAdd,
@@ -127,6 +129,7 @@ export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
   const [isInviteCommunityModalOpen, setIsInviteCommunityModalOpen] = React.useState(false);
+  const [isAddCommunityModalOpen, setIsAddCommunityModalOpen] = React.useState(false);
 
   // Берем [cid] из URL
   const params = useParams();
@@ -253,11 +256,11 @@ export const CommunityMenu = () => {
                 />
                 {currentCommunity.isOwner && (
                   <>
-                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px]">
+                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px] hidden md:flex">
                       <span>Пройти обучение</span>
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator className="hidden md:flex" />
                     <DropdownMenuItem
                       className="group sm:w-[302px]"
                       onClick={() => setIsInviteCommunityModalOpen((prev) => !prev)}
@@ -308,10 +311,22 @@ export const CommunityMenu = () => {
                 </div>
               )}
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="group text-gray-50 sm:w-[302px]">
-                <span>Присоединиться к сообществу</span>
-                <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />
-              </DropdownMenuItem>
+              <AddCommunityModal
+                open={isAddCommunityModalOpen}
+                onOpenChange={setIsAddCommunityModalOpen}
+              >
+                <DropdownMenuItem
+                  className="group text-gray-50 sm:w-[302px]"
+                  onClick={() => setIsAddCommunityModalOpen(true)}
+                >
+                  <span>Присоединиться к сообществу</span>
+
+                  <Plus
+                    size="s"
+                    className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100"
+                  />
+                </DropdownMenuItem>
+              </AddCommunityModal>
             </DropdownMenuContent>
           </>
         )}
