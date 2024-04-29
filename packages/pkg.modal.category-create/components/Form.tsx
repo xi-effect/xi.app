@@ -28,6 +28,9 @@ const FormSchema = z.object({
 
 type FormSchemaT = z.infer<typeof FormSchema>;
 
+// Варианты каналов, которые можно добавить
+const channelsOptions = ['Объявления', 'Задания', 'Видеоконференции', 'Чат со студентами'];
+
 export const Form = () => {
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
@@ -38,9 +41,6 @@ export const Form = () => {
       isPrivate: false,
     },
   });
-
-  // Варианты каналов, которые можно добавить
-  const channelsOptions = ['Объявления', 'Задания', 'Видеоконференции', 'Чат со студентами'];
 
   // Функция добавления/удаления каналов из channels
   function toggleChannels(channelName: string, isChannel: boolean | string) {
@@ -96,11 +96,14 @@ export const Form = () => {
               <FormItem>
                 <FormLabel>Каналы</FormLabel>
                 <FormDescription>Какие каналы будут созданы автоматически</FormDescription>
-                <div className="grid">
+                <div className="mt-2 grid gap-2">
                   {channelsOptions.map((channel) => (
                     <FormControl key={channel}>
-                      <Checkbox onCheckedChange={(isChecked) => toggleChannels(channel, isChecked)}>
-                        {channel}
+                      <Checkbox
+                        size="m"
+                        onCheckedChange={(isChecked) => toggleChannels(channel, isChecked)}
+                      >
+                        <p className="ml-[0.625rem] text-lg">{channel}</p>
                       </Checkbox>
                     </FormControl>
                   ))}
