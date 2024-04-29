@@ -73,10 +73,20 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
     formState: { errors },
   } = form;
 
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
+  const displayedButton = isButtonActive ?
+    <Button size="m" variant="default" type="submit">Зарегистрироваться</Button>
+    : <Button variant="default-spinner" className="w-24" disabled />;
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
     const status = await onSignUp({ ...data, setError });
-    if (status === 200) router.push('/welcome/user-info');
+    setIsButtonActive(false);
+    if (status === 200) {
+      router.push('/welcome/user-info');
+    } else {
+      setIsButtonActive(true);
+    }
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
@@ -171,9 +181,7 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
               Войти
             </Link>
           </div>
-          <Button size="m" variant="default" type="submit">
-            Зарегистрироваться
-          </Button>
+          {displayedButton}
         </div>
       </form>
     </Form>
