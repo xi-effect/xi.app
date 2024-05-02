@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
+import { InviteCommunityModal } from 'pkg.modal.invite-community';
 
 import Image from 'next/image';
 import { driver } from 'driver.js';
@@ -127,6 +128,7 @@ const CommunityLink = ({
 export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
+  const [isInviteCommunityModalOpen, setIsInviteCommunityModalOpen] = React.useState(false);
   const [isAddCommunityModalOpen, setIsAddCommunityModalOpen] = React.useState(false);
 
   // Берем [cid] из URL
@@ -225,6 +227,10 @@ export const CommunityMenu = () => {
           <CommunitySettings />
         </ModalContent>
       </Modal>
+      <InviteCommunityModal
+        open={isInviteCommunityModalOpen}
+        onOpenChange={() => setIsInviteCommunityModalOpen((prev) => !prev)}
+      />
       <DropdownMenu open={isOpen}>
         {currentCommunity && (
           <>
@@ -255,7 +261,10 @@ export const CommunityMenu = () => {
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="hidden md:flex" />
-                    <DropdownMenuItem className="group sm:w-[302px]">
+                    <DropdownMenuItem
+                      className="group sm:w-[302px]"
+                      onClick={() => setIsInviteCommunityModalOpen((prev) => !prev)}
+                    >
                       <span>Пригласить людей</span>
                       <PeopleInvite
                         size="s"
