@@ -63,7 +63,7 @@ export const Form = () => {
   return (
     <FormComponent {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid max-h-[calc(100vh-300px)] gap-6 overflow-auto p-6 md:max-h-[calc(100vh-182px)]">
+        <div className="grid max-h-[calc(100vh-80px-182px)] gap-6 overflow-auto p-6">
           <FormField
             control={form.control}
             name="title"
