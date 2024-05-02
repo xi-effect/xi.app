@@ -1,5 +1,10 @@
+/* eslint-disable no-loop-func */
+/* eslint-disable no-continue */
+/* eslint-disable consistent-return */
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
+
 import * as React from 'react';
 import useLatest from '@react-hook/latest';
 
@@ -53,7 +58,7 @@ function createResizeObserver() {
     if (!ticking) {
       window.requestAnimationFrame(() => {
         const triggered = new Set<Element>();
-        for (let i = 0; i < allEntries.length; i++) {
+        for (let i = 0; i < allEntries.length; i += 1) {
           if (triggered.has(allEntries[i].target)) continue;
           triggered.add(allEntries[i].target);
           const cbs = callbacks.get(allEntries[i].target);

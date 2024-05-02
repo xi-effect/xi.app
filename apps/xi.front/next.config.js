@@ -63,6 +63,9 @@ const nextConfig = {
     '@xipkg/label',
     '@xipkg/tabs',
     '@xipkg/toggle',
+    '@xipkg/datepicker',
+    '@xipkg/popover',
+    '@xipkg/calendar',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

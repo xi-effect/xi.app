@@ -3,8 +3,6 @@ import type { TrackReferenceOrPlaceholder, WidgetState } from '@livekit/componen
 import '@livekit/components-styles';
 import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/components-core';
 import { RoomEvent, Track } from 'livekit-client';
-import { ParticipantTile } from './ParticipantTile';
-import { FocusLayout } from './FocusLayout';
 import {
   CarouselLayout,
   ConnectionStateToast,
@@ -17,6 +15,8 @@ import {
   usePinnedTracks,
   useTracks,
 } from '@livekit/components-react';
+import { ParticipantTile } from './ParticipantTile';
+import { FocusLayout } from './FocusLayout';
 
 export function VideoConference({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

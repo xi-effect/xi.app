@@ -28,6 +28,9 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 
+import { CommunityChannelCreate } from 'pkg.community.channel-create';
+import { InviteCommunityModal } from 'pkg.modal.invite-community';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { driver } from 'driver.js';
@@ -128,6 +131,7 @@ const CommunityLink = ({
 export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
+  const [isInviteCommunityModalOpen, setIsInviteCommunityModalOpen] = React.useState(false);
   const [isAddCommunityModalOpen, setIsAddCommunityModalOpen] = React.useState(false);
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
   const [isCommunityChannelCreateOpen, setIsCommunityChannelCreateOpen] = React.useState(false);
@@ -235,6 +239,9 @@ export const CommunityMenu = () => {
       <CommunityChannelCreate
         open={isCommunityChannelCreateOpen}
         onOpenChange={() => setIsCommunityChannelCreateOpen((prev) => !prev)}
+      <InviteCommunityModal
+        open={isInviteCommunityModalOpen}
+        onOpenChange={() => setIsInviteCommunityModalOpen((prev) => !prev)}
       />
       <DropdownMenu open={isOpen}>
         {currentCommunity && (
@@ -261,12 +268,15 @@ export const CommunityMenu = () => {
                 />
                 {currentCommunity.isOwner && (
                   <>
-                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px]">
+                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px] hidden md:flex">
                       <span>Пройти обучение</span>
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="group sm:w-[302px]">
+                    <DropdownMenuSeparator className="hidden md:flex" />
+                    <DropdownMenuItem
+                      className="group sm:w-[302px]"
+                      onClick={() => setIsInviteCommunityModalOpen((prev) => !prev)}
+                    >
                       <span>Пригласить людей</span>
                       <PeopleInvite
                         size="s"

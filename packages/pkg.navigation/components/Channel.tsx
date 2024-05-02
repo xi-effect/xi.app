@@ -1,74 +1,82 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-
-'use client';
-
-import { Announce, Calendar, Chat, Conference, Task, Updates } from '@xipkg/icons';
-import React, { ReactNode } from 'react';
-import { useParams, usePathname, useRouter } from 'next/navigation';
-import { useSessionStorage } from 'pkg.utils';
+import { ReactNode, useState } from 'react';
+import { IChannel } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { Announce, Calendar, Chat, Conference, Home, Task, Updates, Move } from '@xipkg/icons';
 
-type IconsDictT = {
+interface IChannelProps {
+  channel: IChannel;
+  setSlideIndex?: (arg: number) => void;
+}
+
+interface IIconsDict {
   [key: string]: ReactNode;
-};
+}
 
 const iconClassName = 'transition-colors ease-in group-hover:fill-brand-80';
 
-const iconsDict: IconsDictT = {
+const iconsDict: IIconsDict = {
   announce: <Announce className={iconClassName} />,
   calendar: <Calendar className={iconClassName} />,
   updates: <Updates className={iconClassName} />,
   task: <Task className={iconClassName} />,
   chat: <Chat className={iconClassName} />,
   camera: <Conference className={iconClassName} />,
+  home: <Home className={iconClassName} />,
 };
 
-export type ChannelT = {
-  elId: string;
-  icon: string;
-  label: string;
-  type: string;
-  link: string;
-};
+export function Channel({ channel, setSlideIndex }: IChannelProps) {
+  const [mouseOver, setMouseOver] = useState(false);
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+    id: channel.elId,
+    data: {
+      type: 'Channel',
+      channel,
+    },
+  });
 
-export const Channel = ({ elId, icon, label, type, link }: ChannelT) => {
-  const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
-  console.log('slideIndex', slideIndex);
-
-  const params = useParams<{ id: string }>();
-  const pathname = usePathname();
   const router = useRouter();
 
-  const activeType = pathname.split('/')[3];
-
-  const isActive = params.id === elId && type === activeType;
-
   const handleRouteChange = () => {
-    setSlideIndex(1);
-    router.push(link);
+    setSlideIndex && setSlideIndex(1);
+    router.push(channel.link);
   };
-
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: elId });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    height: '40px',
     transition,
+    transform: CSS.Transform.toString(transform),
   };
 
+  if (isDragging) {
+    return (
+      <div ref={setNodeRef} style={style}>
+        <div className="bg-brand-80 h-[4px] rounded-[2px]"></div>
+      </div>
+    );
+  }
+
   return (
-    <li
-      id={elId}
-      className={`text-gray-90 ${isActive ? 'bg-brang-0' : ''}hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
-      onClick={handleRouteChange}
+    <div
+      onMouseEnter={() => setMouseOver(true)}
+      onMouseLeave={() => setMouseOver(false)}
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
+      onClick={() => handleRouteChange()}
     >
-      {iconsDict[icon]}
-      <span className="pl-2 text-[14px] font-normal"> {label} </span>
-    </li>
+      <div className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer">
+        <div className="flex items-center">
+          {iconsDict[channel.icon]}
+          <span className="pl-2 text-[14px] font-normal">{channel.label}</span>
+        </div>
+        {mouseOver ? (
+          <div {...attributes} {...listeners}>
+            <Move />
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
-};
+}
