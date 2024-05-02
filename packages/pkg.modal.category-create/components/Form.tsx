@@ -63,7 +63,7 @@ export const Form = () => {
   return (
     <FormComponent {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-6 px-6">
+        <div className="grid max-h-[calc(100vh-300px)] gap-6 overflow-auto p-6 md:max-h-[calc(100vh-182px)]">
           <FormField
             control={form.control}
             name="title"
@@ -110,7 +110,7 @@ export const Form = () => {
               </FormItem>
             )}
           />
-          <div className="bg-gray-5 flex items-center justify-between rounded-md p-4">
+          <div className="bg-gray-5 flex items-center justify-between gap-8 rounded-md p-4">
             <div>
               <h2 className="text-xl font-semibold text-gray-100">Приватная категория</h2>
               <p className="text-gray-80 mt-2 text-base font-normal">
@@ -134,7 +134,7 @@ export const Form = () => {
             />
           </div>
         </div>
-        <M.ModalFooter className="mt-6">
+        <M.ModalFooter>
           <Button className="w-full" type="submit">
             Создать
           </Button>

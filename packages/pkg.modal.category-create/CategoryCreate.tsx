@@ -12,7 +12,7 @@ type CategoryCreatePropsT = {
 
 export const CategoryCreate = ({ open, onOpenChange }: CategoryCreatePropsT) => (
   <M.Modal open={open} onOpenChange={onOpenChange}>
-    <M.ModalContent className="w-full max-w-[600px] gap-6 rounded-2xl">
+    <M.ModalContent className="w-full max-w-[600px] rounded-2xl">
       <M.ModalCloseButton>
         <Close className="fill-gray-80 sm:fill-gray-0" />
       </M.ModalCloseButton>
