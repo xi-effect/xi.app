@@ -116,6 +116,12 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
     return selectedDay < today;
   };
 
+  function resetForm() {
+    form.reset();
+    setDate(undefined);
+    setUnusedRoles(rolesTemplate);
+  }
+
   function onSubmit(values: z.infer<typeof FormSchema>) {
     console.log(values);
   }
@@ -305,7 +311,7 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
           />
         </div>
         <M.ModalFooter className="flex flex-col justify-between gap-4 md:flex-row md:gap-0">
-          <div className="order-2 flex flex-col gap-4 md:order-1 md:flex-row">
+          <div className="flex flex-col gap-4 md:flex-row">
             <Button className="h-12 px-6" type="submit">
               Создать
             </Button>
@@ -321,12 +327,8 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
           <Button
             type="reset"
             variant="ghost"
-            onClick={() => {
-              form.reset();
-              setDate(undefined);
-              setUnusedRoles(rolesTemplate);
-            }}
-            className="order-1 h-12 w-full px-6 md:order-2 md:w-max"
+            onClick={() => resetForm()}
+            className="hidden h-12 px-6 md:inline-block md:w-max"
           >
             Очистить
           </Button>
