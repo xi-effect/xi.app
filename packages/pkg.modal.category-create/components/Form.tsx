@@ -52,7 +52,7 @@ export const Form = () => {
     }
 
     // Если isChannel === false, удаляем указанный канал из массива
-    const updatedChannels = channelsValue.filter((channel) => channel != channelName);
+    const updatedChannels = channelsValue.filter((channel) => channel !== channelName);
     form.setValue('channels', updatedChannels);
   }
 

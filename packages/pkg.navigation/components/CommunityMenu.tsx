@@ -8,6 +8,7 @@ import { CategoryCreate } from 'pkg.modal.category-create';
 import { CommunitySettings } from 'pkg.community.settings';
 import { AddCommunityModal } from 'pkg.module.add-community';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
+import { InviteCommunityModal } from 'pkg.modal.invite-community';
 
 import {
   CategoryAdd,
@@ -27,9 +28,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
-
-import { CommunityChannelCreate } from 'pkg.community.channel-create';
-import { InviteCommunityModal } from 'pkg.modal.invite-community';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -239,6 +237,7 @@ export const CommunityMenu = () => {
       <CommunityChannelCreate
         open={isCommunityChannelCreateOpen}
         onOpenChange={() => setIsCommunityChannelCreateOpen((prev) => !prev)}
+      />
       <InviteCommunityModal
         open={isInviteCommunityModalOpen}
         onOpenChange={() => setIsInviteCommunityModalOpen((prev) => !prev)}
@@ -268,7 +267,10 @@ export const CommunityMenu = () => {
                 />
                 {currentCommunity.isOwner && (
                   <>
-                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px] hidden md:flex">
+                    <DropdownMenuItem
+                      onClick={driverAction}
+                      className="group hidden sm:w-[302px] md:flex"
+                    >
                       <span>Пройти обучение</span>
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
