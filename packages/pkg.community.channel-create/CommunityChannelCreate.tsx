@@ -61,7 +61,7 @@ export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) =>
             <Close className="fill-gray-80 sm:fill-gray-0" />
           </ModalCloseButton>
         </ModalHeader>
-        <div className="space-y-6 px-6">
+        <div className="h-full max-h-[calc(100vh-300px)] space-y-6 overflow-auto px-6">
           <div className="flex flex-col gap-2">
             <Label className="text-[16px] font-normal text-gray-100">Название</Label>
             <Input />
