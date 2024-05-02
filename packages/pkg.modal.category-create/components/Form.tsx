@@ -45,7 +45,6 @@ export const Form = () => {
   // Функция добавления/удаления каналов из channels
   function toggleChannels(channelName: string, isChannel: boolean | string) {
     const channelsValue = form.getValues('channels');
-    console.log(isChannel);
 
     if (isChannel) {
       form.setValue('channels', [...channelsValue, channelName]);
