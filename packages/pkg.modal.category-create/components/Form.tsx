@@ -43,7 +43,7 @@ export const Form = () => {
   });
 
   // Функция добавления/удаления каналов из channels
-  function toggleChannels(channelName: string, isChannel: boolean | string) {
+  const toggleChannels = (channelName: string, isChannel: boolean | string) => {
     const channelsValue = form.getValues('channels');
 
     if (isChannel) {
@@ -54,11 +54,11 @@ export const Form = () => {
     // Если isChannel === false, удаляем указанный канал из массива
     const updatedChannels = channelsValue.filter((channel) => channel !== channelName);
     form.setValue('channels', updatedChannels);
-  }
+  };
 
-  function onSubmit(values: FormSchemaT) {
+  const onSubmit = (values: FormSchemaT) => {
     console.log(values);
-  }
+  };
 
   return (
     <FormComponent {...form}>
