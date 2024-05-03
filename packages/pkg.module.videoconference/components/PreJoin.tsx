@@ -177,10 +177,10 @@ export function PreJoin({
   return (
     <div>
       <div className="relative">
-        <div className="h-[476px] w-[737px] rounded-[16px]">
+        <div className="h-[476px] w-[847px] rounded-[16px]">
           {videoTrack && videoEnabled && (
-            <div className="[transform:rotateY(180deg)]">
-              <video ref={videoEl} width="1280" height="720" data-lk-facing-mode={facingMode} />
+            <div className="aspect-video h-[476px] [transform:rotateY(180deg)]">
+              <video className="rounded-[16px]" ref={videoEl} data-lk-facing-mode={facingMode} />
             </div>
           )}
           {(!videoTrack || !videoEnabled) && (
