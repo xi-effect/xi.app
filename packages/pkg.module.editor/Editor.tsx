@@ -31,7 +31,9 @@ const useEditor = () =>
   useMemo(() => {
     const editor = withNodeId(withHistory(withReact(createEditor())));
 
-    const { normalizeNode } = editor;
+    const { normalizeNode, isVoid } = editor;
+
+    editor.isVoid = (el) => el.type === 'divider' || isVoid(el);
 
     editor.normalizeNode = (node, opt) => {
       normalizeQuoteNode(editor, node, opt);
@@ -121,7 +123,7 @@ export const EditorRoot = () => {
                     });
                 }
               }}
-              className="flex flex-col gap-2 p-2 text-gray-100"
+              className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
               renderElement={renderElement}
             />
           </SortableContext>
@@ -166,30 +168,25 @@ const SortableElement = ({ attributes, element, children, renderElement }: any) 
 
   return (
     <div {...attributes}>
-      <Sortable sortable={sortable}>
+      <div
+        className="group/node z-0 flex w-full"
+        {...sortable.attributes}
+        ref={sortable.setNodeRef}
+        style={{
+          transition: sortable.transition,
+          // @ts-ignore
+          '--translate-y': toPx(sortable.transform?.y),
+          transform: 'translate3d(0, var(--translate-y, 0), 0)',
+          pointerEvents: sortable.isSorting ? 'none' : undefined,
+          opacity: sortable.isDragging ? 0 : 1,
+        }}
+      >
         <CellControls moveProps={sortable.listeners} />
-        <div className="ml-2">{renderElement({ element, children })}</div>
-      </Sortable>
+        <div className="ml-2 w-full">{renderElement({ element, children })}</div>
+      </div>
     </div>
   );
 };
-
-const Sortable = ({ sortable, children }: any) => (
-  <div
-    className="z-0 flex w-full"
-    {...sortable.attributes}
-    ref={sortable.setNodeRef}
-    style={{
-      transition: sortable.transition,
-      '--translate-y': toPx(sortable.transform?.y),
-      transform: 'translate3d(0, var(--translate-y, 0), 0)',
-      pointerEvents: sortable.isSorting ? 'none' : undefined,
-      opacity: sortable.isDragging ? 0 : 1,
-    }}
-  >
-    {children}
-  </div>
-);
 
 const DragOverlayContent = ({ element }: any) => {
   const editor = useEditor();
@@ -202,17 +199,17 @@ const DragOverlayContent = ({ element }: any) => {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="group/node flex">
       <CellControls moveProps={{}} />
       <Slate editor={editor} initialValue={value}>
-        <Editable readOnly renderElement={renderElementContent} />
+        <Editable className="ml-2 w-full" readOnly renderElement={renderElementContent} />
       </Slate>
     </div>
   );
 };
 
 const CellControls = ({ moveProps }: Partial<Record<'moveProps', ComponentProps<'button'>>>) => (
-  <div className="flex items-center *:grid *:size-5 *:place-content-center *:bg-transparent">
+  <div className="flex items-center opacity-0 transition *:grid *:size-5 *:place-content-center *:bg-transparent group-hover/node:opacity-100">
     <DropdownMenuTrigger asChild>
       <button aria-label="add cell above" type="button">
         <Plus />

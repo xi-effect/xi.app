@@ -27,7 +27,8 @@ type CommonCustomElementType =
   | 'numbered-list'
   | 'list-item'
   | 'quote'
-  | 'tip';
+  | 'tip'
+  | 'divider';
 type CustomElementType = CustomElement['type'];
 
 type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: string };

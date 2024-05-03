@@ -40,4 +40,8 @@ export default {
     label: 'Совет',
     icon: Objects,
   },
+  divider: {
+    label: 'Разделитель',
+    icon: Ul,
+  },
 } as const satisfies Partial<Record<CommonCustomElementType, EditorRootElementOptions>>;

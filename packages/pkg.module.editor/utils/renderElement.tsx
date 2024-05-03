@@ -59,6 +59,12 @@ const renderElement = ({ element, attributes, children }: RenderElementProps) =>
       );
     case 'image':
       return <img alt="" src={element.url} />;
+    case 'divider':
+      return (
+        <div className="bg-gray-30 my-3 h-0.5 w-full caret-transparent *:hidden" {...attributes}>
+          {children}
+        </div>
+      );
     default:
       console.warn('Unknown element type', element);
       return <></>;
