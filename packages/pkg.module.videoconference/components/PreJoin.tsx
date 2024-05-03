@@ -177,14 +177,14 @@ export function PreJoin({
   return (
     <div>
       <div className="relative">
-        <div className="h-full min-w-[737px]">
+        <div className="h-[476px] w-[737px] rounded-[16px]">
           {videoTrack && videoEnabled && (
             <div>
               <video className="rounded-[16px]" ref={videoEl} data-lk-facing-mode={facingMode} />
             </div>
           )}
           {(!videoTrack || !videoEnabled) && (
-            <div className="flex h-full min-h-[476px] w-full items-center justify-center rounded-[16px] bg-gray-100">
+            <div className="flex h-[476px] items-center justify-center rounded-[16px] bg-gray-100">
               <ParticipantPlaceholder />
             </div>
           )}
