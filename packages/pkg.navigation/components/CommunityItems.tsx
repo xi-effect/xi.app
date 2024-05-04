@@ -1,9 +1,8 @@
+/* eslint-disable no-param-reassign */
+
 'use client';
 
-import { useMemo, useState } from 'react';
-import { CategoryContainer } from './CategoryContainer';
-import React from 'react';
-import { IChannel, ICategory } from './types';
+import React, { useMemo, useState } from 'react';
 import {
   DndContext,
   useSensors,
@@ -16,10 +15,11 @@ import {
   MeasuringStrategy,
   closestCorners,
 } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Channel } from './Channel';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
+import { CategoryContainer } from './CategoryContainer';
+import { IChannel, ICategory } from './types';
+import { Channel } from './Channel';
 
 const defaultCategories: ICategory[] = [
   {
@@ -46,7 +46,7 @@ const defaultChannels: IChannel[] = [
     icon: 'announce',
     type: 'announce',
     label: 'Объявления',
-    link: '/community/1/announce/1',
+    link: '/communities/1/channels/1/announce',
   },
   {
     elId: '2',
@@ -54,7 +54,7 @@ const defaultChannels: IChannel[] = [
     type: 'task',
     categoryId: 'B1.2',
     label: 'Задания',
-    link: '/community/1/task/1',
+    link: '/communities/1/channels/2/task',
   },
   {
     elId: '3',
@@ -62,7 +62,7 @@ const defaultChannels: IChannel[] = [
     type: 'chat',
     categoryId: 'B1.2',
     label: 'Чат',
-    link: '/community/1/chat/1',
+    link: '/communities/1/channels/3/chat',
   },
   {
     elId: '4',
@@ -70,7 +70,7 @@ const defaultChannels: IChannel[] = [
     type: 'videoconference',
     categoryId: 'B1.2',
     label: 'Видеоконференция',
-    link: '/community/1/videoconference/1',
+    link: '/communities/1/channels/4/videoconference',
   },
   {
     elId: '5',
@@ -78,7 +78,7 @@ const defaultChannels: IChannel[] = [
     categoryId: 'B2.0',
     type: 'announce',
     label: 'Объявления',
-    link: '/community/1/announce/1',
+    link: '/communities/1/channels/5/announce',
   },
   {
     elId: '6',
@@ -86,7 +86,7 @@ const defaultChannels: IChannel[] = [
     type: 'task',
     categoryId: 'B2.0',
     label: 'Задания',
-    link: '/community/1/task/1',
+    link: '/communities/1/channels/6/task',
   },
   {
     elId: '7',
@@ -94,7 +94,7 @@ const defaultChannels: IChannel[] = [
     type: 'chat',
     categoryId: 'B2.0',
     label: 'Чат',
-    link: '/community/1/chat/1',
+    link: '/communities/1/channels/7/chat',
   },
   {
     elId: '8',
@@ -102,7 +102,7 @@ const defaultChannels: IChannel[] = [
     categoryId: 'B2.0',
     type: 'videoconference',
     label: 'Видеоконференция',
-    link: '/community/1/videoconference/1',
+    link: '/communities/1/channels/8/videoconference',
   },
   {
     elId: '9',
@@ -110,7 +110,7 @@ const defaultChannels: IChannel[] = [
     categoryId: 'empty',
     type: 'home',
     label: 'Главная',
-    link: '/community/1/home',
+    link: '/communities/1/home',
   },
   {
     elId: '10',

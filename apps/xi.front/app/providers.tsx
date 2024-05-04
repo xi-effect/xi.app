@@ -57,7 +57,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     onboardingStage === 'completed' &&
     welcomePagesPaths.includes(pathname)
   ) {
-    redirect('/community/1/home');
+    redirect('/communities/1/home');
   }
 
   if (

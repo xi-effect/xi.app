@@ -1,10 +1,13 @@
-import { ReactNode, useState } from 'react';
-import { IChannel } from './types';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-unused-expressions */
+
+import React, { ReactNode, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Announce, Calendar, Chat, Conference, Home, Task, Updates, Move } from '@xipkg/icons';
+import { IChannel } from './types';
 
 interface IChannelProps {
   channel: IChannel;
@@ -53,7 +56,7 @@ export function Channel({ channel, setSlideIndex }: IChannelProps) {
   if (isDragging) {
     return (
       <div ref={setNodeRef} style={style}>
-        <div className="bg-brand-80 h-[4px] rounded-[2px]"></div>
+        <div className="bg-brand-80 h-[4px] rounded-[2px]" />
       </div>
     );
   }

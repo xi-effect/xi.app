@@ -116,7 +116,7 @@ const CommunityLink = ({
 }) => (
   <Link
     href={{
-      pathname: `/community/${community.id}/home`,
+      pathname: `/communities/${community.id}/home`,
     }}
     onClick={handleClose}
     className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
@@ -134,7 +134,7 @@ export const CommunityMenu = () => {
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
   const [isCommunityChannelCreateOpen, setIsCommunityChannelCreateOpen] = React.useState(false);
 
-  // Берем [cid] из URL
+  // Берем community-id из URL
   const params = useParams();
   // Делим все сообщества пользователя на то, на странице которого мы сейчас
   // и на остальные
@@ -142,8 +142,10 @@ export const CommunityMenu = () => {
   const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
 
   useEffect(() => {
-    const currentCommunity = communitiesTemplate.find((community) => community.id === params.cid);
-    const otherCommunities = communitiesTemplate.filter((community) => community.id !== params.cid);
+    const currentCommunity = communitiesTemplate.find(
+      (community) => community.id === params['community-id'],
+    );
+    const otherCommunities = communitiesTemplate.filter((community) => community.id !== params['community-id']);
     setCurrentCommunity(currentCommunity);
     setOtherCommunities(otherCommunities);
   }, [params]);

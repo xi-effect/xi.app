@@ -14,7 +14,7 @@ export default function VideoConferenceInCommunity({ params }: { params: { vid: 
   const token = useMainSt((state) => state.token);
 
   React.useEffect(() => {
-    getToken(params.vid);
+    getToken(params['[channel-id]']);
   }, []);
 
   return (
@@ -22,7 +22,7 @@ export default function VideoConferenceInCommunity({ params }: { params: { vid: 
       {token === null ? (
         <>
           <h1 className="text-3xl font-bold"> Видеоконференция </h1>
-          <h3 className="text-xl font-bold">{`id: ${params.vid}`}</h3>
+          <h3 className="text-xl font-bold">{`id: ${params['[channel-id]']}`}</h3>
         </>
       ) : (
         <VideoConference token={token} />
