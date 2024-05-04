@@ -3,7 +3,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
+import { Modal, ModalContent } from '@xipkg/modal';
+import { CategoryCreate } from 'pkg.modal.category-create';
+import { CommunitySettings } from 'pkg.community.settings';
 import { AddCommunityModal } from 'pkg.module.add-community';
+import { CommunityChannelCreate } from 'pkg.community.channel-create';
+import { InviteCommunityModal } from 'pkg.modal.invite-community';
 
 import {
   CategoryAdd,
@@ -23,16 +28,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
-import { CommunityChannelCreate } from 'pkg.community.channel-create';
-import { InviteCommunityModal } from 'pkg.modal.invite-community';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import { Modal, ModalContent } from '@xipkg/modal';
-import { CommunitySettings } from 'pkg.community.settings';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 
 // Временный список мок-сообществ
 const communitiesTemplate = [
@@ -130,6 +131,8 @@ export const CommunityMenu = () => {
   const [isOpenCommunitySettings, setIsOpenCommunitySettings] = React.useState(false);
   const [isInviteCommunityModalOpen, setIsInviteCommunityModalOpen] = React.useState(false);
   const [isAddCommunityModalOpen, setIsAddCommunityModalOpen] = React.useState(false);
+  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
+  const [isCommunityChannelCreateOpen, setIsCommunityChannelCreateOpen] = React.useState(false);
 
   // Берем [cid] из URL
   const params = useParams();
@@ -227,6 +230,14 @@ export const CommunityMenu = () => {
           <CommunitySettings />
         </ModalContent>
       </Modal>
+      <CategoryCreate
+        open={isCategoryCreateOpen}
+        onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
+      />
+      <CommunityChannelCreate
+        open={isCommunityChannelCreateOpen}
+        onOpenChange={() => setIsCommunityChannelCreateOpen((prev) => !prev)}
+      />
       <InviteCommunityModal
         open={isInviteCommunityModalOpen}
         onOpenChange={() => setIsInviteCommunityModalOpen((prev) => !prev)}
@@ -256,7 +267,10 @@ export const CommunityMenu = () => {
                 />
                 {currentCommunity.isOwner && (
                   <>
-                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px] hidden md:flex">
+                    <DropdownMenuItem
+                      onClick={driverAction}
+                      className="group hidden sm:w-[302px] md:flex"
+                    >
                       <span>Пройти обучение</span>
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
@@ -282,16 +296,17 @@ export const CommunityMenu = () => {
                       <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="group sm:w-[302px]">
-                      <CommunityChannelCreate>
-                        <span>Создать канал</span>
-                        <ChannelAdd
-                          size="s"
-                          className="ml-auto h-4 w-4 group-hover:fill-gray-100"
-                        />
-                      </CommunityChannelCreate>
+                    <DropdownMenuItem
+                      className="group sm:w-[302px]"
+                      onClick={() => setIsCommunityChannelCreateOpen((prev) => !prev)}
+                    >
+                      <span>Создать канал</span>
+                      <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="group sm:w-[302px]">
+                    <DropdownMenuItem
+                      className="group sm:w-[302px]"
+                      onClick={() => setIsCategoryCreateOpen((prev) => !prev)}
+                    >
                       <span>Создать категорию</span>
                       <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>

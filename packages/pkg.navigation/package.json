@@ -24,6 +24,7 @@
     "sonner": "1.0.3",
     "pkg.router.url": "*",
     "pkg.community.channel-create": "*",
+    "pkg.modal.category-create": "*",
     "pkg.user.settings": "*",
     "pkg.community.settings": "*",
     "pkg.modal.invite-community": "*",
