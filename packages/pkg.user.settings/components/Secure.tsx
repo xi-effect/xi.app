@@ -15,7 +15,7 @@ export const Secure = () => {
 
   return (
     <>
-      {!isMobile && <h1 className="text-3xl font-semibold mb-4">Безопасность</h1>}
+      {!isMobile && <h1 className="mb-4 text-3xl font-semibold">Безопасность</h1>}
       <div className="flex flex-col gap-6 sm:gap-8">
         <ConfirmEmail buttonText="Оправить повторно" />
         <div className="border-gray-80 flex w-full flex-col rounded-2xl border p-1">

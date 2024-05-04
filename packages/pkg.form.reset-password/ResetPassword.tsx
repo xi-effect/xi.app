@@ -32,6 +32,7 @@ const FormSchema = z.object({
 
 export const ResetPassword = () => {
   const [emailSent, setEmailSent] = useState(false);
+  const [isButtonActive, setIsButtonActive] = useState(true);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -39,6 +40,14 @@ export const ResetPassword = () => {
       email: '',
     },
   });
+
+  const buttonVariants = isButtonActive ? (
+    <Button type="submit" variant="default">
+      Отправить
+    </Button>
+  ) : (
+    <Button type="submit" variant="default-spinner" className="w-[134px]" disabled />
+  );
 
   const sendEmail = async ({ email }: z.infer<typeof FormSchema>) => {
     const { data } = await post({
@@ -59,6 +68,7 @@ export const ResetPassword = () => {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     form.trigger();
+    setIsButtonActive(false);
     sendEmail(data);
   };
 
@@ -122,7 +132,7 @@ export const ResetPassword = () => {
           {emailSent ? (
             <Button onClick={() => router.push('/signin')}>Войти</Button>
           ) : (
-            <Button type="submit">Отправить</Button>
+            buttonVariants
           )}
         </div>
       </form>

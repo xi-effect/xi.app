@@ -50,11 +50,19 @@ export const NewPassword = () => {
 
   const onSubmit = () => {
     trigger();
+    setIsButtonActive(false);
   };
 
   const [isPasswordShowFirst, setIsPasswordShowFirst] = React.useState(false);
   const [isPasswordShowSecond, setIsPasswordShowSecond] = React.useState(false);
-
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
+  const buttonVariants = isButtonActive ? (
+    <Button type="submit" variant="default">
+      Сохранить
+    </Button>
+  ) : (
+    <Button type="submit" variant="default-spinner" className="w-[134px]" disabled />
+  );
   return (
     <Form {...form}>
       <form
@@ -136,9 +144,7 @@ export const NewPassword = () => {
               Войти
             </Link>
           </div>
-          <Button variant="default" type="submit">
-            Сохранить
-          </Button>
+          {buttonVariants}
         </div>
       </form>
     </Form>

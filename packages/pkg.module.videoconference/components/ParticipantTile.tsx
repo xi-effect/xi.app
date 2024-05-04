@@ -55,11 +55,14 @@ export function ParticipantTile({
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
   const isSpeaking = useIsSpeaking(participant);
-  const trackReference: TrackReferenceOrPlaceholder = React.useMemo(() => ({
+  const trackReference: TrackReferenceOrPlaceholder = React.useMemo(
+    () => ({
       participant: trackRef?.participant ?? maybeTrackRef?.participant ?? p,
       source: trackRef?.source ?? maybeTrackRef?.source ?? source,
       publication: trackRef?.publication ?? maybeTrackRef?.publication ?? publication,
-    }), [maybeTrackRef, p, publication, source, trackRef]);
+    }),
+    [maybeTrackRef, p, publication, source, trackRef],
+  );
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
     participant: trackReference.participant,
@@ -100,11 +103,11 @@ export function ParticipantTile({
                 (trackReference.publication?.kind === 'video' ||
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
-                    <VideoTrack
-                      trackRef={trackReference}
-                      onSubscriptionStatusChanged={handleSubscribe}
-                      manageSubscription={autoManageSubscription}
-                    />
+                  <VideoTrack
+                    trackRef={trackReference}
+                    onSubscriptionStatusChanged={handleSubscribe}
+                    manageSubscription={autoManageSubscription}
+                  />
                 ) : (
                   isTrackReference(trackReference) && (
                     <AudioTrack

@@ -256,7 +256,10 @@ export const CommunityMenu = () => {
                 />
                 {currentCommunity.isOwner && (
                   <>
-                    <DropdownMenuItem onClick={driverAction} className="group sm:w-[302px] hidden md:flex">
+                    <DropdownMenuItem
+                      onClick={driverAction}
+                      className="group hidden sm:w-[302px] md:flex"
+                    >
                       <span>Пройти обучение</span>
                       <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                     </DropdownMenuItem>
