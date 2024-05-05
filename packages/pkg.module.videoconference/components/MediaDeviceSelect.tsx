@@ -1,52 +1,63 @@
+/* eslint-disable prefer-arrow-callback */
 import { useMaybeRoomContext, useMediaDeviceSelect } from '@livekit/components-react';
-import { LocalAudioTrack, LocalVideoTrack } from 'livekit-client';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { SelectItem } from '@xipkg/select';
-import React from 'react';
+import { LocalAudioTrack, LocalVideoTrack, RoomEvent } from 'livekit-client';
+import * as React from 'react';
 
 export type MediaDeviceKind = 'videoinput' | 'audiooutput' | 'audioinput';
 
-interface IMediaDeviceSelect {
-  track?: LocalAudioTrack | LocalVideoTrack | any;
+export interface MediaDeviceSelectProps
+  extends Omit<React.HTMLAttributes<HTMLUListElement>, 'onError'> {
   kind: MediaDeviceKind;
-  initialSelection?: string;
-  onDeviceListChange?: (devices: MediaDeviceInfo[]) => void;
   onActiveDeviceChange?: (deviceId: string) => void;
+  onDeviceListChange?: (devices: MediaDeviceInfo[]) => void;
+  onDeviceSelectError?: (e: Error) => void;
+  initialSelection?: string;
+  exactMatch?: boolean;
+  track?: LocalAudioTrack | LocalVideoTrack;
   requestPermissions?: boolean;
+  onError?: (e: Error) => void;
 }
 
-export function MediaDeviceSelect({
-  kind,
-  initialSelection,
-  track,
-  onActiveDeviceChange,
-  onDeviceListChange,
-  requestPermissions,
-}: IMediaDeviceSelect) {
+export const MediaDeviceSelect = /* @__PURE__ */ React.forwardRef<
+  HTMLUListElement,
+  MediaDeviceSelectProps
+>(function MediaDeviceSelect(
+  {
+    kind,
+    initialSelection,
+    onActiveDeviceChange,
+    onDeviceListChange,
+    onDeviceSelectError,
+    exactMatch,
+    track,
+    requestPermissions,
+    onError,
+  }: MediaDeviceSelectProps,
+  ref,
+) {
   const room = useMaybeRoomContext();
+  const handleError = React.useCallback(
+    (e: Error) => {
+      if (room) {
+        room.emit(RoomEvent.MediaDevicesError, e);
+      }
+      onError?.(e);
+    },
+    [room, onError],
+  );
   const { devices, activeDeviceId, setActiveMediaDevice } = useMediaDeviceSelect({
     kind,
     room,
     track,
     requestPermissions,
+    onError: handleError,
   });
   React.useEffect(() => {
-    if (initialSelection && initialSelection !== '') {
+    if (initialSelection !== undefined) {
       setActiveMediaDevice(initialSelection);
     }
   }, [setActiveMediaDevice]);
-
-  React.useEffect(() => {
-    if (activeDeviceId && activeDeviceId !== '') {
-      onActiveDeviceChange?.(activeDeviceId);
-    }
-  }, [activeDeviceId]);
-
-  React.useEffect(() => {
-    if (activeDeviceId && activeDeviceId !== '') {
-      onActiveDeviceChange?.(activeDeviceId);
-    }
-  }, [activeDeviceId]);
 
   React.useEffect(() => {
     if (typeof onDeviceListChange === 'function') {
@@ -54,21 +65,48 @@ export function MediaDeviceSelect({
     }
   }, [onDeviceListChange, devices]);
 
+  React.useEffect(() => {
+    if (activeDeviceId && activeDeviceId !== '') {
+      onActiveDeviceChange?.(activeDeviceId);
+    }
+  }, [activeDeviceId]);
+
   const handleActiveDeviceChange = async (deviceId: string) => {
     try {
-      await setActiveMediaDevice(deviceId);
+      await setActiveMediaDevice(deviceId, { exact: exactMatch });
     } catch (e) {
-      console.error('Error in the MediaDeviceSelect');
+      if (e instanceof Error) {
+        onDeviceSelectError?.(e);
+      } else {
+        throw e;
+      }
     }
   };
+  // Merge Props
+  // const mergedProps = React.useMemo(
+  //   () => mergeProps(props, { className }, { className: 'lk-list' }),
+  //   [className, props],
+  // );
 
-  return devices.map((device) => (
-    <SelectItem
-      key={device.deviceId}
-      onSelect={() => handleActiveDeviceChange(device.deviceId)}
-      value={device.deviceId}
-    >
-      {device.label}
-    </SelectItem>
-  ));
-}
+  function isActive(deviceId: string, activeDeviceId: string, index: number) {
+    return deviceId === activeDeviceId || (index === 0 && activeDeviceId === 'default');
+  }
+
+  return (
+    <ul ref={ref}>
+      {devices.map((device, index) => (
+        <li
+          key={device.deviceId}
+          id={device.deviceId}
+          data-lk-active={isActive(device.deviceId, activeDeviceId, index)}
+          aria-selected={isActive(device.deviceId, activeDeviceId, index)}
+          role="option"
+        >
+          <button type="submit" onClick={() => handleActiveDeviceChange(device.deviceId)}>
+            <SelectItem value={device.deviceId}>{device.label}</SelectItem>
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+});

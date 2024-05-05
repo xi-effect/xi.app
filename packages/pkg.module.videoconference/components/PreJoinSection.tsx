@@ -13,14 +13,6 @@ import {
   usePersistentUserChoices,
   usePreviewTracks,
 } from '@livekit/components-react';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@xipkg/select';
 import { Conference, Microphone, SoundTwo } from '@xipkg/icons';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 
