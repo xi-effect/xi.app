@@ -75,10 +75,20 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     formState: { errors },
   } = form;
 
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
+  const displayedButton = isButtonActive ?
+    <Button variant="default" type="submit" className="w-24">Войти</Button>
+    : <Button variant="default-spinner" className="w-24" disabled />;
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
+    setIsButtonActive(false);
     const status = await onSignIn({ ...data, setError });
-    if (status === 200) router.push('/communities/1/home');
+    if (status === 200) {
+      router.push('/communities/1/home');
+    } else {
+      setIsButtonActive(true);
+    }
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
@@ -144,7 +154,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
           Восстановить пароль
         </Link>
         <div className="flex h-full w-full items-end justify-between">
-          <div className="flex h-[56px] items-center">
+          <div className="flex h-[48px] items-center">
             <Link
               id="to-signup-link"
               data-umami-event="to-signup-link"
@@ -156,9 +166,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
               Зарегистрироваться
             </Link>
           </div>
-          <Button variant="default" type="submit">
-            Войти
-          </Button>
+          {displayedButton}
         </div>
       </form>
     </Form>
