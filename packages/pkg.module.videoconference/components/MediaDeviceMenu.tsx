@@ -1,9 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { LocalAudioTrack, LocalVideoTrack } from 'livekit-client';
 import { computeMenuPosition, log, wasClickOutside } from '@livekit/components-core';
 import { Select, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@xipkg/select';
-import { Conference } from '@xipkg/icons';
+import { Conference, Microphone } from '@xipkg/icons';
 import { MediaDeviceKind, MediaDeviceSelect } from './MediaDeviceSelect';
 
 export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,7 +11,6 @@ export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLBut
   onActiveDeviceChange?: (kind: MediaDeviceKind, deviceId: string) => void;
   tracks: Partial<Record<MediaDeviceKind, LocalAudioTrack | LocalVideoTrack | undefined>>;
   requestPermissions?: boolean;
-  disabled: boolean;
 }
 
 export function MediaDeviceMenu({
@@ -20,7 +18,6 @@ export function MediaDeviceMenu({
   initialSelection,
   onActiveDeviceChange,
   tracks,
-  disabled,
   requestPermissions = false,
   ...props
 }: MediaDeviceMenuProps) {
@@ -79,11 +76,23 @@ export function MediaDeviceMenu({
     };
   }, [handleClickOutside, setUpdateRequired]);
 
+  const getPlaceholder = () => {
+    const placeholders = {
+      audioinput: 'Встроенный микрофон',
+      audiooutput: 'Встроенные динамики',
+      videoinput: 'Встроенная камера',
+      default: 'Неизвестно',
+    };
+    if (!initialSelection && kind) {
+      return placeholders[kind] || placeholders.default;
+    }
+    return placeholders.default;
+  };
   return (
-    <Select disabled={disabled} defaultValue={initialSelection}>
+    <Select defaultValue={initialSelection}>
       <SelectTrigger className="w-full">
-        <Conference width={14} />
-        <SelectValue placeholder="Встроенная камера" />
+        {kind === 'videoinput' ? <Conference width={14} /> : <Microphone width={14} />}
+        <SelectValue placeholder={getPlaceholder()} />
       </SelectTrigger>
       <SelectContent className="w-full">
         <SelectGroup>

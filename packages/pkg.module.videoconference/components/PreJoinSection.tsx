@@ -243,7 +243,6 @@ export function PreJoinSection({
           <div className="my-4">
             <h2 className="mb-1 font-sans">Камера</h2>
             <MediaDeviceMenu
-              disabled={!videoTrack}
               initialSelection={videoDeviceId}
               kind="videoinput"
               tracks={{ videoinput: videoTrack }}
@@ -254,7 +253,6 @@ export function PreJoinSection({
             <h2 className="mb-1 font-sans">Звук</h2>
             <div className="flex flex-col gap-2">
               <MediaDeviceMenu
-                disabled={!audioTrack}
                 initialSelection={audioDeviceId}
                 kind="audioinput"
                 tracks={{ audioinput: audioTrack }}
