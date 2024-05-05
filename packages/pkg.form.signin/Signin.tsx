@@ -82,17 +82,13 @@ export const SignIn = ({ onSignIn }: SignInT) => {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
-    const status = await onSignIn({ ...data, setError });
-<<<<<<< HEAD
-    if (status === 200) router.push('/communities/1/home');
-=======
     setIsButtonActive(false);
+    const status = await onSignIn({ ...data, setError });
     if (status === 200) {
       router.push('/communities/1/home');
     } else {
       setIsButtonActive(true);
     }
->>>>>>> 516706e (feat(32968621): added default-spinner button variant (Signin page))
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
@@ -158,7 +154,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
           Восстановить пароль
         </Link>
         <div className="flex h-full w-full items-end justify-between">
-          <div className="flex h-[56px] items-center">
+          <div className="flex h-[48px] items-center">
             <Link
               id="to-signup-link"
               data-umami-event="to-signup-link"
