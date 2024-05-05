@@ -154,7 +154,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
           Восстановить пароль
         </Link>
         <div className="flex h-full w-full items-end justify-between">
-          <div className="flex h-[48px] items-center">
+          <div className="flex h-[48px] items-center pb-0.5">
             <Link
               id="to-signup-link"
               data-umami-event="to-signup-link"
