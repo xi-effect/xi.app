@@ -1,8 +1,7 @@
-import { useMemo } from 'react';
-import { IChannel, ICategory } from './types';
+import React, { useMemo } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import React from 'react';
+import { IChannel, ICategory } from './types';
 import { Channel } from './Channel';
 
 interface ICategoryContainer {
@@ -13,12 +12,10 @@ interface ICategoryContainer {
 
 export function CategoryContainer({ category, channels, setSlideIndex }: ICategoryContainer) {
   const { title, subtitle, id } = category;
-  const channelsIds = useMemo(() => {
-    return channels.map((channel: IChannel) => channel.elId);
-  }, [channels]);
+  const channelsIds = useMemo(() => channels.map((channel: IChannel) => channel.elId), [channels]);
 
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
-    id: id,
+    id,
     data: {
       type: 'Category',
       category,
@@ -34,7 +31,7 @@ export function CategoryContainer({ category, channels, setSlideIndex }: ICatego
   if (isDragging) {
     return (
       <div style={categoryStyle} ref={setNodeRef}>
-        <div className="border-b-brand-80 bg-brand-80 h-[4px] rounded-[2px]"></div>
+        <div className="border-b-brand-80 bg-brand-80 h-[4px] rounded-[2px]" />
       </div>
     );
   }
@@ -51,9 +48,9 @@ export function CategoryContainer({ category, channels, setSlideIndex }: ICatego
       </div>
       <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
         <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
-          {channels.map((channel: IChannel) => {
-            return <Channel setSlideIndex={setSlideIndex} key={channel.elId} channel={channel} />;
-          })}
+          {channels.map((channel: IChannel) => (
+            <Channel setSlideIndex={setSlideIndex} key={channel.elId} channel={channel} />
+          ))}
         </SortableContext>
       </div>
     </div>

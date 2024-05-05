@@ -1,7 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import {
   Modal,
-  ModalTrigger,
   ModalContent,
   ModalHeader,
   ModalFooter,
@@ -15,7 +14,8 @@ import { Button } from '@xipkg/button';
 import { ActionsSheetButton } from './components/ActionsSheetButton';
 
 interface CommunityChannelCreateT {
-  children: ReactNode;
+  open: boolean;
+  onOpenChange: (value: React.SetStateAction<boolean>) => void;
 }
 // border-[6px] создает визуал радио-кнопки, по дизайну ширина 6px у обводки синий.
 const classBtnActive = 'border-[6px] border-solid border-brand-80';
@@ -46,14 +46,11 @@ const actionsSheetList = [
   },
 ];
 
-export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) => {
+export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelCreateT) => {
   const [currentAction, setCurrentAction] = React.useState<number | null>(null);
 
   return (
-    <Modal>
-      <ModalTrigger className="flex w-full items-center justify-between bg-transparent">
-        {children}
-      </ModalTrigger>
+    <Modal open={open} onOpenChange={onOpenChange}>
       <ModalContent className="sm:max-w-[560px] xl:max-w-[600px]">
         <ModalHeader className="flex flex-row items-center justify-between">
           <ModalTitle className="text-[24px] font-bold text-gray-100">Создание канала</ModalTitle>
@@ -61,7 +58,7 @@ export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) =>
             <Close className="fill-gray-80 sm:fill-gray-0" />
           </ModalCloseButton>
         </ModalHeader>
-        <div className="space-y-6 px-6">
+        <div className="h-full max-h-[calc(100vh-80px-182px)] space-y-6 overflow-auto p-6">
           <div className="flex flex-col gap-2">
             <Label className="text-[16px] font-normal text-gray-100">Название</Label>
             <Input />

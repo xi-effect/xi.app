@@ -78,7 +78,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
     const status = await onSignIn({ ...data, setError });
-    if (status === 200) router.push('/community/1/home');
+    if (status === 200) router.push('/communities/1/home');
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
