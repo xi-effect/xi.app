@@ -2,7 +2,7 @@ import React from 'react';
 import { LocalAudioTrack, LocalVideoTrack } from 'livekit-client';
 import { computeMenuPosition, log, wasClickOutside } from '@livekit/components-core';
 import { Select, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@xipkg/select';
-import { Conference, Microphone } from '@xipkg/icons';
+import { Conference, Microphone, SoundTwo } from '@xipkg/icons';
 import { MediaDeviceKind, MediaDeviceSelect } from './MediaDeviceSelect';
 
 export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -83,15 +83,18 @@ export function MediaDeviceMenu({
       videoinput: 'Встроенная камера',
       default: 'Неизвестно',
     };
+    if (initialSelection === '') return placeholders.default;
     if (!initialSelection && kind) {
       return placeholders[kind] || placeholders.default;
     }
     return placeholders.default;
   };
   return (
-    <Select defaultValue={initialSelection}>
+    <Select defaultValue={initialSelection || undefined}>
       <SelectTrigger className="w-full">
-        {kind === 'videoinput' ? <Conference width={14} /> : <Microphone width={14} />}
+        {kind === 'videoinput' && <Conference width={14} />}
+        {kind === 'audiooutput' && <SoundTwo width={14} />}
+        {!(kind === 'videoinput' || kind === 'audiooutput') && <Microphone width={14} />}
         <SelectValue placeholder={getPlaceholder()} />
       </SelectTrigger>
       <SelectContent className="w-full">

@@ -31,7 +31,7 @@ export function MediaDeviceSelect({
     requestPermissions,
   });
   React.useEffect(() => {
-    if (initialSelection !== undefined) {
+    if (initialSelection && initialSelection !== '') {
       setActiveMediaDevice(initialSelection);
     }
   }, [setActiveMediaDevice]);

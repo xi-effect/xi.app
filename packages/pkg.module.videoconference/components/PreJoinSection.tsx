@@ -57,12 +57,6 @@ export function PreJoinSection({
   connect,
   setUserChoice,
 }: IPreJoinSection & PreJoinProps) {
-  const videoControl = useMediaDeviceSelect({
-    kind: 'videoinput',
-  });
-  const audioControl = useMediaDeviceSelect({
-    kind: 'audioinput',
-  });
   const dinamicControl = useMediaDeviceSelect({
     kind: 'audiooutput',
   });
@@ -147,6 +141,7 @@ export function PreJoinSection({
     () => tracks?.filter((track) => track.kind === Track.Kind.Audio)[0] as LocalAudioTrack,
     [tracks],
   );
+
   React.useEffect(() => {
     if (videoEl.current && videoTrack) {
       videoTrack.unmute();
@@ -258,26 +253,12 @@ export function PreJoinSection({
                 tracks={{ audioinput: audioTrack }}
                 onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
               />
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SoundTwo width={14} />
-                  <SelectValue placeholder="Встроенные динамики" />
-                </SelectTrigger>
-                <SelectContent className="w-full">
-                  <SelectGroup>
-                    {/* audiooutput */}
-                    {dinamicControl.devices.map((device) => (
-                      <SelectItem
-                        key={device.deviceId}
-                        onSelect={() => dinamicControl.setActiveMediaDevice(device.deviceId)}
-                        value={device.deviceId}
-                      >
-                        {device.label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <MediaDeviceMenu
+                initialSelection={dinamicControl?.activeDeviceId}
+                kind="audiooutput"
+                tracks={{ audiooutput: audioTrack }}
+                onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
+              />
             </div>
           </div>
           <Button className="w-full" type="submit" onClick={() => setConnect((prev) => !prev)}>
