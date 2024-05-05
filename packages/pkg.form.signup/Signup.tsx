@@ -74,9 +74,6 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
   } = form;
 
   const [isButtonActive, setIsButtonActive] = React.useState(true);
-  const displayedButton = isButtonActive ?
-    <Button size="m" variant="default" type="submit" className="w-[214px]">Зарегистрироваться</Button>
-    : <Button variant="default-spinner" className="w-[214px]" disabled />;
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
@@ -181,7 +178,11 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
               Войти
             </Link>
           </div>
-          {displayedButton}
+          {
+            isButtonActive ?
+              <Button size="m" variant="default" type="submit" className="w-[214px]">Зарегистрироваться</Button>
+              : <Button variant="default-spinner" className="w-[214px]" disabled />
+          }
         </div>
       </form>
     </Form>
