@@ -85,7 +85,6 @@ export function MediaDeviceMenu({
     }
     return placeholders.default;
   };
-
   const room = useMaybeRoomContext();
   const handleError = React.useCallback(
     (e: Error) => {
@@ -103,7 +102,6 @@ export function MediaDeviceMenu({
   });
 
   async function handleActiveChange(deviceId: string, kind: MediaDeviceKind) {
-    console.log(deviceId);
     // eslint-disable-next-line no-useless-catch
     try {
       setIsOpen(false);
