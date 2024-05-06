@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Button } from '@xipkg/button';
+import { useRouter } from 'next/navigation';
 import {
   Form,
   FormControl,
@@ -12,15 +13,17 @@ import {
   useForm,
 } from '@xipkg/form';
 import { Input } from '@xipkg/input';
+import { FileUploader } from '@xipkg/fileuploader';
 import { Logo } from 'pkg.logo';
-import { useRouter } from 'next/navigation';
-import { put } from 'pkg.utils/fetch';
+import { put } from 'pkg.utils';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { StageType } from '../EmptyCommunity';
 
-type CommunityInviteProps = {
-  setStage: (stage: string) => void;
+type CommunityCreateProps = {
+  setStage: (stage: React.SetStateAction<StageType>) => void;
+  setTab: (tab: React.SetStateAction<number>) => void;
 };
 
 type RequestBody = {};
@@ -31,22 +34,23 @@ type ResponseBody = {
 };
 
 const FormSchema = z.object({
-  invite: z.string({
+  community: z.string({
     required_error: 'Обязательное поле',
   }),
 });
 
-export default function CommunityInvite({ setStage }: CommunityInviteProps) {
+export default function CommunityCreate({ setStage, setTab }: CommunityCreateProps) {
   const router = useRouter();
 
   const handleBack = () => {
     setStage('notFound');
+    setTab(0);
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      invite: '',
+      community: '',
     },
   });
 
@@ -57,7 +61,7 @@ export default function CommunityInvite({ setStage }: CommunityInviteProps) {
     formState: { errors },
   } = form;
 
-  const watchInvite = watch('invite');
+  const watchCommunity = watch('community');
 
   const onSubmit = async () => {
     const { status, data } = await put<RequestBody, ResponseBody>({
@@ -80,33 +84,41 @@ export default function CommunityInvite({ setStage }: CommunityInviteProps) {
   };
 
   return (
-    <div className="h-full w-full p-8 flex justify-center content-center">
-      <div className="flex flex-col h-full xs:p-8 w-full max-w-[536px]">
+    <div className="flex h-full w-full content-center justify-center p-8">
+      <div className="xs:p-8 flex h-full w-full max-w-[536px] flex-col">
         <div className="h-22">
           <Logo height={24} width={202} logoVariant="navigation" logoSize="default" />
         </div>
-        <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
-          <div className="bg-brand-80 w-1/2 h-1.5 rounded" />
-          <div className="bg-brand-80 w-1/2 h-1.5 rounded" />
+        <div className="mt-16 flex w-full flex-row items-start justify-between gap-4">
+          <div className="bg-brand-80 h-1.5 w-1/2 rounded" />
+          <div className="bg-brand-80 h-1.5 w-1/2 rounded" />
         </div>
         <div id="title" className="mt-8 text-2xl font-semibold leading-[32px] text-gray-100">
-          Присоединитесь к сообществу
+          Создайте сообщество
+        </div>
+        <div className="mt-8 flex h-16 flex-row">
+          <div className="bg-brand-80 h-16 w-16 shrink-0 rounded-[32px]" />
+          <div className="ml-4 flex flex-col gap-2">
+            <span className="text-gray-90 w-full font-medium leading-[22px]">
+              Изображение сообщества
+            </span>
+            <FileUploader size="small" onChange={() => {}} />
+          </div>
         </div>
         <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full flex flex-col">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex h-full w-full flex-col">
             <FormField
               control={control}
-              name="invite"
+              name="community"
               render={({ field }) => (
                 <FormItem className="mt-8">
-                  <FormLabel>Ссылка-приглашение</FormLabel>
+                  <FormLabel>Название</FormLabel>
                   <FormControl>
                     <Input
                       className="mt-1"
-                      placeholder="https://xieffect.ru/invite/"
-                      error={!!errors?.invite}
+                      error={!!errors?.community}
                       autoComplete="off"
-                      type="link"
+                      type="text"
                       {...field}
                     />
                   </FormControl>
@@ -114,11 +126,11 @@ export default function CommunityInvite({ setStage }: CommunityInviteProps) {
                 </FormItem>
               )}
             />
-            <div className="pt-4 mt-auto flex flex-row gap-6">
+            <div className="mt-auto flex flex-row gap-6 pt-4">
               <Button onClick={handleBack} variant="ghost" className="w-[98px]">
                 Назад
               </Button>
-              <Button disabled={watchInvite.length === 0} type="submit" className="w-full">
+              <Button disabled={watchCommunity.length === 0} type="submit" className="w-full">
                 Продолжить
               </Button>
             </div>
