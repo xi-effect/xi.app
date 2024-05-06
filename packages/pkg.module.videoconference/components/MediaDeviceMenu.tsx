@@ -1,15 +1,20 @@
+/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import { LocalAudioTrack, LocalVideoTrack } from 'livekit-client';
-import { computeMenuPosition, log, wasClickOutside } from '@livekit/components-core';
+import { LocalAudioTrack, LocalVideoTrack, RoomEvent } from 'livekit-client';
+import { computeMenuPosition, wasClickOutside } from '@livekit/components-core';
 import { Select, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@xipkg/select';
 import { Conference, Microphone, SoundTwo } from '@xipkg/icons';
+import { useMaybeRoomContext, useMediaDeviceSelect } from '@livekit/components-react';
 import { MediaDeviceKind, MediaDeviceSelect } from './MediaDeviceSelect';
 
 export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  disabled?: boolean;
   kind: MediaDeviceKind;
   initialSelection?: string;
   onActiveDeviceChange?: (kind: MediaDeviceKind, deviceId: string) => void;
-  tracks: Partial<Record<MediaDeviceKind, LocalAudioTrack | LocalVideoTrack | undefined>>;
+  tracks?: Partial<Record<MediaDeviceKind, LocalAudioTrack | LocalVideoTrack | undefined>>;
   requestPermissions?: boolean;
 }
 
@@ -17,21 +22,12 @@ export function MediaDeviceMenu({
   kind,
   initialSelection,
   onActiveDeviceChange,
-  tracks,
+  disabled,
   requestPermissions = false,
-  ...props
 }: MediaDeviceMenuProps) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [devices, setDevices] = React.useState<MediaDeviceInfo[]>([]);
   const [updateRequired, setUpdateRequired] = React.useState<boolean>(true);
   const [needPermissions, setNeedPermissions] = React.useState(requestPermissions);
-
-  const handleActiveDeviceChange = (kind: MediaDeviceKind, deviceId: string) => {
-    log.debug('handle device change');
-    setIsOpen(false);
-    onActiveDeviceChange?.(kind, deviceId);
-  };
-
   const button = React.useRef<HTMLButtonElement>(null);
   const tooltip = React.useRef<HTMLDivElement>(null);
 
@@ -50,7 +46,7 @@ export function MediaDeviceMenu({
       });
     }
     setUpdateRequired(false);
-  }, [button, tooltip, devices, updateRequired]);
+  }, [button, tooltip, updateRequired]);
 
   const handleClickOutside = React.useCallback(
     (event: MouseEvent) => {
@@ -89,8 +85,41 @@ export function MediaDeviceMenu({
     }
     return placeholders.default;
   };
+
+  const room = useMaybeRoomContext();
+  const handleError = React.useCallback(
+    (e: Error) => {
+      if (room) {
+        room.emit(RoomEvent.MediaDevicesError, e);
+      }
+    },
+    [room],
+  );
+  const { devices, setActiveMediaDevice } = useMediaDeviceSelect({
+    kind,
+    room,
+    requestPermissions,
+    onError: handleError,
+  });
+
+  async function handleActiveChange(deviceId: string, kind: MediaDeviceKind) {
+    console.log(deviceId);
+    // eslint-disable-next-line no-useless-catch
+    try {
+      setIsOpen(false);
+      onActiveDeviceChange?.(kind, deviceId);
+      await setActiveMediaDevice(deviceId);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   return (
-    <Select defaultValue={initialSelection || undefined}>
+    <Select
+      onValueChange={(value) => handleActiveChange(value, kind)}
+      defaultValue={initialSelection || undefined}
+      disabled={disabled}
+    >
       <SelectTrigger className="w-full">
         {kind === 'videoinput' && <Conference width={14} />}
         {kind === 'audiooutput' && <SoundTwo width={14} />}
@@ -99,21 +128,7 @@ export function MediaDeviceMenu({
       </SelectTrigger>
       <SelectContent className="w-full">
         <SelectGroup>
-          <button
-            type="button"
-            className="w-full bg-transparent"
-            onClick={() => setIsOpen(!isOpen)}
-            {...props}
-          >
-            <MediaDeviceSelect
-              initialSelection={initialSelection}
-              onActiveDeviceChange={(deviceId) => handleActiveDeviceChange(kind, deviceId)}
-              onDeviceListChange={setDevices}
-              kind={kind}
-              track={tracks?.[kind]}
-              requestPermissions={needPermissions}
-            />
-          </button>
+          <MediaDeviceSelect devices={devices} />
         </SelectGroup>
       </SelectContent>
     </Select>

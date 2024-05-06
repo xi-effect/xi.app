@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@xipkg/button';
 import { LocalUserChoices } from '@livekit/components-core';
 import React, { useEffect } from 'react';
@@ -13,7 +12,7 @@ import {
   usePersistentUserChoices,
   usePreviewTracks,
 } from '@livekit/components-react';
-import { Conference, Microphone, SoundTwo } from '@xipkg/icons';
+import { Conference, Microphone } from '@xipkg/icons';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 
 export interface PreJoinProps
@@ -230,6 +229,7 @@ export function PreJoinSection({
           <div className="my-4">
             <h2 className="mb-1 font-sans">Камера</h2>
             <MediaDeviceMenu
+              disabled={!videoEnabled}
               initialSelection={videoDeviceId}
               kind="videoinput"
               tracks={{ videoinput: videoTrack }}
@@ -240,12 +240,14 @@ export function PreJoinSection({
             <h2 className="mb-1 font-sans">Звук</h2>
             <div className="flex flex-col gap-2">
               <MediaDeviceMenu
+                disabled={!audioEnabled}
                 initialSelection={audioDeviceId}
                 kind="audioinput"
                 tracks={{ audioinput: audioTrack }}
                 onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
               />
               <MediaDeviceMenu
+                disabled={!audioEnabled}
                 initialSelection={dinamicControl?.activeDeviceId}
                 kind="audiooutput"
                 tracks={{ audiooutput: audioTrack }}
