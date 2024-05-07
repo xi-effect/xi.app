@@ -1,5 +1,5 @@
 {
-  "name": "pkg.form.signup",
+  "name": "pkg.modal.invite-community",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -8,31 +8,32 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@xipkg/button": "1.3.0",
+    "@hookform/resolvers": "^3.3.4",
+    "@xipkg/badge": "^0.1.0",
+    "@xipkg/button": "^1.1.3",
+    "@xipkg/datepicker": "^0.2.0",
+    "@xipkg/dropdown": "^1.2.0",
     "@xipkg/form": "^2.0.0",
-    "@xipkg/icons": "0.8.4",
-    "@xipkg/input": "0.1.1",
-    "@xipkg/link": "0.2.0",
-    "@xipkg/utils": "1.0.1",
+    "@xipkg/icons": "^0.8.6",
+    "@xipkg/input": "^0.1.1",
+    "@xipkg/modal": "^1.5.0",
+    "@xipkg/popover": "^1.2.0",
+    "date-fns": "^3.6.0",
     "next": "^13.5.6",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
-    "pkg.logo": "*",
-    "zod": "3.22.4"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "eslint-config-custom": "*",
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "1.4.0",
     "@xipkg/tailwind": "0.3.6",
     "@xipkg/typescript": "latest",
+    "eslint-config-custom": "*",
     "typescript": "^5.4.2"
   },
-  "peerDependencies": {
-    "react-hook-form": "^7.0.0",
-    "@hookform/resolvers": "^3.1.1"
-  },
-  "description": "form for signin",
+  "description": "modal form for invite to community",
   "author": "xi.effect"
 }

@@ -5,6 +5,7 @@ import { redirect, usePathname } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { useMainSt } from 'pkg.stores';
+// import { useSocketIO } from 'pkg.utils';
 import Load from './load';
 
 const mapsOfPathsWithoutRedirect = ['/', '/signin', '/signup', '/reset-password'];
@@ -27,6 +28,49 @@ const welcomePagesPathsDict = {
 type AuthProviderT = {
   children: ReactNode;
 };
+
+// const SocketProvider = ({ children }: { children: ReactNode }) => {
+//   const socket = useSocketIO();
+//   const isLogin = useMainSt((state) => state.isLogin);
+
+//   useEffect(() => {
+//     if (!socket.connected && isLogin) {
+//       socket.connect();
+//     }
+
+//     socket?.on('connect', () => {
+//       console.info('SIO connect', socket?.id);
+//     });
+
+//     socket?.on('disconnect', () => {
+//       console.info('SIO disconnect', socket?.id);
+//     });
+
+//     socket?.on('error', () => {
+//       toast('Ошибка вебсокета');
+//     });
+
+//     socket?.on('connect_error', (error) => {
+//       if (socket.active) {
+//         toast('Ошибка вебсокета, автоматическое переподключение');
+//         // temporary failure, the socket will automatically try to reconnect
+//       } else {
+//         toast('Ошибка вебсокета, переподключение');
+//         socket.connect();
+//         // the connection was denied by the server
+//         // in that case, `socket.connect()` must be manually called in order to reconnect
+//         console.log(error.message);
+//       }
+//     });
+
+//     return () => {
+//       socket?.off();
+//       socket?.disconnect();
+//     };
+//   }, []);
+
+//   return children;
+// };
 
 const AuthProvider = ({ children }: AuthProviderT) => {
   const pathname = usePathname();
@@ -57,7 +101,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     onboardingStage === 'completed' &&
     welcomePagesPaths.includes(pathname)
   ) {
-    redirect('/community/1/home');
+    redirect('/communities/1/home');
   }
 
   if (
@@ -87,7 +131,10 @@ export const Providers = ({ children }: ProvidersT) => {
   return (
     <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
       <Toaster />
-      <AuthProvider>{children}</AuthProvider>
+      <AuthProvider>
+        {/* <SocketProvider>{children}</SocketProvider> */}
+        {children}
+      </AuthProvider>
     </ThemeProvider>
   );
 };
