@@ -111,7 +111,6 @@ export function MediaDeviceMenu({
       throw e;
     }
   }
-
   return (
     <Select
       onValueChange={(value) => handleActiveChange(value, kind)}
@@ -124,7 +123,10 @@ export function MediaDeviceMenu({
         {!(kind === 'videoinput' || kind === 'audiooutput') && <Microphone width={14} />}
         <SelectValue placeholder={getPlaceholder()} />
       </SelectTrigger>
-      <SelectContent className="w-full">
+      <SelectContent
+        ref={(ref) => ref?.addEventListener('touchend', (e) => e.preventDefault())}
+        className="w-full"
+      >
         <SelectGroup>
           <MediaDeviceSelect devices={devices} />
         </SelectGroup>

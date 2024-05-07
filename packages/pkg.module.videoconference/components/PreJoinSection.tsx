@@ -255,7 +255,7 @@ export function PreJoinSection({
               />
             </div>
           </div>
-          <Button className="w-full" type="submit" onClick={() => setConnect((prev) => !prev)}>
+          <Button onClick={() => setConnect((prev) => !prev)} className="w-full">
             Присоединиться
           </Button>
         </div>
