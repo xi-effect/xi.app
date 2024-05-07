@@ -73,10 +73,17 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
     formState: { errors },
   } = form;
 
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
+    setIsButtonActive(false);
     const status = await onSignUp({ ...data, setError });
-    if (status === 200) router.push('/welcome/user-info');
+    if (status === 200) {
+      router.push('/welcome/user-info');
+    } else {
+      setIsButtonActive(true);
+    }
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
@@ -166,14 +173,16 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
           )}
         />
         <div className="flex h-full w-full items-end justify-between">
-          <div className="flex h-[56px] items-center">
+          <div className="flex h-[48px] items-center">
             <Link size="l" theme="brand" variant="hover" href="/">
               Войти
             </Link>
           </div>
-          <Button size="m" variant="default" type="submit">
-            Зарегистрироваться
-          </Button>
+          {
+            isButtonActive ?
+              <Button size="m" variant="default" type="submit" className="w-[214px]">Зарегистрироваться</Button>
+              : <Button variant="default-spinner" className="w-[214px]" disabled />
+          }
         </div>
       </form>
     </Form>
