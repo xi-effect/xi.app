@@ -2,6 +2,6 @@
 
 import { EmptyCommunity } from 'pkg.community.empty';
 
-export default function SignUpPage() {
+export default function EmptyCommunityPage() {
   return <EmptyCommunity />;
 }
