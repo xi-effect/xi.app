@@ -1,8 +1,5 @@
-/* eslint-disable react/no-unused-prop-types */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import React from 'react';
-import { LocalAudioTrack, LocalVideoTrack, RoomEvent } from 'livekit-client';
+import { RoomEvent } from 'livekit-client';
 import { computeMenuPosition, wasClickOutside } from '@livekit/components-core';
 import { Select, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@xipkg/select';
 import { Conference, Microphone, SoundTwo } from '@xipkg/icons';
@@ -14,7 +11,7 @@ export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLBut
   kind: MediaDeviceKind;
   initialSelection?: string;
   onActiveDeviceChange?: (kind: MediaDeviceKind, deviceId: string) => void;
-  tracks?: Partial<Record<MediaDeviceKind, LocalAudioTrack | LocalVideoTrack | undefined>>;
+
   requestPermissions?: boolean;
 }
 
@@ -27,6 +24,7 @@ export function MediaDeviceMenu({
 }: MediaDeviceMenuProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [updateRequired, setUpdateRequired] = React.useState<boolean>(true);
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [needPermissions, setNeedPermissions] = React.useState(requestPermissions);
   const button = React.useRef<HTMLButtonElement>(null);
   const tooltip = React.useRef<HTMLDivElement>(null);
@@ -102,14 +100,9 @@ export function MediaDeviceMenu({
   });
 
   async function handleActiveChange(deviceId: string, kind: MediaDeviceKind) {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      setIsOpen(false);
-      onActiveDeviceChange?.(kind, deviceId);
-      await setActiveMediaDevice(deviceId);
-    } catch (e) {
-      throw e;
-    }
+    setIsOpen(false);
+    onActiveDeviceChange?.(kind, deviceId);
+    await setActiveMediaDevice(deviceId);
   }
   return (
     <Select

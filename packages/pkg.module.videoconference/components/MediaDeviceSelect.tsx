@@ -9,7 +9,7 @@ interface IMediaDeviceSelect {
 export function MediaDeviceSelect({ devices }: IMediaDeviceSelect) {
   return (
     <ul>
-      {devices?.map((device) => (
+      {devices && devices.map((device) => (
         <li key={device.deviceId} id={device.deviceId}>
           <SelectItem value={device.deviceId}>{device.label}</SelectItem>
         </li>

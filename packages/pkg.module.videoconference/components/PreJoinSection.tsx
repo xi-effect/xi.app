@@ -20,11 +20,7 @@ export interface PreJoinProps
   onValidate?: (values: LocalUserChoices) => boolean;
   onError?: (error: Error) => void;
   defaults?: Partial<LocalUserChoices>;
-  joinLabel?: string;
-  micLabel?: string;
   defaultUserChoices?: any;
-  camLabel?: string;
-  userLabel?: string;
   persistUserChoices?: boolean;
 }
 
@@ -38,10 +34,6 @@ export function PreJoinSection({
   defaults = {},
   onValidate,
   onError,
-  joinLabel = 'Join Room',
-  micLabel,
-  camLabel,
-  userLabel = 'Username',
   persistUserChoices = true,
   defaultUserChoices,
   setConnect,
@@ -232,7 +224,6 @@ export function PreJoinSection({
               disabled={!videoEnabled}
               initialSelection={videoDeviceId}
               kind="videoinput"
-              tracks={{ videoinput: videoTrack }}
               onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
             />
           </div>
@@ -243,14 +234,12 @@ export function PreJoinSection({
                 disabled={!audioEnabled}
                 initialSelection={audioDeviceId}
                 kind="audioinput"
-                tracks={{ audioinput: audioTrack }}
                 onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
               />
               <MediaDeviceMenu
                 disabled={!audioEnabled}
                 initialSelection={dinamicControl?.activeDeviceId}
                 kind="audiooutput"
-                tracks={{ audiooutput: audioTrack }}
                 onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
               />
             </div>
