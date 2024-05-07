@@ -15,6 +15,7 @@ import { Button } from '@xipkg/button';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 // import { useSocketIO } from 'pkg.utils';
 
 // type FormCreateProps = {
@@ -47,6 +48,7 @@ const FormCreateBlock = () => {
         },
       },
       (status: number, data: any) => {
+        toast('Успех');
         console.log('on data', status, data);
       },
     );

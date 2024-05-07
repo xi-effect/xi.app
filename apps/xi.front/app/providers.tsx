@@ -85,13 +85,13 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
   //   }
   // });
 
-  useEffect(
-    () => () => {
-      socket?.off();
-      socket?.disconnect();
-    },
-    [],
-  );
+  // useEffect(
+  //   () => () => {
+  //     socket?.off();
+  //     socket?.disconnect();
+  //   },
+  //   [],
+  // );
 
   return children;
 };
