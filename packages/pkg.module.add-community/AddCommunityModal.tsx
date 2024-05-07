@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
-import { useState, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
 import FormCreate from './components/FormCreateStage';
 import FormJoin from './components/FormJoinStage';
 
@@ -24,7 +23,7 @@ export const AddCommunityModal = ({ open, onOpenChange, children }: AddCommunity
           <M.ModalTitle>Создание сообщества</M.ModalTitle>
         </M.ModalHeader>
         <FormCreate />
-        <div className="bg-gray-5 flex flex-col items-center p-8">
+        <div className="bg-gray-5 flex flex-col items-center p-8 rounded-b-[16px]">
           <p className="text-xl font-semibold">У вас есть приглашение?</p>
           <Button className="ml-0 mt-4 w-full" variant="secondary" onClick={() => setStage('join')}>
             Присоединиться к сообществу
