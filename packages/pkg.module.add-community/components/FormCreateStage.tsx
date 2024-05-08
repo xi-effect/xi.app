@@ -16,6 +16,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 // import { useSocketIO } from 'pkg.utils';
 
 // type FormCreateProps = {
@@ -39,6 +40,8 @@ const FormCreateBlock = () => {
 
   const socket = useMainSt((state) => state.socket);
 
+  const router = useRouter();
+
   const onSubmit = ({ name }: z.infer<typeof FormSchema>) => {
     socket.emit(
       'create-community',
@@ -48,17 +51,14 @@ const FormCreateBlock = () => {
         },
       },
       (status: number, data: any) => {
-        toast('Успех');
         console.log('on data', status, data);
+        if (status === 200) {
+          router.push(`/communities/${data.id}/home`);
+        } else {
+          toast('Ошибка при создании сообщества');
+        }
       },
     );
-
-    // if (status === 204) {
-    //   updateUser({ onboardingStge: 'final' });
-    //   router.push('/welcome/final');
-    // } else {
-    //   toast('Ошибка сервера');
-    // }
   };
 
   return (
