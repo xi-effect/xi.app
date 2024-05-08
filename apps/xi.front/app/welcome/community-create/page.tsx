@@ -4,7 +4,7 @@ import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { put } from 'pkg.utils';
+// import { useSocketIO } from 'pkg.utils';
 import {
   Form,
   FormControl,
@@ -28,12 +28,6 @@ const FormSchema = z.object({
     required_error: 'Обязательное поле',
   }),
 });
-
-type RequestBody = {};
-
-type ResponseBody = {
-  detail: string;
-};
 
 export default function WelcomeCommunityCreate() {
   const updateUser = useMainSt((state) => state.updateUser);
@@ -69,31 +63,32 @@ export default function WelcomeCommunityCreate() {
   const {
     control,
     watch,
-    handleSubmit,
+    // handleSubmit,
     formState: { errors },
   } = form;
 
   const watchCommunity = watch('community');
 
-  const onSubmit = async () => {
-    const { status } = await put<RequestBody, ResponseBody>({
-      service: 'auth',
-      path: '/api/onboarding/stages/completed/',
-      body: {},
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    });
+  // const socket = useSocketIO();
 
-    if (status === 204) {
-      updateUser({ onboardingStage: 'final' });
-      router.push('/welcome/final');
-    } else {
-      toast('Ошибка сервера');
-    }
-  };
+  // const onSubmit = ({ community }: z.infer<typeof FormSchema>) => {
+  //   socket.emit('create-community', {
+  //     data: {
+  //       name: community,
+  //     },
+  //   });
+
+  //   // if (status === 204) {
+  //   //   updateUser({ onboardingStage: 'final' });
+  //   //   router.push('/welcome/final');
+  //   // } else {
+  //   //   toast('Ошибка сервера');
+  //   // }
+  // };
+
+  // socket.on('create-community', (data) => {
+  //   console.log('on data', data);
+  // });
 
   return (
     <div className="flex flex-row justify-center content-center w-screen h-[100dvh] xs:h-screen">
@@ -121,7 +116,8 @@ export default function WelcomeCommunityCreate() {
             </div>
           </div>
           <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full flex flex-col">
+            {/* onSubmit={handleSubmit(onSubmit)}  */}
+            <form className="w-full h-full flex flex-col">
               <FormField
                 control={control}
                 name="community"
