@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RoomEvent } from 'livekit-client';
 import { computeMenuPosition, wasClickOutside } from '@livekit/components-core';
 import { Select, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@xipkg/select';
@@ -98,7 +98,6 @@ export function MediaDeviceMenu({
     requestPermissions,
     onError: handleError,
   });
-
   async function handleActiveChange(deviceId: string, kind: MediaDeviceKind) {
     setIsOpen(false);
     onActiveDeviceChange?.(kind, deviceId);
@@ -108,7 +107,7 @@ export function MediaDeviceMenu({
     <Select
       onValueChange={(value) => handleActiveChange(value, kind)}
       defaultValue={initialSelection || undefined}
-      disabled={disabled}
+      disabled={disabled || !devices}
     >
       <SelectTrigger className="w-full">
         {kind === 'videoinput' && <Conference width={14} />}
