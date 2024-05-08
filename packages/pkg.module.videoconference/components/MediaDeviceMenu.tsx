@@ -75,7 +75,7 @@ export function MediaDeviceMenu({
       audioinput: 'Встроенный микрофон',
       audiooutput: 'Встроенные динамики',
       videoinput: 'Встроенная камера',
-      default: 'Неизвестно',
+      default: 'По умолчанию',
     };
     if (initialSelection === '') return placeholders.default;
     if (!initialSelection && kind) {
