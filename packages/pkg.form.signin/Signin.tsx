@@ -43,16 +43,14 @@ const FormSchema = z.object({
     }),
 });
 
-const InvitationMessage = ({ communityName }: { communityName: string }) => {
-  return (
-    <div className="bg-bkgd-main rounded-lg p-4">
-      <p className="text-brand-100 text-sm">
-        Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь
-        или зарегистрируйтесь.
-      </p>
-    </div>
-  );
-};
+const InvitationMessage = ({ communityName }: { communityName: string }) => (
+  <div className="bg-bkgd-main rounded-lg p-4">
+    <p className="text-brand-100 text-sm">
+      Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь или
+      зарегистрируйтесь.
+    </p>
+  </div>
+);
 
 export const SignIn = ({ onSignIn }: SignInT) => {
   const router = useRouter();
@@ -163,11 +161,13 @@ export const SignIn = ({ onSignIn }: SignInT) => {
               Зарегистрироваться
             </Link>
           </div>
-          {
-            isButtonActive ?
-              <Button variant="default" type="submit" className="w-24">Войти</Button>
-              : <Button variant="default-spinner" className="w-24" disabled />
-          }
+          {isButtonActive ? (
+            <Button variant="default" type="submit" className="w-24">
+              Войти
+            </Button>
+          ) : (
+            <Button variant="default-spinner" className="w-24" disabled />
+          )}
         </div>
       </form>
     </Form>

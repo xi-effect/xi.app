@@ -1,49 +1,49 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
-import { useMedia } from 'pkg.utils';
-import { Header } from './components/Header';
+// import { Header } from './components/Header';
+import { SnackbarProvider } from 'notistack';
 import { Menu } from './components/Menu';
-import { Content } from './components/Content';
+import { Content } from './Content';
+import { useInterfaceStore } from './interfaceStore';
+import { ConfirmSave } from './ConfirmSave';
+
+declare module 'notistack' {
+  interface VariantOverrides {
+    // adds `myCustomVariant` variant
+    confirmSave: {
+      onReset: () => void;
+    };
+  }
+}
 
 export const CommunitySettings = () => {
-  const isMobile = useMedia('(max-width: 719px)');
-
-  const [activeContent, setActiveContent] = React.useState<number>(0);
-  const [showContent, setShowContent] = React.useState(false);
+  const isMenu = useInterfaceStore((state) => state.isMenu);
 
   return (
-    <div className="flex w-full justify-center">
-      <div className="flex h-full min-h-full w-full max-w-[1132px] flex-col">
-        <Header
-          activeItem={activeContent}
-          showContent={showContent}
-          setShowContent={setShowContent}
-        />
-        <div className="mt-4 flex h-full flex-row">
-          {isMobile ? (
-            <>
-              {showContent ? (
-                <Content activeContent={activeContent} />
-              ) : (
-                <Menu
-                  activeContent={activeContent}
-                  setActiveContent={setActiveContent}
-                  setShowContent={setShowContent}
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <Menu
-                activeContent={activeContent}
-                setActiveContent={setActiveContent}
-                setShowContent={setShowContent}
-              />
-              <Content activeContent={activeContent} />
-            </>
-          )}
+    <SnackbarProvider
+      preventDuplicate
+      maxSnack={1}
+      Components={{
+        confirmSave: ConfirmSave,
+      }}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      dense
+      autoHideDuration={null}
+    >
+      <div className="flex w-full justify-center">
+        <div className="flex h-full min-h-full w-full max-w-[1132px] flex-col">
+          <div className="mt-4 hidden h-full flex-row sm:flex">
+            <Menu />
+            <Content />
+          </div>
+          <div className="mt-4 flex h-full flex-row sm:hidden">
+            {isMenu ? <Menu /> : <Content />}
+          </div>
         </div>
       </div>
-    </div>
+    </SnackbarProvider>
   );
 };

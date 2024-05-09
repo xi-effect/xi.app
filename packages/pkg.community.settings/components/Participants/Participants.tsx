@@ -14,7 +14,8 @@ import {
 } from '@xipkg/dropdown';
 
 // JSON со временным списком пользователей
-import usersTemplate from '../UsersTemplate/usersTemplate.json';
+import usersTemplate from './usersTemplate.json';
+import { Header } from '../Header';
 
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
@@ -149,7 +150,7 @@ const UserCard = ({
   );
 };
 
-export const Users = () => {
+export const Participants = () => {
   // Временное решение для рендера, удаления, изменения ролей пользователей
   const [users, setUsers] = useState(usersTemplate);
 
@@ -201,6 +202,7 @@ export const Users = () => {
 
   return (
     <>
+      <Header />
       <span className="hidden text-3xl font-semibold sm:inline-block">Участники</span>
       <div className="mt-4">
         <div className="relative">

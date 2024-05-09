@@ -1,40 +1,53 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { ArrowLeft, Close } from '@xipkg/icons';
 import { ModalCloseButton } from '@xipkg/modal';
-import { useMedia } from 'pkg.utils';
+import { Button } from '@xipkg/button';
+import { useInterfaceStore } from '../interfaceStore';
 
 const menuLabels = ['Главная', 'Роли', 'Безопасность', 'Участники'];
 
-type HeaderPropsT = {
-  activeItem: number | 'menu';
-  showContent: boolean;
-  setShowContent: Dispatch<SetStateAction<boolean>>;
-};
+const buttonStyles =
+  'right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 sm:bg-transparent xl:right-[-56px] xl:top-0';
 
-export const Header = ({ activeItem, showContent, setShowContent }: HeaderPropsT) => {
-  const isMobile = useMedia('(max-width: 719px)');
+export const Header = () => {
+  const page = useInterfaceStore((state) => state.page);
+  const isMenu = useInterfaceStore((state) => state.isMenu);
+  const isCloseActive = useInterfaceStore((state) => state.isCloseActive);
+  const setIsMenu = useInterfaceStore((state) => state.setIsMenu);
+  const setIsAnimate = useInterfaceStore((state) => state.setIsAnimate);
+
+  const createAnimation = () => {
+    setIsAnimate(true);
+
+    setTimeout(() => {
+      setIsAnimate(false);
+    }, 2000);
+  };
 
   return (
-    <div className="relative flex h-[40px] w-full items-center justify-start sm:pb-4">
-      {isMobile && showContent && (
+    <div className="relative flex h-[40px] w-full items-center justify-start">
+      {isMenu && (
         <button
           type="button"
-          onClick={() => setShowContent(false)}
-          className="h-10 w-10 bg-transparent p-2"
+          onClick={() => setIsMenu(false)}
+          className="flex h-10 w-10 bg-transparent p-2 sm:hidden"
         >
           <ArrowLeft />
         </button>
       )}
-      {isMobile && showContent && (
-        <span className="ml-4 font-semibold">{menuLabels[Number(activeItem)]}</span>
+      {isMenu && (
+        <span className="ml-4 flex  font-semibold sm:hidden">{menuLabels[Number(page)]}</span>
       )}
-      <ModalCloseButton
-        variant="full"
-        className="right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 sm:bg-transparent xl:right-[-56px] xl:top-0"
-      >
-        <Close />
-      </ModalCloseButton>
+      {isCloseActive ? (
+        <ModalCloseButton variant="full" className={buttonStyles}>
+          <Close />
+        </ModalCloseButton>
+      ) : (
+        <Button variant="ghost" onClick={createAnimation} className={buttonStyles}>
+          <Close />
+        </Button>
+      )}
     </div>
   );
 };

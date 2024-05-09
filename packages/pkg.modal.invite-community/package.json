@@ -29,7 +29,7 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "1.4.0",
-    "@xipkg/tailwind": "0.3.6",
+    "@xipkg/tailwind": "0.4.0",
     "@xipkg/typescript": "latest",
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"

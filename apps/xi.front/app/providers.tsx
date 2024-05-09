@@ -154,10 +154,9 @@ export const Providers = ({ children }: ProvidersT) => {
 
   return (
     <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
-      <Toaster />
+      <Toaster visibleToasts={1} />
       <AuthProvider>
         <SocketProvider>{children}</SocketProvider>
-        {/* {children} */}
       </AuthProvider>
     </ThemeProvider>
   );
