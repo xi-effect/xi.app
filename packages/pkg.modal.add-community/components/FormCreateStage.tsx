@@ -17,11 +17,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-// import { useSocketIO } from 'pkg.utils';
-
-// type FormCreateProps = {
-//   onOpenChange: (value: boolean) => void;
-// };
 
 const FormSchema = z.object({
   name: z.string({

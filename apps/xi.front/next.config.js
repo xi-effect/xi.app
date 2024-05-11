@@ -77,6 +77,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'auth.xieffect.ru',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.xieffect.ru',
+      },
     ],
   },
   output: 'standalone',
