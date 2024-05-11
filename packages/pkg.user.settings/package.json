@@ -27,7 +27,7 @@
     "pkg.stores": "*",
     "pkg.utils": "*",
     "sonner": "1.0.3",
-    "next": "^13.5.6",
+    "next": "^14.2.3",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "pkg.models": "*",
@@ -39,7 +39,7 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "1.4.0",
-    "@xipkg/tailwind": "0.3.6",
+    "@xipkg/tailwind": "0.4.0",
     "@xipkg/typescript": "latest",
     "typescript": "^5.4.2"
   },
