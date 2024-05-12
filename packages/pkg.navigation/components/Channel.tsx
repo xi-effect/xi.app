@@ -6,7 +6,18 @@ import React, { ReactNode, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useRouter } from 'next/navigation';
-import { Announce, Calendar, Chat, Conference, Home, Task, Updates, Move, WhiteBoard } from '@xipkg/icons';
+import {
+  Announce,
+  Calendar,
+  Chat,
+  Conference,
+  Home,
+  Task,
+  Updates,
+  Move,
+  WhiteBoard,
+} from '@xipkg/icons';
+import { useMainSt } from 'pkg.stores';
 import { IChannel } from './types';
 
 interface IChannelProps {
@@ -32,6 +43,7 @@ const iconsDict: IIconsDict = {
 };
 
 export function Channel({ channel, setSlideIndex }: IChannelProps) {
+  const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: channel.elId,
@@ -45,7 +57,11 @@ export function Channel({ channel, setSlideIndex }: IChannelProps) {
 
   const handleRouteChange = () => {
     setSlideIndex && setSlideIndex(1);
-    router.push(channel.link);
+    if (channel.type !== 'home') {
+      return router.push(`/communities/${communityId}/channels/${channel.elId}/${channel.type}`);
+    }
+
+    return router.push(`/communities/${communityId}/${channel.type}`);
   };
 
   const style = {

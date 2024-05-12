@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import { redirect, usePathname } from 'next/navigation';
+import { redirect, useParams, usePathname } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 import { useMainSt } from 'pkg.stores';
@@ -41,18 +41,9 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
     console.info('SIO connect', socket?.id);
   });
 
-  socket?.on('disconnect', (reason, details) => {
+  socket?.on('disconnect', (reason) => {
     // the reason of the disconnection, for example "transport error"
     console.log('disconnect', reason);
-
-    // the low-level reason of the disconnection, for example "xhr post error"
-    console.log(details.message);
-
-    // some additional description, for example the status code of the HTTP response
-    console.log(details.description);
-
-    // some additional context, for example the XMLHttpRequest object
-    console.log(details.context);
   });
 
   socket?.on('connect_error', (err) => {
@@ -98,14 +89,54 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
 
 const AuthProvider = ({ children }: AuthProviderT) => {
   const pathname = usePathname();
+  const { 'community-id': comIdParams } = useParams<{ 'community-id': string }>();
+  // const router = useRouter();
 
   const isLogin = useMainSt((state) => state.isLogin);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
   const communityId = useMainSt((state) => state.communityMeta.id);
+  const getUser = useMainSt((state) => state.getUser);
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  const setIsLogin = useMainSt((state) => state.setIsLogin);
 
-  // console.log('isLogin', isLogin);
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    if (socket !== null) {
+      socket.on('connect', () => {
+        socket.emit(
+          'retrieve-any-community',
+          (stats: number, { community, participant }: { community: any; participant: any }) => {
+            console.log('stats', stats, community, participant);
+
+            if (stats === 200) {
+              updateCommunityMeta({
+                id: community.id,
+                isOwner: participant.is_owner,
+                name: community.name,
+                description: community.description,
+              });
+            }
+
+            if (community.id !== null) {
+              // router.push(`/communities/${community.id}/home`);
+              setIsLogin(true);
+            }
+          },
+        );
+      });
+    }
+  }, [socket?.connected]);
+
+  console.log('isLogin', isLogin);
   // console.log('onboardingStage', onboardingStage);
-  // console.log('pathname', pathname);
+  console.log('pathname', pathname);
+  console.log('communityId', communityId);
+  console.log('comIdParams', Number(comIdParams));
+  console.log('Number(comIdParams) !== communityId', Number(comIdParams) !== communityId);
 
   // Показываем скелетон, пока запрос на проверку сессии не пришёл
   if (isLogin === null) return <Load />;
@@ -122,11 +153,14 @@ const AuthProvider = ({ children }: AuthProviderT) => {
 
   if (
     isLogin &&
+    !!communityId &&
+    Number(comIdParams) !== communityId &&
     !!onboardingStage &&
     onboardingStage === 'completed' &&
     welcomePagesPaths.includes(pathname)
   ) {
-    redirect(`/communities/${communityId || 1}/home`);
+    console.log('redirect', communityId);
+    redirect(`/communities/${communityId}/home`);
   }
 
   if (
@@ -146,19 +180,11 @@ type ProvidersT = {
   children: ReactNode;
 };
 
-export const Providers = ({ children }: ProvidersT) => {
-  const getUser = useMainSt((state) => state.getUser);
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  return (
-    <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
-      <Toaster visibleToasts={1} />
-      <AuthProvider>
-        <SocketProvider>{children}</SocketProvider>
-      </AuthProvider>
-    </ThemeProvider>
-  );
-};
+export const Providers = ({ children }: ProvidersT) => (
+  <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
+    <Toaster visibleToasts={1} />
+    <AuthProvider>
+      <SocketProvider>{children}</SocketProvider>
+    </AuthProvider>
+  </ThemeProvider>
+);

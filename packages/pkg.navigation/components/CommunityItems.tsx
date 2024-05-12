@@ -46,7 +46,6 @@ const defaultChannels: IChannel[] = [
     icon: 'announce',
     type: 'announce',
     label: 'Объявления',
-    link: '/communities/1/channels/1/announce',
   },
   {
     elId: '2',
@@ -54,7 +53,6 @@ const defaultChannels: IChannel[] = [
     type: 'task',
     categoryId: 'B1.2',
     label: 'Задания',
-    link: '/communities/1/channels/2/task',
   },
   {
     elId: '3',
@@ -62,7 +60,6 @@ const defaultChannels: IChannel[] = [
     type: 'chat',
     categoryId: 'B1.2',
     label: 'Чат',
-    link: '/communities/1/channels/3/chat',
   },
   {
     elId: '4',
@@ -70,7 +67,6 @@ const defaultChannels: IChannel[] = [
     type: 'videoconference',
     categoryId: 'B1.2',
     label: 'Видеоконференция',
-    link: '/communities/1/channels/4/videoconference',
   },
   {
     elId: '5',
@@ -78,7 +74,6 @@ const defaultChannels: IChannel[] = [
     categoryId: 'B2.0',
     type: 'announce',
     label: 'Объявления',
-    link: '/communities/1/channels/5/announce',
   },
   {
     elId: '51',
@@ -86,7 +81,6 @@ const defaultChannels: IChannel[] = [
     type: 'whiteboard',
     categoryId: 'B1.2',
     label: 'Доска',
-    link: '/communities/1/channels/5/whiteboard',
   },
   {
     elId: '6',
@@ -94,7 +88,6 @@ const defaultChannels: IChannel[] = [
     type: 'task',
     categoryId: 'B2.0',
     label: 'Задания',
-    link: '/communities/1/channels/6/task',
   },
   {
     elId: '7',
@@ -102,7 +95,6 @@ const defaultChannels: IChannel[] = [
     type: 'chat',
     categoryId: 'B2.0',
     label: 'Чат',
-    link: '/communities/1/channels/7/chat',
   },
   {
     elId: '8',
@@ -110,7 +102,6 @@ const defaultChannels: IChannel[] = [
     categoryId: 'B2.0',
     type: 'videoconference',
     label: 'Видеоконференция',
-    link: '/communities/1/channels/8/videoconference',
   },
   {
     elId: '9',
@@ -118,7 +109,6 @@ const defaultChannels: IChannel[] = [
     categoryId: 'empty',
     type: 'home',
     label: 'Главная',
-    link: '/communities/1/home',
   },
   {
     elId: '10',
@@ -126,7 +116,6 @@ const defaultChannels: IChannel[] = [
     categoryId: 'empty',
     type: 'announce',
     label: 'Объявления',
-    link: '',
   },
   {
     elId: '11',
@@ -134,7 +123,6 @@ const defaultChannels: IChannel[] = [
     categoryId: 'empty',
     type: 'calendar',
     label: 'Календарь',
-    link: '',
   },
 ];
 

@@ -184,6 +184,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     });
     console.log('status', data, status);
     if (status === 204) {
+      useMainSt.getState().socket.disconnect();
       set(() => ({ isLogin: false }));
     }
   },

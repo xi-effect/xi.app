@@ -64,8 +64,6 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
 
     if (status === 401) {
       useMainSt.getState().setIsLogin(false);
-    } else {
-      useMainSt.getState().setIsLogin(true);
     }
   },
 });
