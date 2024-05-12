@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
 import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { put } from 'pkg.utils';
 import {
   Form,
   FormControl,
@@ -19,9 +20,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@xipkg/input';
 import { FileUploader } from '@xipkg/fileuploader';
 import { toast } from 'sonner';
-import { del } from 'pkg.utils/fetch';
+import { del, put } from 'pkg.utils';
 import { useMainSt } from 'pkg.stores';
 import { Logo } from 'pkg.logo';
+import { AvatarEditor } from 'pkg.avatar.editor';
+
+const readFile = (file: File) =>
+  new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => resolve(reader.result), false);
+    reader.readAsDataURL(file);
+  });
 
 const FormSchema = z.object({
   community: z.string({
@@ -35,10 +44,39 @@ type ResponseBody = {
   detail: string;
 };
 
+type RequestBodyAvatar = {};
+
+type ResponseBodyAvatar = {
+  formData: FormData;
+};
+
 export default function WelcomeCommunityCreate() {
   const updateUser = useMainSt((state) => state.updateUser);
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [file, setFile] = React.useState<any>();
+  const [isAvatarEditorOpen, setIsAvatarEditorOpen] = React.useState(false);
+
+  const [previewImg, setPreviewImg] = React.useState<string | null>();
+  const [formData, setFormData] = React.useState<FormData | null>();
 
   const router = useRouter();
+
+  const handleInput = async (files: File[]) => {
+    if (!files) return;
+
+    if (files[0].size > 5 * 1024 * 1024) {
+      toast('Файл слишком большой');
+      return;
+    }
+
+    const imageDataUrl = await readFile(files[0]);
+
+    setFile(imageDataUrl);
+    setIsAvatarEditorOpen(true);
+  };
 
   const handleBack = async () => {
     const { status } = await del({
@@ -75,24 +113,70 @@ export default function WelcomeCommunityCreate() {
 
   const watchCommunity = watch('community');
 
-  const onSubmit = async () => {
-    const { status } = await put<RequestBody, ResponseBody>({
-      service: 'auth',
-      path: '/api/onboarding/stages/completed/',
-      body: {},
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
+  const onSubmit = ({ community }: z.infer<typeof FormSchema>) => {
+    setIsLoading(true);
+    socket.emit(
+      'create-community',
+      {
+        data: {
+          name: community,
         },
       },
-    });
+      async (status: number, { community, participant }: { community: any; participant: any }) => {
+        console.log('on data', status, community);
+        if (status === 200) {
+          const { status } = await put<RequestBody, ResponseBody>({
+            service: 'auth',
+            path: '/api/onboarding/stages/completed/',
+            body: {},
+            config: {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          });
 
-    if (status === 204) {
-      updateUser({ onboardingStage: 'final' });
-      router.push('/welcome/final');
-    } else {
-      toast('Ошибка сервера');
-    }
+          updateCommunityMeta({
+            id: community.id,
+            isOwner: participant.is_owner,
+            name: community.name,
+            description: community.description,
+          });
+
+          if (status === 204) {
+            updateUser({ onboardingStage: 'final' });
+            router.push('/welcome/final');
+          } else {
+            toast('Ошибка сервера');
+          }
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          toast('Ошибка при создании сообщества');
+        }
+
+        if (status === 200 && formData && community.id) {
+          const { status } = await put<RequestBodyAvatar, ResponseBodyAvatar>({
+            service: 'backend',
+            path: `/api/protected/community-service/communities/${community.id}/avatar/`,
+            body: formData,
+            config: {
+              headers: {},
+            },
+          });
+
+          if (status !== 204) {
+            toast('Ошибка сервера при сохранении аватара сообщества');
+          }
+        }
+      },
+    );
+  };
+
+  const handleBase64 = (base64Image: string, form: FormData) => {
+    setPreviewImg(base64Image);
+    setFormData(form);
+    setIsAvatarEditorOpen(false);
   };
 
   return (
@@ -112,12 +196,33 @@ export default function WelcomeCommunityCreate() {
             Создайте сообщество
           </div>
           <div className="flex flex-row mt-8 h-16">
-            <div className="rounded-[32px] shrink-0 w-16 h-16 bg-brand-80" />
+            {previewImg ? (
+              <img
+                className="rounded-[32px] shrink-0 w-16 h-16 bg-brand-80"
+                alt="community avatar preview"
+                src={previewImg}
+              />
+            ) : (
+              <div className="rounded-[32px] shrink-0 w-16 h-16 bg-brand-80" />
+            )}
             <div className="ml-4 flex flex-col gap-2">
               <span className="font-medium leading-[22px] text-gray-90 w-full">
                 Изображение сообщества
               </span>
-              <FileUploader size="small" onChange={() => {}} />
+              <AvatarEditor
+                file={file}
+                open={isAvatarEditorOpen}
+                onOpenChange={setIsAvatarEditorOpen}
+                withLoadingToServer={false}
+                onBase64Return={handleBase64}
+              />
+              <FileUploader
+                onChange={handleInput}
+                extensions={['webp', 'jpg', 'png']}
+                withError={false}
+                withLargeError={false}
+                size="small"
+              />
             </div>
           </div>
           <Form {...form}>
@@ -142,12 +247,21 @@ export default function WelcomeCommunityCreate() {
                 )}
               />
               <div className="pt-4 mt-auto flex flex-row gap-6">
-                <Button onClick={handleBack} variant="ghost" className="w-[98px]">
+                <Button
+                  disabled={isLoading}
+                  onClick={handleBack}
+                  variant="ghost"
+                  className="w-[98px]"
+                >
                   Назад
                 </Button>
-                <Button disabled={watchCommunity.length === 0} type="submit" className="w-full">
-                  Продолжить
-                </Button>
+                {isLoading ? (
+                  <Button disabled variant="default-spinner" type="submit" className="w-full" />
+                ) : (
+                  <Button disabled={watchCommunity.length === 0} type="submit" className="w-full">
+                    Продолжить
+                  </Button>
+                )}
               </div>
             </form>
           </Form>

@@ -14,10 +14,11 @@ import {
   FormMessage,
   useForm,
 } from '@xipkg/form';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
+// import { useMainSt } from 'pkg.stores';
 
 export type SignInT = {
   /**
@@ -43,21 +44,22 @@ const FormSchema = z.object({
     }),
 });
 
-const InvitationMessage = ({ communityName }: { communityName: string }) => {
-  return (
-    <div className="bg-bkgd-main rounded-lg p-4">
-      <p className="text-brand-100 text-sm">
-        Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь
-        или зарегистрируйтесь.
-      </p>
-    </div>
-  );
-};
+const InvitationMessage = ({ communityName }: { communityName: string }) => (
+  <div className="bg-bkgd-main rounded-lg p-4">
+    <p className="text-brand-100 text-sm">
+      Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь или
+      зарегистрируйтесь.
+    </p>
+  </div>
+);
 
 export const SignIn = ({ onSignIn }: SignInT) => {
-  const router = useRouter();
+  // const router = useRouter();
   const searchParams = useSearchParams();
   const communityName = searchParams.get('community');
+  // const socket = useMainSt((state) => state.socket);
+  // const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  // const setIsLogin = useMainSt((state) => state.setIsLogin);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -81,12 +83,37 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     trigger();
     setIsButtonActive(false);
     const status = await onSignIn({ ...data, setError });
-    if (status === 200) {
-      router.push('/communities/1/home');
-    } else {
+    // console.log('status', status);
+    if (status !== 200) {
       setIsButtonActive(true);
     }
   };
+
+  // useEffect(() => {
+  //   if (socket !== null) {
+  //     socket.on('connect', () => {
+  //       socket.emit(
+  //         'retrieve-any-community',
+  //         (stats: number, { community, participant }: { community: any; participant: any }) => {
+  //           console.log('stats', stats, community, participant);
+
+  //           if (stats === 200) {
+  //             updateCommunityMeta({
+  //               id: community.id,
+  //               isOwner: participant.is_owner,
+  //               name: community.name,
+  //               description: community.description,
+  //             });
+  //           }
+  //           if (community.id !== null) {
+  //             router.push(`/communities/${community.id}/home`);
+  //             setIsLogin(true);
+  //           }
+  //         },
+  //       );
+  //     });
+  //   }
+  // }, [socket]);
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
@@ -163,11 +190,13 @@ export const SignIn = ({ onSignIn }: SignInT) => {
               Зарегистрироваться
             </Link>
           </div>
-          {
-            isButtonActive ?
-              <Button variant="default" type="submit" className="w-24">Войти</Button>
-              : <Button variant="default-spinner" className="w-24" disabled />
-          }
+          {isButtonActive ? (
+            <Button variant="default" type="submit" className="w-24">
+              Войти
+            </Button>
+          ) : (
+            <Button variant="default-spinner" className="w-24" disabled />
+          )}
         </div>
       </form>
     </Form>

@@ -44,23 +44,26 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
         },
       },
     });
-    console.log('getUser', data);
-    set((state) => ({
-      user: {
-        ...state.user,
-        onboardingStage: data.onboarding_stage,
-        username: data.username,
-        id: data.id,
-        displayName: data.display_name,
-        theme: data.theme,
-        email: data.email,
-      },
-    }));
+
+    console.log('getUser', data, status);
+
+    if (status === 200) {
+      useMainSt.getState().initSocket();
+      set((state) => ({
+        user: {
+          ...state.user,
+          onboardingStage: data.onboarding_stage,
+          username: data.username,
+          id: data.id,
+          displayName: data.display_name,
+          theme: data.theme,
+          email: data.email,
+        },
+      }));
+    }
 
     if (status === 401) {
       useMainSt.getState().setIsLogin(false);
-    } else {
-      useMainSt.getState().setIsLogin(true);
     }
   },
 });

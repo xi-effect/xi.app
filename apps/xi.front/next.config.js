@@ -37,6 +37,7 @@ const nextConfig = {
     'pkg.form.signup',
     'pkg.form.reset-password',
     'pkg.module.videoconference',
+    'pkg.module.whiteboard',
     'pkg.module.editor',
     'pkg.avatar.editor',
     'pkg.logo',
@@ -76,6 +77,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'auth.xieffect.ru',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.xieffect.ru',
       },
     ],
   },

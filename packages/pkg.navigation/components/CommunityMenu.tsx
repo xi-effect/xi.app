@@ -6,7 +6,7 @@
 import { Modal, ModalContent } from '@xipkg/modal';
 import { CategoryCreate } from 'pkg.modal.category-create';
 import { CommunitySettings } from 'pkg.community.settings';
-import { AddCommunityModal } from 'pkg.module.add-community';
+import { AddCommunityModal } from 'pkg.modal.add-community';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
 import { InviteCommunityModal } from 'pkg.modal.invite-community';
 
@@ -30,64 +30,69 @@ import {
 } from '@xipkg/dropdown';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { useParams } from 'next/navigation';
+import { useMainSt } from 'pkg.stores';
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 
 // Временный список мок-сообществ
-const communitiesTemplate = [
-  {
-    name: 'Иванова А.Г.',
-    avatar: '/assets/avatarrep.svg',
-    id: '1',
-    isOwner: true,
-  },
-  {
-    name: 'Мое пространство',
-    avatar: '/assets/avatarrep3.svg',
-    id: '2',
-    isOwner: false,
-  },
-  {
-    name: 'Изучаем фронтенд',
-    avatar: '/assets/avatarrep2.svg',
-    id: '3',
-    isOwner: false,
-  },
-];
+// const communitiesTemplate = [
+//   {
+//     name: 'Иванова А.Г.',
+//     avatar: '/assets/avatarrep.svg',
+//     id: '1',
+//     isOwner: true,
+//   },
+//   {
+//     name: 'Мое пространство',
+//     avatar: '/assets/avatarrep3.svg',
+//     id: '2',
+//     isOwner: false,
+//   },
+//   {
+//     name: 'Изучаем фронтенд',
+//     avatar: '/assets/avatarrep2.svg',
+//     id: '3',
+//     isOwner: false,
+//   },
+// ];
 
 type CommunityTemplateT = {
   name: string;
   avatar: string;
-  id: string;
+  id: number;
   isOwner: boolean;
 };
 
-const Avatar = ({ avatar }: { avatar: string }) => (
-  <div className="bg-green-0 flex h-8 w-8 flex-col items-center justify-center overflow-hidden rounded-[16px]">
-    <Image
-      style={{
-        borderRadius: '50%',
+type AvatarPreviewPropsT = {
+  communityId: number;
+};
+
+const AvatarPreview = ({ communityId }: AvatarPreviewPropsT) => (
+  <Avatar size="m">
+    <AvatarImage
+      src={`https://api.xieffect.ru/files/communities/${communityId}/avatar.webp`}
+      imageProps={{
+        src: `https://api.xieffect.ru/files/communities/${communityId}/avatar.webp`,
+        alt: 'community user',
       }}
-      src={avatar}
-      width={32}
-      height={32}
-      alt="user avatar"
+      alt="community avatar"
     />
-  </div>
+    <AvatarFallback size="m" />
+  </Avatar>
 );
 
 const DropdownHeader = ({
   setIsOpen,
   inDropdown = false,
   name,
-  avatar,
+  id,
 }: {
   setIsOpen: any;
   inDropdown?: boolean;
   name: string;
-  avatar: string;
+  id: number;
 }) => (
   <div
     id="community-profile"
@@ -96,7 +101,7 @@ const DropdownHeader = ({
       inDropdown ? '' : 'mt-0 sm:mt-8'
     } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
   >
-    <Avatar avatar={avatar} />
+    <AvatarPreview communityId={id} />
     <div className="ml-2 self-center text-[16px] font-semibold">{name}</div>
     <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
       <ChevronSmallTop
@@ -121,7 +126,7 @@ const CommunityLink = ({
     onClick={handleClose}
     className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
   >
-    <Avatar avatar={community.avatar} />
+    <AvatarPreview communityId={community.id} />
     <div className="ml-2 self-center text-[16px] font-semibold">{community.name}</div>
   </Link>
 );
@@ -134,6 +139,8 @@ export const CommunityMenu = () => {
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
   const [isCommunityChannelCreateOpen, setIsCommunityChannelCreateOpen] = React.useState(false);
 
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+
   // Берем community-id из URL
   const params = useParams();
   // Делим все сообщества пользователя на то, на странице которого мы сейчас
@@ -141,13 +148,20 @@ export const CommunityMenu = () => {
   const [currentCommunity, setCurrentCommunity] = useState<CommunityTemplateT>();
   const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
 
+  const socket = useMainSt((state) => state.socket);
+
   useEffect(() => {
-    const currentCommunity = communitiesTemplate.find(
-      (community) => community.id === params['community-id'],
-    );
-    const otherCommunities = communitiesTemplate.filter((community) => community.id !== params['community-id']);
-    setCurrentCommunity(currentCommunity);
-    setOtherCommunities(otherCommunities);
+    socket.emit('list-communities', (status: number, communities: any[]) => {
+      console.log('communities', status, communities);
+      const currentCommunity = communities.find(
+        (community) => community.id.toString() === params['community-id'],
+      );
+      const otherCommunities = communities.filter(
+        (community) => community.id.toString() !== params['community-id'],
+      );
+      setCurrentCommunity(currentCommunity);
+      setOtherCommunities(otherCommunities);
+    });
   }, [params]);
 
   const driverAction = () => {
@@ -252,7 +266,7 @@ export const CommunityMenu = () => {
                 <DropdownHeader
                   setIsOpen={setIsOpen}
                   name={currentCommunity.name}
-                  avatar={currentCommunity.avatar}
+                  id={currentCommunity.id}
                 />
               </div>
             </DropdownMenuTrigger>
@@ -265,9 +279,9 @@ export const CommunityMenu = () => {
                   setIsOpen={setIsOpen}
                   inDropdown
                   name={currentCommunity.name}
-                  avatar={currentCommunity.avatar}
+                  id={currentCommunity.id}
                 />
-                {currentCommunity.isOwner && (
+                {isOwner && (
                   <>
                     <DropdownMenuItem
                       onClick={driverAction}

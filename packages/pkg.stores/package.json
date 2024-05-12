@@ -9,10 +9,11 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "next": "^13.5.6",
+    "next": "^14.2.3",
     "zustand": "^4.3.8",
     "pkg.utils": "*",
-    "pkg.models": "*"
+    "pkg.models": "*",
+    "socket.io-client": "4.7.5"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

@@ -12,6 +12,7 @@ export default function WelcomeFinal() {
   const updateUser = useMainSt((state) => state.updateUser);
   const getUser = useMainSt((state) => state.getUser);
   const router = useRouter();
+  const id = useMainSt((state) => state.communityMeta.id);
 
   useEffect(() => {
     getUser();
@@ -19,7 +20,7 @@ export default function WelcomeFinal() {
 
   const handleNext = () => {
     updateUser({ onboardingStage: 'completed' });
-    router.push('/communities/1/home');
+    router.push(`/communities/${id}/home`);
   };
 
   return (
