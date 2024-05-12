@@ -6,7 +6,7 @@ import React, { ReactNode, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useRouter } from 'next/navigation';
-import { Announce, Calendar, Chat, Conference, Home, Task, Updates, Move } from '@xipkg/icons';
+import { Announce, Calendar, Chat, Conference, Home, Task, Updates, Move, WhiteBoard } from '@xipkg/icons';
 import { IChannel } from './types';
 
 interface IChannelProps {
@@ -28,6 +28,7 @@ const iconsDict: IIconsDict = {
   chat: <Chat className={iconClassName} />,
   camera: <Conference className={iconClassName} />,
   home: <Home className={iconClassName} />,
+  whiteboard: <WhiteBoard className={iconClassName} />,
 };
 
 export function Channel({ channel, setSlideIndex }: IChannelProps) {

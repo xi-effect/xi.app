@@ -10,7 +10,7 @@
   "dependencies": {
     "@xipkg/avatar": "1.0.0",
     "@xipkg/dropdown": "1.2.0",
-    "@xipkg/icons": "0.8.4",
+    "@xipkg/icons": "0.9.4",
     "@xipkg/userprofile": "2.2.0",
     "@xipkg/modal": "1.1.2",
     "@dnd-kit/core": "6.1.0",

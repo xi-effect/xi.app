@@ -1,0 +1,29 @@
+{
+  "name": "pkg.module.whiteboard",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "@xipkg/icons": "0.9.3",
+    "next": "^14.2.3",
+    "pkg.logo": "*",
+    "react": "^18.2.0",
+    "@excalidraw/excalidraw": "0.17.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@xipkg/eslint": "1.4.0",
+    "@xipkg/tailwind": "0.4.0",
+    "@xipkg/typescript": "latest",
+    "eslint-config-custom": "*",
+    "typescript": "^5.4.2"
+  },
+  "description": "",
+  "author": "xi.effect"
+}

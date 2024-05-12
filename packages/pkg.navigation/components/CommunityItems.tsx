@@ -81,6 +81,14 @@ const defaultChannels: IChannel[] = [
     link: '/communities/1/channels/5/announce',
   },
   {
+    elId: '51',
+    icon: 'whiteboard',
+    type: 'whiteboard',
+    categoryId: 'B1.2',
+    label: 'Доска',
+    link: '/communities/1/channels/5/whiteboard',
+  },
+  {
     elId: '6',
     icon: 'task',
     type: 'task',
