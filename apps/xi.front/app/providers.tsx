@@ -121,7 +121,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
               });
             }
 
-            if (community.id !== null) {
+            if (community?.id !== null) {
               // router.push(`/communities/${community.id}/home`);
               setIsLogin(true);
             }
@@ -132,7 +132,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
   }, [socket?.connected]);
 
   console.log('isLogin', isLogin);
-  // console.log('onboardingStage', onboardingStage);
+  console.log('onboardingStage', onboardingStage);
   console.log('pathname', pathname);
   console.log('communityId', communityId);
   console.log('comIdParams', Number(comIdParams));
