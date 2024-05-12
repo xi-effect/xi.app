@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@xipkg/button';
-import { LocalUserChoices } from '@livekit/components-core';
+import { LocalUserChoices, TrackReference } from '@livekit/components-core';
 import React, { useEffect } from 'react';
 import type { LocalAudioTrack, LocalVideoTrack } from 'livekit-client';
 import { facingModeFromLocalTrack, Track } from 'livekit-client';
@@ -11,14 +11,16 @@ import {
   TrackToggle,
   usePersistentUserChoices,
   usePreviewTracks,
+  useTracks,
+  useMaybeRoomContext,
 } from '@livekit/components-react';
 import { Conference, Microphone } from '@xipkg/icons';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
+import { MessageBeforeJoin } from './MessageBeforeJoin';
 
 export interface PreJoinProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onError'> {
   onValidate?: (values: LocalUserChoices) => boolean;
-  onError?: (error: Error) => void;
   defaults?: Partial<LocalUserChoices>;
   defaultUserChoices?: any;
   persistUserChoices?: boolean;
@@ -33,7 +35,6 @@ interface IPreJoinSection {
 export function PreJoinSection({
   defaults = {},
   onValidate,
-  onError,
   persistUserChoices = true,
   defaultUserChoices,
   setConnect,
@@ -66,7 +67,7 @@ export function PreJoinSection({
     preventSave: !persistUserChoices,
     preventLoad: !persistUserChoices,
   });
-
+  const [permissionByBrowser, setPermissionByBrowser] = React.useState<boolean>(true);
   const [audioEnabled, setAudioEnabled] = React.useState<boolean>(initialUserChoices.audioEnabled);
   const [videoEnabled, setVideoEnabled] = React.useState<boolean>(initialUserChoices.videoEnabled);
   const [audioDeviceId, setAudioDeviceId] = React.useState<string>(
@@ -97,6 +98,10 @@ export function PreJoinSection({
     saveUsername(username);
   }, [username, saveUsername]);
 
+  const onError = () => {
+    setPermissionByBrowser(false);
+  };
+
   const tracks = usePreviewTracks(
     {
       audio: audioEnabled ? { deviceId: initialUserChoices.audioDeviceId } : false,
@@ -120,10 +125,22 @@ export function PreJoinSection({
     return 'undefined';
   }, [videoTrack]);
 
+  // const trackAudioReferences: TrackReference[] = useTracks([Track.Source.Microphone]);
   const audioTrack = React.useMemo(
     () => tracks?.filter((track) => track.kind === Track.Kind.Audio)[0] as LocalAudioTrack,
     [tracks],
   );
+
+  React.useEffect(() => {
+    if (videoEl.current && videoTrack) {
+      videoTrack.unmute();
+      videoTrack.attach(videoEl.current);
+    }
+
+    return () => {
+      videoTrack?.detach();
+    };
+  }, [videoTrack]);
 
   const [isValid, setIsValid] = React.useState<boolean>();
 
@@ -200,37 +217,40 @@ export function PreJoinSection({
         </div>
         <div className="border-gray-30 flex w-[737px] flex-col justify-between rounded-[16px] border p-5">
           <div>
-            {!connect ? (
-              <div className="bg-gray-5 mb-4 rounded-md p-4 font-sans">
-                <h2 className="text-[20px] font-medium">Конференция не началась</h2>
-                <p>Дождитесь организатора</p>
-              </div>
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {!permissionByBrowser ? (
+              <MessageBeforeJoin typeOfMessage="needPermission" />
+            ) : !connect ? (
+              <MessageBeforeJoin typeOfMessage="notStarted" />
             ) : null}
-          </div>
-          <div className="my-4">
-            <h2 className="mb-1 font-sans">Камера</h2>
-            <MediaDeviceMenu
-              disabled={!videoTrack || !videoEnabled}
-              initialSelection={videoDeviceId}
-              kind="videoinput"
-              onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
-            />
-          </div>
-          <div className="my-4">
-            <h2 className="mb-1 font-sans">Звук</h2>
-            <div className="flex flex-col gap-2">
+            <div className="mb-8">
+              <h2 className="mb-1 font-sans">Камера</h2>
               <MediaDeviceMenu
-                disabled={!audioTrack || !audioEnabled}
-                initialSelection={audioDeviceId}
-                kind="audioinput"
-                onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
+                disabled={!videoEnabled}
+                initialSelection={videoDeviceId}
+                warnDisable={!permissionByBrowser}
+                kind="videoinput"
+                onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
               />
-              <MediaDeviceMenu
-                disabled={!audioTrack || !audioEnabled}
-                initialSelection={dinamicControl?.activeDeviceId}
-                kind="audiooutput"
-                onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
-              />
+            </div>
+            <div className="my-4">
+              <h2 className="mb-1 font-sans">Звук</h2>
+              <div className="flex flex-col gap-2">
+                <MediaDeviceMenu
+                  disabled={!audioEnabled}
+                  initialSelection={audioDeviceId}
+                  warnDisable={!permissionByBrowser}
+                  kind="audioinput"
+                  onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
+                />
+                <MediaDeviceMenu
+                  disabled={!audioEnabled}
+                  initialSelection={dinamicControl?.activeDeviceId}
+                  warnDisable={!permissionByBrowser}
+                  kind="audiooutput"
+                  onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
+                />
+              </div>
             </div>
           </div>
           <Button onClick={() => setConnect((prev) => !prev)} className="w-full">

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
 import { RoomEvent } from 'livekit-client';
 import { computeMenuPosition, wasClickOutside } from '@livekit/components-core';
 import { Select, SelectContent, SelectGroup, SelectTrigger, SelectValue } from '@xipkg/select';
@@ -9,13 +11,14 @@ import { MediaDeviceKind, MediaDeviceSelect } from './MediaDeviceSelect';
 export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   kind: MediaDeviceKind;
-  initialSelection?: string;
+  initialSelection: string;
   onActiveDeviceChange?: (kind: MediaDeviceKind, deviceId: string) => void;
-
+  warnDisable: boolean;
   requestPermissions?: boolean;
 }
 
 export function MediaDeviceMenu({
+  warnDisable,
   kind,
   initialSelection,
   onActiveDeviceChange,
@@ -24,7 +27,6 @@ export function MediaDeviceMenu({
 }: MediaDeviceMenuProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [updateRequired, setUpdateRequired] = React.useState<boolean>(true);
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [needPermissions, setNeedPermissions] = React.useState(requestPermissions);
   const button = React.useRef<HTMLButtonElement>(null);
   const tooltip = React.useRef<HTMLDivElement>(null);
@@ -105,25 +107,27 @@ export function MediaDeviceMenu({
   }
 
   return (
-    <Select
-      onValueChange={(value) => handleActiveChange(value, kind)}
-      defaultValue={initialSelection || undefined}
-      disabled={disabled || !devices || devices.length === 0}
-    >
-      <SelectTrigger className="w-full">
-        {kind === 'videoinput' && <Conference width={14} />}
-        {kind === 'audiooutput' && <SoundTwo width={14} />}
-        {!(kind === 'videoinput' || kind === 'audiooutput') && <Microphone width={14} />}
-        <SelectValue placeholder={getPlaceholder()} />
-      </SelectTrigger>
-      <SelectContent
-        ref={(ref) => ref?.addEventListener('touchend', (e) => e.preventDefault())}
-        className="w-full"
+    <div className={`${warnDisable ? 'border-orange-80 rounded-[8px] border-2' : null}`}>
+      <Select
+        onValueChange={(value) => handleActiveChange(value, kind)}
+        defaultValue={initialSelection && !warnDisable && !devices ? initialSelection : undefined}
+        disabled={disabled || warnDisable || !devices || devices.length === 0}
       >
-        <SelectGroup>
-          <MediaDeviceSelect devices={devices} />
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+        <SelectTrigger className="w-full">
+          {kind === 'videoinput' && <Conference width={14} />}
+          {kind === 'audiooutput' && <SoundTwo width={14} />}
+          {!(kind === 'videoinput' || kind === 'audiooutput') && <Microphone width={14} />}
+          <SelectValue placeholder={getPlaceholder()} />
+        </SelectTrigger>
+        <SelectContent
+          ref={(ref) => ref?.addEventListener('touchend', (e) => e.preventDefault())}
+          className="w-full"
+        >
+          <SelectGroup>
+            <MediaDeviceSelect devices={devices} />
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
