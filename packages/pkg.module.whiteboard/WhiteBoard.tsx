@@ -1,16 +1,23 @@
 'use client';
 
 import React from 'react';
-import { Excalidraw } from '@excalidraw/excalidraw';
+import { Excalidraw, MainMenu } from '@excalidraw/excalidraw';
 
-// import '@excalidraw/excalidraw/index.css';
+import './index.css';
 
 export const WhiteBoard: React.FC = () => {
   console.log();
 
   return (
     <div className="h-full w-full">
-      <Excalidraw />
+      <Excalidraw langCode="ru-RU">
+        <MainMenu>
+          <MainMenu.DefaultItems.Export />
+          <MainMenu.DefaultItems.SaveAsImage />
+          <MainMenu.DefaultItems.ToggleTheme />
+          <MainMenu.DefaultItems.ChangeCanvasBackground />
+        </MainMenu>
+      </Excalidraw>
     </div>
   );
 };
