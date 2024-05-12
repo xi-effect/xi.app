@@ -125,17 +125,6 @@ export function PreJoinSection({
     [tracks],
   );
 
-  React.useEffect(() => {
-    if (videoEl.current && videoTrack) {
-      videoTrack.unmute();
-      videoTrack.attach(videoEl.current);
-    }
-
-    return () => {
-      videoTrack?.detach();
-    };
-  }, [videoTrack]);
-
   const [isValid, setIsValid] = React.useState<boolean>();
 
   const handleValidation = React.useCallback(
@@ -221,7 +210,7 @@ export function PreJoinSection({
           <div className="my-4">
             <h2 className="mb-1 font-sans">Камера</h2>
             <MediaDeviceMenu
-              disabled={!videoEnabled}
+              disabled={!videoTrack || !videoEnabled}
               initialSelection={videoDeviceId}
               kind="videoinput"
               onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
@@ -231,13 +220,13 @@ export function PreJoinSection({
             <h2 className="mb-1 font-sans">Звук</h2>
             <div className="flex flex-col gap-2">
               <MediaDeviceMenu
-                disabled={!audioEnabled}
+                disabled={!audioTrack || !audioEnabled}
                 initialSelection={audioDeviceId}
                 kind="audioinput"
                 onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
               />
               <MediaDeviceMenu
-                disabled={!audioEnabled}
+                disabled={!audioTrack || !audioEnabled}
                 initialSelection={dinamicControl?.activeDeviceId}
                 kind="audiooutput"
                 onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}

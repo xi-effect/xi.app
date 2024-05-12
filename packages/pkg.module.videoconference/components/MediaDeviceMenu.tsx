@@ -103,11 +103,12 @@ export function MediaDeviceMenu({
     onActiveDeviceChange?.(kind, deviceId);
     await setActiveMediaDevice(deviceId);
   }
+
   return (
     <Select
       onValueChange={(value) => handleActiveChange(value, kind)}
       defaultValue={initialSelection || undefined}
-      disabled={disabled || !devices}
+      disabled={disabled || !devices || devices.length === 0}
     >
       <SelectTrigger className="w-full">
         {kind === 'videoinput' && <Conference width={14} />}
