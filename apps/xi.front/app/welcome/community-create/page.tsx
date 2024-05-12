@@ -53,6 +53,7 @@ type ResponseBodyAvatar = {
 export default function WelcomeCommunityCreate() {
   const updateUser = useMainSt((state) => state.updateUser);
   const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [file, setFile] = React.useState<any>();
@@ -121,8 +122,8 @@ export default function WelcomeCommunityCreate() {
           name: community,
         },
       },
-      async (status: number, data: any) => {
-        console.log('on data', status, data);
+      async (status: number, { community, participant }: { community: any; participant: any }) => {
+        console.log('on data', status, community);
         if (status === 200) {
           const { status } = await put<RequestBody, ResponseBody>({
             service: 'auth',
@@ -133,6 +134,13 @@ export default function WelcomeCommunityCreate() {
                 'Content-Type': 'application/json',
               },
             },
+          });
+
+          updateCommunityMeta({
+            id: community.id,
+            isOwner: participant.is_owner,
+            name: community.name,
+            description: community.description,
           });
 
           if (status === 204) {
@@ -147,10 +155,10 @@ export default function WelcomeCommunityCreate() {
           toast('Ошибка при создании сообщества');
         }
 
-        if (status === 200 && formData && data.id) {
+        if (status === 200 && formData && community.id) {
           const { status } = await put<RequestBodyAvatar, ResponseBodyAvatar>({
             service: 'backend',
-            path: `/api/protected/community-service/communities/${data.id}/avatar/`,
+            path: `/api/protected/community-service/communities/${community.id}/avatar/`,
             body: formData,
             config: {
               headers: {},

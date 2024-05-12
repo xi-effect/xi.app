@@ -101,6 +101,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
 
   const isLogin = useMainSt((state) => state.isLogin);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
+  const communityId = useMainSt((state) => state.communityMeta.id);
 
   // console.log('isLogin', isLogin);
   // console.log('onboardingStage', onboardingStage);
@@ -125,7 +126,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     onboardingStage === 'completed' &&
     welcomePagesPaths.includes(pathname)
   ) {
-    redirect('/communities/1/home');
+    redirect(`/communities/${communityId || 1}/home`);
   }
 
   if (

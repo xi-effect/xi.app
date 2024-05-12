@@ -97,7 +97,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         },
       },
     });
-    console.log('onSignIn', data, status);
+    // console.log('onSignIn', data, status);
     if (status === 200) {
       useMainSt.getState().initSocket();
       {

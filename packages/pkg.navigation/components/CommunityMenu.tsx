@@ -139,6 +139,8 @@ export const CommunityMenu = () => {
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
   const [isCommunityChannelCreateOpen, setIsCommunityChannelCreateOpen] = React.useState(false);
 
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+
   // Берем community-id из URL
   const params = useParams();
   // Делим все сообщества пользователя на то, на странице которого мы сейчас
@@ -279,7 +281,7 @@ export const CommunityMenu = () => {
                   name={currentCommunity.name}
                   id={currentCommunity.id}
                 />
-                {currentCommunity.isOwner && (
+                {isOwner && (
                   <>
                     <DropdownMenuItem
                       onClick={driverAction}
