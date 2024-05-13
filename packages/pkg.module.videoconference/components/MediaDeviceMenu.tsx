@@ -11,7 +11,7 @@ import { MediaDeviceKind, MediaDeviceSelect } from './MediaDeviceSelect';
 export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   kind: MediaDeviceKind;
-  initialSelection: string;
+  initialSelection: string | undefined;
   onActiveDeviceChange?: (kind: MediaDeviceKind, deviceId: string) => void;
   warnDisable: boolean;
   requestPermissions?: boolean;
@@ -110,7 +110,7 @@ export function MediaDeviceMenu({
     <div className={`${warnDisable ? 'border-orange-80 rounded-[8px] border-2' : null}`}>
       <Select
         onValueChange={(value) => handleActiveChange(value, kind)}
-        defaultValue={initialSelection && !warnDisable && !devices ? initialSelection : undefined}
+        defaultValue={devices?.length > 0 ? initialSelection : undefined}
         disabled={disabled || warnDisable || !devices || devices.length === 0}
       >
         <SelectTrigger className="w-full">

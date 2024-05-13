@@ -194,20 +194,20 @@ export function PreJoinSection({
                   initialState={audioEnabled}
                   showIcon={false}
                   source={Track.Source.Microphone}
-                  onChange={(enabled) => setAudioEnabled(enabled)}
+                  onChange={(enabled) => audioTrack && setAudioEnabled(enabled)}
                 >
                   <Microphone width={25} className="fill-red-0" />
                 </TrackToggle>
               </div>
               <div
-                className={`border-4 ${videoEnabled ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
+                className={`border-4 ${videoEnabled && videoTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
               >
                 <TrackToggle
                   showIcon={false}
                   className="bg-transparent text-white"
                   initialState={videoEnabled}
                   source={Track.Source.Camera}
-                  onChange={(enabled) => setVideoEnabled(enabled)}
+                  onChange={(enabled) => videoTrack && setVideoEnabled(enabled)}
                 >
                   <Conference width={214} className="fill-red-0" />
                 </TrackToggle>
@@ -227,7 +227,7 @@ export function PreJoinSection({
               <h2 className="mb-1 font-sans">Камера</h2>
               <MediaDeviceMenu
                 disabled={!videoEnabled}
-                initialSelection={videoDeviceId}
+                initialSelection={videoDeviceId || undefined}
                 warnDisable={!permissionByBrowser}
                 kind="videoinput"
                 onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
@@ -238,14 +238,14 @@ export function PreJoinSection({
               <div className="flex flex-col gap-2">
                 <MediaDeviceMenu
                   disabled={!audioEnabled}
-                  initialSelection={audioDeviceId}
+                  initialSelection={audioDeviceId || undefined}
                   warnDisable={!permissionByBrowser}
                   kind="audioinput"
                   onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
                 />
                 <MediaDeviceMenu
                   disabled={!audioEnabled}
-                  initialSelection={dinamicControl?.activeDeviceId}
+                  initialSelection={dinamicControl.activeDeviceId || undefined}
                   warnDisable={!permissionByBrowser}
                   kind="audiooutput"
                   onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}

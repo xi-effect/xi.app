@@ -9,11 +9,12 @@ interface IMediaDeviceSelect {
 export function MediaDeviceSelect({ devices }: IMediaDeviceSelect) {
   return (
     <ul>
-      {devices && devices.map((device) => (
-        <li key={device.deviceId} id={device.deviceId}>
-          <SelectItem value={device.deviceId}>{device.label}</SelectItem>
-        </li>
-      ))}
+      {devices &&
+        devices.map((device) => (
+          <li key={device.deviceId} id={device.deviceId}>
+            <SelectItem value={device.deviceId}>{device.label}</SelectItem>
+          </li>
+        ))}
     </ul>
   );
 }
