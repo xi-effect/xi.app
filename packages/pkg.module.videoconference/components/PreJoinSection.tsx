@@ -166,6 +166,10 @@ export function PreJoinSection({
     setIsValid(handleValidation(newUserChoices as LocalUserChoices));
   }, [username, videoEnabled, handleValidation, audioEnabled, audioDeviceId, videoDeviceId]);
 
+  useEffect(() => {
+    setPermissionByBrowser(true);
+  }, [audioEnabled || videoEnabled]);
+
   return (
     <div className="mt-4">
       <h2 className="mb-8 font-sans text-[32px] font-medium">Присоединиться к конференции</h2>
@@ -194,7 +198,7 @@ export function PreJoinSection({
                   initialState={audioEnabled}
                   showIcon={false}
                   source={Track.Source.Microphone}
-                  onChange={(enabled) => audioTrack && setAudioEnabled(enabled)}
+                  onChange={(enabled) => permissionByBrowser && setAudioEnabled(enabled)}
                 >
                   <Microphone width={25} className="fill-red-0" />
                 </TrackToggle>
@@ -207,7 +211,7 @@ export function PreJoinSection({
                   className="bg-transparent text-white"
                   initialState={videoEnabled}
                   source={Track.Source.Camera}
-                  onChange={(enabled) => videoTrack && setVideoEnabled(enabled)}
+                  onChange={(enabled) => permissionByBrowser && setVideoEnabled(enabled)}
                 >
                   <Conference width={214} className="fill-red-0" />
                 </TrackToggle>
