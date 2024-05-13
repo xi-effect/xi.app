@@ -125,7 +125,6 @@ export function PreJoinSection({
     return 'undefined';
   }, [videoTrack]);
 
-  // const trackAudioReferences: TrackReference[] = useTracks([Track.Source.Microphone]);
   const audioTrack = React.useMemo(
     () => tracks?.filter((track) => track.kind === Track.Kind.Audio)[0] as LocalAudioTrack,
     [tracks],
