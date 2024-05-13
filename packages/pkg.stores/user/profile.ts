@@ -2,7 +2,6 @@ import { StateCreator } from 'zustand';
 import { get } from 'pkg.utils';
 import { UserT } from 'pkg.models';
 import { useMainSt } from '../index';
-import { UserSettings } from './settings';
 
 export type UserProfile = {
   user: UserT;
@@ -19,7 +18,7 @@ export type ResponseBodyUserT = {
   email: UserT['email'];
 };
 
-export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
+export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile> = (
   set,
 ) => ({
   user: {

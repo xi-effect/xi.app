@@ -5,8 +5,6 @@ import { redirect, useParams, usePathname } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 import { useMainSt } from 'pkg.stores';
-// import { useSocketIO } from 'pkg.utils';
-// import { io } from 'socket.io-client';
 import Load from './load';
 
 const mapsOfPathsWithoutRedirect = ['/signin', '/signup', '/reset-password'];
@@ -18,7 +16,6 @@ const welcomePagesPaths = [
   '/welcome/community',
   '/welcome/community-create',
   '/welcome/community-invite',
-  // '/welcome/final',
 ];
 
 const welcomePagesPathsDict = {
@@ -33,7 +30,6 @@ type AuthProviderT = {
 };
 
 const SocketProvider = ({ children }: { children: ReactNode }) => {
-  // const isLogin = useMainSt((state) => state.isLogin);
   const socket = useMainSt((state) => state.socket);
   console.log('socket', socket);
 
@@ -61,36 +57,12 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
     toast('Ошибка вебсокета');
   });
 
-  // socket?.on('connect_error', (error) => {
-  //   if (socket.active) {
-  //     if (process.env.NODE_ENV === 'development') {
-  //       toast('Ошибка вебсокета, автоматическое переподключение');
-  //     }
-  //     // temporary failure, the socket will automatically try to reconnect
-  //   } else {
-  // if (process.env.NODE_ENV === 'development') toast('Ошибка вебсокета, переподключение');
-  //     socket.connect();
-  //     // the connection was denied by the server
-  //     // in that case, `socket.connect()` must be manually called in order to reconnect
-  //     console.log(error.message);
-  //   }
-  // });
-
-  // useEffect(
-  //   () => () => {
-  //     socket?.off();
-  //     socket?.disconnect();
-  //   },
-  //   [],
-  // );
-
   return children;
 };
 
 const AuthProvider = ({ children }: AuthProviderT) => {
   const pathname = usePathname();
   const { 'community-id': comIdParams } = useParams<{ 'community-id': string }>();
-  // const router = useRouter();
 
   const isLogin = useMainSt((state) => state.isLogin);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
@@ -122,7 +94,6 @@ const AuthProvider = ({ children }: AuthProviderT) => {
             }
 
             if (community?.id !== null) {
-              // router.push(`/communities/${community.id}/home`);
               setIsLogin(true);
             }
           },
@@ -131,12 +102,12 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     }
   }, [socket?.connected]);
 
-  console.log('isLogin', isLogin);
-  console.log('onboardingStage', onboardingStage);
-  console.log('pathname', pathname);
-  console.log('communityId', communityId);
-  console.log('comIdParams', Number(comIdParams));
-  console.log('Number(comIdParams) !== communityId', Number(comIdParams) !== communityId);
+  // console.log('isLogin', isLogin);
+  // console.log('onboardingStage', onboardingStage);
+  // console.log('pathname', pathname);
+  // console.log('communityId', communityId);
+  // console.log('comIdParams', Number(comIdParams));
+  // console.log('Number(comIdParams) !== communityId', Number(comIdParams) !== communityId);
 
   // Показываем скелетон, пока запрос на проверку сессии не пришёл
   if (isLogin === null) return <Load />;
@@ -159,7 +130,6 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     onboardingStage === 'completed' &&
     welcomePagesPaths.includes(pathname)
   ) {
-    console.log('redirect', communityId);
     redirect(`/communities/${communityId}/home`);
   }
 
