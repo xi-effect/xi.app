@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-no-useless-fragment */
-import '@livekit/components-styles';
+// import '@livekit/components-styles';
 import React from 'react';
 import { Track } from 'livekit-client';
 import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
@@ -55,11 +56,14 @@ export function ParticipantTile({
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
   const isSpeaking = useIsSpeaking(participant);
-  const trackReference: TrackReferenceOrPlaceholder = React.useMemo(() => ({
+  const trackReference: TrackReferenceOrPlaceholder = React.useMemo(
+    () => ({
       participant: trackRef?.participant ?? maybeTrackRef?.participant ?? p,
       source: trackRef?.source ?? maybeTrackRef?.source ?? source,
       publication: trackRef?.publication ?? maybeTrackRef?.publication ?? publication,
-    }), [maybeTrackRef, p, publication, source, trackRef]);
+    }),
+    [maybeTrackRef, p, publication, source, trackRef],
+  );
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
     participant: trackReference.participant,
@@ -93,18 +97,20 @@ export function ParticipantTile({
     <div style={{ position: 'relative' }} {...elementProps}>
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
-          <div className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}>
+          <div>
             {children ?? (
-              <>
+              <div
+                className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}
+              >
                 {isTrackReference(trackReference) &&
                 (trackReference.publication?.kind === 'video' ||
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
-                    <VideoTrack
-                      trackRef={trackReference}
-                      onSubscriptionStatusChanged={handleSubscribe}
-                      manageSubscription={autoManageSubscription}
-                    />
+                  <VideoTrack
+                    trackRef={trackReference}
+                    onSubscriptionStatusChanged={handleSubscribe}
+                    manageSubscription={autoManageSubscription}
+                  />
                 ) : (
                   isTrackReference(trackReference) && (
                     <AudioTrack
@@ -138,7 +144,7 @@ export function ParticipantTile({
                   </div>
                   <ConnectionQualityIndicator className="bg-transperent" />
                 </div>
-              </>
+              </div>
             )}
           </div>
           <FocusToggle
