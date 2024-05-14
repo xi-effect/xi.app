@@ -7,11 +7,8 @@ import type { TrackReferenceOrPlaceholder, WidgetState } from '@livekit/componen
 import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/components-core';
 import { RoomEvent, Track } from 'livekit-client';
 import {
-  CarouselLayout,
   ConnectionStateToast,
-  FocusLayout,
   FocusLayoutContainer,
-  GridLayout,
   LayoutContextProvider,
   RoomAudioRenderer,
   VideoConferenceProps,
@@ -20,7 +17,7 @@ import {
   useTracks,
 } from '@livekit/components-react';
 import { ParticipantTile } from './ParticipantTile';
-// import { FocusLayout } from './FocusLayout';
+import { FocusLayout, CarouselLayout, GridLayout } from './VideoConferenceLayout';
 
 export function VideoConference({
   chatMessageFormatter,
