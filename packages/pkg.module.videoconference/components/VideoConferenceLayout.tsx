@@ -15,9 +15,9 @@ import {
   usePagination,
   useSwipe,
 } from '@livekit/components-react';
+import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
-import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 
 export interface PaginationControlProps
   extends Pick<
@@ -106,12 +106,12 @@ export function PaginationControl({
   }, [connectedElement]);
 
   return (
-    <div data-lk-user-interaction={interactive}>
-      <button onClick={prevPage}>
+    <div className="lk-pagination-control" data-lk-user-interaction={interactive}>
+      <button className="lk-button" onClick={prevPage}>
         <ChevronLeft />
       </button>
-      <span>{`${currentPage} of ${totalPageCount}`}</span>
-      <button onClick={nextPage}>
+      <span className="lk-pagination-count">{`${currentPage} of ${totalPageCount}`}</span>
+      <button className="lk-button" onClick={nextPage}>
         <ChevronRight />
       </button>
     </div>
@@ -125,11 +125,11 @@ export function PaginationIndicator({ totalPageCount, currentPage }: PaginationI
     return <span key={index} />;
   });
 
-  return <div>{bubbles}</div>;
+  return <div className="lk-pagination-indicator">{bubbles}</div>;
 }
 
 export function FocusLayoutContainer({ children }: FocusLayoutContainerProps) {
-  return <div>{children}</div>;
+  return <div className="lk-focus-layout">{children}</div>;
 }
 
 export function GridLayout({ tracks, ...props }: GridLayoutProps) {
@@ -144,7 +144,12 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
   });
 
   return (
-    <div ref={gridEl} data-lk-pagination={pagination.totalPageCount > 1} className="">
+    <div
+      ref={gridEl}
+      style={{ gap: '1rem' }}
+      data-lk-pagination={pagination.totalPageCount > 1}
+      className="lk-grid-layout"
+    >
       <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
       {tracks.length > layout.maxTiles && (
         <>

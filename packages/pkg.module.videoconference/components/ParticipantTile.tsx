@@ -94,19 +94,18 @@ export function ParticipantTile({
   );
 
   return (
-    <div style={{ position: 'relative' }} {...elementProps}>
+    <div style={{ position: 'relative', flexDirection: 'unset' }} {...elementProps}>
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
           <div>
             {children ?? (
-              <div
-                className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}
-              >
+              <div className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full`}>
                 {isTrackReference(trackReference) &&
                 (trackReference.publication?.kind === 'video' ||
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
+                    className="rounded-[8px]"
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
                     manageSubscription={autoManageSubscription}
@@ -121,7 +120,6 @@ export function ParticipantTile({
                 )}
                 <div className="lk-participant-placeholder h-fit">
                   <ParticipantPlaceholder />
-                  {/* **** */}
                 </div>
                 <div className="lk-participant-metadata p-1">
                   <div className=" bg-transperent">

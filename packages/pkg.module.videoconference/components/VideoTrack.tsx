@@ -8,7 +8,6 @@ import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/componen
 import { RoomEvent, Track } from 'livekit-client';
 import {
   ConnectionStateToast,
-  FocusLayoutContainer,
   LayoutContextProvider,
   RoomAudioRenderer,
   VideoConferenceProps,
@@ -17,7 +16,12 @@ import {
   useTracks,
 } from '@livekit/components-react';
 import { ParticipantTile } from './ParticipantTile';
-import { FocusLayout, CarouselLayout, GridLayout } from './VideoConferenceLayout';
+import {
+  FocusLayout,
+  CarouselLayout,
+  GridLayout,
+  FocusLayoutContainer,
+} from './VideoConferenceLayout';
 
 export function VideoConference({
   chatMessageFormatter,
@@ -89,22 +93,11 @@ export function VideoConference({
           onWidgetChange={widgetUpdate}
         >
           <div className="lk-video-conference-inner">
-            {!focusTrack ? (
-              <div className="lk-grid-layout-wrapper">
-                <GridLayout tracks={tracks}>
-                  <ParticipantTile />
-                </GridLayout>
-              </div>
-            ) : (
-              <div className="lk-focus-layout-wrapper">
-                <FocusLayoutContainer>
-                  <CarouselLayout tracks={carouselTracks}>
-                    <ParticipantTile />
-                  </CarouselLayout>
-                  {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                </FocusLayoutContainer>
-              </div>
-            )}
+            <div className="lk-grid-layout-wrapper">
+              <GridLayout tracks={tracks}>
+                <ParticipantTile />
+              </GridLayout>
+            </div>
           </div>
         </LayoutContextProvider>
       )}
