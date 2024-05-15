@@ -77,6 +77,9 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     socket: io('https://api.xieffect.ru/', {
       withCredentials: true,
       transports: ['websocket'],
+      reconnectionAttempts: 100,
+      reconnectionDelay: 2000,
+      reconnectionDelayMax: 50000,
     }),
   })),
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
