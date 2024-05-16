@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-undef */
 import React from 'react';
+import '@livekit/components-styles';
 import { createInteractingObservable, getScrollBarWidth } from '@livekit/components-core';
 import {
   CarouselLayoutProps,
@@ -36,11 +37,9 @@ export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps)
   const trackReference = trackRef ?? track;
   return <ParticipantTile {...trackReference} {...htmlProps} />;
 }
-const MIN_HEIGHT = 130;
-const MIN_WIDTH = 140;
-const MIN_VISIBLE_TILES = 1;
-const ASPECT_RATIO = 16 / 10;
-const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
+const MIN_HEIGHT = 140;
+const MIN_WIDTH = 250;
+const MIN_VISIBLE_TILES = 15;
 
 export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayoutProps) {
   const asideEl = React.useRef<HTMLDivElement>(null);
@@ -49,9 +48,7 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   const carouselOrientation = orientation || (height >= width ? 'vertical' : 'horizontal');
 
   const tileSpan =
-    carouselOrientation === 'vertical'
-      ? Math.max(width * ASPECT_RATIO_INVERT, MIN_HEIGHT)
-      : Math.max(height * ASPECT_RATIO, MIN_WIDTH);
+    carouselOrientation === 'vertical' ? Math.max(width, MIN_HEIGHT) : Math.max(height, MIN_WIDTH);
   const scrollBarWidth = getScrollBarWidth();
 
   const tilesThatFit =

@@ -56,6 +56,7 @@ export function VideoConference({
 
   const focusTrack = usePinnedTracks(layoutContext)?.[0];
   const carouselTracks = tracks.filter((track) => !isEqualTrackRef(track, focusTrack));
+  // const caruselTracks = useTracks([Track.Source.Camera]);
 
   React.useEffect(() => {
     if (
@@ -94,9 +95,20 @@ export function VideoConference({
         >
           <div className="lk-video-conference-inner">
             <div className="lk-grid-layout-wrapper">
-              <GridLayout tracks={tracks}>
-                <ParticipantTile />
-              </GridLayout>
+              {!focusTrack ? (
+                <GridLayout tracks={tracks}>
+                  <ParticipantTile />
+                </GridLayout>
+              ) : (
+                <div className="lk-focus-layout-wrapper">
+                  <FocusLayoutContainer>
+                    <CarouselLayout orientation="horizontal" tracks={carouselTracks}>
+                      <ParticipantTile />
+                    </CarouselLayout>
+                    {focusTrack && <FocusLayout trackRef={focusTrack} />}
+                  </FocusLayoutContainer>
+                </div>
+              )}
             </div>
           </div>
         </LayoutContextProvider>

@@ -105,6 +105,11 @@ export function ParticipantTile({
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
+                    style={
+                      trackReference.source === Track.Source.Camera
+                        ? { transform: 'rotateY(180deg)' }
+                        : undefined
+                    }
                     className="rounded-[8px]"
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
