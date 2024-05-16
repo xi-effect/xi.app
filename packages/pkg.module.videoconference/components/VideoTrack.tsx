@@ -93,18 +93,20 @@ export function VideoConference({
           // onPinChange={handleFocusStateChange}
           onWidgetChange={widgetUpdate}
         >
-          <div className="lk-video-conference-inner">
-            <div className="lk-grid-layout-wrapper">
+          <div className="lk-video-conference-inner p-2">
+            <div>
               {!focusTrack ? (
                 <GridLayout tracks={tracks}>
                   <ParticipantTile />
                 </GridLayout>
               ) : (
-                <div className="lk-focus-layout-wrapper">
+                <div className="p-4">
                   <FocusLayoutContainer>
-                    <CarouselLayout orientation="horizontal" tracks={carouselTracks}>
-                      <ParticipantTile />
-                    </CarouselLayout>
+                    <div className="mb-12">
+                      <CarouselLayout orientation="horizontal" tracks={carouselTracks}>
+                        <ParticipantTile className="h-[140px] w-[250px]" />
+                      </CarouselLayout>
+                    </div>
                     {focusTrack && <FocusLayout trackRef={focusTrack} />}
                   </FocusLayoutContainer>
                 </div>

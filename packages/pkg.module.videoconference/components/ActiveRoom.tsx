@@ -34,7 +34,7 @@ export function ActiveRoom({
       className="h-screen"
     >
       <UpBar />
-      <div className="flex h-[100vh] flex-row px-8 py-4">{isConnected && <Stage />}</div>
+      <div className="h-[100vh] w-full px-8 py-4">{isConnected && <Stage />}</div>
       <BottomBar />
     </LiveKitRoom>
   );

@@ -35,11 +35,19 @@ export interface PaginationIndicatorProps {
 
 export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
   const trackReference = trackRef ?? track;
-  return <ParticipantTile {...trackReference} {...htmlProps} />;
+  return (
+    <ParticipantTile
+      style={{ width: '1050px', margin: 'auto' }}
+      {...trackReference}
+      {...htmlProps}
+    />
+  );
 }
 const MIN_HEIGHT = 140;
-const MIN_WIDTH = 250;
-const MIN_VISIBLE_TILES = 15;
+const MIN_WIDTH = 240;
+const MIN_VISIBLE_TILES = 1;
+const ASPECT_RATIO = 16 / 10;
+const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
 
 export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayoutProps) {
   const asideEl = React.useRef<HTMLDivElement>(null);
@@ -48,7 +56,9 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   const carouselOrientation = orientation || (height >= width ? 'vertical' : 'horizontal');
 
   const tileSpan =
-    carouselOrientation === 'vertical' ? Math.max(width, MIN_HEIGHT) : Math.max(height, MIN_WIDTH);
+    carouselOrientation === 'vertical'
+      ? Math.max(width * ASPECT_RATIO_INVERT, MIN_HEIGHT)
+      : Math.max(height * ASPECT_RATIO, MIN_WIDTH);
   const scrollBarWidth = getScrollBarWidth();
 
   const tilesThatFit =
@@ -73,7 +83,13 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   }, [maxVisibleTiles, carouselOrientation]);
 
   return (
-    <aside key={carouselOrientation} className="lk-carousel" ref={asideEl} {...props}>
+    <aside
+      key={carouselOrientation}
+      style={{ gap: '1rem', width: 'full' }}
+      className="lk-carousel"
+      ref={asideEl}
+      {...props}
+    >
       <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
     </aside>
   );
@@ -126,7 +142,7 @@ export function PaginationIndicator({ totalPageCount, currentPage }: PaginationI
 }
 
 export function FocusLayoutContainer({ children }: FocusLayoutContainerProps) {
-  return <div className="lk-focus-layout">{children}</div>;
+  return <div>{children}</div>;
 }
 
 export function GridLayout({ tracks, ...props }: GridLayoutProps) {

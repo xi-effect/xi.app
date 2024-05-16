@@ -99,7 +99,9 @@ export function ParticipantTile({
         <ParticipantContextIfNeeded participant={trackReference.participant}>
           <div>
             {children ?? (
-              <div className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full`}>
+              <div
+                className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}
+              >
                 {isTrackReference(trackReference) &&
                 (trackReference.publication?.kind === 'video' ||
                   trackReference.source === Track.Source.Camera ||
