@@ -1,6 +1,6 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-no-useless-fragment */
-// import '@livekit/components-styles';
 import React from 'react';
 import { Track } from 'livekit-client';
 import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
@@ -15,7 +15,7 @@ import {
   ParticipantPlaceholder,
   ParticipantTileProps,
   ScreenShareIcon,
-  TrackMutedIndicator,
+  TrackMutedIndicatorProps,
   TrackRefContext,
   VideoTrack,
   useEnsureParticipant,
@@ -25,7 +25,9 @@ import {
   useMaybeLayoutContext,
   useMaybeTrackRefContext,
   useParticipantTile,
+  useTrackMutedIndicator,
 } from '@livekit/components-react';
+import { Microphone } from '@xipkg/icons';
 
 function TrackRefContextIfNeeded({
   trackRef,
@@ -41,6 +43,26 @@ function TrackRefContextIfNeeded({
     <>{children}</>
   );
 }
+export function TrackMutedIndicator({
+  trackRef,
+  show = 'always',
+  ...props
+}: TrackMutedIndicatorProps) {
+  const { isMuted } = useTrackMutedIndicator(trackRef);
+
+  const showIndicator =
+    show === 'always' || (show === 'muted' && isMuted) || (show === 'unmuted' && !isMuted);
+
+  if (!showIndicator) {
+    return null;
+  }
+
+  return (
+    <div data-lk-muted={isMuted}>
+      {props.children ?? isMuted ? <Microphone className="h-[14px] w-[14px] fill-white" /> : null}
+    </div>
+  );
+}
 
 export function ParticipantTile({
   trackRef,
@@ -52,7 +74,6 @@ export function ParticipantTile({
   disableSpeakingIndicator,
   ...htmlProps
 }: ParticipantTileProps) {
-  // TODO: remove deprecated props and refactor in a future version.
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
   const isSpeaking = useIsSpeaking(participant);
@@ -94,7 +115,8 @@ export function ParticipantTile({
   );
 
   return (
-    <div style={{ position: 'relative', flexDirection: 'unset' }} {...elementProps}>
+    <div style={{ position: 'relative' }} {...elementProps}>
+      {/* flexDirection: 'unset'  */}
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
           <div>
@@ -131,14 +153,18 @@ export function ParticipantTile({
                 <div className="lk-participant-metadata p-1">
                   <div className=" bg-transperent">
                     {trackReference.source === Track.Source.Camera ? (
-                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-100 px-[8px] py-[4px]">
+                      <div className="justify-items-centre flex h-[24px] w-full items-center gap-[6px] rounded-[4px] bg-gray-100 px-[6px] py-[4px]">
                         {isEncrypted && <LockLockedIcon style={{ background: 'transperent' }} />}
                         <TrackMutedIndicator
+                          trackRef={{
+                            participant: trackReference.participant,
+                            source: Track.Source.Microphone,
+                          }}
                           source={Track.Source.Microphone}
                           show="muted"
                           style={{ marginRight: '0.25rem', background: 'transperent' }}
                         />
-                        <ParticipantName />
+                        <ParticipantName className="text-[12px]" />
                       </div>
                     ) : (
                       <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-100 px-[8px] py-[4px]">
