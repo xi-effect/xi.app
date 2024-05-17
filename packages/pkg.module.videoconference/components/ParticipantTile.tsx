@@ -64,21 +64,16 @@ export function TrackMutedIndicator({
   );
 }
 
-interface IParticipantTile {
-  carouselMode?: boolean;
-}
-
 export function ParticipantTile({
   trackRef,
   participant,
   children,
   source = Track.Source.Camera,
   onParticipantClick,
-  carouselMode,
   publication,
   disableSpeakingIndicator,
   ...htmlProps
-}: ParticipantTileProps & IParticipantTile) {
+}: ParticipantTileProps) {
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
   const isSpeaking = useIsSpeaking(participant);
@@ -123,7 +118,7 @@ export function ParticipantTile({
     <div
       style={{
         position: 'relative',
-        flexDirection: carouselMode ? 'unset' : 'row',
+        // flexDirection: carouselMode ? 'unset' : 'row',
       }}
       {...elementProps}
     >
