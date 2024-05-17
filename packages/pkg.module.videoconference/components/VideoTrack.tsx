@@ -97,7 +97,7 @@ export function VideoConference({
             <div>
               {!focusTrack ? (
                 <GridLayout tracks={tracks}>
-                  <ParticipantTile style={{ flexDirection: 'column' }} />
+                  <ParticipantTile style={{ flexDirection: 'column', maxHeight: '320px' }} />
                 </GridLayout>
               ) : (
                 <div className="p-4">
@@ -105,7 +105,7 @@ export function VideoConference({
                     <div className="mb-12">
                       <CarouselLayout orientation="horizontal" tracks={carouselTracks}>
                         <ParticipantTile
-                          style={{ flex: 'unset', flexDirection: 'unset' }}
+                          style={{ flex: 'unset' }}
                           className="h-[140px] w-[250px]"
                         />
                       </CarouselLayout>

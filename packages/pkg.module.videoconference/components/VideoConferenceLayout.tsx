@@ -38,7 +38,7 @@ export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps)
   return (
     <div>
       <ParticipantTile
-        style={{ width: '1050px', height: '575px', margin: 'auto' }}
+        style={{ width: '100%', height: '100%', margin: 'auto' }}
         {...trackReference}
         {...htmlProps}
       />
