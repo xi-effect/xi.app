@@ -104,7 +104,7 @@ export function VideoConference({
                   <FocusLayoutContainer>
                     <div className="mb-12">
                       <CarouselLayout orientation="horizontal" tracks={carouselTracks}>
-                        <ParticipantTile className="h-[140px] w-[250px]" />
+                        <ParticipantTile carouselMode={true} className="h-[140px] w-[250px]" />
                       </CarouselLayout>
                     </div>
                     {focusTrack && <FocusLayout trackRef={focusTrack} />}
