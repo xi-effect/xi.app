@@ -1,4 +1,7 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
+import React, { createRef } from 'react';
 import { Button } from '@xipkg/button';
 import { SnackbarContent, CustomContentProps, useSnackbar } from 'notistack';
 import { useInterfaceStore } from './interfaceStore';
@@ -36,6 +39,13 @@ export const ConfirmSave = React.forwardRef<HTMLDivElement, ConfirmSaveProps>((p
     closeSnackbar();
   };
 
+  const buttonRef = createRef<HTMLButtonElement>();
+
+  const onButtonClick = () => {
+    if (buttonRef && buttonRef.current && buttonRef.current.click) buttonRef.current.click();
+    setIsLoading(true);
+  };
+
   const isAnimation = useInterfaceStore((state) => state.isAnimate);
 
   return (
@@ -56,19 +66,23 @@ export const ConfirmSave = React.forwardRef<HTMLDivElement, ConfirmSaveProps>((p
           >
             Сбросить
           </Button>
-          {isLoading ? (
-            <Button variant="default-spinner" className="w-[160px]" />
-          ) : (
-            <Button
-              onClick={() => setIsLoading(true)}
-              type="submit"
-              variant="default"
-              form="community-settings-main-page-form"
-              className="pointer w-[160px]"
-            >
-              Сохранить
-            </Button>
-          )}
+          <div>
+            {isLoading ? (
+              <Button variant="default-spinner" className="w-[160px]" />
+            ) : (
+              <>
+                <Button onClick={onButtonClick} variant="default" className="pointer w-[160px]">
+                  Сохранить
+                </Button>
+                <Button
+                  ref={buttonRef}
+                  type="submit"
+                  form="community-settings-main-page-form"
+                  className="sr-only"
+                />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </SnackbarContent>

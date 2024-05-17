@@ -29,10 +29,9 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 
-import Link from 'next/link';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 
@@ -118,18 +117,56 @@ const CommunityLink = ({
 }: {
   community: CommunityTemplateT;
   handleClose: () => void;
-}) => (
-  <Link
-    href={{
-      pathname: `/communities/${community.id}/home`,
-    }}
-    onClick={handleClose}
-    className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
-  >
-    <AvatarPreview communityId={community.id} />
-    <div className="ml-2 self-center text-[16px] font-semibold">{community.name}</div>
-  </Link>
-);
+}) => {
+  const socket = useMainSt((state) => state.socket);
+  const currentCommunityId = useMainSt((state) => state.communityMeta.id);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  const router = useRouter();
+
+  const handleClick = () => {
+    socket.emit(
+      'close-community',
+      {
+        community_id: currentCommunityId,
+      },
+      (data: any) => {
+        console.log('close-community', data);
+        if (data === 204) {
+          socket.emit(
+            'retrieve-community',
+            {
+              community_id: community.id,
+            },
+            (stats: number, { community, participant }: { community: any; participant: any }) => {
+              console.log('stats', stats);
+              if (stats === 200) {
+                updateCommunityMeta({
+                  id: community.id,
+                  isOwner: participant.is_owner,
+                  name: community.name,
+                  description: community.description,
+                });
+
+                router.push(`/communities/${community.id}/home`);
+                if (handleClose) handleClose();
+              }
+            },
+          );
+        }
+      },
+    );
+  };
+
+  return (
+    <div
+      onClick={handleClick}
+      className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
+    >
+      <AvatarPreview communityId={community.id} />
+      <div className="ml-2 self-center text-[16px] font-semibold">{community.name}</div>
+    </div>
+  );
+};
 
 export const CommunityMenu = () => {
   const [isOpen, setIsOpen] = React.useState(false);
