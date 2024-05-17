@@ -36,11 +36,13 @@ export interface PaginationIndicatorProps {
 export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
   const trackReference = trackRef ?? track;
   return (
-    <ParticipantTile
-      style={{ width: '1050px', margin: 'auto' }}
-      {...trackReference}
-      {...htmlProps}
-    />
+    <div>
+      <ParticipantTile
+        style={{ width: '1050px', height: '575px', margin: 'auto' }}
+        {...trackReference}
+        {...htmlProps}
+      />
+    </div>
   );
 }
 const MIN_HEIGHT = 140;

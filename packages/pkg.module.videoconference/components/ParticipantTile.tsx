@@ -118,7 +118,6 @@ export function ParticipantTile({
     <div
       style={{
         position: 'relative',
-        // flexDirection: carouselMode ? 'unset' : 'row',
       }}
       {...elementProps}
     >
