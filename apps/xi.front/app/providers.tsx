@@ -79,25 +79,50 @@ const AuthProvider = ({ children }: AuthProviderT) => {
   useEffect(() => {
     if (socket !== null) {
       socket.on('connect', () => {
-        socket.emit(
-          'retrieve-any-community',
-          (stats: number, { community, participant }: { community: any; participant: any }) => {
-            console.log('stats', stats, community, participant);
+        if (comIdParams) {
+          socket.emit(
+            'retrieve-community',
+            {
+              community_id: comIdParams,
+            },
+            (stats: number, { community, participant }: { community: any; participant: any }) => {
+              console.log('stats', stats, community, participant);
 
-            if (stats === 200) {
-              updateCommunityMeta({
-                id: community.id,
-                isOwner: participant.is_owner,
-                name: community.name,
-                description: community.description,
-              });
-            }
+              if (stats === 200) {
+                updateCommunityMeta({
+                  id: community.id,
+                  isOwner: participant.is_owner,
+                  name: community.name,
+                  description: community.description,
+                });
+              }
 
-            if (community?.id !== null) {
-              setIsLogin(true);
-            }
-          },
-        );
+              if (community?.id !== null) {
+                setIsLogin(true);
+              }
+            },
+          );
+        } else {
+          socket.emit(
+            'retrieve-any-community',
+            (stats: number, { community, participant }: { community: any; participant: any }) => {
+              console.log('stats', stats, community, participant);
+
+              if (stats === 200) {
+                updateCommunityMeta({
+                  id: community.id,
+                  isOwner: participant.is_owner,
+                  name: community.name,
+                  description: community.description,
+                });
+              }
+
+              if (community?.id !== null) {
+                setIsLogin(true);
+              }
+            },
+          );
+        }
       });
     }
   }, [socket?.connected]);
