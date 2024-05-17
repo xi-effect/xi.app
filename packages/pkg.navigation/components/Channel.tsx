@@ -127,11 +127,10 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
       onMouseLeave={() => setMouseOver(false)}
       ref={setNodeRef}
       style={style}
-      className={className}
       onClick={() => handleRouteChange()}
     >
       <div
-        className={`${currentStyles.channel} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
+        className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
       >
         <div className="flex items-center">
           {iconsDict[channel.icon]}
