@@ -18,6 +18,8 @@ import {
   useForm,
 } from '@xipkg/form';
 import { Checkbox } from '@xipkg/checkbox';
+import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 
 const FormSchema = z.object({
   title: z.string().min(1, { message: 'Поле не должно быть пустым' }),
@@ -29,9 +31,25 @@ const FormSchema = z.object({
 type FormSchemaT = z.infer<typeof FormSchema>;
 
 // Варианты каналов, которые можно добавить
-const channelsOptions = ['Объявления', 'Задания', 'Видеоконференции', 'Чат со студентами'];
+const channelsOptions = ['Объявления', 'Задания', 'Видеоконференция', 'Чат'];
 
-export const Form = () => {
+const channelDict: { [key in string]: string } = {
+  Объявления: 'posts',
+  Задания: 'tasks',
+  Видеоконференция: 'video',
+  Чат: 'chats',
+};
+
+type FormT = {
+  onOpenChange: () => void;
+};
+
+export const Form = ({ onOpenChange }: FormT) => {
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
+
+  const socket = useMainSt((state) => state.socket);
+  const communityId = useMainSt((state) => state.communityMeta.id);
+
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -57,6 +75,49 @@ export const Form = () => {
   };
 
   const onSubmit = (values: FormSchemaT) => {
+    setIsButtonActive(false);
+
+    socket.emit(
+      'create-category',
+      {
+        community_id: communityId,
+        data: {
+          name: values.title,
+          description: values.subtitle,
+        },
+      },
+      (status: number, data: { id: number; name: string; description: string | null }) => {
+        if (status === 201) {
+          toast('Категория успешно создана');
+
+          if (values.channels.length !== 0) {
+            values.channels.forEach((item) => {
+              socket.emit(
+                'create-channel',
+                {
+                  community_id: communityId,
+                  category_id: data.id,
+                  data: {
+                    kind: channelDict[item],
+                    name: item,
+                    description: null,
+                  },
+                },
+                (status: number, dataAnswer: any) => {
+                  console.log('ans', status, dataAnswer);
+                },
+              );
+            });
+          }
+
+          onOpenChange();
+          form.reset();
+        } else {
+          setIsButtonActive(true);
+          toast('Произошла ошибка');
+        }
+      },
+    );
     console.log(values);
   };
 
@@ -135,9 +196,13 @@ export const Form = () => {
           </div>
         </div>
         <M.ModalFooter>
-          <Button className="w-full" type="submit">
-            Создать
-          </Button>
+          {isButtonActive ? (
+            <Button variant="default" type="submit" className="w-full">
+              Создать
+            </Button>
+          ) : (
+            <Button variant="default-spinner" className="w-full" disabled />
+          )}
         </M.ModalFooter>
       </form>
     </FormComponent>

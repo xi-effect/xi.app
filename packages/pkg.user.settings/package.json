@@ -26,7 +26,7 @@
     "pkg.avatar.editor": "*",
     "pkg.stores": "*",
     "pkg.utils": "*",
-    "sonner": "1.0.3",
+    "sonner": "1.4.41",
     "next": "^14.2.3",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",

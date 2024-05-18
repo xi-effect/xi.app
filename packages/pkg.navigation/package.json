@@ -21,7 +21,7 @@
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-swipeable-views-react-18-fix": "^0.14.1",
-    "sonner": "1.0.3",
+    "sonner": "1.4.41",
     "pkg.router.url": "*",
     "pkg.community.channel-create": "*",
     "pkg.modal.category-create": "*",

@@ -35,28 +35,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 
-// Временный список мок-сообществ
-// const communitiesTemplate = [
-//   {
-//     name: 'Иванова А.Г.',
-//     avatar: '/assets/avatarrep.svg',
-//     id: '1',
-//     isOwner: true,
-//   },
-//   {
-//     name: 'Мое пространство',
-//     avatar: '/assets/avatarrep3.svg',
-//     id: '2',
-//     isOwner: false,
-//   },
-//   {
-//     name: 'Изучаем фронтенд',
-//     avatar: '/assets/avatarrep2.svg',
-//     id: '3',
-//     isOwner: false,
-//   },
-// ];
-
 type CommunityTemplateT = {
   name: string;
   avatar: string;
