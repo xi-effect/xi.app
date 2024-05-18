@@ -47,10 +47,9 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     () => variation === 'textOnly' || variation === 'verbose',
     [variation],
   );
-  const {
-    saveAudioInputEnabled,
-    saveVideoInputEnabled,
-  } = usePersistentUserChoices({ preventSave: !saveUserChoices });
+  const { saveAudioInputEnabled, saveVideoInputEnabled } = usePersistentUserChoices({
+    preventSave: !saveUserChoices,
+  });
 
   const browserSupportsScreenSharing = supportsScreenSharing();
   const [isScreenShareEnabled, setIsScreenShareEnabled] = React.useState(false);
@@ -73,7 +72,7 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     [setIsScreenShareEnabled],
   );
   return (
-    <div className="absolute bottom-6 w-full">
+    <div className="w-full">
       <div className="flex w-full flex-row justify-between p-4">
         <div className="flex flex-row gap-4">
           <div className="flex gap-1">

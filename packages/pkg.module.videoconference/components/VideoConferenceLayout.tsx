@@ -1,7 +1,4 @@
-/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable no-undef */
 import React from 'react';
 import '@livekit/components-styles';
 import { createInteractingObservable, getScrollBarWidth } from '@livekit/components-core';
@@ -38,17 +35,23 @@ export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps)
   return (
     <div>
       <ParticipantTile
-        style={{ width: '100%', height: '100%', margin: 'auto' }}
+        style={{
+          maxWidth: '1050px',
+          maxHeight: '570px',
+          width: '100%',
+          height: '100%',
+          margin: 'auto',
+        }}
         {...trackReference}
         {...htmlProps}
       />
     </div>
   );
 }
-const MIN_HEIGHT = 140;
-const MIN_WIDTH = 240;
+const MIN_HEIGHT = 130;
+const MIN_WIDTH = 140;
 const MIN_VISIBLE_TILES = 1;
-const ASPECT_RATIO = 16 / 10;
+const ASPECT_RATIO = 8 / 10;
 const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
 
 export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayoutProps) {
@@ -87,8 +90,8 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   return (
     <aside
       key={carouselOrientation}
-      style={{ gap: '1rem', width: 'full' }}
       className="lk-carousel"
+      style={{ gap: '1rem', width: 'full' }}
       ref={asideEl}
       {...props}
     >
@@ -97,10 +100,8 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   );
 }
 export function PaginationControl({
-  totalPageCount,
   nextPage,
   prevPage,
-  currentPage,
   pagesContainer: connectedElement,
 }: PaginationControlProps) {
   const [interactive, setInteractive] = React.useState(false);
@@ -121,17 +122,23 @@ export function PaginationControl({
   }, [connectedElement]);
 
   return (
-    <div className="lk-pagination-control" data-lk-user-interaction={interactive}>
-      <button className="lk-button" onClick={prevPage}>
-        <ChevronLeft />
+    <div className="flex items-center justify-center gap-2" data-lk-user-interaction={interactive}>
+      <button className="bg-transparent" type="button" onClick={prevPage}>
+        <ChevronLeft className="fill-white" />
       </button>
-      <span className="lk-pagination-count">{`${currentPage} of ${totalPageCount}`}</span>
-      <button className="lk-button" onClick={nextPage}>
-        <ChevronRight />
+      <button className="bg-transparent" type="button" onClick={nextPage}>
+        <ChevronRight className="fill-white" />
       </button>
     </div>
   );
 }
+
+export function PaginationPage({ totalPageCount, currentPage }: PaginationControlProps) {
+  return (
+    <span className="flex items-center justify-center text-white">{`${currentPage} of ${totalPageCount}`}</span>
+  );
+}
+
 export function PaginationIndicator({ totalPageCount, currentPage }: PaginationIndicatorProps) {
   const bubbles = new Array(totalPageCount).fill('').map((_, index) => {
     if (index + 1 === currentPage) {
@@ -159,22 +166,24 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
   });
 
   return (
-    <div
-      ref={gridEl}
-      style={{ gap: '1rem' }}
-      data-lk-pagination={pagination.totalPageCount > 1}
-      className="lk-grid-layout"
-    >
-      <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
-      {tracks.length > layout.maxTiles && (
-        <>
-          <PaginationIndicator
-            totalPageCount={pagination.totalPageCount}
-            currentPage={pagination.currentPage}
-          />
-          <PaginationControl pagesContainer={gridEl} {...pagination} />
-        </>
-      )}
-    </div>
+    <>
+      <PaginationPage {...pagination} />
+      <PaginationControl {...pagination} />
+      <div
+        ref={gridEl}
+        style={{ gap: '1rem' }}
+        data-lk-pagination={pagination.totalPageCount > 1}
+        className="lk-grid-layout"
+      >
+        {/* тут можно сделать фейковые items */}
+        <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
+        {/* {tracks.length > layout.maxTiles && ( */}
+        <PaginationIndicator
+          totalPageCount={pagination.totalPageCount}
+          currentPage={pagination.currentPage}
+        />
+        {/* )} */}
+      </div>
+    </>
   );
 }

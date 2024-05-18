@@ -127,7 +127,7 @@ export function ParticipantTile({
           <div className="h-full">
             {children ?? (
               <div
-                className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full max-h-[570px] rounded-[8px]`}
+                className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}
               >
                 {isTrackReference(trackReference) &&
                 (trackReference.publication?.kind === 'video' ||
