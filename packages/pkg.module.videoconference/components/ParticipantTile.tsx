@@ -27,7 +27,7 @@ import {
   useParticipantTile,
   useTrackMutedIndicator,
 } from '@livekit/components-react';
-import { Microphone } from '@xipkg/icons';
+import { MicrophoneOff, RedLine } from '@xipkg/icons';
 
 function TrackRefContextIfNeeded({
   trackRef,
@@ -59,7 +59,12 @@ export function TrackMutedIndicator({
 
   return (
     <div data-lk-muted={isMuted}>
-      {props.children ?? isMuted ? <Microphone className="h-[14px] w-[14px] fill-white" /> : null}
+      {props.children ?? isMuted ? (
+        <div className="relative w-[12px]">
+          <MicrophoneOff className="absolute h-[16px] w-[16px] fill-white" />
+          <RedLine className="fill-red-80 absolute h-[16px] w-[16px]" />
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -152,13 +157,13 @@ export function ParticipantTile({
                     />
                   )
                 )}
-                <div className="lk-participant-placeholder h-fit">
+                <div className="lk-participant-placeholder h-full">
                   <ParticipantPlaceholder />
                 </div>
                 <div className="lk-participant-metadata p-1">
                   <div className=" bg-transperent">
                     {trackReference.source === Track.Source.Camera ? (
-                      <div className="justify-items-centre flex h-[24px] w-full items-center gap-[6px] rounded-[4px] bg-gray-100 px-[6px] py-[4px]">
+                      <div className="flex h-[24px] w-full gap-[6px] rounded-[4px] bg-gray-100 px-[6px] py-[4px]">
                         {isEncrypted && <LockLockedIcon style={{ background: 'transperent' }} />}
                         <TrackMutedIndicator
                           trackRef={{
@@ -167,7 +172,7 @@ export function ParticipantTile({
                           }}
                           source={Track.Source.Microphone}
                           show="muted"
-                          style={{ marginRight: '0.25rem', background: 'transperent' }}
+                          style={{ marginRight: '0.45rem', background: 'transperent' }}
                         />
                         <ParticipantName className="text-[12px]" />
                       </div>

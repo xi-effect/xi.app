@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
 import '@livekit/components-styles';
@@ -177,12 +178,12 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
       >
         {/* тут можно сделать фейковые items */}
         <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
-        {/* {tracks.length > layout.maxTiles && ( */}
-        <PaginationIndicator
-          totalPageCount={pagination.totalPageCount}
-          currentPage={pagination.currentPage}
-        />
-        {/* )} */}
+        {tracks.length > layout.maxTiles && (
+          <PaginationIndicator
+            totalPageCount={pagination.totalPageCount}
+            currentPage={pagination.currentPage}
+          />
+        )}
       </div>
     </>
   );
