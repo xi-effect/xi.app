@@ -9,4 +9,5 @@ export interface IChannel {
     icon: string,
     type: string,
     label: string,
+    disabled?: boolean;
 }

@@ -2,7 +2,8 @@
 
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import {
   DndContext,
   useSensors,
@@ -123,6 +124,7 @@ const defaultChannels: IChannel[] = [
     categoryId: 'empty',
     type: 'calendar',
     label: 'Календарь',
+    // disabled: true, // — вариант реализации выключенного канала
   },
 ];
 
@@ -138,6 +140,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
   const channelsIds = useMemo(() => channels.map((channel) => channel.elId), [channels]);
   const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
   const [activeChannel, setActiveChannel] = useState<IChannel | null>(null);
+  const [currentChannel, setCurrentChannel] = useState<IChannel | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -146,6 +149,26 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
       },
     }),
   );
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setCurrentChannel(checkIsChannelOpened(pathname, channels));
+  }, [pathname, channels]);
+
+  function checkIsChannelOpened(url: string, channels: IChannel[]): IChannel | null {
+    const match = url.match(/\/communities\/\d+(?:\/channels\/(\d+)\/(\w+)|\/(\w+))/);
+    if (!match) return null;
+
+    const [, channelId, channelType, pageType] = match;
+
+    return (
+      channels.find(
+        (channel) =>
+          (channel.elId === channelId && channel.type === channelType) || channel.type === pageType,
+      ) || null
+    );
+  }
 
   return (
     <DndContext
@@ -188,7 +211,15 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
           )}
           {activeChannel && (
             <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
-              <Channel channel={activeChannel} />
+              <Channel
+                channel={activeChannel}
+                // стили нужны для отображения при захвате через DnD
+                className={`rounded-lg border-[1px] drop-shadow-lg ${
+                  currentChannel?.elId === activeChannel.elId
+                    ? 'border-brand-100'
+                    : 'border-gray-30'
+                }`}
+              />
             </SortableContext>
           )}
         </DragOverlay>,
