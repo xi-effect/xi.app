@@ -112,7 +112,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
                 <Close className="fill-gray-80 sm:fill-gray-0" />
               </ModalCloseButton>
             </ModalHeader>
-            <div className="h-full max-h-[calc(100vh-80px-182px)] space-y-6 overflow-auto p-6">
+            <div className="max-h-[calc(100vh-80px-182px)] space-y-6 overflow-auto p-6">
               <FormField
                 control={form.control}
                 name="name"

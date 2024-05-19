@@ -175,7 +175,6 @@ export const CommunityMenu = () => {
 
   useEffect(() => {
     socket.emit('list-communities', (status: number, communities: any[]) => {
-      console.log('communities', status, communities);
       const otherCommunities = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );

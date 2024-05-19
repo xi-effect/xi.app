@@ -32,7 +32,8 @@
     "pkg.logo": "*",
     "pkg.stores": "*",
     "pkg.utils": "*",
-    "pkg.modal.add-community": "*"
+    "pkg.modal.add-community": "*",
+    "nanoid": "5.0.7"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
