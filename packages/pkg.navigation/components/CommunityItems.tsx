@@ -19,113 +19,103 @@ import {
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import { CategoryContainer } from './CategoryContainer';
-import { IChannel, ICategory } from './types';
+import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
 
-const defaultCategories: ICategory[] = [
+const defaultCategories: CategoryT[] = [
   {
-    title: '',
-    subtitle: '',
+    name: '',
+    description: '',
     id: 'empty',
   },
   {
-    title: 'B1.2',
-    subtitle: 'Intermediate',
+    name: 'B1.2',
+    description: 'Intermediate',
     id: 'B1.2',
   },
   {
-    title: 'B2.0',
-    subtitle: 'Intermediate',
+    name: 'B2.0',
+    description: 'Intermediate',
     id: 'B2.0',
   },
 ];
 
-const defaultChannels: IChannel[] = [
+const defaultChannels: ChannelT[] = [
   {
-    elId: '1',
+    id: '1',
     categoryId: 'B1.2',
-    icon: 'announce',
-    type: 'announce',
-    label: 'Объявления',
+    kind: 'announce',
+    name: 'Объявления',
   },
   {
-    elId: '2',
-    icon: 'task',
-    type: 'task',
+    id: '2',
+    kind: 'task',
     categoryId: 'B1.2',
-    label: 'Задания',
+    name: 'Задания',
   },
   {
-    elId: '3',
-    icon: 'chat',
-    type: 'chat',
+    id: '3',
+    kind: 'chat',
     categoryId: 'B1.2',
-    label: 'Чат',
+    name: 'Чат',
   },
   {
-    elId: '4',
-    icon: 'camera',
-    type: 'videoconference',
+    id: '4',
+    kind: 'videoconference',
     categoryId: 'B1.2',
-    label: 'Видеоконференция',
+    name: 'Видеоконференция',
   },
   {
-    elId: '5',
-    icon: 'announce',
+    id: '5',
     categoryId: 'B2.0',
-    type: 'announce',
-    label: 'Объявления',
+    kind: 'announce',
+    name: 'Объявления',
   },
   {
-    elId: '51',
-    icon: 'whiteboard',
-    type: 'whiteboard',
+    id: '51',
+    kind: 'whiteboard',
     categoryId: 'B1.2',
-    label: 'Доска',
+    name: 'Доска',
   },
   {
-    elId: '6',
-    icon: 'task',
-    type: 'task',
+    id: '6',
+    kind: 'task',
     categoryId: 'B2.0',
-    label: 'Задания',
+    name: 'Задания',
   },
   {
-    elId: '7',
-    icon: 'chat',
-    type: 'chat',
+    id: '7',
+    kind: 'chat',
     categoryId: 'B2.0',
-    label: 'Чат',
+    name: 'Чат',
   },
   {
-    elId: '8',
-    icon: 'camera',
+    id: '8',
     categoryId: 'B2.0',
-    type: 'videoconference',
-    label: 'Видеоконференция',
+    kind: 'videoconference',
+    name: 'Видеоконференция',
   },
   {
-    elId: '9',
-    icon: 'home',
+    id: '9',
     categoryId: 'empty',
-    type: 'home',
-    label: 'Главная',
+    kind: 'home',
+    name: 'Главная',
   },
-  {
-    elId: '10',
-    icon: 'announce',
-    categoryId: 'empty',
-    type: 'announce',
-    label: 'Объявления',
-  },
-  {
-    elId: '11',
-    icon: 'calendar',
-    categoryId: 'empty',
-    type: 'calendar',
-    label: 'Календарь',
-    // disabled: true, // — вариант реализации выключенного канала
-  },
+  // {
+  //   id: '10',
+  //   icon: 'announce',
+  //   categoryId: 'empty',
+  //   kind: 'announce',
+  //   name: 'Объявления',
+  // },
+  // {
+  //   id: '11',
+  //   icon: 'calendar',
+  //   categoryId: 'empty',
+  //   kind: 'calendar',
+  //   name: 'Календарь',
+  //   // disabled: true, // — вариант реализации выключенного канала
+  // },
 ];
 
 interface ICommunityItems {
@@ -134,13 +124,13 @@ interface ICommunityItems {
 }
 
 export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) => {
-  const [categories, setCategories] = useState<ICategory[]>(defaultCategories);
-  const [channels, setChannels] = useState<IChannel[]>(defaultChannels);
+  const [categories, setCategories] = useState<CategoryT[]>(defaultCategories);
+  const [channels, setChannels] = useState<ChannelT[]>(defaultChannels);
   const categoryIds = useMemo(() => categories.map((cat) => cat.id), [categories]);
-  const channelsIds = useMemo(() => channels.map((channel) => channel.elId), [channels]);
-  const [activeCategory, setActiveCategory] = useState<ICategory | null>(null);
-  const [activeChannel, setActiveChannel] = useState<IChannel | null>(null);
-  const [currentChannel, setCurrentChannel] = useState<IChannel | null>(null);
+  const channelsIds = useMemo(() => channels.map((channel) => channel.id), [channels]);
+  const [activeCategory, setActiveCategory] = useState<CategoryT | null>(null);
+  const [activeChannel, setActiveChannel] = useState<ChannelT | null>(null);
+  const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -156,19 +146,88 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
     setCurrentChannel(checkIsChannelOpened(pathname, channels));
   }, [pathname, channels]);
 
-  function checkIsChannelOpened(url: string, channels: IChannel[]): IChannel | null {
+  const checkIsChannelOpened = (url: string, channels: ChannelT[]) => {
     const match = url.match(/\/communities\/\d+(?:\/channels\/(\d+)\/(\w+)|\/(\w+))/);
     if (!match) return null;
 
-    const [, channelId, channelType, pageType] = match;
+    const [, channid, channelType, pageType] = match;
 
     return (
       channels.find(
         (channel) =>
-          (channel.elId === channelId && channel.type === channelType) || channel.type === pageType,
+          (channel.id === channid && channel.kind === channelType) || channel.kind === pageType,
       ) || null
     );
-  }
+  };
+
+  const onDragStart = (event: DragStartEvent) => {
+    const currentType = event.active.data.current?.type;
+    if (currentType === 'Category') {
+      setActiveCategory(event.active.data.current?.category);
+    } else if (currentType === 'Channel') {
+      setActiveChannel(event.active.data.current?.channel);
+    }
+  };
+
+  const onDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active?.id as string;
+    const overId = over?.id as string;
+
+    if (activeId === overId) return;
+
+    const isActiveAChannel = active.data.current?.type === ('Channel' as string);
+    const isOverAChannel = over.data.current?.type === ('Channel' as string);
+
+    if (!isActiveAChannel) return;
+
+    if (isActiveAChannel && isOverAChannel) {
+      setChannels((channels: ChannelT[]) => {
+        const activeIndex = channels.findIndex(
+          (channel: ChannelT) => channel.id === activeId,
+        ) as number;
+        const overIndex = channels.findIndex(
+          (channel: ChannelT) => channel.id === overId,
+        ) as number;
+
+        if (channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
+          channels[activeIndex].categoryId = channels[overIndex].categoryId;
+          return arrayMove(channels, activeIndex, overIndex);
+        }
+        return arrayMove(channels, activeIndex, overIndex);
+      });
+    } else if (isActiveAChannel && !isOverAChannel) {
+      setChannels((channels: ChannelT[]) => {
+        const activeIndex = channels.findIndex((channel: ChannelT) => channel.id === activeId);
+        channels[activeIndex].categoryId = overId;
+        return arrayMove(channels, activeIndex, 0);
+      });
+    }
+  };
+
+  const onDragEnd = (event: DragEndEvent) => {
+    setActiveCategory(null);
+    setActiveChannel(null);
+
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    if (activeId === overId) return;
+
+    const isActiveACategory = active.data.current?.type === 'Category';
+    if (!isActiveACategory) return;
+
+    setCategories((categories) => {
+      const activeCategoryIndex = categories.findIndex((cat) => cat.id === activeId);
+      const overCategoryIndex = categories.findIndex((cat) => cat.id === overId);
+      return arrayMove(categories, activeCategoryIndex, overCategoryIndex);
+    });
+  };
 
   return (
     <DndContext
@@ -215,7 +274,7 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
                 channel={activeChannel}
                 // стили нужны для отображения при захвате через DnD
                 className={`rounded-lg border-[1px] drop-shadow-lg ${
-                  currentChannel?.elId === activeChannel.elId
+                  currentChannel?.id === activeChannel.id
                     ? 'border-brand-100'
                     : 'border-gray-30'
                 }`}
@@ -227,73 +286,4 @@ export const CommunityItems = ({ className, setSlideIndex }: ICommunityItems) =>
       )}
     </DndContext>
   );
-
-  function onDragStart(event: DragStartEvent): void {
-    const currentType = event.active.data.current?.type;
-    if (currentType === 'Category') {
-      setActiveCategory(event.active.data.current?.category);
-    } else if (currentType === 'Channel') {
-      setActiveChannel(event.active.data.current?.channel);
-    }
-  }
-
-  function onDragEnd(event: DragEndEvent): void {
-    setActiveCategory(null);
-    setActiveChannel(null);
-
-    const { active, over } = event;
-    if (!over) return;
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    if (activeId === overId) return;
-
-    const isActiveACategory = active.data.current?.type === 'Category';
-    if (!isActiveACategory) return;
-
-    setCategories((categories) => {
-      const activeCategoryIndex = categories.findIndex((cat) => cat.id === activeId);
-      const overCategoryIndex = categories.findIndex((cat) => cat.id === overId);
-      return arrayMove(categories, activeCategoryIndex, overCategoryIndex);
-    });
-  }
-
-  function onDragOver(event: DragOverEvent): void {
-    const { active, over } = event;
-    if (!over) return;
-
-    const activeId = active?.id as string;
-    const overId = over?.id as string;
-
-    if (activeId === overId) return;
-
-    const isActiveAChannel = active.data.current?.type === ('Channel' as string);
-    const isOverAChannel = over.data.current?.type === ('Channel' as string);
-
-    if (!isActiveAChannel) return;
-
-    if (isActiveAChannel && isOverAChannel) {
-      setChannels((channels: IChannel[]) => {
-        const activeIndex = channels.findIndex(
-          (channel: IChannel) => channel.elId === activeId,
-        ) as number;
-        const overIndex = channels.findIndex(
-          (channel: IChannel) => channel.elId === overId,
-        ) as number;
-
-        if (channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
-          channels[activeIndex].categoryId = channels[overIndex].categoryId;
-          return arrayMove(channels, activeIndex, overIndex);
-        }
-        return arrayMove(channels, activeIndex, overIndex);
-      });
-    } else if (isActiveAChannel && !isOverAChannel) {
-      setChannels((channels: IChannel[]) => {
-        const activeIndex = channels.findIndex((channel: IChannel) => channel.elId === activeId);
-        channels[activeIndex].categoryId = overId;
-        return arrayMove(channels, activeIndex, 0);
-      });
-    }
-  }
 };

@@ -19,13 +19,13 @@ import {
   Settings,
 } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
-import { IChannel } from './types';
+import { ChannelT } from './types';
 
-interface IChannelProps {
-  channel: IChannel;
+type ChannelPropsT = {
+  channel: ChannelT;
   className?: string;
   setSlideIndex?: (arg: number) => void;
-}
+};
 
 interface IIconsDict {
   [key: string]: ReactNode;
@@ -49,11 +49,11 @@ const stylesDict = {
   },
 };
 
-export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
+export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) => {
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
-    id: channel.elId,
+    id: channel.id,
     data: {
       type: 'Channel',
       channel,
@@ -69,8 +69,8 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
     const [, channelId, channelType, pageType] = match;
 
     return (
-      (channel.elId === channelId && channel.type === channelType) ||
-      channel.type === pageType ||
+      (channel.id === channelId && channel.kind === channelType) ||
+      channel.kind === pageType ||
       null
     );
   }
@@ -100,11 +100,11 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
 
   const handleRouteChange = () => {
     setSlideIndex && setSlideIndex(1);
-    if (channel.type !== 'home') {
-      return router.push(`/communities/${communityId}/channels/${channel.elId}/${channel.type}`);
+    if (channel.kind !== 'home') {
+      return router.push(`/communities/${communityId}/channels/${channel.id}/${channel.kind}`);
     }
 
-    return router.push(`/communities/${communityId}/${channel.type}`);
+    return router.push(`/communities/${communityId}/${channel.kind}`);
   };
 
   const style = {
@@ -133,8 +133,8 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
         className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
       >
         <div className="flex items-center">
-          {iconsDict[channel.icon]}
-          <span className="pl-2 text-[14px] font-normal">{channel.label}</span>
+          {iconsDict[channel.kind]}
+          <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
         </div>
         {mouseOver ? (
           <div {...attributes} {...listeners} className="flex items-center gap-3">
@@ -149,4 +149,4 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
       </div>
     </div>
   );
-}
+};
