@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '@livekit/components-styles';
 import { createInteractingObservable, getScrollBarWidth } from '@livekit/components-core';
 import {
@@ -156,10 +156,15 @@ export function FocusLayoutContainer({ children }: FocusLayoutContainerProps) {
 }
 
 export function GridLayout({ tracks, ...props }: GridLayoutProps) {
+  const [isOneItem, setIsOneItem] = useState(tracks.length === 1);
   const gridEl = React.createRef<HTMLDivElement>();
 
-  const { layout } = useGridLayout(gridEl, tracks.length);
-  const pagination = usePagination(layout.maxTiles, tracks);
+  useEffect(() => {
+    setIsOneItem(tracks.length === 1);
+  }, [tracks.length]);
+
+  const { layout } = useGridLayout(gridEl, tracks.length + (isOneItem ? 1 : 0));
+  const pagination = usePagination(layout.maxTiles + (isOneItem ? 1 : 0), tracks);
 
   useSwipe(gridEl, {
     onLeftSwipe: pagination.nextPage,
@@ -173,11 +178,15 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
       <div
         ref={gridEl}
         style={{ gap: '1rem' }}
-        data-lk-pagination={pagination.totalPageCount > 1}
+        data-lk-pagination={pagination.totalPageCount + (isOneItem ? 1 : 0) > 1}
         className="lk-grid-layout"
       >
-        {/* тут можно сделать фейковые items */}
         <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
+        {isOneItem && (
+          <div className="bg-gray-90 flex h-full w-full items-center justify-center rounded-[8px]">
+            <p className="text-[24px]">Здесь пока никого нет</p>
+          </div>
+        )}
         {tracks.length > layout.maxTiles && (
           <PaginationIndicator
             totalPageCount={pagination.totalPageCount}
