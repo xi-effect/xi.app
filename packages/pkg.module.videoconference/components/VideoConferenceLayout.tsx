@@ -183,8 +183,8 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
       >
         <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
         {isOneItem && (
-          <div className="bg-gray-90 flex h-full w-full items-center justify-center rounded-[8px]">
-            <p className="text-[24px]">Здесь пока никого нет</p>
+          <div className="bg-gray-90 flex w-full items-center justify-center rounded-[8px]">
+            <p className="font-sans text-[24px]">Здесь пока никого нет</p>
           </div>
         )}
         {tracks.length > layout.maxTiles && (

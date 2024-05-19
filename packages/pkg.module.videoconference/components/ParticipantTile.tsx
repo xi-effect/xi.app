@@ -156,7 +156,7 @@ export function ParticipantTile({
                     />
                   )
                 )}
-                <div className="lk-participant-placeholder h-full">
+                <div className="lk-participant-placeholder">
                   <ParticipantPlaceholder />
                 </div>
                 <div className="lk-participant-metadata p-1">

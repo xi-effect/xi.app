@@ -31,11 +31,12 @@ export function ActiveRoom({
       onDisconnected={handleDisconnect}
       audio={userChoice?.audioEnabled}
       video={userChoice?.videoEnabled}
-      className="h-screen"
     >
-      <UpBar />
-      <div className="mb-4 h-[100vh] w-full px-10">{isConnected && <Stage />}</div>
-      <BottomBar />
+      <div className="flex min-h-screen flex-col gap-4">
+        <UpBar />
+        <div className="flex-grow px-10">{isConnected && <Stage />}</div>
+        <BottomBar />
+      </div>
     </LiveKitRoom>
   );
 }
