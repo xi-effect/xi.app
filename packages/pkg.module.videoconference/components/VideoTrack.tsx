@@ -106,7 +106,7 @@ export function VideoConference({
                       <CarouselLayout orientation="horizontal" tracks={carouselTracks}>
                         <ParticipantTile
                           style={{ flex: 'unset' }}
-                          className="h-[140px] w-[250px]"
+                          className="h-[144px] w-[250px]"
                         />
                       </CarouselLayout>
                     </div>

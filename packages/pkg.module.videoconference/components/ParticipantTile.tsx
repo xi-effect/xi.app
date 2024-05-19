@@ -131,20 +131,19 @@ export function ParticipantTile({
         <ParticipantContextIfNeeded participant={trackReference.participant}>
           <div className="h-full">
             {children ?? (
-              <div
-                className={`${isSpeaking ? 'border-green-60 border-4' : ''} h-full rounded-[8px]`}
-              >
+              <div className="h-full rounded-[8px]">
                 {isTrackReference(trackReference) &&
                 (trackReference.publication?.kind === 'video' ||
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
-                    style={
-                      trackReference.source === Track.Source.Camera
-                        ? { transform: 'rotateY(180deg)' }
-                        : undefined
-                    }
                     className="rounded-[8px]"
+                    style={{
+                      ...(trackReference.source === Track.Source.Camera && {
+                        transform: 'rotateY(180deg)',
+                      }),
+                      ...(isSpeaking && { border: '3px solid #419B58' }),
+                    }}
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
                     manageSubscription={autoManageSubscription}
