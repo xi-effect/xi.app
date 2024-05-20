@@ -11,11 +11,10 @@ type CategoryT = {
 
 type ChannelT = {
   uid: string;
-  id: number | null,
-  categoryId: number | null,
-  kind: 'posts' | 'video' | 'tasks' | 'chats' | 'home',
-  name: string | null,
-  description: string | null,
+  id: number,
+  categoryId: number | 'empty',
+  kind: string,
+  name: string,
   disabled?: boolean;
 };
 

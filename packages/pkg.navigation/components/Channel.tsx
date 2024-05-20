@@ -53,7 +53,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
-    id: channel.id,
+    id: channel.uid,
     data: {
       type: 'Channel',
       channel,
@@ -69,7 +69,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
     const [, channelId, channelType, pageType] = match;
 
     return (
-      (channel.id === channelId && channel.kind === channelType) ||
+      (channel.id.toString() === channelId && channel.kind === channelType) ||
       channel.kind === pageType ||
       null
     );

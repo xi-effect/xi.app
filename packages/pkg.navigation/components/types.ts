@@ -1,12 +1,14 @@
 export type CategoryT = {
-    name: string,
-    description: string,
-    id: string
+    uid: string;
+    id: number | null,
+    name: string | null,
+    description: string | null,
 };
 
 export type ChannelT = {
-    id: string,
-    categoryId: string,
+    uid: string;
+    id: number,
+    categoryId: number | 'empty',
     kind: string,
     name: string,
     disabled?: boolean;

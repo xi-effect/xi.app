@@ -5,28 +5,56 @@
 import { Button } from '@xipkg/button';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useMainSt } from 'pkg.stores';
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+
+type AvatarPreviewPropsT = {
+  communityId: number;
+};
+
+const AvatarPreview = ({ communityId }: AvatarPreviewPropsT) => (
+  <Avatar size="l">
+    <AvatarImage
+      src={`https://api.xieffect.ru/files/communities/${communityId}/avatar.webp`}
+      imageProps={{
+        src: `https://api.xieffect.ru/files/communities/${communityId}/avatar.webp`,
+        alt: 'community user',
+      }}
+      alt="community avatar"
+    />
+    <AvatarFallback size="l" />
+  </Avatar>
+);
 
 const Header = () => {
-  const role = 'администратор';
+  const communityName = useMainSt((state) => state.communityMeta.name);
+  const id = useMainSt((state) => state.communityMeta.id);
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
 
   return (
     <header className=" max-xs:pb-4 pb-8 w-full max-w-[1570px]">
       <div className="font-semibold text-[32px] max-xs:text-2xl leading-10 xl:text-[40px] xl:leading-[48px] xl:flex text-gray-100">
         <h2>Добро пожаловать в сообщество</h2>
         <div className="flex items-center max-xl:mt-3 max-xs:mt-0 xl:ml-6">
-          <Image
-            className=" max-xs:w-6 max-xs:h-6 w-8 h-8 xl:h-12 xl:w-12"
-            src="/assets/avatarrep.svg"
-            alt="Аватар пользователя"
-            width={48}
-            height={0}
-          />
-          <p className="ml-2 xl:ml-4">Иванова А. Г.</p>
+          {!id ? (
+            <div className="bg-gray-20 size-[48px] animate-pulse rounded-[24px]" />
+          ) : (
+            <AvatarPreview communityId={id} />
+          )}
+          {!communityName ? (
+            <div className="ml-2 xl:ml-4 animate-pulse bg-gray-20 h-[32px] w-[156px] rounded-[8px]" />
+          ) : (
+            <p className="ml-2 xl:ml-4">{communityName}</p>
+          )}
         </div>
       </div>
-      <p className="mt-4 font-normal max-xs:mt-2 max-xs:text-sm text-gray-80 text-[16px] leading-[22px] xl:text-2xl">
-        Ваша роль: {role || '[РОЛЬ ПОЛЬЗОВАТЕЛЯ]'}
-      </p>
+      {!isOwner ? (
+        <p className="mt-4 h-[32px] w-[256px] rounded-[8px] font-normal max-xs:mt-2 max-xs:text-sm animate-pulse bg-gray-20 text-gray-80 text-[16px] leading-[22px] xl:text-2xl" />
+      ) : (
+        <p className="mt-4 font-normal max-xs:mt-2 max-xs:text-sm text-gray-80 text-[16px] leading-[22px] xl:text-2xl">
+          Ваша роль: {isOwner ? 'администратор' : 'ученик' || '[РОЛЬ ПОЛЬЗОВАТЕЛЯ]'}
+        </p>
+      )}
     </header>
   );
 };

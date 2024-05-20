@@ -11,11 +11,11 @@ type CategoryContainerT = {
 };
 
 export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
-  const { name, description, id } = category;
-  const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.id), [channels]);
+  const { name, description, uid } = category;
+  const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
 
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
-    id,
+    id: uid,
     data: {
       type: 'Category',
       category,
@@ -23,7 +23,7 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
   });
 
   const categoryStyle = {
-    minHeight: '40px',
+    minHeight: '100px',
     transition,
     transform: CSS.Transform.toString(transform),
   };
@@ -49,7 +49,7 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
       <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
         <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
           {channels.map((channel: ChannelT) => (
-            <Channel setSlideIndex={setSlideIndex} key={channel.id} channel={channel} />
+            <Channel setSlideIndex={setSlideIndex} key={channel.uid} channel={channel} />
           ))}
         </SortableContext>
       </div>
