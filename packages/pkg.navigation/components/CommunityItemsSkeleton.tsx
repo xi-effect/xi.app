@@ -5,7 +5,7 @@ export const CommunityItemsSkeleton = () => (
     {[...new Array(7)].map((item, index) => (
       <li
         key={index.toString()}
-        className="bg-gray-10 h-[28px] w-full animate-pulse rounded-[4px] "
+        className="bg-gray-10 h-[28px] w-full animate-pulse rounded-[4px]"
       />
     ))}
   </ul>

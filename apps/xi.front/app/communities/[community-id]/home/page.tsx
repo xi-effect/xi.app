@@ -37,19 +37,19 @@ const Header = () => {
         <h2>Добро пожаловать в сообщество</h2>
         <div className="flex items-center max-xl:mt-3 max-xs:mt-0 xl:ml-6">
           {!id ? (
-            <div className="bg-gray-20 size-[48px] animate-pulse rounded-[24px]" />
+            <div className="bg-gray-10 size-[48px] animate-pulse rounded-[24px]" />
           ) : (
             <AvatarPreview communityId={id} />
           )}
           {!communityName ? (
-            <div className="ml-2 xl:ml-4 animate-pulse bg-gray-20 h-[32px] w-[156px] rounded-[8px]" />
+            <div className="ml-2 xl:ml-4 animate-pulse bg-gray-10 h-[32px] w-[156px] rounded-[8px]" />
           ) : (
             <p className="ml-2 xl:ml-4">{communityName}</p>
           )}
         </div>
       </div>
       {!isOwner ? (
-        <p className="mt-4 h-[32px] w-[256px] rounded-[8px] font-normal max-xs:mt-2 max-xs:text-sm animate-pulse bg-gray-20 text-gray-80 text-[16px] leading-[22px] xl:text-2xl" />
+        <p className="mt-4 h-[32px] w-[256px] rounded-[8px] font-normal max-xs:mt-2 max-xs:text-sm animate-pulse bg-gray-10 text-gray-80 text-[16px] leading-[22px] xl:text-2xl" />
       ) : (
         <p className="mt-4 font-normal max-xs:mt-2 max-xs:text-sm text-gray-80 text-[16px] leading-[22px] xl:text-2xl">
           Ваша роль: {isOwner ? 'администратор' : 'ученик' || '[РОЛЬ ПОЛЬЗОВАТЕЛЯ]'}

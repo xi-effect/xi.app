@@ -34,6 +34,7 @@ import 'driver.js/dist/driver.css';
 import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+import { toast } from 'sonner';
 
 type CommunityTemplateT = {
   name: string;
@@ -79,12 +80,12 @@ const DropdownHeader = ({
     } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
   >
     {!id ? (
-      <div className="bg-gray-20 size-[32px] animate-pulse rounded-[16px]" />
+      <div className="bg-gray-10 size-[32px] animate-pulse rounded-[16px]" />
     ) : (
       <AvatarPreview communityId={id} />
     )}
     {!name ? (
-      <div className="bg-gray-20 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
+      <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
     ) : (
       <div className="ml-2 self-center text-[16px] font-semibold">{name}</div>
     )}
@@ -172,6 +173,7 @@ export const CommunityMenu = () => {
   const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
 
   const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   useEffect(() => {
     socket.emit('list-communities', (status: number, communities: any[]) => {
@@ -252,7 +254,39 @@ export const CommunityMenu = () => {
     driverObj.drive();
   };
 
+  const router = useRouter();
+
   const handleClose = () => setIsOpen(false);
+
+  const handleLeaveCommunity = () => {
+    socket.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
+      if (status === 204 && otherCommunities) {
+        socket.emit(
+          'retrieve-community',
+          {
+            community_id: otherCommunities[0].id,
+          },
+          (stats: number, { community, participant }: { community: any; participant: any }) => {
+            if (stats === 200) {
+              updateCommunityMeta({
+                id: community.id,
+                isOwner: participant.is_owner,
+                name: community.name,
+                description: community.description,
+              });
+
+              router.push(`/communities/${community.id}/home`);
+              if (handleClose) handleClose();
+            }
+          },
+        );
+      }
+
+      if (status === 409) {
+        toast('Владелец не может выйти из своего сообщества');
+      }
+    });
+  };
 
   return (
     <>
@@ -343,7 +377,7 @@ export const CommunityMenu = () => {
                   <DropdownMenuSeparator />
                 </>
               )}
-              <DropdownMenuItem className="group sm:w-[302px]" error>
+              <DropdownMenuItem onClick={handleLeaveCommunity} className="group sm:w-[302px]" error>
                 <span>Покинуть сообщество</span>
                 <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
               </DropdownMenuItem>

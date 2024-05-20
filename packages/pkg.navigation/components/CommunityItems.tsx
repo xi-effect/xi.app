@@ -25,102 +25,6 @@ import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
 import { CommunityItemsSkeleton } from './CommunityItemsSkeleton';
 
-// const defaultCategories: CategoryT[] = [
-//   {
-//     name: '',
-//     description: '',
-//     id: 'empty',
-//   },
-//   {
-//     name: 'B1.2',
-//     description: 'Intermediate',
-//     id: 'B1.2',
-//   },
-//   {
-//     name: 'B2.0',
-//     description: 'Intermediate',
-//     id: 'B2.0',
-//   },
-// ];
-
-// const defaultChannels: ChannelT[] = [
-//   {
-//     id: 1,
-//     categoryId: 10,
-//     kind: 'announce',
-//     name: 'Объявления',
-//   },
-//   {
-//     id: 2,
-//     kind: 'task',
-//     categoryId: 10,
-//     name: 'Задания',
-//   },
-//   {
-//     id: 3,
-//     kind: 'chat',
-//     categoryId: 10,
-//     name: 'Чат',
-//   },
-//   {
-//     id: 4,
-//     kind: 'videoconference',
-//     categoryId: 10,
-//     name: 'Видеоконференция',
-//   },
-//   {
-//     id: 5,
-//     categoryId: 9,
-//     kind: 'announce',
-//     name: 'Объявления',
-//   },
-//   {
-//     id: 51,
-//     kind: 'whiteboard',
-//     categoryId: 9,
-//     name: 'Доска',
-//   },
-//   {
-//     id: 6,
-//     kind: 'task',
-//     categoryId: 9,
-//     name: 'Задания',
-//   },
-//   {
-//     id: 7,
-//     kind: 'chat',
-//     categoryId: 2,
-//     name: 'Чат',
-//   },
-//   {
-//     id: 8,
-//     categoryId: 2,
-//     kind: 'videoconference',
-//     name: 'Видеоконференция',
-//   },
-//   {
-//     id: 9,
-//     categoryId: 3,
-//     kind: 'home',
-//     name: 'Главная',
-//   },
-//   {
-//     id: '10',
-//     icon: 'announce',
-//     categoryId: 'empty',
-//     kind: 'announce',
-//     name: 'Объявления',
-//   },
-//   {
-//     id: '11',
-//     icon: 'calendar',
-//     categoryId: 'empty',
-//     kind: 'calendar',
-//     name: 'Календарь',
-//     // disabled: true, // — вариант реализации выключенного канала
-//   },
-// ];
-
 type CommunityItemsPropsT = {
   setSlideIndex: (value: number) => void;
   className?: string;
@@ -306,7 +210,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     updateCategories(arrayMove(categories, activeCategoryIndex, overCategoryIndex));
   };
 
-  if (categories.length === 0 && channels.length === 0) return <CommunityItemsSkeleton />;
+  if (categories.length === 0 || channels.length === 0) return <CommunityItemsSkeleton />;
 
   // console.log('categoryIds', categoryIds);
   // console.log('channelsIds', channelsIds);
