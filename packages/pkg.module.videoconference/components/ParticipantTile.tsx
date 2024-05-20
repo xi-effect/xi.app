@@ -6,7 +6,6 @@ import { Track } from 'livekit-client';
 import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
 import {
-  AudioTrack,
   ConnectionQualityIndicator,
   FocusToggle,
   LockLockedIcon,
