@@ -96,26 +96,23 @@ export function VideoConference({
             <div>
               {!focusTrack ? (
                 <GridLayout tracks={tracks}>
-                  <ParticipantTile style={{ flexDirection: 'column' }} />
+                  <ParticipantTile
+                    style={{ flexDirection: 'column', maxWidth: '800px', maxHeight: '450px' }}
+                  />
                 </GridLayout>
               ) : (
-                <div>
-                  <FocusLayoutContainer>
-                    <div className="mb-4">
-                      <CarouselLayout
-                        orientation="horizontal"
-                        userTracks={tracks}
-                        tracks={carouselTracks}
-                      >
-                        <ParticipantTile
-                          style={{ flex: 'unset' }}
-                          className="h-[144px] w-[250px]"
-                        />
-                      </CarouselLayout>
-                    </div>
+                <FocusLayoutContainer className="flex min-h-screen flex-col">
+                  <div className="flex min-h-[60vh] flex-grow flex-col justify-between gap-4">
+                    <CarouselLayout
+                      orientation="horizontal"
+                      userTracks={tracks}
+                      tracks={carouselTracks}
+                    >
+                      <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
+                    </CarouselLayout>
                     {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                  </FocusLayoutContainer>
-                </div>
+                  </div>
+                </FocusLayoutContainer>
               )}
             </div>
           </div>

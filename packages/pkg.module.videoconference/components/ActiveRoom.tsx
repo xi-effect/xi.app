@@ -34,7 +34,9 @@ export function ActiveRoom({
     >
       <div className="flex min-h-screen flex-col gap-4">
         <UpBar />
-        <div className="flex-grow px-10">{isConnected && <Stage />}</div>
+        <div className="flex flex-grow items-center justify-center px-10">
+          <div className="w-full text-center">{isConnected && <Stage />}</div>
+        </div>
         <BottomBar />
       </div>
     </LiveKitRoom>

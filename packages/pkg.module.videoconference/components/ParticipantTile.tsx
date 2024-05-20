@@ -123,7 +123,6 @@ export function ParticipantTile({
     <div
       style={{
         position: 'relative',
-        flexDirection: 'unset',
       }}
       {...elementProps}
     >
@@ -149,14 +148,14 @@ export function ParticipantTile({
                     manageSubscription={autoManageSubscription}
                   />
                 ) : (
-                  isTrackReference(trackReference) && (
-                    <AudioTrack
-                      trackRef={trackReference}
-                      onSubscriptionStatusChanged={handleSubscribe}
-                    />
-                  )
+                  <div>
+                    <ParticipantPlaceholder />
+                  </div>
                 )}
-                <div className="lk-participant-placeholder">
+                <div
+                  style={{ background: 'black', borderRadius: '8px', height: '100%' }}
+                  className="lk-participant-placeholder flex justify-center"
+                >
                   <ParticipantPlaceholder />
                 </div>
                 <div className="lk-participant-metadata p-1">
