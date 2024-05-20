@@ -1,8 +1,13 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useState } from 'react';
 import '@livekit/components-styles';
-import { createInteractingObservable, getScrollBarWidth } from '@livekit/components-core';
+import {
+  TrackReferenceOrPlaceholder,
+  createInteractingObservable,
+  getScrollBarWidth,
+} from '@livekit/components-core';
 import {
   CarouselLayoutProps,
   TrackLoop,
@@ -31,6 +36,25 @@ export interface PaginationIndicatorProps {
   currentPage: number;
 }
 
+function EmptyItemContainerOfUser({ ...restProps }) {
+  return (
+    <div
+      {...restProps}
+      className="bg-gray-90 flex h-full w-full items-center justify-center rounded-[8px] text-center"
+    >
+      <p className="font-sans text-[20px]">Здесь пока никого нет</p>
+    </div>
+  );
+}
+
+function useEmptyItemContainerOfUser(tracksLength: number) {
+  const [isOneItem, setIsOneItem] = useState(tracksLength === 1);
+  useEffect(() => {
+    setIsOneItem(tracksLength === 1);
+  }, [tracksLength]);
+  return isOneItem;
+}
+
 export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
   const trackReference = trackRef ?? track;
   return (
@@ -53,7 +77,12 @@ const MIN_VISIBLE_TILES = 1;
 const ASPECT_RATIO = 8 / 10;
 const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
 
-export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayoutProps) {
+export function CarouselLayout({
+  tracks,
+  orientation,
+  userTracks,
+  ...props
+}: CarouselLayoutProps & { userTracks: TrackReferenceOrPlaceholder[] }) {
   const asideEl = React.useRef<HTMLDivElement>(null);
   const [prevTiles, setPrevTiles] = React.useState(0);
   const { width, height } = useSize(asideEl);
@@ -78,7 +107,7 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
   }
 
   const sortedTiles = useVisualStableUpdate(tracks, maxVisibleTiles);
-
+  const isOneItem = useEmptyItemContainerOfUser(userTracks.length);
   React.useLayoutEffect(() => {
     if (asideEl.current) {
       asideEl.current.dataset.lkOrientation = carouselOrientation;
@@ -94,6 +123,11 @@ export function CarouselLayout({ tracks, orientation, ...props }: CarouselLayout
       ref={asideEl}
       {...props}
     >
+      {isOneItem && (
+        <div className="h-[144px] w-[250px]">
+          <EmptyItemContainerOfUser />
+        </div>
+      )}
       <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
     </aside>
   );
@@ -154,12 +188,8 @@ export function FocusLayoutContainer({ children }: FocusLayoutContainerProps) {
 }
 
 export function GridLayout({ tracks, ...props }: GridLayoutProps) {
-  const [isOneItem, setIsOneItem] = useState(tracks.length === 1);
+  const isOneItem = useEmptyItemContainerOfUser(tracks.length);
   const gridEl = React.createRef<HTMLDivElement>();
-
-  useEffect(() => {
-    setIsOneItem(tracks.length === 1);
-  }, [tracks.length]);
 
   const { layout } = useGridLayout(gridEl, tracks.length + (isOneItem ? 1 : 0));
   const pagination = usePagination(layout.maxTiles + (isOneItem ? 1 : 0), tracks);
@@ -180,11 +210,7 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
         className="lk-grid-layout"
       >
         <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
-        {isOneItem && (
-          <div className="bg-gray-90 flex w-full items-center justify-center rounded-[8px]">
-            <p className="font-sans text-[24px]">Здесь пока никого нет</p>
-          </div>
-        )}
+        {isOneItem && <EmptyItemContainerOfUser />}
         {tracks.length > layout.maxTiles && (
           <PaginationIndicator
             totalPageCount={pagination.totalPageCount}
