@@ -17,7 +17,6 @@ import {
   Exit,
   PeopleInvite,
   Settings,
-  Objects,
   Plus,
 } from '@xipkg/icons';
 import React, { useEffect, useState } from 'react';
@@ -29,8 +28,6 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 
-import { driver } from 'driver.js';
-import 'driver.js/dist/driver.css';
 import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
@@ -184,76 +181,6 @@ export const CommunityMenu = () => {
     });
   }, [params]);
 
-  const driverAction = () => {
-    setIsOpen(false);
-    const driverObj = driver({
-      showProgress: true,
-      steps: [
-        {
-          element: '#header-logo',
-          popover: {
-            title: 'Добро пожаловать!',
-            description:
-              'Это краткое руководство поможет вам ознакомиться с возможностями нашей платформы',
-          },
-        },
-        {
-          element: '#community-profile',
-          popover: {
-            title: 'Профиль сообщества',
-            description:
-              'Сообщество - цифровой хаб, построенный вокруг преподавателя или организации. Открыв меню, вы можете получить доступ к настройкам сообщества, системе приглашений, созданию сервисов',
-          },
-        },
-        {
-          element: '#community-services',
-          popover: {
-            title: 'Сервисы сообщества',
-            description:
-              'В рамках сообщества репетитор может создавать и настраивать необходимые ему модули - задания, чаты, видеоконференции, контент и т.д. ',
-          },
-        },
-        {
-          element: '#subitems-menu',
-          popover: {
-            title: 'Группировка сервисов',
-            description:
-              'Для удобства можно группировать сервисы и настраивать к ним доступ по ролям, предметам или, например, уровню владения языком',
-          },
-        },
-        {
-          element: '#video-item-menu',
-          popover: {
-            title: 'Сервис Видеоконференции',
-            description:
-              'Нажав на данный пункт меню можно присоединиться к видеоконференции или создать новую',
-          },
-        },
-        {
-          element: '#user-profile-menu',
-          popover: {
-            title: 'Профиль пользователя',
-            description:
-              'Нажав на профиль, пользователь открывает панель настроек - данные аккаунта, кастомизация, настройка микрофона, вебкамеры и т.д.',
-          },
-        },
-        {
-          element: '#notification-menu',
-          popover: {
-            title: 'Уведомления',
-            description:
-              'Сюда приходят уведомления со всех сервисов, напоминания о занятиях, результатах тестов и многом другом',
-          },
-        },
-      ],
-      nextBtnText: 'Вперёд',
-      prevBtnText: 'Назад',
-      doneBtnText: 'Завершить',
-      progressText: '{{current}} из {{total}}',
-    });
-    driverObj.drive();
-  };
-
   const router = useRouter();
 
   const handleClose = () => setIsOpen(false);
@@ -334,14 +261,6 @@ export const CommunityMenu = () => {
               />
               {isOwner && (
                 <>
-                  <DropdownMenuItem
-                    onClick={driverAction}
-                    className="group hidden sm:w-[302px] md:flex"
-                  >
-                    <span>Пройти обучение</span>
-                    <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="hidden md:flex" />
                   <DropdownMenuItem
                     className="group sm:w-[302px]"
                     onClick={() => setIsInviteCommunityModalOpen((prev) => !prev)}

@@ -20,6 +20,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import { createPortal } from 'react-dom';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
+import { ScrollArea } from '@xipkg/scrollarea';
 import { CategoryContainer } from './CategoryContainer';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
@@ -222,7 +223,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           strategy: MeasuringStrategy.Always,
         },
       }}
-      autoScroll={false}
       collisionDetection={closestCorners}
       sensors={sensors}
       onDragStart={onDragStart}
@@ -230,22 +230,24 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-128px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:px-1 ${
+        className={`mt-3 flex h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:pl-1 sm:pr-0 ${
           className ?? ''
         }`}
       >
-        <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
-          {categories.length !== 0 &&
-            categories.map((category) => (
-              <div key={category.id} className="my-2">
-                <CategoryContainer
-                  setSlideIndex={setSlideIndex}
-                  category={category}
-                  channels={channels.filter((channel) => channel.categoryId === category.id)}
-                />
-              </div>
-            ))}
-        </SortableContext>
+        <ScrollArea>
+          <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+            {categories.length !== 0 &&
+              categories.map((category) => (
+                <div key={category.id} className="my-2 mr-2">
+                  <CategoryContainer
+                    setSlideIndex={setSlideIndex}
+                    category={category}
+                    channels={channels.filter((channel) => channel.categoryId === category.id)}
+                  />
+                </div>
+              ))}
+          </SortableContext>
+        </ScrollArea>
       </ul>
       {createPortal(
         <DragOverlay>
