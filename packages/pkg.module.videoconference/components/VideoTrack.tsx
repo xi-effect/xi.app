@@ -102,7 +102,7 @@ export function VideoConference({
               ) : (
                 <div>
                   <FocusLayoutContainer>
-                    <div className="mb-6">
+                    <div className="mb-4">
                       <CarouselLayout orientation="horizontal" tracks={carouselTracks}>
                         <ParticipantTile
                           style={{ flex: 'unset' }}

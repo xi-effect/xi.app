@@ -34,18 +34,16 @@ export interface PaginationIndicatorProps {
 export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
   const trackReference = trackRef ?? track;
   return (
-    <div>
-      <ParticipantTile
-        style={{
-          maxWidth: '1050px',
-          maxHeight: '570px',
-          width: '100%',
-          height: '100%',
-          margin: 'auto',
-        }}
-        {...trackReference}
-        {...htmlProps}
-      />
+    <div
+      style={{
+        maxWidth: '650px',
+        maxHeight: '370px',
+        width: '100%',
+        height: '100%',
+        margin: 'auto',
+      }}
+    >
+      <ParticipantTile {...trackReference} {...htmlProps} />
     </div>
   );
 }
@@ -173,8 +171,8 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
 
   return (
     <>
-      <PaginationPage {...pagination} />
-      <PaginationControl {...pagination} />
+      {/* <PaginationPage {...pagination} /> */}
+      {/* <PaginationControl {...pagination} /> */}
       <div
         ref={gridEl}
         style={{ gap: '1rem' }}
