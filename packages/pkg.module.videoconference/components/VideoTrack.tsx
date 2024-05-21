@@ -95,14 +95,16 @@ export function VideoConference({
           <div className="lk-video-conference-inner">
             <div>
               {!focusTrack ? (
-                <GridLayout tracks={tracks}>
-                  <ParticipantTile
-                    style={{ flexDirection: 'column', maxWidth: '800px', maxHeight: '450px' }}
-                  />
-                </GridLayout>
+                <div className="min-h-[79vh]">
+                  <GridLayout tracks={tracks}>
+                    <ParticipantTile
+                      style={{ flexDirection: 'column', maxWidth: '800px', maxHeight: '450px' }}
+                    />
+                  </GridLayout>
+                </div>
               ) : (
                 <FocusLayoutContainer className="flex min-h-screen flex-col">
-                  <div className="flex min-h-[600px] flex-grow flex-col justify-between gap-4">
+                  <div className="flex min-h-[79vh] flex-grow flex-col justify-between gap-4">
                     <CarouselLayout
                       orientation="horizontal"
                       userTracks={tracks}

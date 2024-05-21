@@ -207,7 +207,7 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
         ref={gridEl}
         style={{ gap: '1rem' }}
         data-lk-pagination={pagination.totalPageCount + (isOneItem ? 1 : 0) > 1}
-        className="lk-grid-layout "
+        className="lk-grid-layout"
       >
         <TrackLoop tracks={pagination.tracks}>{props.children}</TrackLoop>
         {isOneItem && <EmptyItemContainerOfUser />}
