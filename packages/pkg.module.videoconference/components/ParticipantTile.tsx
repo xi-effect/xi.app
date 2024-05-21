@@ -135,12 +135,16 @@ export function ParticipantTile({
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
-                    className="rounded-[8px]"
+                    className="box-border h-full rounded-[8px]"
                     style={{
                       ...(trackReference.source === Track.Source.Camera && {
                         transform: 'rotateY(180deg)',
                       }),
-                      ...(isSpeaking && { border: '3px solid #419B58' }),
+                      boxSizing: 'border-box',
+                      ...(isSpeaking &&
+                        trackReference.source === Track.Source.Camera && {
+                          border: '3px solid #419B58',
+                        }),
                     }}
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
@@ -152,7 +156,15 @@ export function ParticipantTile({
                   </div>
                 )}
                 <div
-                  style={{ background: 'black', borderRadius: '8px', height: '100%' }}
+                  style={{
+                    background: 'black',
+                    borderRadius: '8px',
+                    height: '100%',
+                    ...(isSpeaking &&
+                      trackReference.source === Track.Source.Camera && {
+                        border: '3px solid #419B58',
+                      }),
+                  }}
                   className="lk-participant-placeholder flex justify-center"
                 >
                   <ParticipantPlaceholder />
