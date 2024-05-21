@@ -102,7 +102,7 @@ export function VideoConference({
                 </GridLayout>
               ) : (
                 <FocusLayoutContainer className="flex min-h-screen flex-col">
-                  <div className="flex min-h-[60vh] flex-grow flex-col justify-between gap-4">
+                  <div className="flex min-h-[600px] flex-grow flex-col justify-between gap-4">
                     <CarouselLayout
                       orientation="horizontal"
                       userTracks={tracks}
