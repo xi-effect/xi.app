@@ -11,7 +11,6 @@ import {
   Calendar,
   Chat,
   Conference,
-  Home,
   Task,
   Updates,
   Move,
@@ -86,25 +85,20 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
   const iconClassName = `transition-colors ease-in ${currentStyles.icon}`;
 
   const iconsDict: IIconsDict = {
-    announce: <Announce className={iconClassName} />,
+    posts: <Announce className={iconClassName} />,
     calendar: <Calendar className={iconClassName} />,
     updates: <Updates className={iconClassName} />,
-    task: <Task className={iconClassName} />,
-    chat: <Chat className={iconClassName} />,
-    camera: <Conference className={iconClassName} />,
-    home: <Home className={iconClassName} />,
-    whiteboard: <WhiteBoard className={iconClassName} />,
+    tasks: <Task className={iconClassName} />,
+    chats: <Chat className={iconClassName} />,
+    video: <Conference className={iconClassName} />,
+    board: <WhiteBoard className={iconClassName} />,
   };
 
   const router = useRouter();
 
   const handleRouteChange = () => {
     setSlideIndex && setSlideIndex(1);
-    if (channel.kind !== 'home') {
-      return router.push(`/communities/${communityId}/channels/${channel.id}/${channel.kind}`);
-    }
-
-    return router.push(`/communities/${communityId}/${channel.kind}`);
+    return router.push(`/communities/${communityId}/channels/${channel.id}/${channel.kind}`);
   };
 
   const style = {

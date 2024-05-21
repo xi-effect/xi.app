@@ -46,7 +46,7 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
           </div>
         )}
       </div>
-      <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
+      <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden min-h-[28px]">
         <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
           {channels.map((channel: ChannelT) => (
             <Channel setSlideIndex={setSlideIndex} key={channel.uid} channel={channel} />
