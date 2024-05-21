@@ -135,7 +135,7 @@ export function ParticipantTile({
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
-                    className="box-border h-full rounded-[8px]"
+                    className="rounded-[8px]"
                     style={{
                       ...(trackReference.source === Track.Source.Camera && {
                         transform: 'rotateY(180deg)',
