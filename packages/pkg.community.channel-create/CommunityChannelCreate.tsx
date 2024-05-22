@@ -1,21 +1,36 @@
-import React, { ReactNode } from 'react';
+'use client';
+
+import React from 'react';
 import {
   Modal,
-  ModalTrigger,
   ModalContent,
   ModalHeader,
   ModalFooter,
   ModalTitle,
   ModalCloseButton,
 } from '@xipkg/modal';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
+import { useMainSt } from 'pkg.stores';
 import { Input } from '@xipkg/input';
-import { Label } from '@xipkg/label';
 import { Close, Announce, Task, Conference, Chat } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
+import { toast } from 'sonner';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
 import { ActionsSheetButton } from './components/ActionsSheetButton';
 
+const FormSchema = z.object({
+  name: z.string().min(1, { message: 'Поле не должно быть пустым' }),
+  kind: z.string(),
+});
+
+type FormSchemaT = z.infer<typeof FormSchema>;
+
 interface CommunityChannelCreateT {
-  children: ReactNode;
+  open: boolean;
+  onOpenChange: () => void;
 }
 // border-[6px] создает визуал радио-кнопки, по дизайну ширина 6px у обводки синий.
 const classBtnActive = 'border-[6px] border-solid border-brand-80';
@@ -25,67 +40,143 @@ const actionsSheetList = [
   {
     icon: Announce,
     title: 'Объявления',
+    type: 'posts',
     desctiption: 'Держите ваших студентов в курсе всех новостей по курсу',
   },
   {
     icon: Task,
     title: 'Задания',
+    type: 'tasks',
     desctiption:
       'Создавайте задания, тесты, получайте ответы от учеников, оценивайте и улучшайте знания',
   },
   {
     icon: Conference,
     title: 'Видеоконференции',
+    type: 'video',
     desctiption:
       'Проводите уроки онлайн, проводите активности, работайте со студентами из любой точки мира',
   },
   {
     icon: Chat,
     title: 'Чат со студентами',
+    type: 'chats',
     desctiption: 'Общайтесь, отвечайте на вопросы, объясняйте непонятные моменты',
   },
 ];
 
-export const CommunityChannelCreate = ({ children }: CommunityChannelCreateT) => {
-  const [currentAction, setCurrentAction] = React.useState<number | null>(null);
+export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelCreateT) => {
+  const socket = useMainSt((state) => state.socket);
+  const communityId = useMainSt((state) => state.communityMeta.id);
+
+  const router = useRouter();
+
+  const channels = useMainSt((state) => state.channels);
+  const updateChannels = useMainSt((state) => state.updateChannels);
+
+  const form = useForm<FormSchemaT>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: '',
+      kind: 'posts',
+    },
+  });
+
+  const onSubmit = (values: FormSchemaT) => {
+    console.log('values', values);
+    socket.emit(
+      'create-channel',
+      {
+        community_id: communityId,
+        category_id: null,
+        data: {
+          kind: values.kind,
+          name: values.name,
+          description: null,
+        },
+      },
+      (status: number, dataAnswer: any) => {
+        if (status === 201) {
+          toast('Канал успешно создан');
+
+          updateChannels([
+            ...channels,
+            {
+              uid: nanoid(),
+              id: dataAnswer.id,
+              categoryId: 'empty',
+              kind: dataAnswer.kind,
+              name: dataAnswer.name,
+            },
+          ]);
+
+          router.push(`/communities/${communityId}/channels/${dataAnswer.id}/${dataAnswer.kind}`);
+
+          if (onOpenChange) onOpenChange();
+          form.reset();
+        }
+        console.log('ans', status, dataAnswer);
+      },
+    );
+  };
 
   return (
-    <Modal>
-      <ModalTrigger className="flex w-full items-center justify-between bg-transparent">
-        {children}
-      </ModalTrigger>
+    <Modal open={open} onOpenChange={onOpenChange}>
       <ModalContent className="sm:max-w-[560px] xl:max-w-[600px]">
-        <ModalHeader className="flex flex-row items-center justify-between">
-          <ModalTitle className="text-[24px] font-bold text-gray-100">Создание канала</ModalTitle>
-          <ModalCloseButton className="static sm:fixed">
-            <Close className="fill-gray-80 sm:fill-gray-0" />
-          </ModalCloseButton>
-        </ModalHeader>
-        <div className="space-y-6 px-6">
-          <div className="flex flex-col gap-2">
-            <Label className="text-[16px] font-normal text-gray-100">Название</Label>
-            <Input />
-          </div>
-          <div className="space-y-4">
-            <Label className="text-[16px] font-medium text-gray-100">Тип</Label>
-            <div className="space-y-4 overflow-auto">
-              {actionsSheetList.map((item, index) => (
-                <ActionsSheetButton
-                  key={index}
-                  Icon={item.icon}
-                  title={item.title}
-                  desctiption={item.desctiption}
-                  index={index}
-                  сlassName={currentAction === index ? classBtnActive : classBtnNotActive}
-                  onClick={() => setCurrentAction(index)}
-                />
-              ))}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <ModalHeader className="flex flex-row items-center justify-between">
+              <ModalTitle className="text-[24px] font-bold text-gray-100">
+                Создание канала
+              </ModalTitle>
+              <ModalCloseButton className="static sm:fixed">
+                <Close className="fill-gray-80 sm:fill-gray-0" />
+              </ModalCloseButton>
+            </ModalHeader>
+            <div className="max-h-[calc(100vh-80px-182px)] space-y-6 overflow-auto p-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Название</FormLabel>
+                    <FormControl className="mt-2">
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="kind"
+                render={({ field: { onChange, value } }) => (
+                  <FormItem>
+                    <FormLabel>Тип</FormLabel>
+                    <div className="mt-2 space-y-4 overflow-auto">
+                      {actionsSheetList.map((item, index) => (
+                        <FormControl key={index.toString()} className="mt-2">
+                          <ActionsSheetButton
+                            Icon={item.icon}
+                            title={item.title}
+                            desctiption={item.desctiption}
+                            index={index}
+                            сlassName={value === item.type ? classBtnActive : classBtnNotActive}
+                            onClick={() => onChange(item.type)}
+                          />
+                        </FormControl>
+                      ))}
+                    </div>
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
-        </div>
-        <ModalFooter>
-          <Button className="w-full">Создать</Button>
-        </ModalFooter>
+            <ModalFooter>
+              <Button type="submit" className="w-full">
+                Создать
+              </Button>
+            </ModalFooter>
+          </form>
+        </Form>
       </ModalContent>
     </Modal>
   );

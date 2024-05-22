@@ -14,7 +14,7 @@ import {
   FormMessage,
   useForm,
 } from '@xipkg/form';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
@@ -43,19 +43,16 @@ const FormSchema = z.object({
     }),
 });
 
-const InvitationMessage = ({ communityName }: { communityName: string }) => {
-  return (
-    <div className="bg-bkgd-main rounded-lg p-4">
-      <p className="text-brand-100 text-sm">
-        Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь
-        или зарегистрируйтесь.
-      </p>
-    </div>
-  );
-};
+const InvitationMessage = ({ communityName }: { communityName: string }) => (
+  <div className="bg-bkgd-main rounded-lg p-4">
+    <p className="text-brand-100 text-sm">
+      Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь или
+      зарегистрируйтесь.
+    </p>
+  </div>
+);
 
 export const SignIn = ({ onSignIn }: SignInT) => {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const communityName = searchParams.get('community');
 
@@ -75,10 +72,15 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     formState: { errors },
   } = form;
 
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
+    setIsButtonActive(false);
     const status = await onSignIn({ ...data, setError });
-    if (status === 200) router.push('/community/1/home');
+    if (status !== 200) {
+      setIsButtonActive(true);
+    }
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
@@ -144,7 +146,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
           Восстановить пароль
         </Link>
         <div className="flex h-full w-full items-end justify-between">
-          <div className="flex h-[56px] items-center">
+          <div className="flex h-[48px] items-center">
             <Link
               id="to-signup-link"
               data-umami-event="to-signup-link"
@@ -156,9 +158,13 @@ export const SignIn = ({ onSignIn }: SignInT) => {
               Зарегистрироваться
             </Link>
           </div>
-          <Button variant="default" type="submit">
-            Войти
-          </Button>
+          {isButtonActive ? (
+            <Button variant="default" type="submit" className="w-24">
+              Войти
+            </Button>
+          ) : (
+            <Button variant="default-spinner" className="w-24" disabled />
+          )}
         </div>
       </form>
     </Form>
