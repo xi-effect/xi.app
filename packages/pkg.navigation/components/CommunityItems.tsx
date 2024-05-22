@@ -23,8 +23,9 @@ import { createPortal } from 'react-dom';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
 import { ScrollArea } from '@xipkg/scrollarea';
-import { Calendar, Home } from '@xipkg/icons';
+import { Calendar, Home, Plus } from '@xipkg/icons';
 import { DropdownMenuSeparator } from '@xipkg/dropdown';
+import { CategoryCreate } from 'pkg.modal.category-create';
 import { CategoryContainer } from './CategoryContainer';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
@@ -42,8 +43,14 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   const categories = useMainSt((state) => state.categories);
   const channels = useMainSt((state) => state.channels);
 
-  const categoryIds = useMemo(() => categories.map((category) => category.uid ?? 0), [categories]);
-  const channelsIds = useMemo(() => channels.map((channel) => channel.uid ?? 0), [channels]);
+  const categoryIds = useMemo(
+    () => (categories || []).map((category) => category.uid ?? 0),
+    [categories],
+  );
+  const channelsIds = useMemo(
+    () => (categories || []).map((channel) => channel.uid ?? 0),
+    [channels],
+  );
   const [activeCategory, setActiveCategory] = useState<CategoryT | null>(null);
   const [activeChannel, setActiveChannel] = useState<ChannelT | null>(null);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
@@ -132,7 +139,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   const pathname = usePathname();
 
   useEffect(() => {
-    setCurrentChannel(checkIsChannelOpened(pathname, channels));
+    setCurrentChannel(checkIsChannelOpened(pathname, channels ?? []));
   }, [pathname, channels]);
 
   const checkIsChannelOpened = (url: string, channels: ChannelT[]) => {
@@ -183,10 +190,12 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     if (isActiveAChannel && isOverAChannel) {
       // console.log('isActiveAChannel && isOverAChannel');
 
-      const activeIndex = channels.findIndex(
+      const activeIndex = (channels || []).findIndex(
         (channel: ChannelT) => channel.uid === activeId,
       ) as number;
-      const overIndex = channels.findIndex((channel: ChannelT) => channel.uid === overId) as number;
+      const overIndex = (channels || []).findIndex(
+        (channel: ChannelT) => channel.uid === overId,
+      ) as number;
 
       // console.log('activeIndex', activeIndex);
       // console.log('overIndex', overIndex);
@@ -194,7 +203,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       // console.log('channels[activeIndex].categoryId', channels[activeIndex].categoryId);
       // console.log('channels[overIndex].categoryId', channels[overIndex].categoryId);
 
-      if (channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
+      if (channels && channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
         const newChannels = channels.map((chnItem, index) => {
           if (index === activeIndex) {
             return { ...chnItem, categoryId: channels[overIndex].categoryId };
@@ -206,17 +215,19 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         // console.log('channels[activeIndex].categoryId !== channels[overIndex].categoryId');
 
         updateChannels(arrayMove(newChannels, activeIndex, overIndex));
-      } else {
+      } else if (channels) {
         updateChannels(arrayMove(channels, activeIndex, overIndex));
       }
     }
 
     // Если мы находимся над категорией
     if (isActiveAChannel && !isOverAChannel) {
-      const activeIndex = channels.findIndex((channel: ChannelT) => channel.uid === activeId);
+      const activeIndex = (channels || []).findIndex(
+        (channel: ChannelT) => channel.uid === activeId,
+      );
 
       console.log('activeIndex', activeIndex, channels, overId);
-      const newChannels = channels.map((chnItem, index) => {
+      const newChannels = (channels || []).map((chnItem, index) => {
         if (index === activeIndex) {
           return { ...chnItem, categoryId: categoryOverId };
         }
@@ -246,15 +257,41 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const isActiveACategory = active.data.current?.type === 'Category';
     if (!isActiveACategory) return;
 
-    const activeCategoryIndex = categories.findIndex((category) => category.uid === activeId);
-    const overCategoryIndex = categories.findIndex((category) => category.uid === overId);
+    if (!categories) return;
+
+    const activeCategoryIndex = (categories || []).findIndex(
+      (category) => category.uid === activeId,
+    );
+    const overCategoryIndex = (categories || []).findIndex((category) => category.uid === overId);
 
     const newCategories = arrayMove(categories, activeCategoryIndex, overCategoryIndex);
 
     updateCategories(newCategories);
   };
 
-  if (categories.length === 0 || channels.length === 0) return <CommunityItemsSkeleton />;
+  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
+
+  if ((categories && categories.length === 0) || (channels && channels.length === 0)) {
+    return (
+      <>
+        <CategoryCreate
+          open={isCategoryCreateOpen}
+          onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
+        />
+        <div
+          onClick={() => setIsCategoryCreateOpen(true)}
+          className="hover:bg-gray-5 group mt-8 flex h-[40px] w-full flex-row items-center justify-between rounded-lg border border-dashed p-2 transition-colors ease-in hover:cursor-pointer"
+        >
+          <div className="flex items-center">
+            <Plus className="fill-gray-90 hover:bg-gray-5" />
+            <span className="pl-2 text-[14px] font-normal">Добавить категорию</span>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (categories === null || channels === null) return <CommunityItemsSkeleton />;
 
   // console.log('categoryIds', categoryIds);
   // console.log('channelsIds', channelsIds);

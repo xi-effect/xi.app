@@ -19,8 +19,8 @@ type ChannelT = {
 };
 
 export type ChannelsCommunity = {
-  channels: ChannelT[];
-  categories: CategoryT[];
+  channels: ChannelT[] | null;
+  categories: CategoryT[] | null;
   updateChannels: (value: any) => void;
   updateCategories: (value: any) => void;
 };
@@ -31,8 +31,8 @@ export const createChannelsCommunitySt: StateCreator<
   [],
   ChannelsCommunity
 > = (set) => ({
-  channels: [],
-  categories: [],
+  channels: null,
+  categories: null,
   updateChannels: (value) => set(() =>
     ({ channels: [...value] })),
   updateCategories: (value) => set(() =>
