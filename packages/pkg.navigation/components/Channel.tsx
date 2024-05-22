@@ -49,6 +49,8 @@ const stylesDict = {
 };
 
 export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) => {
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
@@ -57,6 +59,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
       type: 'Channel',
       channel,
     },
+    disabled: !isOwner,
   });
 
   const pathname = usePathname();
@@ -130,7 +133,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
           {iconsDict[channel.kind]}
           <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
         </div>
-        {mouseOver ? (
+        {isOwner && mouseOver ? (
           <div {...attributes} {...listeners} className="flex items-center gap-3">
             {activeChannel ? (
               <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />

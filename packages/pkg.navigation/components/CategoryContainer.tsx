@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useMainSt } from 'pkg.stores';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
 
@@ -11,6 +12,8 @@ type CategoryContainerT = {
 };
 
 export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+
   const { name, description, uid } = category;
   const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
 
@@ -20,6 +23,7 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
       type: 'Category',
       category,
     },
+    disabled: !isOwner,
   });
 
   const categoryStyle = {
@@ -46,7 +50,7 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
           </div>
         )}
       </div>
-      <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden min-h-[28px]">
+      <div className="flex min-h-[28px] flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
         <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
           {channels.map((channel: ChannelT) => (
             <Channel setSlideIndex={setSlideIndex} key={channel.uid} channel={channel} />
