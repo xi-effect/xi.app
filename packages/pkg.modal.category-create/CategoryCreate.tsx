@@ -7,7 +7,7 @@ import { Form } from './components/Form';
 
 type CategoryCreatePropsT = {
   open: boolean;
-  onOpenChange: (value: React.SetStateAction<boolean>) => void;
+  onOpenChange: () => void;
 };
 
 export const CategoryCreate = ({ open, onOpenChange }: CategoryCreatePropsT) => (
@@ -19,7 +19,7 @@ export const CategoryCreate = ({ open, onOpenChange }: CategoryCreatePropsT) => 
       <M.ModalHeader>
         <M.ModalTitle>Создание категории</M.ModalTitle>
       </M.ModalHeader>
-      <Form />
+      <Form onOpenChange={onOpenChange} />
     </M.ModalContent>
   </M.Modal>
 );

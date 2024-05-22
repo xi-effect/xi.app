@@ -1,6 +1,4 @@
 import { StateCreator } from 'zustand';
-// import { post } from 'pkg.utils';
-import { UserSettings } from '../user/settings';
 import { UserProfile } from '../user/profile';
 import { VideoConference } from './videoConference';
 
@@ -16,16 +14,8 @@ export type CurrentCommunity = {
   updateCommunityMeta: (value: any) => void;
 };
 
-// type RequestBody = {
-//   room_name: string;
-// };
-
-// type ResponseBody = {
-//   token: string;
-// };
-
 export const createCurrentCommunitySt: StateCreator<
-  UserProfile & UserSettings & VideoConference & CurrentCommunity,
+  UserProfile & VideoConference & CurrentCommunity,
   [],
   [],
   CurrentCommunity

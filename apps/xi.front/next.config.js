@@ -67,6 +67,7 @@ const nextConfig = {
     '@xipkg/datepicker',
     '@xipkg/popover',
     '@xipkg/calendar',
+    '@xipkg/scrollarea',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

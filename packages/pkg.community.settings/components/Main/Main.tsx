@@ -14,6 +14,8 @@ import {
 } from '@xipkg/form';
 import { Input } from '@xipkg/input';
 import { useSnackbar } from 'notistack';
+import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 import { Header } from '../Header';
 import { useInterfaceStore } from '../../interfaceStore';
 
@@ -23,16 +25,18 @@ const FormSchema = z.object({
   }),
 });
 
-const defName = 'тыц';
-
 export const Main = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const setIsCloseActive = useInterfaceStore((state) => state.setIsCloseActive);
+  const communityName = useMainSt((state) => state.communityMeta.name);
+  const communityId = useMainSt((state) => state.communityMeta.id);
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: defName,
+      name: communityName || '',
     },
   });
 
@@ -47,7 +51,7 @@ export const Main = () => {
   } = form;
 
   watch((data) => {
-    if (data.name !== defName) {
+    if (data.name !== communityName) {
       setIsCloseActive(false);
       enqueueSnackbar('Your report is ready', {
         variant: 'confirmSave',
@@ -60,8 +64,25 @@ export const Main = () => {
     }
   });
 
-  const onSubmit = () => {
-    console.log('onSubmit');
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    socket.emit(
+      'update-community',
+      {
+        community_id: communityId,
+        data: {
+          description: null,
+          name: data.name,
+        },
+      },
+      (status: number) => {
+        if (status === 200) {
+          updateCommunityMeta({ name: data.name });
+          setIsCloseActive(true);
+          closeSnackbar();
+          toast('Название сообщество сохранено');
+        }
+      },
+    );
   };
 
   return (

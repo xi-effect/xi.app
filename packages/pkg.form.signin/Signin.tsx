@@ -18,7 +18,6 @@ import { useSearchParams } from 'next/navigation';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
-// import { useMainSt } from 'pkg.stores';
 
 export type SignInT = {
   /**
@@ -54,12 +53,8 @@ const InvitationMessage = ({ communityName }: { communityName: string }) => (
 );
 
 export const SignIn = ({ onSignIn }: SignInT) => {
-  // const router = useRouter();
   const searchParams = useSearchParams();
   const communityName = searchParams.get('community');
-  // const socket = useMainSt((state) => state.socket);
-  // const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
-  // const setIsLogin = useMainSt((state) => state.setIsLogin);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -83,37 +78,10 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     trigger();
     setIsButtonActive(false);
     const status = await onSignIn({ ...data, setError });
-    // console.log('status', status);
     if (status !== 200) {
       setIsButtonActive(true);
     }
   };
-
-  // useEffect(() => {
-  //   if (socket !== null) {
-  //     socket.on('connect', () => {
-  //       socket.emit(
-  //         'retrieve-any-community',
-  //         (stats: number, { community, participant }: { community: any; participant: any }) => {
-  //           console.log('stats', stats, community, participant);
-
-  //           if (stats === 200) {
-  //             updateCommunityMeta({
-  //               id: community.id,
-  //               isOwner: participant.is_owner,
-  //               name: community.name,
-  //               description: community.description,
-  //             });
-  //           }
-  //           if (community.id !== null) {
-  //             router.push(`/communities/${community.id}/home`);
-  //             setIsLogin(true);
-  //           }
-  //         },
-  //       );
-  //     });
-  //   }
-  // }, [socket]);
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 

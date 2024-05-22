@@ -24,10 +24,11 @@
     "@xipkg/utils": "^1.2.3",
     "next": "^14.2.3",
     "pkg.utils": "*",
+    "pkg.stores": "*",
     "react": "^18.2.0",
     "zustand": "^4.3.8",
     "zod": "3.22.4",
-    "sonner": "1.0.3",
+    "sonner": "1.4.41",
     "notistack": "3.0.1"
   },
   "devDependencies": {

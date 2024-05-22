@@ -8,6 +8,10 @@ import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Objects } from '@xipkg/icons';
+import { Button } from '@xipkg/button';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
 
@@ -30,6 +34,75 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
     const profileIsOpen = searchParams.has('profileIsOpen');
     setMenuIsOpen(profileIsOpen);
   }, [searchParams]);
+
+  const driverAction = () => {
+    const driverObj = driver({
+      showProgress: true,
+      steps: [
+        {
+          element: '#header-logo',
+          popover: {
+            title: 'Добро пожаловать!',
+            description:
+              'Это краткое руководство поможет вам ознакомиться с возможностями нашей платформы',
+          },
+        },
+        {
+          element: '#community-profile',
+          popover: {
+            title: 'Профиль сообщества',
+            description:
+              'Сообщество - цифровой хаб, построенный вокруг преподавателя или организации. Открыв меню, вы можете получить доступ к настройкам сообщества, системе приглашений, созданию сервисов',
+          },
+        },
+        {
+          element: '#community-services',
+          popover: {
+            title: 'Сервисы сообщества',
+            description:
+              'В рамках сообщества репетитор может создавать и настраивать необходимые ему модули - задания, чаты, видеоконференции, контент и т.д. ',
+          },
+        },
+        {
+          element: '#subitems-menu',
+          popover: {
+            title: 'Группировка сервисов',
+            description:
+              'Для удобства можно группировать сервисы и настраивать к ним доступ по ролям, предметам или, например, уровню владения языком',
+          },
+        },
+        {
+          element: '#video-item-menu',
+          popover: {
+            title: 'Сервис Видеоконференции',
+            description:
+              'Нажав на данный пункт меню можно присоединиться к видеоконференции или создать новую',
+          },
+        },
+        {
+          element: '#user-profile-menu',
+          popover: {
+            title: 'Профиль пользователя',
+            description:
+              'Нажав на профиль, пользователь открывает панель настроек - данные аккаунта, кастомизация, настройка микрофона, вебкамеры и т.д.',
+          },
+        },
+        {
+          element: '#notification-menu',
+          popover: {
+            title: 'Уведомления',
+            description:
+              'Сюда приходят уведомления со всех сервисов, напоминания о занятиях, результатах тестов и многом другом',
+          },
+        },
+      ],
+      nextBtnText: 'Вперёд',
+      prevBtnText: 'Назад',
+      doneBtnText: 'Завершить',
+      progressText: '{{current}} из {{total}}',
+    });
+    driverObj.drive();
+  };
 
   return (
     <>
@@ -65,6 +138,15 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
             <UserSettings onExit={onExit} />
           </ModalContent>
         </Modal>
+        <Button
+          variant="ghost"
+          type="button"
+          onClick={() => driverAction()}
+          className="hover:bg-gray-5 mt-1 flex h-[48px] w-full flex-row items-center justify-start rounded-lg p-2 pl-4 hover:cursor-pointer"
+        >
+          <Objects size="s" className="h-4 w-4 group-hover:fill-gray-100" />
+          <span className="pl-2 text-[14px] font-normal">Пройти обучение</span>
+        </Button>
         {/* <div
           id="notification-menu"
           onClick={() => toast(`Уведомления пока в разработке`)}

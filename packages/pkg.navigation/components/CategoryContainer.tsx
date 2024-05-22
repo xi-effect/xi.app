@@ -1,21 +1,21 @@
 import React, { useMemo } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { IChannel, ICategory } from './types';
+import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
 
-interface ICategoryContainer {
-  category: ICategory;
-  channels: IChannel[];
+type CategoryContainerT = {
+  category: CategoryT;
+  channels: ChannelT[];
   setSlideIndex?: (arg: number) => void;
-}
+};
 
-export function CategoryContainer({ category, channels, setSlideIndex }: ICategoryContainer) {
-  const { title, subtitle, id } = category;
-  const channelsIds = useMemo(() => channels.map((channel: IChannel) => channel.elId), [channels]);
+export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
+  const { name, description, uid } = category;
+  const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
 
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
-    id,
+    id: uid,
     data: {
       type: 'Category',
       category,
@@ -39,17 +39,17 @@ export function CategoryContainer({ category, channels, setSlideIndex }: ICatego
   return (
     <div ref={setNodeRef} style={categoryStyle}>
       <div {...attributes} {...listeners}>
-        {title && subtitle && (
+        {name && description && (
           <div className="flex flex-col items-start p-2">
-            <span className="text-[16px] font-semibold">{title}</span>
-            <span className="text-[14px] font-normal">{subtitle}</span>
+            <span className="text-[16px] font-semibold">{name}</span>
+            <span className="text-[14px] font-normal">{description}</span>
           </div>
         )}
       </div>
-      <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
+      <div className="flex flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden min-h-[28px]">
         <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
-          {channels.map((channel: IChannel) => (
-            <Channel setSlideIndex={setSlideIndex} key={channel.elId} channel={channel} />
+          {channels.map((channel: ChannelT) => (
+            <Channel setSlideIndex={setSlideIndex} key={channel.uid} channel={channel} />
           ))}
         </SortableContext>
       </div>
