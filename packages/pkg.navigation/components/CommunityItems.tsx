@@ -148,21 +148,27 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const isActiveAChannel = active.data.current?.type === ('Channel' as string);
     const isOverAChannel = over.data.current?.type === ('Channel' as string);
 
+    const categoryOverId = over.data.current?.category?.id;
+
+    console.log('overData', categoryOverId);
+
     console.log('isActiveAChannel', isActiveAChannel, isOverAChannel);
 
     if (!isActiveAChannel) return;
 
     if (isActiveAChannel && isOverAChannel) {
+      // console.log('isActiveAChannel && isOverAChannel');
+
       const activeIndex = channels.findIndex(
         (channel: ChannelT) => channel.uid === activeId,
       ) as number;
       const overIndex = channels.findIndex((channel: ChannelT) => channel.uid === overId) as number;
 
-      console.log('activeIndex', activeIndex);
-      console.log('overIndex', overIndex);
+      // console.log('activeIndex', activeIndex);
+      // console.log('overIndex', overIndex);
 
-      console.log('channels[activeIndex].categoryId', channels[activeIndex].categoryId);
-      console.log('channels[overIndex].categoryId', channels[overIndex].categoryId);
+      // console.log('channels[activeIndex].categoryId', channels[activeIndex].categoryId);
+      // console.log('channels[overIndex].categoryId', channels[overIndex].categoryId);
 
       if (channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
         const newChannels = channels.map((chnItem, index) => {
@@ -173,23 +179,28 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           return chnItem;
         });
 
+        // console.log('channels[activeIndex].categoryId !== channels[overIndex].categoryId');
+
         updateChannels(arrayMove(newChannels, activeIndex, overIndex));
       } else {
         updateChannels(arrayMove(channels, activeIndex, overIndex));
       }
     }
 
+    // Если мы находимся над категорией
     if (isActiveAChannel && !isOverAChannel) {
       const activeIndex = channels.findIndex((channel: ChannelT) => channel.uid === activeId);
 
-      console.log('channels[activeIndex].categoryId', channels[activeIndex].categoryId);
+      console.log('activeIndex', activeIndex, channels, overId);
       const newChannels = channels.map((chnItem, index) => {
         if (index === activeIndex) {
-          return { ...chnItem, categoryId: Number(overId) };
+          return { ...chnItem, categoryId: categoryOverId };
         }
 
         return chnItem;
       });
+
+      console.log('isActiveAChannel && !isOverAChannel', newChannels);
 
       updateChannels(arrayMove(newChannels, activeIndex, 0));
     }
@@ -214,7 +225,9 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const activeCategoryIndex = categories.findIndex((category) => category.uid === activeId);
     const overCategoryIndex = categories.findIndex((category) => category.uid === overId);
 
-    updateCategories(arrayMove(categories, activeCategoryIndex, overCategoryIndex));
+    const newCategories = arrayMove(categories, activeCategoryIndex, overCategoryIndex);
+
+    updateCategories(newCategories);
   };
 
   if (categories.length === 0 || channels.length === 0) return <CommunityItemsSkeleton />;
