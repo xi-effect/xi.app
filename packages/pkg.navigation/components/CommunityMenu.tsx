@@ -71,10 +71,12 @@ const DropdownHeader = ({
 }) => (
   <div
     id="community-profile"
-    onClick={() => setIsOpen((prev: boolean) => !prev)}
-    className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${
+    onClick={() => {
+      if (name) setIsOpen((prev: boolean) => !prev);
+    }}
+    className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${
       inDropdown ? '' : 'mt-0 sm:mt-8'
-    } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
+    } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
   >
     {!id ? (
       <div className="bg-gray-10 size-[32px] animate-pulse rounded-[16px]" />
@@ -215,6 +217,8 @@ export const CommunityMenu = () => {
     });
   };
 
+  console.log('currentCommunity.name', currentCommunity.name);
+
   return (
     <>
       <Modal
@@ -239,7 +243,7 @@ export const CommunityMenu = () => {
       />
       <DropdownMenu open={isOpen}>
         <>
-          <DropdownMenuTrigger disabled={!!currentCommunity.name} asChild>
+          <DropdownMenuTrigger asChild>
             <div>
               <DropdownHeader
                 setIsOpen={setIsOpen}

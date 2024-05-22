@@ -17,6 +17,8 @@ import { Input } from '@xipkg/input';
 import { Close, Announce, Task, Conference, Chat } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { toast } from 'sonner';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
 import { ActionsSheetButton } from './components/ActionsSheetButton';
 
 const FormSchema = z.object({
@@ -67,6 +69,11 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
   const socket = useMainSt((state) => state.socket);
   const communityId = useMainSt((state) => state.communityMeta.id);
 
+  const router = useRouter();
+
+  const channels = useMainSt((state) => state.channels);
+  const updateChannels = useMainSt((state) => state.updateChannels);
+
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -91,6 +98,20 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
       (status: number, dataAnswer: any) => {
         if (status === 201) {
           toast('Канал успешно создан');
+
+          updateChannels([
+            ...channels,
+            {
+              uid: nanoid(),
+              id: dataAnswer.id,
+              categoryId: 'empty',
+              kind: dataAnswer.kind,
+              name: dataAnswer.name,
+            },
+          ]);
+
+          router.push(`/communities/${communityId}/channels/${dataAnswer.id}/${dataAnswer.kind}`);
+
           if (onOpenChange) onOpenChange();
           form.reset();
         }
