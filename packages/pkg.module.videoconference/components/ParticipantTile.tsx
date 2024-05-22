@@ -129,7 +129,7 @@ export function ParticipantTile({
         <ParticipantContextIfNeeded participant={trackReference.participant}>
           <div className="h-full">
             {children ?? (
-              <div className="h-full rounded-[8px]">
+              <div className="h-full">
                 {isTrackReference(trackReference) &&
                 (trackReference.publication?.kind === 'video' ||
                   trackReference.source === Track.Source.Camera ||
@@ -152,12 +152,8 @@ export function ParticipantTile({
                   />
                 ) : (
                   <div
-                    className="flex justify-center"
+                    className="flex w-full justify-center rounded-[8px] bg-black"
                     style={{
-                      background: 'black',
-                      borderRadius: '8px',
-                      height: '100%',
-                      minWidth: '100%',
                       ...(isSpeaking &&
                         trackReference.source === Track.Source.Camera && {
                           border: '3px solid #419B58',
@@ -172,7 +168,6 @@ export function ParticipantTile({
                     background: 'black',
                     borderRadius: '8px',
                     height: '100%',
-                    minWidth: '100%',
                     ...(isSpeaking &&
                       trackReference.source === Track.Source.Camera && {
                         border: '3px solid #419B58',

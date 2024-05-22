@@ -58,7 +58,7 @@ function useEmptyItemContainerOfUser(tracksLength: number) {
 export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
   const trackReference = trackRef ?? track;
   return (
-    <div className="m-auto flex h-[calc(100vh-21rem)] w-fit flex-col">
+    <div className="m-auto flex h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)] flex-col">
       <ParticipantTile
         style={{
           width: '100%',
@@ -199,10 +199,10 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
   });
 
   return (
-    <div className="h-[calc(100vh-13rem)]">
+    <div className="m-auto h-[calc(100vh-13rem)] w-full">
       <div
         ref={gridEl}
-        style={{ gap: '1rem', maxWidth: '100%', margin: '0 auto' }}
+        style={{ gap: '1rem', maxWidth: '100%', height: '100%', margin: '0 auto' }}
         data-lk-pagination={pagination.totalPageCount + (isOneItem ? 1 : 0) > 1}
         className="lk-grid-layout"
       >
