@@ -151,7 +151,19 @@ export function ParticipantTile({
                     manageSubscription={autoManageSubscription}
                   />
                 ) : (
-                  <div>
+                  <div
+                    className="flex justify-center"
+                    style={{
+                      background: 'black',
+                      borderRadius: '8px',
+                      height: '100%',
+                      minWidth: '100%',
+                      ...(isSpeaking &&
+                        trackReference.source === Track.Source.Camera && {
+                          border: '3px solid #419B58',
+                        }),
+                    }}
+                  >
                     <ParticipantPlaceholder />
                   </div>
                 )}
@@ -160,6 +172,7 @@ export function ParticipantTile({
                     background: 'black',
                     borderRadius: '8px',
                     height: '100%',
+                    minWidth: '100%',
                     ...(isSpeaking &&
                       trackReference.source === Track.Source.Camera && {
                         border: '3px solid #419B58',

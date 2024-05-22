@@ -32,10 +32,10 @@ export function ActiveRoom({
       audio={userChoice?.audioEnabled}
       video={userChoice?.videoEnabled}
     >
-      <div className="flex min-h-screen flex-col gap-3">
+      <div className="flex min-h-screen flex-col justify-between gap-3">
         <UpBar />
-        <div className="flex px-10">
-          <div className="w-full text-center">{isConnected && <Stage />}</div>
+        <div className="px-10">
+          <div className="h-full w-full text-center">{isConnected && <Stage />}</div>
         </div>
         <BottomBar />
       </div>

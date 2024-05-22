@@ -87,36 +87,30 @@ export function VideoConference({
   return (
     <div className="lk-video-conference" {...props}>
       {isWeb() && (
-        <LayoutContextProvider
-          value={layoutContext}
-          // onPinChange={handleFocusStateChange}
-          onWidgetChange={widgetUpdate}
-        >
+        <LayoutContextProvider value={layoutContext} onWidgetChange={widgetUpdate}>
           <div className="lk-video-conference-inner">
-            <div>
-              {!focusTrack ? (
-                <div className="min-h-[79vh]">
-                  <GridLayout tracks={tracks}>
-                    <ParticipantTile
-                      style={{ flexDirection: 'column', maxWidth: '800px', maxHeight: '450px' }}
-                    />
-                  </GridLayout>
+            {!focusTrack ? (
+              <div className="min-h-sreen">
+                <GridLayout tracks={tracks}>
+                  <ParticipantTile
+                    style={{ flexDirection: 'column', maxWidth: '100%', maxHeight: '100%' }}
+                  />
+                </GridLayout>
+              </div>
+            ) : (
+              <FocusLayoutContainer className="flex min-h-screen flex-col">
+                <div className="flex h-full flex-col justify-between gap-4">
+                  <CarouselLayout
+                    orientation="horizontal"
+                    userTracks={tracks}
+                    tracks={carouselTracks}
+                  >
+                    <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
+                  </CarouselLayout>
+                  {focusTrack && <FocusLayout trackRef={focusTrack} />}
                 </div>
-              ) : (
-                <FocusLayoutContainer className="flex min-h-screen flex-col">
-                  <div className="flex min-h-[79vh] flex-grow flex-col justify-between gap-4">
-                    <CarouselLayout
-                      orientation="horizontal"
-                      userTracks={tracks}
-                      tracks={carouselTracks}
-                    >
-                      <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
-                    </CarouselLayout>
-                    {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                  </div>
-                </FocusLayoutContainer>
-              )}
-            </div>
+              </FocusLayoutContainer>
+            )}
           </div>
         </LayoutContextProvider>
       )}

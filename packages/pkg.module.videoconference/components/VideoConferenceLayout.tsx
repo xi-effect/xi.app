@@ -58,17 +58,16 @@ function useEmptyItemContainerOfUser(tracksLength: number) {
 export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
   const trackReference = trackRef ?? track;
   return (
-    <ParticipantTile
-      style={{
-        maxWidth: '650px',
-        maxHeight: '370px',
-        width: '100%',
-        height: '100%',
-        margin: 'auto',
-      }}
-      {...trackReference}
-      {...htmlProps}
-    />
+    <div className="m-auto flex h-[calc(100vh-21rem)] w-fit flex-col">
+      <ParticipantTile
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        {...trackReference}
+        {...htmlProps}
+      />
+    </div>
   );
 }
 const MIN_HEIGHT = 130;
@@ -200,12 +199,10 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
   });
 
   return (
-    <>
-      {/* <PaginationPage {...pagination} /> */}
-      {/* <PaginationControl {...pagination} /> */}
+    <div className="h-[calc(100vh-13rem)]">
       <div
         ref={gridEl}
-        style={{ gap: '1rem' }}
+        style={{ gap: '1rem', maxWidth: '100%', margin: '0 auto' }}
         data-lk-pagination={pagination.totalPageCount + (isOneItem ? 1 : 0) > 1}
         className="lk-grid-layout"
       >
@@ -218,6 +215,6 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
           />
         )}
       </div>
-    </>
+    </div>
   );
 }
