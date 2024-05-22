@@ -19,5 +19,3 @@ export const createDefaultNode = (type: CommonCustomElementType) => {
       return node({ type });
   }
 };
-
-export default createDefaultNode;

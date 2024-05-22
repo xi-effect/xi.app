@@ -58,7 +58,7 @@ const renderElement = ({ element, attributes, children }: RenderElementProps) =>
         </div>
       );
     case 'image':
-      return <img alt="" src={element.url} />;
+      return <img alt="downloaded" src={element.url} />;
     case 'divider':
       return (
         <div className="bg-gray-30 my-3 h-0.5 w-full caret-transparent *:hidden" {...attributes}>

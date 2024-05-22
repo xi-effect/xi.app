@@ -100,7 +100,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
           toast('Канал успешно создан');
 
           updateChannels([
-            ...channels,
+            ...(channels || []),
             {
               uid: nanoid(),
               id: dataAnswer.id,

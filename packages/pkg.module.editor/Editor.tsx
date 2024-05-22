@@ -17,7 +17,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { createPortal } from 'react-dom';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import isImageUrl from './utils/isImageUrl';
-import createDefaultNode from './utils/createDefaultNode';
+import { createDefaultNode } from './utils/createDefaultNode';
 import rootElements, { type EditorRootElementOptions } from './const/rootElements';
 import { withNodeId } from './plugins/withNodeId';
 import { toPx } from './utils/toPx';

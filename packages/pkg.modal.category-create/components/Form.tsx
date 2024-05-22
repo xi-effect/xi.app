@@ -114,7 +114,7 @@ export const Form = ({ onOpenChange }: FormT) => {
                   console.log('ans', status, dataAnswer);
                   // TODO Каналы не создаются больше одного, надо пофиксить, мб рекурсией
                   updatedChannels([
-                    ...channels,
+                    ...(channels || []),
                     {
                       id: dataAnswer.id,
                       name: dataAnswer.name,
@@ -130,7 +130,7 @@ export const Form = ({ onOpenChange }: FormT) => {
           }
 
           updateCategories([
-            ...categories,
+            ...(categories || []),
             { id: data.id, name: data.name, description: data.description, uid: nanoid() },
           ]);
           onOpenChange();
