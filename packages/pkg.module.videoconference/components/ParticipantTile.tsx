@@ -1,11 +1,10 @@
-/* eslint-disable no-undef */
 /* eslint-disable react/jsx-indent */
-/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { Track } from 'livekit-client';
 import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
 import {
+  AudioTrack,
   ConnectionQualityIndicator,
   FocusToggle,
   LockLockedIcon,
@@ -39,7 +38,7 @@ function TrackRefContextIfNeeded({
   return trackRef && !hasContext ? (
     <TrackRefContext.Provider value={trackRef}>{children}</TrackRefContext.Provider>
   ) : (
-    <>{children}</>
+    children
   );
 }
 export function TrackMutedIndicator({
@@ -151,17 +150,12 @@ export function ParticipantTile({
                     manageSubscription={autoManageSubscription}
                   />
                 ) : (
-                  <div
-                    className="flex w-full justify-center rounded-[8px] bg-black"
-                    style={{
-                      ...(isSpeaking &&
-                        trackReference.source === Track.Source.Camera && {
-                          border: '3px solid #419B58',
-                        }),
-                    }}
-                  >
-                    <ParticipantPlaceholder />
-                  </div>
+                  isTrackReference(trackReference) && (
+                    <AudioTrack
+                      trackRef={trackReference}
+                      onSubscriptionStatusChanged={handleSubscribe}
+                    />
+                  )
                 )}
                 <div
                   style={{

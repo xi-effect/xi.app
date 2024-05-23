@@ -1,6 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
 import '@livekit/components-styles';
 import {
@@ -70,9 +69,9 @@ export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps)
     </div>
   );
 }
-const MIN_HEIGHT = 130;
-const MIN_WIDTH = 140;
-const MIN_VISIBLE_TILES = 1;
+const MIN_HEIGHT = 250;
+const MIN_WIDTH = 250;
+const MIN_VISIBLE_TILES = 10;
 const ASPECT_RATIO = 8 / 10;
 const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
 

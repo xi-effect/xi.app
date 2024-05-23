@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
+/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import '@livekit/components-styles';
