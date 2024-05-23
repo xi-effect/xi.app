@@ -28,8 +28,8 @@ export function ActiveRoom({
       connect={connect}
       onConnected={() => setIsConnected(true)}
       onDisconnected={handleDisconnect}
-      audio={userChoice?.audioEnabled}
-      video={userChoice?.videoEnabled}
+      audio={userChoice?.audioEnabled || false}
+      video={userChoice?.videoEnabled || false}
     >
       <div className="flex min-h-screen flex-col justify-between gap-3">
         <UpBar />
