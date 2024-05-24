@@ -23,13 +23,15 @@
     "@xipkg/toggle": "^0.1.0",
     "@xipkg/utils": "^1.2.3",
     "next": "^14.2.3",
+    "notistack": "3.0.1",
+    "pkg.modal.invite-community": "^0.0.0",
+    "pkg.stores": "^0.0.0",
     "pkg.utils": "*",
-    "pkg.stores": "*",
     "react": "^18.2.0",
-    "zustand": "^4.3.8",
-    "zod": "3.22.4",
+    "socket.io-client": "^4.7.5",
     "sonner": "1.4.41",
-    "notistack": "3.0.1"
+    "zod": "3.22.4",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
