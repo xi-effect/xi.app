@@ -2,7 +2,6 @@ import { StateCreator } from 'zustand';
 import { get } from 'pkg.utils';
 import { UserT } from 'pkg.models';
 import { useMainSt } from '../index';
-import { UserSettings } from './settings';
 
 export type UserProfile = {
   user: UserT;
@@ -19,7 +18,7 @@ export type ResponseBodyUserT = {
   email: UserT['email'];
 };
 
-export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [], UserProfile> = (
+export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile> = (
   set,
 ) => ({
   user: {
@@ -44,23 +43,26 @@ export const createUserProfileSt: StateCreator<UserProfile & UserSettings, [], [
         },
       },
     });
-    console.log('getUser', data);
-    set((state) => ({
-      user: {
-        ...state.user,
-        onboardingStage: data.onboarding_stage,
-        username: data.username,
-        id: data.id,
-        displayName: data.display_name,
-        theme: data.theme,
-        email: data.email,
-      },
-    }));
+
+    console.log('getUser', data, status);
+
+    if (status === 200) {
+      useMainSt.getState().initSocket();
+      set((state) => ({
+        user: {
+          ...state.user,
+          onboardingStage: data.onboarding_stage,
+          username: data.username,
+          id: data.id,
+          displayName: data.display_name,
+          theme: data.theme,
+          email: data.email,
+        },
+      }));
+    }
 
     if (status === 401) {
       useMainSt.getState().setIsLogin(false);
-    } else {
-      useMainSt.getState().setIsLogin(true);
     }
   },
 });

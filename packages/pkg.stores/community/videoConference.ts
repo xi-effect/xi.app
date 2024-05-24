@@ -1,6 +1,5 @@
 import { StateCreator } from 'zustand';
 import { post } from 'pkg.utils';
-import { UserSettings } from '../user/settings';
 import { UserProfile } from '../user/profile';
 
 export type VideoConference = {
@@ -17,7 +16,7 @@ type ResponseBody = {
 };
 
 export const createVideoConferenceSt: StateCreator<
-  UserProfile & UserSettings & VideoConference,
+  UserProfile & VideoConference,
   [],
   [],
   VideoConference

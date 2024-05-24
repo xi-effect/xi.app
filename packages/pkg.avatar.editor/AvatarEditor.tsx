@@ -22,9 +22,18 @@ type AvatarEditorT = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
   setDate?: (value: Date) => void;
+  withLoadingToServer?: boolean;
+  onBase64Return?: (resizedImageBase: string, form: FormData) => void;
 };
 
-export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: AvatarEditorT) => {
+export const AvatarEditorComponent = ({
+  withLoadingToServer = true,
+  file,
+  open,
+  onOpenChange,
+  setDate,
+  onBase64Return,
+}: AvatarEditorT) => {
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
 
@@ -48,7 +57,7 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
     height: number;
   } | null>(null);
 
-  const resizeFile = (file: File) =>
+  const resizeFile = (file: File, type: 'blob' | 'base64') =>
     new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
@@ -60,7 +69,7 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
         (uri) => {
           resolve(uri);
         },
-        'blob',
+        type,
       );
     });
 
@@ -68,12 +77,17 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
     try {
       const croppedImage = (await getCroppedImg(file, croppedAreaPixels)) as Blob;
       const f = new File([croppedImage], 'avatar.webp');
-      const resizedImage = (await resizeFile(f)) as Blob;
+      const resizedImage = (await resizeFile(f, 'blob')) as Blob;
+      const resizedImageBase = (await resizeFile(f, 'base64')) as string;
 
       console.log('resizedImage', resizedImage);
 
       const form = new FormData();
       form.append('avatar', resizedImage, 'avatar.webp');
+
+      if (!withLoadingToServer && onBase64Return) {
+        return onBase64Return(resizedImageBase, form);
+      }
 
       const { data, status } = await put({
         service: 'auth',
@@ -94,6 +108,8 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
     } catch (e) {
       console.error(e);
     }
+
+    return null;
   };
 
   return (
@@ -134,7 +150,7 @@ export const AvatarEditorComponent = ({ file, open, onOpenChange, setDate }: Ava
           <Button onClick={() => onOpenChange(false)} className="md:ml-auto" variant="secondary">
             Отменить
           </Button>
-          <Button onClick={() => showCroppedImage()}>Изменить</Button>
+          <Button onClick={() => showCroppedImage()}>Сохранить</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

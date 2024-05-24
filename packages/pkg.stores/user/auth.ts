@@ -4,13 +4,16 @@
 
 import { StateCreator } from 'zustand';
 import { post, put } from 'pkg.utils';
-import { Common } from '../main';
+import { io } from 'socket.io-client';
+import { Common, useMainSt } from '../main';
 import { ResponseBodyUserT } from './profile';
 
 type Data = { email: string; password: string };
 
 export type Auth = {
+  socket: any;
   isLogin: boolean | null;
+  initSocket: () => void;
   setIsLogin: (value: boolean) => void;
   onSignIn: ({
     email,
@@ -68,7 +71,17 @@ type ResponseBodyChangeEmail = {
 };
 
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
+  socket: null,
   isLogin: null,
+  initSocket: () => set(() => ({
+    socket: io('https://api.xieffect.ru/', {
+      withCredentials: true,
+      transports: ['websocket'],
+      reconnectionAttempts: 100,
+      reconnectionDelay: 2000,
+      reconnectionDelayMax: 50000,
+    }),
+  })),
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
   onSignIn: async ({ email, password, setError }) => {
     const { data, status } = await post<RequestBodySignIn, ResponseBodySignIn>({
@@ -87,8 +100,9 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         },
       },
     });
-    console.log('onSignIn', data, status);
+    // console.log('onSignIn', data, status);
     if (status === 200) {
+      useMainSt.getState().initSocket();
       {
         set((state) => ({
           isLogin: true,
@@ -133,6 +147,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
 
     console.log('onSignUp', data, status);
     if (status === 200) {
+      useMainSt.getState().initSocket();
       {
         set((state) => ({
           isLogin: true,
@@ -172,6 +187,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     });
     console.log('status', data, status);
     if (status === 204) {
+      useMainSt.getState().socket.disconnect();
       set(() => ({ isLogin: false }));
     }
   },

@@ -78,7 +78,7 @@ export default function InvitePage({ params }: { params: { iid: string } }) {
   const date = useRef(new Date());
 
   const onSubmit = () => {
-    redirect('/community/1/home');
+    redirect('/communities/1/home');
   };
 
   return (
