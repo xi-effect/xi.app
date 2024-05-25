@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 
-import io from 'socket.io-client';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 
@@ -10,7 +9,7 @@ import { InviteCommunityModal } from 'pkg.modal.invite-community';
 import { Badge } from '@xipkg/badge';
 import { Button } from '@xipkg/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@xipkg/avatar';
-import { Copy, Trash } from '@xipkg/icons';
+import { Copy, Trash, Plus } from '@xipkg/icons';
 import { Header } from '../Header';
 
 // import usersTemplate from './usersTemplate.json';
@@ -102,7 +101,17 @@ const UserCard = ({
     <li className="border-gray-30 md:items-cente flex rounded-lg border p-4">
       <div className="flex w-full flex-col gap-4 md:flex-row">
         <div className="flex min-w-40 flex-col">
-          <p className="mb-2 text-xs font-medium text-gray-100">Создано:</p>
+          <div className="flex">
+            <p className="mb-2 text-xs font-medium text-gray-100">Создано:</p>
+            <button
+              type="button"
+              aria-label="Удалить"
+              onClick={() => handleInviteDelete(id)}
+              className="ml-auto bg-transparent p-2 min-[960px]:hidden"
+            >
+              <Trash className="h-4 w-4" />
+            </button>
+          </div>
           <div className="flex items-center self-start">
             <Avatar size="m">
               <AvatarImage
@@ -116,7 +125,7 @@ const UserCard = ({
               <AvatarFallback size="m">CN</AvatarFallback>
             </Avatar>
             <div className="ml-2">
-              <p className="text-sm font-medium text-gray-100">{name}</p>
+              <p className="text-sm font-medium text-gray-100 max-[700px]:text-base">{name}</p>
               <p className="text-gray-60 text-xs font-normal">@{nickname}</p>
             </div>
           </div>
@@ -188,7 +197,7 @@ const UserCard = ({
           type="button"
           aria-label="Удалить"
           onClick={() => handleInviteDelete(id)}
-          className="ml-auto bg-transparent p-2"
+          className="ml-auto bg-transparent p-2 max-[960px]:hidden"
         >
           <Trash className="h-4 w-4" />
         </button>
@@ -198,44 +207,22 @@ const UserCard = ({
 };
 
 export const Invites = () => {
-  // const [users, setUsers] = useState(usersTemplate); — тестовые карточки приглашений
   const [isModalOpen, setModalOpen] = useState(false);
   const [invitations, setInvitations] = useState<InvitationT[]>([]);
-  const socketUrl = 'https://api.xieffect.ru/';
   const communityId = useMainSt((state) => state.communityMeta.id);
+  const socket = useMainSt((state) => state.socket);
 
   useEffect(() => {
-    const socket = io(socketUrl, {
-      withCredentials: true,
-      transports: ['websocket'],
+    socket.emit('list-invitations', { community_id: communityId }, (status: number, data: any) => {
+      if (status === 200 && data) {
+        setInvitations(data);
+      } else {
+        toast('Ошибка получения приглашений');
+      }
     });
-
-    socket.on('connect', () => {
-      console.log('Connected to server');
-      socket.emit(
-        'list-invitations',
-        { community_id: communityId },
-        (status: number, data: any) => {
-          if (status === 200 && data) {
-            setInvitations(data);
-          } else {
-            toast('Ошибка получения приглашений');
-          }
-        },
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [communityId, isModalOpen]);
+  }, [communityId]);
 
   const handleInviteDelete = (inviteCode: string) => {
-    const socket = io(socketUrl, {
-      withCredentials: true,
-      transports: ['websocket'],
-    });
-
     socket.emit(
       'delete-invitation',
       {
@@ -256,11 +243,6 @@ export const Invites = () => {
     community_id: number | null;
     data: { expiry: string | null; usage_limit: string | null };
   }) => {
-    const socket = io(socketUrl, {
-      withCredentials: true,
-      transports: ['websocket'],
-    });
-
     const { community_id, data } = requestData;
 
     socket.emit(
@@ -304,7 +286,7 @@ export const Invites = () => {
           handleInviteCreate={handleInviteCreate}
         />
       </div>
-      <div className="mt-4">
+      <div className="h-3/5 overflow-y-auto">
         {/* <ul className="grid gap-4">
           {users.map((user, index) => (
             <UserCard
@@ -322,35 +304,45 @@ export const Invites = () => {
           ))}
         </ul> */}
 
-        <ul className="grid gap-4">
-          {invitations?.length > 0 ? (
-            <ul className="grid gap-4">
-              {invitations.map((invite) => (
-                <UserCard
-                  key={invite.id}
-                  id={invite.id}
-                  inviteCode={invite.token}
-                  usageCount={invite.usage_count}
-                  usageLimit={invite.usage_limit}
-                  expires={invite.expiry}
-                  roles={[
-                    {
-                      name: 'Студент',
-                      bgColorMain: 'bg-green-100',
-                      bgColorSecondary: 'bg-green-0',
-                    },
-                  ]}
-                  user={{} as UserT}
-                  name="Пользователь"
-                  nickname="nickname"
-                  handleInviteDelete={handleInviteDelete}
-                />
-              ))}
-            </ul>
-          ) : (
-            <p>No invitations found.</p>
-          )}
-        </ul>
+        {invitations?.length > 100 ? (
+          <ul className="grid gap-4 max-[400px]:gap-8">
+            {invitations.map((invite) => (
+              <UserCard
+                key={invite.id}
+                id={invite.id}
+                inviteCode={invite.token}
+                usageCount={invite.usage_count}
+                usageLimit={invite.usage_limit}
+                expires={invite.expiry}
+                roles={[
+                  {
+                    name: 'Студент',
+                    bgColorMain: 'bg-green-100',
+                    bgColorSecondary: 'bg-green-0',
+                  },
+                ]}
+                user={{} as UserT}
+                name="Пользователь"
+                nickname="nickname"
+                handleInviteDelete={handleInviteDelete}
+              />
+            ))}
+          </ul>
+        ) : (
+          <div className="flex h-1/2 flex-col items-center justify-center">
+            <button
+              className="flex cursor-pointer flex-col items-center bg-white"
+              type="button"
+              aria-label="Создать приглашение"
+              onClick={handleModalToggle}
+            >
+              <div className="bg-brand-0 h-16 w-16 rounded-full p-2">
+                <Plus className="fill-brand-80 h-12 w-12" />
+              </div>
+              <p className="text-brand-80 mt-2 text-base font-medium">Создать приглашение</p>
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
