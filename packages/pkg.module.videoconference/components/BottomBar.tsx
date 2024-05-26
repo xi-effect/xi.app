@@ -47,12 +47,9 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     () => variation === 'textOnly' || variation === 'verbose',
     [variation],
   );
-  const {
-    saveAudioInputEnabled,
-    saveVideoInputEnabled,
-    // saveAudioInputDeviceId,
-    // saveVideoInputDeviceId,
-  } = usePersistentUserChoices({ preventSave: !saveUserChoices });
+  const { saveAudioInputEnabled, saveVideoInputEnabled } = usePersistentUserChoices({
+    preventSave: !saveUserChoices,
+  });
 
   const browserSupportsScreenSharing = supportsScreenSharing();
   const [isScreenShareEnabled, setIsScreenShareEnabled] = React.useState(false);
@@ -75,7 +72,7 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     [setIsScreenShareEnabled],
   );
   return (
-    <div className="absolute bottom-6 w-full">
+    <div className="w-full">
       <div className="flex w-full flex-row justify-between p-4">
         <div className="flex flex-row gap-4">
           <div className="flex gap-1">
@@ -83,27 +80,12 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
               <TrackToggle source={Track.Source.Microphone} onChange={microphoneOnChange}>
                 {showText && 'Microphone'}
               </TrackToggle>
-              {/* <div className="text-white"> */}
-              {/*  <MediaDeviceMenu */}
-              {/*    kind="audioinput" */}
-              {/* eslint-disable-next-line max-len */}
-              {/*    onActiveDeviceChange={(_kind, deviceId) => saveAudioInputDeviceId(deviceId ?? '')} */}
-              {/*  /> */}
-              {/* </div> */}
             </div>
             {visibleControls.camera && (
               <div>
-                {/* eslint-disable-next-line max-len */}
                 <TrackToggle source={Track.Source.Camera} onChange={cameraOnChange}>
                   {showText && 'Camera'}
                 </TrackToggle>
-                {/* <div> */}
-                {/*  <MediaDeviceMenu */}
-                {/*    kind="videoinput" */}
-                {/* eslint-disable-next-line max-len */}
-                {/*    onActiveDeviceChange={(_kind, deviceId) => saveVideoInputDeviceId(deviceId ?? '')} */}
-                {/*  /> */}
-                {/* </div> */}
               </div>
             )}
           </div>
