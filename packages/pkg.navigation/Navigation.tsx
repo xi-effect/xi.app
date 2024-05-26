@@ -37,13 +37,9 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
 
-  const channels = useMainSt((state) => state.channels);
-  const updateChannels = useMainSt((state) => state.updateChannels);
+  const addChannel = useMainSt((state) => state.addChannel);
 
-  const categories = useMainSt((state) => state.categories);
-  const updateCategories = useMainSt((state) => state.updateCategories);
-
-  console.log('categories', categories);
+  const addCategory = useMainSt((state) => state.addCategory);
 
   useEffect(() => {
     // Инициализация сокета только один раз
@@ -51,17 +47,13 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
       const handleNewChannel = (newChannel: NewChannelT) => {
         console.log('handleNewChannel useEffect', newChannel);
 
-        updateChannels([
-          ...(channels || []),
-          {
-            uid: nanoid(),
-            id: newChannel.channel.id,
-            categoryId: newChannel.category_id ? newChannel.category_id : 'empty',
-            kind: newChannel.channel.kind,
-            name: newChannel.channel.name,
-            description: newChannel.channel.description,
-          },
-        ]);
+        addChannel({
+          uid: nanoid(),
+          id: newChannel.channel.id,
+          categoryId: newChannel.category_id ? newChannel.category_id : 'empty',
+          kind: newChannel.channel.kind,
+          name: newChannel.channel.name,
+        });
       };
 
       socket.on('create-channel', handleNewChannel);
@@ -78,15 +70,12 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
     if (socket) {
       const handleNewCategory = (newCategory: NewCategoryT) => {
         console.log('handleNewCategory useEffect', newCategory);
-        updateCategories([
-          ...(categories || []),
-          {
-            uid: nanoid(),
-            id: newCategory.category.id,
-            name: newCategory.category.name,
-            description: newCategory.category.description,
-          },
-        ]);
+        addCategory({
+          uid: nanoid(),
+          id: newCategory.category.id,
+          name: newCategory.category.name,
+          description: newCategory.category.description,
+        });
       };
 
       socket.on('create-category', handleNewCategory);
