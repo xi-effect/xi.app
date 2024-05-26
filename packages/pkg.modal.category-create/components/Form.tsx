@@ -20,6 +20,7 @@ import {
 import { Checkbox } from '@xipkg/checkbox';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
+import { nanoid } from 'nanoid';
 
 const FormSchema = z.object({
   title: z.string().min(1, { message: 'Поле не должно быть пустым' }),
@@ -49,6 +50,12 @@ export const Form = ({ onOpenChange }: FormT) => {
 
   const socket = useMainSt((state) => state.socket);
   const communityId = useMainSt((state) => state.communityMeta.id);
+
+  const categories = useMainSt((state) => state.categories);
+  const updateCategories = useMainSt((state) => state.updateCategories);
+
+  const channels = useMainSt((state) => state.channels);
+  const updatedChannels = useMainSt((state) => state.updateChannels);
 
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
@@ -105,11 +112,27 @@ export const Form = ({ onOpenChange }: FormT) => {
                 },
                 (status: number, dataAnswer: any) => {
                   console.log('ans', status, dataAnswer);
+                  // TODO Каналы не создаются больше одного, надо пофиксить, мб рекурсией
+                  updatedChannels([
+                    ...(channels || []),
+                    {
+                      id: dataAnswer.id,
+                      name: dataAnswer.name,
+                      description: dataAnswer.description,
+                      uid: nanoid(),
+                      categoryId: data.id,
+                      kind: dataAnswer.kind,
+                    },
+                  ]);
                 },
               );
             });
           }
 
+          updateCategories([
+            ...(categories || []),
+            { id: data.id, name: data.name, description: data.description, uid: nanoid() },
+          ]);
           onOpenChange();
           form.reset();
         } else {

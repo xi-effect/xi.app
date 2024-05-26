@@ -8,8 +8,8 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@xipkg/button": "1.1.3",
-    "@xipkg/icons": "0.8.4",
+    "@xipkg/button": "1.3.0",
+    "@xipkg/icons": "0.10.0",
     "@xipkg/input": "0.1.1",
     "@xipkg/label": "0.0.9",
     "@xipkg/modal": "^2.1.0",
@@ -18,7 +18,8 @@
     "zod": "3.22.4",
     "@xipkg/form": "^2.0.0",
     "pkg.stores": "*",
-    "sonner": "1.4.41"
+    "sonner": "1.4.41",
+    "nanoid": "5.0.7"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

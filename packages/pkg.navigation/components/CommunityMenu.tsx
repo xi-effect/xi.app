@@ -17,7 +17,6 @@ import {
   Exit,
   PeopleInvite,
   Settings,
-  Objects,
   Plus,
 } from '@xipkg/icons';
 import React, { useEffect, useState } from 'react';
@@ -29,11 +28,10 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 
-import { driver } from 'driver.js';
-import 'driver.js/dist/driver.css';
 import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+import { toast } from 'sonner';
 
 type CommunityTemplateT = {
   name: string;
@@ -73,18 +71,20 @@ const DropdownHeader = ({
 }) => (
   <div
     id="community-profile"
-    onClick={() => setIsOpen((prev: boolean) => !prev)}
-    className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${
+    onClick={() => {
+      if (name) setIsOpen((prev: boolean) => !prev);
+    }}
+    className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${
       inDropdown ? '' : 'mt-0 sm:mt-8'
-    } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in hover:cursor-pointer`}
+    } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
   >
     {!id ? (
-      <div className="bg-gray-20 size-[32px] animate-pulse rounded-[16px]" />
+      <div className="bg-gray-10 size-[32px] animate-pulse rounded-[16px]" />
     ) : (
       <AvatarPreview communityId={id} />
     )}
     {!name ? (
-      <div className="bg-gray-20 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
+      <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
     ) : (
       <div className="ml-2 self-center text-[16px] font-semibold">{name}</div>
     )}
@@ -172,10 +172,10 @@ export const CommunityMenu = () => {
   const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
 
   const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   useEffect(() => {
     socket.emit('list-communities', (status: number, communities: any[]) => {
-      console.log('communities', status, communities);
       const otherCommunities = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );
@@ -183,77 +183,39 @@ export const CommunityMenu = () => {
     });
   }, [params]);
 
-  const driverAction = () => {
-    setIsOpen(false);
-    const driverObj = driver({
-      showProgress: true,
-      steps: [
-        {
-          element: '#header-logo',
-          popover: {
-            title: 'Добро пожаловать!',
-            description:
-              'Это краткое руководство поможет вам ознакомиться с возможностями нашей платформы',
-          },
-        },
-        {
-          element: '#community-profile',
-          popover: {
-            title: 'Профиль сообщества',
-            description:
-              'Сообщество - цифровой хаб, построенный вокруг преподавателя или организации. Открыв меню, вы можете получить доступ к настройкам сообщества, системе приглашений, созданию сервисов',
-          },
-        },
-        {
-          element: '#community-services',
-          popover: {
-            title: 'Сервисы сообщества',
-            description:
-              'В рамках сообщества репетитор может создавать и настраивать необходимые ему модули - задания, чаты, видеоконференции, контент и т.д. ',
-          },
-        },
-        {
-          element: '#subitems-menu',
-          popover: {
-            title: 'Группировка сервисов',
-            description:
-              'Для удобства можно группировать сервисы и настраивать к ним доступ по ролям, предметам или, например, уровню владения языком',
-          },
-        },
-        {
-          element: '#video-item-menu',
-          popover: {
-            title: 'Сервис Видеоконференции',
-            description:
-              'Нажав на данный пункт меню можно присоединиться к видеоконференции или создать новую',
-          },
-        },
-        {
-          element: '#user-profile-menu',
-          popover: {
-            title: 'Профиль пользователя',
-            description:
-              'Нажав на профиль, пользователь открывает панель настроек - данные аккаунта, кастомизация, настройка микрофона, вебкамеры и т.д.',
-          },
-        },
-        {
-          element: '#notification-menu',
-          popover: {
-            title: 'Уведомления',
-            description:
-              'Сюда приходят уведомления со всех сервисов, напоминания о занятиях, результатах тестов и многом другом',
-          },
-        },
-      ],
-      nextBtnText: 'Вперёд',
-      prevBtnText: 'Назад',
-      doneBtnText: 'Завершить',
-      progressText: '{{current}} из {{total}}',
-    });
-    driverObj.drive();
-  };
+  const router = useRouter();
 
   const handleClose = () => setIsOpen(false);
+
+  const handleLeaveCommunity = () => {
+    socket.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
+      if (status === 204 && otherCommunities) {
+        socket.emit(
+          'retrieve-community',
+          {
+            community_id: otherCommunities[0].id,
+          },
+          (stats: number, { community, participant }: { community: any; participant: any }) => {
+            if (stats === 200) {
+              updateCommunityMeta({
+                id: community.id,
+                isOwner: participant.is_owner,
+                name: community.name,
+                description: community.description,
+              });
+
+              router.push(`/communities/${community.id}/home`);
+              if (handleClose) handleClose();
+            }
+          },
+        );
+      }
+
+      if (status === 409) {
+        toast('Владелец не может выйти из своего сообщества');
+      }
+    });
+  };
 
   return (
     <>
@@ -279,7 +241,7 @@ export const CommunityMenu = () => {
       />
       <DropdownMenu open={isOpen}>
         <>
-          <DropdownMenuTrigger disabled={!!currentCommunity.name} asChild>
+          <DropdownMenuTrigger asChild>
             <div>
               <DropdownHeader
                 setIsOpen={setIsOpen}
@@ -301,14 +263,6 @@ export const CommunityMenu = () => {
               />
               {isOwner && (
                 <>
-                  <DropdownMenuItem
-                    onClick={driverAction}
-                    className="group hidden sm:w-[302px] md:flex"
-                  >
-                    <span>Пройти обучение</span>
-                    <Objects size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="hidden md:flex" />
                   <DropdownMenuItem
                     className="group sm:w-[302px]"
                     onClick={() => setIsInviteCommunityModalOpen((prev) => !prev)}
@@ -344,7 +298,7 @@ export const CommunityMenu = () => {
                   <DropdownMenuSeparator />
                 </>
               )}
-              <DropdownMenuItem className="group sm:w-[302px]" error>
+              <DropdownMenuItem onClick={handleLeaveCommunity} className="group sm:w-[302px]" error>
                 <span>Покинуть сообщество</span>
                 <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
               </DropdownMenuItem>

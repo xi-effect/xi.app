@@ -21,7 +21,7 @@ export function TrackToggle<T extends ToggleSource>({
   const { buttonProps, enabled } = useTrackToggle(props);
   return (
     // eslint-disable-next-line react/button-has-type
-    <button {...buttonProps} className="bg-gray-100 p-0">
+    <button {...buttonProps} className="bg-transparent p-0">
       {(showIcon ?? true) && getSourceIcon(props.source, enabled)}
       {props.children}
     </button>

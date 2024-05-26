@@ -73,15 +73,19 @@ type ResponseBodyChangeEmail = {
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   socket: null,
   isLogin: null,
-  initSocket: () => set(() => ({
-    socket: io('https://api.xieffect.ru/', {
-      withCredentials: true,
-      transports: ['websocket'],
-      reconnectionAttempts: 100,
-      reconnectionDelay: 2000,
-      reconnectionDelayMax: 50000,
-    }),
-  })),
+  initSocket: () => {
+    if (!useMainSt.getState().socket) {
+      const socketInstance = io('https://api.xieffect.ru/', {
+        withCredentials: true,
+        transports: ['websocket'],
+        reconnectionAttempts: 100,
+        reconnectionDelay: 2000,
+        reconnectionDelayMax: 50000,
+      });
+
+      set({ socket: socketInstance });
+    }
+  },
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
   onSignIn: async ({ email, password, setError }) => {
     const { data, status } = await post<RequestBodySignIn, ResponseBodySignIn>({
@@ -103,6 +107,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     // console.log('onSignIn', data, status);
     if (status === 200) {
       useMainSt.getState().initSocket();
+
       {
         set((state) => ({
           isLogin: true,
@@ -148,6 +153,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     console.log('onSignUp', data, status);
     if (status === 200) {
       useMainSt.getState().initSocket();
+
       {
         set((state) => ({
           isLogin: true,

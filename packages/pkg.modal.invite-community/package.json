@@ -16,7 +16,7 @@
     "@xipkg/form": "^2.0.0",
     "@xipkg/icons": "^0.8.6",
     "@xipkg/input": "^0.1.1",
-    "@xipkg/modal": "^1.5.0",
+    "@xipkg/modal": "^2.1.0",
     "@xipkg/popover": "^1.2.0",
     "date-fns": "^3.6.0",
     "next": "^14.2.3",

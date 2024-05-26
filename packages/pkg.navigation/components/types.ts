@@ -1,13 +1,15 @@
-export interface ICategory {
-    title: string,
-    subtitle: string,
-    id: string
-}
-export interface IChannel {
-    elId: string,
-    categoryId: string,
-    icon: string,
-    type: string,
-    label: string,
+export type CategoryT = {
+    uid: string;
+    id: number | null,
+    name: string | null,
+    description: string | null,
+};
+
+export type ChannelT = {
+    uid: string;
+    id: number,
+    categoryId: number | 'empty',
+    kind: string,
+    name: string,
     disabled?: boolean;
-}
+};

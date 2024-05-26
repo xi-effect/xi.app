@@ -11,7 +11,6 @@ import {
   Calendar,
   Chat,
   Conference,
-  Home,
   Task,
   Updates,
   Move,
@@ -19,13 +18,13 @@ import {
   Settings,
 } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
-import { IChannel } from './types';
+import { ChannelT } from './types';
 
-interface IChannelProps {
-  channel: IChannel;
+type ChannelPropsT = {
+  channel: ChannelT;
   className?: string;
   setSlideIndex?: (arg: number) => void;
-}
+};
 
 interface IIconsDict {
   [key: string]: ReactNode;
@@ -49,15 +48,18 @@ const stylesDict = {
   },
 };
 
-export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
+export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) => {
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
-    id: channel.elId,
+    id: channel.uid,
     data: {
       type: 'Channel',
       channel,
     },
+    disabled: !isOwner,
   });
 
   const pathname = usePathname();
@@ -69,8 +71,8 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
     const [, channelId, channelType, pageType] = match;
 
     return (
-      (channel.elId === channelId && channel.type === channelType) ||
-      channel.type === pageType ||
+      (channel.id.toString() === channelId && channel.kind === channelType) ||
+      channel.kind === pageType ||
       null
     );
   }
@@ -86,25 +88,20 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
   const iconClassName = `transition-colors ease-in ${currentStyles.icon}`;
 
   const iconsDict: IIconsDict = {
-    announce: <Announce className={iconClassName} />,
+    posts: <Announce className={iconClassName} />,
     calendar: <Calendar className={iconClassName} />,
     updates: <Updates className={iconClassName} />,
-    task: <Task className={iconClassName} />,
-    chat: <Chat className={iconClassName} />,
-    camera: <Conference className={iconClassName} />,
-    home: <Home className={iconClassName} />,
-    whiteboard: <WhiteBoard className={iconClassName} />,
+    tasks: <Task className={iconClassName} />,
+    chats: <Chat className={iconClassName} />,
+    video: <Conference className={iconClassName} />,
+    board: <WhiteBoard className={iconClassName} />,
   };
 
   const router = useRouter();
 
   const handleRouteChange = () => {
     setSlideIndex && setSlideIndex(1);
-    if (channel.type !== 'home') {
-      return router.push(`/communities/${communityId}/channels/${channel.elId}/${channel.type}`);
-    }
-
-    return router.push(`/communities/${communityId}/${channel.type}`);
+    return router.push(`/communities/${communityId}/channels/${channel.id}/${channel.kind}`);
   };
 
   const style = {
@@ -133,10 +130,10 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
         className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
       >
         <div className="flex items-center">
-          {iconsDict[channel.icon]}
-          <span className="pl-2 text-[14px] font-normal">{channel.label}</span>
+          {iconsDict[channel.kind]}
+          <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
         </div>
-        {mouseOver ? (
+        {isOwner && mouseOver ? (
           <div {...attributes} {...listeners} className="flex items-center gap-3">
             {activeChannel ? (
               <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />
@@ -149,4 +146,4 @@ export function Channel({ channel, className, setSlideIndex }: IChannelProps) {
       </div>
     </div>
   );
-}
+};

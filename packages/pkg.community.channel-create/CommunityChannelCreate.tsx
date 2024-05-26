@@ -14,9 +14,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { useMainSt } from 'pkg.stores';
 import { Input } from '@xipkg/input';
-import { Close, Announce, Task, Conference, Chat } from '@xipkg/icons';
+import { Close, Announce, Task, Conference, Chat, WhiteBoard } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { toast } from 'sonner';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
 import { ActionsSheetButton } from './components/ActionsSheetButton';
 
 const FormSchema = z.object({
@@ -39,14 +41,13 @@ const actionsSheetList = [
     icon: Announce,
     title: 'Объявления',
     type: 'posts',
-    desctiption: 'Держите ваших студентов в курсе всех новостей по курсу',
+    desctiption: 'Держите ваших студентов в курсе всех новостей вашего сообщества',
   },
   {
-    icon: Task,
-    title: 'Задания',
-    type: 'tasks',
-    desctiption:
-      'Создавайте задания, тесты, получайте ответы от учеников, оценивайте и улучшайте знания',
+    icon: WhiteBoard,
+    title: 'Интерактивная доска',
+    type: 'whiteboard',
+    desctiption: 'Проводите уроки и совместные занятия с помощью удобной и функциональной доски',
   },
   {
     icon: Conference,
@@ -56,16 +57,30 @@ const actionsSheetList = [
       'Проводите уроки онлайн, проводите активности, работайте со студентами из любой точки мира',
   },
   {
+    icon: Task,
+    title: 'Задания',
+    type: 'tasks',
+    desctiption:
+      'Создавайте задания, тесты, получайте ответы от учеников, оценивайте и улучшайте знания',
+    disabled: true,
+  },
+  {
     icon: Chat,
     title: 'Чат со студентами',
     type: 'chats',
     desctiption: 'Общайтесь, отвечайте на вопросы, объясняйте непонятные моменты',
+    disabled: true,
   },
 ];
 
 export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelCreateT) => {
   const socket = useMainSt((state) => state.socket);
   const communityId = useMainSt((state) => state.communityMeta.id);
+
+  const router = useRouter();
+
+  const channels = useMainSt((state) => state.channels);
+  const updateChannels = useMainSt((state) => state.updateChannels);
 
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
@@ -91,6 +106,20 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
       (status: number, dataAnswer: any) => {
         if (status === 201) {
           toast('Канал успешно создан');
+
+          updateChannels([
+            ...(channels || []),
+            {
+              uid: nanoid(),
+              id: dataAnswer.id,
+              categoryId: 'empty',
+              kind: dataAnswer.kind,
+              name: dataAnswer.name,
+            },
+          ]);
+
+          router.push(`/communities/${communityId}/channels/${dataAnswer.id}/${dataAnswer.kind}`);
+
           if (onOpenChange) onOpenChange();
           form.reset();
         }
@@ -112,7 +141,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
                 <Close className="fill-gray-80 sm:fill-gray-0" />
               </ModalCloseButton>
             </ModalHeader>
-            <div className="h-full max-h-[calc(100vh-80px-182px)] space-y-6 overflow-auto p-6">
+            <div className="max-h-[calc(100vh-80px-182px)] space-y-6 overflow-auto p-6">
               <FormField
                 control={form.control}
                 name="name"
@@ -138,6 +167,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
                             Icon={item.icon}
                             title={item.title}
                             desctiption={item.desctiption}
+                            disabled={item?.disabled}
                             index={index}
                             сlassName={value === item.type ? classBtnActive : classBtnNotActive}
                             onClick={() => onChange(item.type)}

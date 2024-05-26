@@ -9,7 +9,7 @@ export default function EditorPage({ params }: { params: { vid: string } }) {
   console.log('params', params);
 
   return (
-    <div className="w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto bg-gray-0">
+    <div className="p-4 w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto bg-gray-0">
       <Editor />
     </div>
   );

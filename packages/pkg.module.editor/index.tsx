@@ -1,1 +1,1 @@
-export { Editor } from './Editor';
+export { EditorRoot as Editor } from './Editor';
