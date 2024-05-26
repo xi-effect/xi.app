@@ -304,7 +304,7 @@ export const Invites = () => {
           ))}
         </ul> */}
 
-        {invitations?.length > 100 ? (
+        {invitations?.length > 0 ? (
           <ul className="grid gap-4 max-[400px]:gap-8">
             {invitations.map((invite) => (
               <UserCard
