@@ -61,30 +61,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   const updateChannels = useMainSt((state) => state.updateChannels);
 
   useEffect(() => {
-    const handleNewCategory = (status: number, data: any) => {
-      console.log('handleNewCategory', status, data);
-    };
-
-    socket.on('community-room/create-category', handleNewCategory);
-
-    return () => {
-      socket.off('community-room/create-category', handleNewCategory);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleNewChannel = (status: number, data: any) => {
-      console.log('handleNewChannel', status, data);
-    };
-
-    socket.on('community-room/create-channel', handleNewChannel);
-
-    return () => {
-      socket.off('community-room/create-channel', handleNewChannel);
-    };
-  }, []);
-
-  useEffect(() => {
     socket.emit(
       'list-categories',
       {

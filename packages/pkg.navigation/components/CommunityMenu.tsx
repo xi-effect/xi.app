@@ -217,8 +217,6 @@ export const CommunityMenu = () => {
     });
   };
 
-  console.log('currentCommunity.name', currentCommunity.name);
-
   return (
     <>
       <Modal

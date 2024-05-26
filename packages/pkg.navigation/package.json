@@ -35,7 +35,8 @@
     "pkg.stores": "*",
     "pkg.utils": "*",
     "pkg.modal.add-community": "*",
-    "nanoid": "5.0.7"
+    "nanoid": "5.0.7",
+    "socket.io-client": "4.7.5"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

@@ -57,6 +57,24 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
     toast('Ошибка вебсокета');
   });
 
+  // socket.on('create-channel', (data: any) => {
+  //   console.log('handleNewChannel', data);
+  // });
+
+  // useEffect(() => {
+  //   // const handleNewChannel = (status: number, data: any) => {
+  //   //   console.log('handleNewChannel', status, data);
+  //   // };
+
+  //   socket.on('create-channel', (data: any) => {
+  //     console.log('handleNewChannel socket', data);
+  //   });
+
+  //   // return () => {
+  //   //   socket.off('create-channel', handleNewChannel);
+  //   // };
+  // }, [socket]);
+
   return children;
 };
 
