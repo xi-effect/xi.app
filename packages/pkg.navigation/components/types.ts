@@ -1,6 +1,6 @@
 export type CategoryT = {
     uid: string;
-    id: number | null,
+    id: number | null | 'empty',
     name: string | null,
     description: string | null,
 };
