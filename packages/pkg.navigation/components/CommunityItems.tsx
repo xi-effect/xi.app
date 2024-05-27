@@ -36,6 +36,13 @@ type CommunityItemsPropsT = {
   className?: string;
 };
 
+const firstCategory = {
+  uid: nanoid(),
+  id: 'empty' as 'empty',
+  name: null,
+  description: null,
+};
+
 export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsPropsT) => {
   const router = useRouter();
 
@@ -71,7 +78,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         if (status === 200) {
           const withUid = answer.map((item) => ({ ...item, uid: nanoid() }));
 
-          updateCategories([{ id: 'empty', name: '', description: '', uid: nanoid() }, ...withUid]);
+          updateCategories([...withUid]);
         }
       },
     );
@@ -161,10 +168,12 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     console.log('isActiveAChannel', isActiveAChannel, isOverAChannel);
 
+    if (categoryOverId === 'empty' && !isActiveAChannel) return;
+
     if (!isActiveAChannel) return;
 
     if (isActiveAChannel && isOverAChannel) {
-      // console.log('isActiveAChannel && isOverAChannel');
+      console.log('isActiveAChannel && isOverAChannel');
 
       const activeIndex = (channels || []).findIndex(
         (channel: ChannelT) => channel.uid === activeId,
@@ -310,6 +319,13 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         <DropdownMenuSeparator />
         <ScrollArea>
           <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+            <div className="my-2 mr-2">
+              <CategoryContainer
+                setSlideIndex={setSlideIndex}
+                category={firstCategory}
+                channels={channels.filter((channel) => channel.categoryId === 'empty')}
+              />
+            </div>
             {categories.length !== 0 &&
               categories.map((category) => (
                 <div key={category.id} className="my-2 mr-2">
@@ -329,6 +345,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
             <CategoryContainer
               category={activeCategory}
               channels={channels.filter((channel) => channel.categoryId === activeCategory.id)}
+              // firstEmptyCategoryIndex={firstEmptyCategoryIndex}
             />
           )}
           {activeChannel && (

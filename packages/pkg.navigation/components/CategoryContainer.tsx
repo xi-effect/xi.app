@@ -11,7 +11,11 @@ type CategoryContainerT = {
   setSlideIndex?: (arg: number) => void;
 };
 
-export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
+export function CategoryContainer({
+  category,
+  channels,
+  setSlideIndex,
+}: CategoryContainerT) {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
 
   const { name, description, uid } = category;
