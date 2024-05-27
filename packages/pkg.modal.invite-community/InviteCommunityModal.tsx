@@ -1,7 +1,5 @@
 'use client';
 
-/* eslint-disable camelcase */
-
 import React from 'react';
 
 import { useMainSt } from 'pkg.stores';
@@ -31,7 +29,7 @@ export const InviteCommunityModal = ({
     community_id: number | null;
     data: { expiry: string | null; usage_limit: string | null };
   }) => {
-    const { community_id, data } = requestData;
+    const { community_id: communityId, data } = requestData;
 
     if (!socket) {
       console.error('Socket is not defined');
@@ -41,7 +39,7 @@ export const InviteCommunityModal = ({
     socket.emit(
       'create-invitation',
       {
-        community_id,
+        community_id: communityId,
         data,
       },
       (status: number) => {

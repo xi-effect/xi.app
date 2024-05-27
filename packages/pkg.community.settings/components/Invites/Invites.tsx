@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import React, { useState, useEffect } from 'react';
 
 import { useMainSt } from 'pkg.stores';
@@ -11,8 +9,6 @@ import { Button } from '@xipkg/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@xipkg/avatar';
 import { Copy, Trash, Plus } from '@xipkg/icons';
 import { Header } from '../Header';
-
-// import usersTemplate from './usersTemplate.json';
 
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
@@ -38,7 +34,7 @@ type UserT = {
 };
 
 type UserCardPropsT = UserT & {
-  user: UserT;
+  // user: UserT;
   id: string;
   inviteCode: string;
   usageCount: number;
@@ -50,13 +46,13 @@ type UserCardPropsT = UserT & {
 type InvitationT = {
   id: string;
   token: string;
-  usage_count: number;
-  usage_limit: number | null;
+  usageCount: number;
+  usageLimit: number | null;
   expiry: string | null;
 };
 
 const UserCard = ({
-  user,
+  // user,
   name,
   roles,
   nickname,
@@ -70,8 +66,6 @@ const UserCard = ({
   const [diffDays, setDiffDays] = React.useState(0);
   const [diffHours, setDiffHours] = React.useState(0);
   const [diffMinutes, setDiffMinutes] = React.useState(0);
-
-  console.log(user);
 
   React.useEffect(() => {
     if (expires) {
@@ -243,12 +237,12 @@ export const Invites = () => {
     community_id: number | null;
     data: { expiry: string | null; usage_limit: string | null };
   }) => {
-    const { community_id, data } = requestData;
+    const { community_id: communityId, data } = requestData;
 
     socket.emit(
       'create-invitation',
       {
-        community_id,
+        community_id: communityId,
         data,
       },
       (status: number, data: any) => {
@@ -263,7 +257,7 @@ export const Invites = () => {
   };
 
   const handleModalToggle = () => {
-    setModalOpen(!isModalOpen);
+    setModalOpen((prevModalOpen) => !prevModalOpen);
   };
 
   return (
@@ -287,23 +281,6 @@ export const Invites = () => {
         />
       </div>
       <div className="h-3/5 overflow-y-auto">
-        {/* <ul className="grid gap-4">
-          {users.map((user, index) => (
-            <UserCard
-              user={user}
-              key={index}
-              name={user.name}
-              roles={user.roles}
-              inviteCode={user.inviteCode}
-              usageCount={user.usageCount}
-              usageLimit={user.usageLimit}
-              expires={user.expires}
-              nickname={user.nickname}
-              handleInviteDelete={handleInviteDelete}
-            />
-          ))}
-        </ul> */}
-
         {invitations?.length > 0 ? (
           <ul className="grid gap-4 max-[400px]:gap-8">
             {invitations.map((invite) => (
@@ -311,8 +288,8 @@ export const Invites = () => {
                 key={invite.id}
                 id={invite.id}
                 inviteCode={invite.token}
-                usageCount={invite.usage_count}
-                usageLimit={invite.usage_limit}
+                usageCount={invite.usageCount}
+                usageLimit={invite.usageLimit}
                 expires={invite.expiry}
                 roles={[
                   {
@@ -321,7 +298,7 @@ export const Invites = () => {
                     bgColorSecondary: 'bg-green-0',
                   },
                 ]}
-                user={{} as UserT}
+                // user={{} as UserT}
                 name="Пользователь"
                 nickname="nickname"
                 handleInviteDelete={handleInviteDelete}
