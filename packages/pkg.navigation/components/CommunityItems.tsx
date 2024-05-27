@@ -36,6 +36,13 @@ type CommunityItemsPropsT = {
   className?: string;
 };
 
+const firstCategory = {
+  uid: nanoid(),
+  id: 'empty' as 'empty',
+  name: null,
+  description: null,
+};
+
 export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsPropsT) => {
   const router = useRouter();
 
@@ -313,21 +320,11 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         <ScrollArea>
           <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
             <div className="my-2 mr-2">
-              {channels
-                .filter((channel) => channel.categoryId === 'empty')
-                .map((item) => (
-                  <Channel
-                    setSlideIndex={setSlideIndex}
-                    key={item.uid}
-                    channel={item}
-                    // стили нужны для отображения при захвате через DnD
-                    // className={`rounded-lg border-[1px] drop-shadow-lg ${
-                    //   currentChannel?.uid === activeChannel.uid
-                    //     ? 'border-brand-100'
-                    //     : 'border-gray-30'
-                    // }`}
-                  />
-                ))}
+              <CategoryContainer
+                setSlideIndex={setSlideIndex}
+                category={firstCategory}
+                channels={channels.filter((channel) => channel.categoryId === 'empty')}
+              />
             </div>
             {categories.length !== 0 &&
               categories.map((category) => (
