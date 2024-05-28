@@ -18,7 +18,7 @@ import {
   MeasuringStrategy,
   closestCorners,
 } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'; // arrayMove
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
@@ -26,6 +26,7 @@ import { ScrollArea } from '@xipkg/scrollarea';
 import { Calendar, Home, Plus } from '@xipkg/icons';
 import { DropdownMenuSeparator } from '@xipkg/dropdown';
 import { CategoryCreate } from 'pkg.modal.category-create';
+import { toast } from 'sonner';
 import { CategoryContainer } from './CategoryContainer';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
@@ -247,11 +248,46 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const activeCategoryIndex = (categories || []).findIndex(
       (category) => category.uid === activeId,
     );
-    const overCategoryIndex = (categories || []).findIndex((category) => category.uid === overId);
 
+    const overCategoryIndex = (categories || []).findIndex((category) => category.uid === overId);
     const newCategories = arrayMove(categories, activeCategoryIndex, overCategoryIndex);
 
+    const newActiveCategoryIndex = (newCategories || []).findIndex(
+      (category) => category.uid === activeId,
+    );
+
+    console.log('categories', newCategories);
+    console.log(
+      'after_id',
+      newActiveCategoryIndex > 0 ? newCategories[newActiveCategoryIndex - 1].id : null,
+    );
+    console.log(
+      'before_id',
+      newActiveCategoryIndex < newCategories.length - 1
+        ? newCategories[newActiveCategoryIndex + 1].id
+        : null,
+    );
+
     updateCategories(newCategories);
+
+    socket.emit(
+      'move-category',
+      {
+        community_id: currentCommunityId,
+        category_id: categories[activeCategoryIndex].id,
+        after_id: newActiveCategoryIndex > 0 ? newCategories[newActiveCategoryIndex - 1].id : null,
+        before_id:
+          newActiveCategoryIndex < newCategories.length - 1
+            ? newCategories[newActiveCategoryIndex + 1].id
+            : null,
+      },
+      (status: number) => {
+        if (status !== 204) {
+          toast('Произошла ошибка при перемещении категории');
+          updateCategories(categories);
+        }
+      },
+    );
   };
 
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);

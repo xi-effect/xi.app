@@ -33,6 +33,13 @@ type NewCategoryT = {
   };
 };
 
+type MoveCategoryT = {
+  community_id: number;
+  category_id: number;
+  after_id: number | null;
+  before_id: number | null;
+};
+
 export const Navigation = ({ children, onExit }: NavigationProp) => {
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
@@ -40,13 +47,12 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
   const addChannel = useMainSt((state) => state.addChannel);
 
   const addCategory = useMainSt((state) => state.addCategory);
+  const moveCategory = useMainSt((state) => state.moveCategory);
 
   useEffect(() => {
     // Инициализация сокета только один раз
     if (socket) {
       const handleNewChannel = (newChannel: NewChannelT) => {
-        console.log('handleNewChannel useEffect', newChannel);
-
         addChannel({
           uid: nanoid(),
           id: newChannel.channel.id,
@@ -69,7 +75,6 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
     // Инициализация сокета только один раз
     if (socket) {
       const handleNewCategory = (newCategory: NewCategoryT) => {
-        console.log('handleNewCategory useEffect', newCategory);
         addCategory({
           uid: nanoid(),
           id: newCategory.category.id,
@@ -83,6 +88,26 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
       // Очистка обработчиков при размонтировании компонента
       return () => {
         socket.off('create-category', handleNewCategory);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    // Инициализация сокета только один раз
+    if (socket) {
+      const handleMoveCategory = (moveCategoryData: MoveCategoryT) => {
+        moveCategory({
+          categoryId: moveCategoryData.category_id,
+          afterId: moveCategoryData.after_id,
+          beforeId: moveCategoryData.before_id,
+        });
+      };
+
+      socket.on('move-category', handleMoveCategory);
+
+      // Очистка обработчиков при размонтировании компонента
+      return () => {
+        socket.off('move-category', handleMoveCategory);
       };
     }
   }, []);
