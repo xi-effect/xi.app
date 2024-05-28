@@ -165,10 +165,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     const categoryOverId = over.data.current?.category?.id;
 
-    console.log('overData', categoryOverId);
-
-    console.log('isActiveAChannel', isActiveAChannel, isOverAChannel);
-
     if (categoryOverId === 'empty' && !isActiveAChannel) return;
 
     if (!isActiveAChannel) return;
@@ -183,12 +179,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         (channel: ChannelT) => channel.uid === overId,
       ) as number;
 
-      // console.log('activeIndex', activeIndex);
-      // console.log('overIndex', overIndex);
-
-      // console.log('channels[activeIndex].categoryId', channels[activeIndex].categoryId);
-      // console.log('channels[overIndex].categoryId', channels[overIndex].categoryId);
-
       if (channels && channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
         const newChannels = channels.map((chnItem, index) => {
           if (index === activeIndex) {
@@ -197,8 +187,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
           return chnItem;
         });
-
-        // console.log('channels[activeIndex].categoryId !== channels[overIndex].categoryId');
 
         updateChannels(arrayMove(newChannels, activeIndex, overIndex));
       } else if (channels) {
@@ -221,8 +209,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         return chnItem;
       });
 
-      console.log('isActiveAChannel && !isOverAChannel', newChannels);
-
       updateChannels(arrayMove(newChannels, activeIndex, 0));
     }
   };
@@ -238,10 +224,56 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const activeId = active.id;
     const overId = over.id;
 
-    if (activeId === overId) return;
-
     const isActiveACategory = active.data.current?.type === 'Category';
-    if (!isActiveACategory) return;
+
+    if (!isActiveACategory && channels) {
+      const activeChannelIndex = channels?.findIndex((channel) => channel.uid === activeId);
+
+      const getAfterId = () => {
+        if (activeChannelIndex === 0) return null;
+
+        if (
+          channels[activeChannelIndex - 1].categoryId !== channels[activeChannelIndex].categoryId
+        ) {
+          return null;
+        }
+
+        return channels[activeChannelIndex - 1].id;
+      };
+
+      const getBeforeId = () => {
+        if (activeChannelIndex === channels.length - 1) return null;
+
+        if (
+          channels[activeChannelIndex + 1].categoryId !== channels[activeChannelIndex].categoryId
+        ) {
+          return null;
+        }
+
+        return channels[activeChannelIndex + 1].id;
+      };
+
+      socket.emit(
+        'move-channel',
+        {
+          community_id: currentCommunityId,
+          category_id:
+            channels[activeChannelIndex].categoryId === 'empty'
+              ? null
+              : channels[activeChannelIndex].categoryId,
+          channel_id: channels[activeChannelIndex].id,
+          after_id: getAfterId(),
+          before_id: getBeforeId(),
+        },
+        (status: number) => {
+          if (status !== 204) {
+            toast('Произошла ошибка при перемещении категории');
+          }
+        },
+      );
+
+      return;
+    }
 
     if (!categories) return;
 
