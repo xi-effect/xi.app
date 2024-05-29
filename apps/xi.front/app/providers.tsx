@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from 'next-themes';
 import { redirect, useParams, usePathname, useSearchParams } from 'next/navigation';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, Suspense } from 'react';
 import { toast, Toaster } from 'sonner';
 import { useMainSt } from 'pkg.stores';
 import Load from './load';
@@ -207,8 +207,10 @@ type ProvidersT = {
 export const Providers = ({ children }: ProvidersT) => (
   <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
     <Toaster visibleToasts={1} />
-    <AuthProvider>
-      <SocketProvider>{children}</SocketProvider>
-    </AuthProvider>
+    <Suspense fallback={<Load />}>
+      <AuthProvider>
+        <SocketProvider>{children}</SocketProvider>
+      </AuthProvider>
+    </Suspense>
   </ThemeProvider>
 );
