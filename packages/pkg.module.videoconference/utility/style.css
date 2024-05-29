@@ -13,7 +13,7 @@
   pointer-events: none;
   border-radius: 8px;
 }
-[data-lk-speaking='true']::after {
+[data-lk-speaking='true']:not([data-lk-source='screen_share']):after {
   transition-delay: 0s;
   transition-duration: 0.2s;
   border-width: var(--lk-speaking-indicator-width);
