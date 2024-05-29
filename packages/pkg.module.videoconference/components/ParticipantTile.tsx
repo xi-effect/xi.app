@@ -26,6 +26,7 @@ import {
   useTrackMutedIndicator,
 } from '@livekit/components-react';
 import { MicrophoneOff, RedLine } from '@xipkg/icons';
+import '../utility/style.css';
 
 function TrackRefContextIfNeeded({
   trackRef,
@@ -140,10 +141,6 @@ export function ParticipantTile({
                         transform: 'rotateY(180deg)',
                       }),
                       boxSizing: 'border-box',
-                      ...(isSpeaking &&
-                        trackReference.source === Track.Source.Camera && {
-                          border: '3px solid #419B58',
-                        }),
                     }}
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
@@ -162,10 +159,6 @@ export function ParticipantTile({
                     background: 'black',
                     borderRadius: '8px',
                     height: '100%',
-                    ...(isSpeaking &&
-                      trackReference.source === Track.Source.Camera && {
-                        border: '3px solid #419B58',
-                      }),
                   }}
                   className="lk-participant-placeholder flex justify-center"
                 >
