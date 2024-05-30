@@ -40,14 +40,23 @@ type MoveCategoryT = {
   before_id: number | null;
 };
 
+type MoveChannelT = {
+  community_id: number;
+  category_id: number;
+  channel_id: number;
+  after_id: number | null;
+  before_id: number | null;
+};
+
 export const Navigation = ({ children, onExit }: NavigationProp) => {
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
 
   const addChannel = useMainSt((state) => state.addChannel);
-
   const addCategory = useMainSt((state) => state.addCategory);
+
   const moveCategory = useMainSt((state) => state.moveCategory);
+  const moveChannel = useMainSt((state) => state.moveChannel);
 
   useEffect(() => {
     // Инициализация сокета только один раз
@@ -108,6 +117,27 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
       // Очистка обработчиков при размонтировании компонента
       return () => {
         socket.off('move-category', handleMoveCategory);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    // Инициализация сокета только один раз
+    if (socket) {
+      const handleMoveChannel = (moveChannelData: MoveChannelT) => {
+        moveChannel({
+          channelId: moveChannelData.channel_id,
+          categoryId: moveChannelData.category_id,
+          afterId: moveChannelData.after_id,
+          beforeId: moveChannelData.before_id,
+        });
+      };
+
+      socket.on('move-channel', handleMoveChannel);
+
+      // Очистка обработчиков при размонтировании компонента
+      return () => {
+        socket.off('move-channel', handleMoveChannel);
       };
     }
   }, []);

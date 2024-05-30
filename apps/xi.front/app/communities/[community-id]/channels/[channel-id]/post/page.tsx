@@ -7,9 +7,7 @@ const Announce = dynamic(() =>
   import('pkg.module.announces/components/AnnouncePost').then((mod) => mod.default),
 );
 
-export default function AnnouncePostPage({ params }: { params: { vid: string } }) {
-  console.log('params', params);
-
+export default function AnnouncePostPage() {
   return (
     <Announce
       postTitle="Победа на чемпионате"

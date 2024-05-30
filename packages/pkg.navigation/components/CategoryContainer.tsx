@@ -31,7 +31,7 @@ export function CategoryContainer({
   });
 
   const categoryStyle = {
-    minHeight: '100px',
+    minHeight: '96px',
     transition,
     transform: CSS.Transform.toString(transform),
   };
