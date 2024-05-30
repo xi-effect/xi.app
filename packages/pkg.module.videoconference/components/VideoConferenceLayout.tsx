@@ -71,7 +71,7 @@ export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps)
 }
 const MIN_HEIGHT = 250;
 const MIN_WIDTH = 250;
-const MIN_VISIBLE_TILES = 10;
+const MIN_VISIBLE_TILES = 3;
 const ASPECT_RATIO = 8 / 10;
 const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
 
@@ -214,6 +214,34 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
           />
         )}
       </div>
+    </div>
+  );
+}
+
+export function CarouselContainer({ focusTrack, tracks, carouselTracks, orientation }: any) {
+  return (
+    <div
+      className={`flex h-full ${orientation === 'horizontal' ? 'flex-col' : ''} justify-between gap-4`}
+    >
+      {orientation === 'vertical' ? (
+        <>
+          {focusTrack && (
+            <div className="max-w-[50%]">
+              <FocusLayout trackRef={focusTrack} />
+            </div>
+          )}
+          <CarouselLayout orientation="vertical" userTracks={tracks} tracks={carouselTracks}>
+            <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
+          </CarouselLayout>
+        </>
+      ) : (
+        <>
+          <CarouselLayout orientation="vertical" userTracks={tracks} tracks={carouselTracks}>
+            <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
+          </CarouselLayout>
+          {focusTrack && <FocusLayout trackRef={focusTrack} />}
+        </>
+      )}
     </div>
   );
 }
