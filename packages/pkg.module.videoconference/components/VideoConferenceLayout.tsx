@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
@@ -29,10 +30,12 @@ export interface PaginationControlProps
   > {
   pagesContainer?: React.RefObject<HTMLElement>;
 }
-
 export interface PaginationIndicatorProps {
   totalPageCount: number;
   currentPage: number;
+}
+export interface IOrientationLayout {
+  orientation: 'vertical' | 'horizontal';
 }
 
 function EmptyItemContainerOfUser({ ...restProps }) {
@@ -54,10 +57,17 @@ function useEmptyItemContainerOfUser(tracksLength: number) {
   return isOneItem;
 }
 
-export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
+export function FocusLayout({
+  trackRef,
+  track,
+  orientation,
+  ...htmlProps
+}: FocusLayoutProps & IOrientationLayout) {
   const trackReference = trackRef ?? track;
   return (
-    <div className="m-auto flex h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)] flex-col">
+    <div
+      className={`${orientation === 'vertical' ? 'h-100vh w-[calc(100%-277px)]' : 'm-auto h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)]'} flex flex-col`}
+    >
       <ParticipantTile
         style={{
           width: '100%',
@@ -225,11 +235,7 @@ export function CarouselContainer({ focusTrack, tracks, carouselTracks, orientat
     >
       {orientation === 'vertical' ? (
         <>
-          {focusTrack && (
-            <div className="max-w-[50%]">
-              <FocusLayout trackRef={focusTrack} />
-            </div>
-          )}
+          {focusTrack && <FocusLayout orientation="vertical" trackRef={focusTrack} />}
           <CarouselLayout orientation="vertical" userTracks={tracks} tracks={carouselTracks}>
             <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
           </CarouselLayout>
@@ -239,7 +245,7 @@ export function CarouselContainer({ focusTrack, tracks, carouselTracks, orientat
           <CarouselLayout orientation="vertical" userTracks={tracks} tracks={carouselTracks}>
             <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
           </CarouselLayout>
-          {focusTrack && <FocusLayout trackRef={focusTrack} />}
+          {focusTrack && <FocusLayout orientation="horizontal" trackRef={focusTrack} />}
         </>
       )}
     </div>
