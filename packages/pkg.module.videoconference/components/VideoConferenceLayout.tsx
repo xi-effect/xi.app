@@ -20,6 +20,7 @@ import {
   useSwipe,
 } from '@livekit/components-react';
 import { ChevronLeft, ChevronRight } from '@xipkg/icons';
+import { useSearchParams } from 'next/navigation';
 import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
 
@@ -228,10 +229,16 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
   );
 }
 
-export function CarouselContainer({ focusTrack, tracks, carouselTracks, orientation }: any) {
+export function CarouselContainer({ focusTrack, tracks, carouselTracks }: any) {
+  const searchParams = useSearchParams();
+  const [orientation, setCarouselType] = useState<string | any>('horizontal');
+
+  useEffect(() => {
+    setCarouselType(searchParams.get('carouselType') || 'horizontal');
+  }, [searchParams]);
   return (
     <div
-      className={`flex h-full ${orientation === 'horizontal' ? 'flex-col' : ''} justify-between gap-4`}
+      className={`flex h-full ${orientation === 'horizontal' ? 'flex-col' : ''} items-start justify-between gap-4`}
     >
       {orientation === 'vertical' ? (
         <>
