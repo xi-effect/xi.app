@@ -1,10 +1,8 @@
-'use client';
-
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { ChangeEvent, useRef } from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Camera, Edit, Trash, Account } from '@xipkg/icons';
+import { Camera, Edit, Trash } from '@xipkg/icons';
 import {
   Form,
   FormControl,
@@ -127,12 +125,7 @@ export const Main = () => {
     const imageDataUrl = await readFile(event.target.files[0]);
     setFile(imageDataUrl);
     setIsAvatarOpen(true);
-    setInputKey(Math.random() * 100);
-    console.log(event.target.files);
-  };
-
-  const handleChangeAvatar = async () => {
-    setIsAvatarOpen(true);
+    setInputKey(Math.random());
   };
 
   const handleDeleteAvatar = async () => {
@@ -153,17 +146,14 @@ export const Main = () => {
     console.log('data', data);
   };
 
-  const getAvatarPath = `https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`;
-
   return (
     <Form {...form}>
       <Header />
       <div className="border-gray-80 flex h-[120px] w-full rounded-2xl border p-6">
         <AvatarEditor
-          file={file || getAvatarPath}
+          file={file}
           open={isAvatarOpen}
           onOpenChange={setIsAvatarOpen}
-          onClearFile={setFile}
           communityId={communityId || undefined}
         />
         <input className="hidden" ref={inputRef} onChange={handleInput} type="file" key={inputKey} />
@@ -171,9 +161,9 @@ export const Main = () => {
           <DropdownMenuTrigger className="cursor-pointer" asChild>
             <Avatar size="xl">
               <AvatarImage
-                src={getAvatarPath}
+                src={`https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`}
                 imageProps={{
-                  src: getAvatarPath,
+                  src: `https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`,
                   alt: 'community avatar',
                   }}
                 alt="community avatar"
@@ -190,10 +180,6 @@ export const Main = () => {
             <DropdownMenuItem onClick={handleMenuEditClick}>
               <Edit className="mr-2 h-5 w-5" />
               <span className="text-[14px]">Обновить фотографию</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleChangeAvatar}>
-              <Account className="mr-2 h-5 w-5" />
-              <span className="text-[14px]">Изменить миниатюру</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleDeleteAvatar}>
               <Trash className="mr-2 h-5 w-5" />

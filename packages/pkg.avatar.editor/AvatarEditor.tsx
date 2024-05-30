@@ -21,7 +21,6 @@ type AvatarEditorT = {
   file: any;
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  onClearFile?: (value: undefined) => void;
   setDate?: (value: Date) => void;
   withLoadingToServer?: boolean;
   onBase64Return?: (resizedImageBase: string, form: FormData) => void;
@@ -33,7 +32,6 @@ export const AvatarEditorComponent = ({
   file,
   open,
   onOpenChange,
-  onClearFile,
   setDate,
   onBase64Return,
   communityId,
@@ -110,7 +108,6 @@ export const AvatarEditorComponent = ({
       if (status === 204) {
         toast('Аватарка успешно загружена. В ближайшее время она отобразится на сайте');
         onOpenChange(false);
-        if (onClearFile) onClearFile(undefined);
         if (setDate) setDate(new Date());
       }
     } catch (e) {
@@ -118,11 +115,6 @@ export const AvatarEditorComponent = ({
     }
 
     return null;
-  };
-
-  const handleCancel = () => {
-    onOpenChange(false);
-    if (onClearFile) onClearFile(undefined);
   };
 
   return (
@@ -160,7 +152,7 @@ export const AvatarEditorComponent = ({
           />
         </div>
         <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">
-          <Button onClick={handleCancel} className="md:ml-auto" variant="secondary">
+          <Button onClick={() => onOpenChange(false)} className="md:ml-auto" variant="secondary">
             Отменить
           </Button>
           <Button onClick={() => showCroppedImage()}>Сохранить</Button>
