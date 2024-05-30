@@ -19,6 +19,7 @@ import { ParticipantTile } from './ParticipantTile';
 import {
   FocusLayout,
   CarouselLayout,
+  CarouselContainer,
   GridLayout,
   FocusLayoutContainer,
 } from './VideoConferenceLayout';
@@ -98,17 +99,13 @@ export function VideoConference({
                 </GridLayout>
               </div>
             ) : (
-              <FocusLayoutContainer className="flex min-h-screen flex-col">
-                <div className="flex h-full flex-col justify-between gap-4">
-                  <CarouselLayout
-                    orientation="horizontal"
-                    userTracks={tracks}
-                    tracks={carouselTracks}
-                  >
-                    <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
-                  </CarouselLayout>
-                  {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                </div>
+              <FocusLayoutContainer className="min-h-screen">
+                <CarouselContainer
+                  orientation="vertical"
+                  focusTrack={focusTrack}
+                  tracks={tracks}
+                  carouselTracks={carouselTracks}
+                />
               </FocusLayoutContainer>
             )}
           </div>
