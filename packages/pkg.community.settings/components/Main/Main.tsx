@@ -1,8 +1,10 @@
+'use client';
+
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Camera } from '@xipkg/icons';
+import { Camera, Edit, Trash, Account } from '@xipkg/icons';
 import {
   Form,
   FormControl,
@@ -12,6 +14,15 @@ import {
   FormMessage,
   useForm,
 } from '@xipkg/form';
+import { AvatarEditor } from 'pkg.avatar.editor';
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@xipkg/dropdown';
+import { del } from 'pkg.utils/fetch';
 import { Input } from '@xipkg/input';
 import { useSnackbar } from 'notistack';
 import { useMainSt } from 'pkg.stores';
@@ -32,6 +43,10 @@ export const Main = () => {
   const communityId = useMainSt((state) => state.communityMeta.id);
   const socket = useMainSt((state) => state.socket);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  const [isAvatarOpen, setIsAvatarOpen] = React.useState(false);
+  const [inputKey, setInputKey] = React.useState(1);
+  const [file, setFile] = React.useState<any>();
+  const date = React.useRef<'' | Date>('');
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -79,22 +94,113 @@ export const Main = () => {
           updateCommunityMeta({ name: data.name });
           setIsCloseActive(true);
           closeSnackbar();
-          toast('Название сообщество сохранено');
+          toast('Название сообщества сохранено');
         }
       },
     );
   };
 
+  const handleMenuEditClick = () => {
+    inputRef.current?.click();
+  };
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const readFile = (file: File) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result), false);
+      reader.readAsDataURL(file);
+    });
+
+  const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.files);
+    if (!event.target.files) {
+      return;
+    }
+
+    if (event.target.files[0].size > 5 * 1024 * 1024) {
+      toast('Файл слишком большой');
+      return;
+    }
+
+    const imageDataUrl = await readFile(event.target.files[0]);
+    setFile(imageDataUrl);
+    setIsAvatarOpen(true);
+    setInputKey(Math.random() * 100);
+    console.log(event.target.files);
+  };
+
+  const handleChangeAvatar = async () => {
+    setIsAvatarOpen(true);
+  };
+
+  const handleDeleteAvatar = async () => {
+    const { data, status } = await del({
+      service: 'backend',
+      path: `/api/protected/community-service/communities/${communityId}/avatar/`,
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+
+    if (status === 204) {
+      toast('Аватарка удалена. Скоро она исчезнет с сайта');
+    }
+
+    console.log('data', data);
+  };
+
+  const getAvatarPath = `https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`;
+
   return (
     <Form {...form}>
       <Header />
       <div className="border-gray-80 flex h-[120px] w-full rounded-2xl border p-6">
-        <button
-          type="button"
-          className="bg-gray-5 flex h-[72px] w-[72px] place-items-center justify-center rounded-[36px]"
-        >
-          <Camera size="l" className="fill-gray-60" />
-        </button>
+        <AvatarEditor
+          file={file || getAvatarPath}
+          open={isAvatarOpen}
+          onOpenChange={setIsAvatarOpen}
+          onClearFile={setFile}
+          communityId={communityId || undefined}
+        />
+        <input className="hidden" ref={inputRef} onChange={handleInput} type="file" key={inputKey} />
+        <DropdownMenu>
+          <DropdownMenuTrigger className="cursor-pointer" asChild>
+            <Avatar size="xl">
+              <AvatarImage
+                src={getAvatarPath}
+                imageProps={{
+                  src: getAvatarPath,
+                  alt: 'community avatar',
+                  }}
+                alt="community avatar"
+              />
+              <AvatarFallback
+                size="xl"
+                className='bg-gray-5 rounded-[36px]" flex h-[64px] w-[64px] place-items-center justify-center'
+              >
+                <Camera size="l" className="fill-gray-60" />
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-[220px]">
+            <DropdownMenuItem onClick={handleMenuEditClick}>
+              <Edit className="mr-2 h-5 w-5" />
+              <span className="text-[14px]">Обновить фотографию</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleChangeAvatar}>
+              <Account className="mr-2 h-5 w-5" />
+              <span className="text-[14px]">Изменить миниатюру</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDeleteAvatar}>
+              <Trash className="mr-2 h-5 w-5" />
+              <span className="text-[14px]">Удалить</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <form
           id="community-settings-main-page-form"
           onSubmit={handleSubmit(onSubmit)}

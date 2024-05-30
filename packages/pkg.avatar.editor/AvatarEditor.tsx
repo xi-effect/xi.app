@@ -21,9 +21,11 @@ type AvatarEditorT = {
   file: any;
   open: boolean;
   onOpenChange: (value: boolean) => void;
+  onClearFile?: (value: undefined) => void;
   setDate?: (value: Date) => void;
   withLoadingToServer?: boolean;
   onBase64Return?: (resizedImageBase: string, form: FormData) => void;
+  communityId?: number | undefined;
 };
 
 export const AvatarEditorComponent = ({
@@ -31,8 +33,10 @@ export const AvatarEditorComponent = ({
   file,
   open,
   onOpenChange,
+  onClearFile,
   setDate,
   onBase64Return,
+  communityId,
 }: AvatarEditorT) => {
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
@@ -89,9 +93,12 @@ export const AvatarEditorComponent = ({
         return onBase64Return(resizedImageBase, form);
       }
 
+      const pathAddress = communityId ? `/api/protected/community-service/communities/${communityId}/avatar/` : '/api/users/current/avatar/';
+      const currentService = communityId ? 'backend' : 'auth';
+
       const { data, status } = await put({
-        service: 'auth',
-        path: '/api/users/current/avatar/',
+        service: currentService,
+        path: pathAddress,
         body: form,
         config: {
           headers: {},
@@ -103,6 +110,7 @@ export const AvatarEditorComponent = ({
       if (status === 204) {
         toast('Аватарка успешно загружена. В ближайшее время она отобразится на сайте');
         onOpenChange(false);
+        if (onClearFile) onClearFile(undefined);
         if (setDate) setDate(new Date());
       }
     } catch (e) {
@@ -110,6 +118,11 @@ export const AvatarEditorComponent = ({
     }
 
     return null;
+  };
+
+  const handleCancel = () => {
+    onOpenChange(false);
+    if (onClearFile) onClearFile(undefined);
   };
 
   return (
@@ -147,7 +160,7 @@ export const AvatarEditorComponent = ({
           />
         </div>
         <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">
-          <Button onClick={() => onOpenChange(false)} className="md:ml-auto" variant="secondary">
+          <Button onClick={handleCancel} className="md:ml-auto" variant="secondary">
             Отменить
           </Button>
           <Button onClick={() => showCroppedImage()}>Сохранить</Button>
