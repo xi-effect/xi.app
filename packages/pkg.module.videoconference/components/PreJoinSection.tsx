@@ -190,7 +190,7 @@ export function PreJoinSection({
           <div className="absolute bottom-5 left-5">
             <div className="flex gap-1 rounded-[24px] bg-gray-100 p-1">
               <div
-                className={`border-4 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
+                className={`border-2 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
               >
                 <TrackToggle
                   className="bg-transparent text-white"
@@ -203,7 +203,7 @@ export function PreJoinSection({
                 </TrackToggle>
               </div>
               <div
-                className={`border-4 ${videoEnabled && videoTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
+                className={`border-2 ${videoEnabled && videoTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
               >
                 <TrackToggle
                   showIcon={false}

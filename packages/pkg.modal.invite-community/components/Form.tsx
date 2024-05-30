@@ -27,6 +27,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
+import { useMainSt } from 'pkg.stores';
 
 const RoleSchema = z.object({
   name: z.string(),
@@ -51,6 +52,10 @@ const FormSchema = z.object({
 
 type FormBlockPropsT = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleInviteCreate: (requestData: {
+    community_id: number | null;
+    data: { expiry: string | null; usage_limit: string | null };
+  }) => void;
 };
 
 // Создаю список выбора часов для дропдауна
@@ -94,9 +99,10 @@ const rolesTemplate = [
 // Взял типизацию из react-day-picker
 type Matcher = boolean | ((date: Date) => boolean) | Date | Date[];
 
-export const Form = ({ setIsOpen }: FormBlockPropsT) => {
+export const Form = ({ setIsOpen, handleInviteCreate }: FormBlockPropsT) => {
   const [date, setDate] = useState<Date | undefined>();
   const [unusedRoles, setUnusedRoles] = useState<typeof rolesTemplate>(rolesTemplate);
+  const communityId = useMainSt((state) => state.communityMeta.id);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -123,7 +129,13 @@ export const Form = ({ setIsOpen }: FormBlockPropsT) => {
   }
 
   function onSubmit(values: z.infer<typeof FormSchema>) {
-    console.log(values);
+    handleInviteCreate({
+      community_id: communityId,
+      data: {
+        expiry: values.date ? `${values.date}T${values.time || '00:00'}:00.000Z` : null,
+        usage_limit: values.maxUsageCount || null,
+      },
+    });
   }
 
   return (

@@ -16,6 +16,9 @@ const options: ItemT[] = [
   {
     name: 'Участники',
   },
+  {
+    name: 'Приглашения',
+  },
 ];
 
 type ItemPropsT = {
