@@ -235,17 +235,17 @@ export function CarouselContainer({ focusTrack, tracks, carouselTracks, orientat
     >
       {orientation === 'vertical' ? (
         <>
-          {focusTrack && <FocusLayout orientation="vertical" trackRef={focusTrack} />}
-          <CarouselLayout orientation="vertical" userTracks={tracks} tracks={carouselTracks}>
+          {focusTrack && <FocusLayout orientation={orientation} trackRef={focusTrack} />}
+          <CarouselLayout orientation={orientation} userTracks={tracks} tracks={carouselTracks}>
             <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
           </CarouselLayout>
         </>
       ) : (
         <>
-          <CarouselLayout orientation="vertical" userTracks={tracks} tracks={carouselTracks}>
+          <CarouselLayout orientation={orientation} userTracks={tracks} tracks={carouselTracks}>
             <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
           </CarouselLayout>
-          {focusTrack && <FocusLayout orientation="horizontal" trackRef={focusTrack} />}
+          {focusTrack && <FocusLayout orientation={orientation} trackRef={focusTrack} />}
         </>
       )}
     </div>

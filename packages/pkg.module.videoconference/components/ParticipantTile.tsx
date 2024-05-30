@@ -19,7 +19,6 @@ import {
   useEnsureParticipant,
   useFeatureContext,
   useIsEncrypted,
-  useIsSpeaking,
   useMaybeLayoutContext,
   useMaybeTrackRefContext,
   useParticipantTile,
@@ -80,7 +79,6 @@ export function ParticipantTile({
 }: ParticipantTileProps) {
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
-  const isSpeaking = useIsSpeaking(participant);
   const trackReference: TrackReferenceOrPlaceholder = React.useMemo(
     () => ({
       participant: trackRef?.participant ?? maybeTrackRef?.participant ?? p,
@@ -141,6 +139,7 @@ export function ParticipantTile({
                         transform: 'rotateY(180deg)',
                       }),
                       boxSizing: 'border-box',
+                      background: 'black',
                     }}
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}

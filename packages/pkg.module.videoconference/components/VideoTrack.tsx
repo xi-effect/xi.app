@@ -16,13 +16,7 @@ import {
   useTracks,
 } from '@livekit/components-react';
 import { ParticipantTile } from './ParticipantTile';
-import {
-  FocusLayout,
-  CarouselLayout,
-  CarouselContainer,
-  GridLayout,
-  FocusLayoutContainer,
-} from './VideoConferenceLayout';
+import { CarouselContainer, GridLayout, FocusLayoutContainer } from './VideoConferenceLayout';
 
 export function VideoConference({
   chatMessageFormatter,
