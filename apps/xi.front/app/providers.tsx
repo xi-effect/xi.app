@@ -159,11 +159,9 @@ const AuthProvider = ({ children }: AuthProviderT) => {
 
   // Сохраняем уникальные параметры при редиректе
   const getUrlWithParams = (url: string) => {
-    const params = searchParams.toString();
-    const uniqueParams = new Set(params.split('&'));
-    const uniqueParamsString = Array.from(uniqueParams).join();
+    const params = new URLSearchParams(Object.fromEntries(searchParams)).toString();
 
-    return uniqueParamsString ? `${url}?${uniqueParamsString}` : url;
+    return params ? `${url}?${params}` : url;
   };
 
   // Если пользователь не залогинен,
