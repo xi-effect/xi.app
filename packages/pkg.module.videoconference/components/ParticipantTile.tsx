@@ -6,7 +6,6 @@ import { isTrackReference, isTrackReferencePinned } from '@livekit/components-co
 import {
   AudioTrack,
   ConnectionQualityIndicator,
-  FocusToggle,
   LockLockedIcon,
   ParticipantContextIfNeeded,
   ParticipantName,
@@ -25,6 +24,7 @@ import {
   useTrackMutedIndicator,
 } from '@livekit/components-react';
 import { MicrophoneOff, RedLine } from '@xipkg/icons';
+import { FocusToggle } from './FocusToggle';
 import '../utility/style.css';
 
 function TrackRefContextIfNeeded({
@@ -67,6 +67,10 @@ export function TrackMutedIndicator({
   );
 }
 
+interface IFocusToggleDisable {
+  isFocusToggleDisable?: boolean;
+}
+
 export function ParticipantTile({
   trackRef,
   participant,
@@ -75,8 +79,9 @@ export function ParticipantTile({
   onParticipantClick,
   publication,
   disableSpeakingIndicator,
+  isFocusToggleDisable,
   ...htmlProps
-}: ParticipantTileProps) {
+}: ParticipantTileProps & IFocusToggleDisable) {
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
   const trackReference: TrackReferenceOrPlaceholder = React.useMemo(
@@ -191,10 +196,12 @@ export function ParticipantTile({
               </div>
             )}
           </div>
-          <FocusToggle
-            style={{ background: 'transparent', padding: '5px' }}
-            trackRef={trackReference}
-          />
+          {isFocusToggleDisable ? null : (
+            <FocusToggle
+              style={{ background: 'transparent', padding: '5px' }}
+              trackRef={trackReference}
+            />
+          )}
         </ParticipantContextIfNeeded>
       </TrackRefContextIfNeeded>
     </div>

@@ -35,7 +35,7 @@ export interface PaginationIndicatorProps {
   currentPage: number;
 }
 export interface IOrientationLayout {
-  orientation: 'vertical' | 'horizontal';
+  orientation: 'vertical' | 'horizontal' | 'grid';
 }
 
 function EmptyItemContainerOfUser({ ...restProps }) {
@@ -69,6 +69,7 @@ export function FocusLayout({
       className={`${orientation === 'vertical' ? 'h-[calc(100vh-14rem)] w-[calc(100%-277px)]' : 'm-auto h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)]'} flex flex-col`}
     >
       <ParticipantTile
+        isFocusToggleDisable
         style={{
           width: '100%',
           height: '100%',

@@ -111,6 +111,7 @@ export function VideoConference({
               <div className="min-h-sreen">
                 <GridLayout tracks={tracks}>
                   <ParticipantTile
+                    isFocusToggleDisable
                     style={{ flexDirection: 'column', maxWidth: '100%', maxHeight: '100%' }}
                   />
                 </GridLayout>
