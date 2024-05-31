@@ -67,7 +67,7 @@ export function FocusLayout({
   const trackReference = trackRef ?? track;
   return (
     <div
-      className={`${orientation === 'vertical' ? 'h-100vh w-[calc(100%-277px)]' : 'm-auto h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)]'} flex flex-col`}
+      className={`${orientation === 'vertical' ? 'h-[calc(100vh-14rem)] w-[calc(100%-277px)]' : 'm-auto h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)]'} flex flex-col`}
     >
       <ParticipantTile
         style={{
