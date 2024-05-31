@@ -1,20 +1,43 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 
 'use client';
 
 import React, { useEffect } from 'react';
-import { Grid, Settings, External } from '@xipkg/icons';
+import { Grid, Settings, External, Speaker, SpeakerHorizontal } from '@xipkg/icons';
 import { usePathname, useRouter } from 'next/navigation';
 
 export const UpBar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isHorizontalLayout, setIsHorizontalLayout] = React.useState<boolean>(true);
+  const [carouselType, setCarouselType] = React.useState<string>('grid');
+
+  const toggleLayout = () => {
+    setCarouselType((prev) => {
+      if (prev === 'horizontal') return 'vertical';
+      if (prev === 'vertical') return 'grid';
+      if (prev === 'grid') return 'horizontal';
+      return 'horizontal';
+    });
+  };
 
   useEffect(() => {
-    const carouselType = isHorizontalLayout ? 'horizontal' : 'vertical';
-    router.push(`${pathname}?carouselType=${carouselType}`);
-  }, [isHorizontalLayout]);
+    if (carouselType === 'horizontal' || carouselType === 'vertical') {
+      router.push(`${pathname}?carouselType=${carouselType}`);
+    } else if (carouselType === 'grid') {
+      router.push(pathname);
+    }
+  }, [carouselType]);
+
+  const getViewIcon = () => {
+    if (carouselType === 'horizontal') {
+      return <Speaker className="fill-gray-0" />;
+    }
+    if (carouselType === 'vertical') {
+      return <SpeakerHorizontal className="fill-gray-0" />;
+    }
+    return <Grid className="fill-gray-0" />;
+  };
 
   return (
     <div className="flex w-full flex-row items-end p-4">
@@ -22,11 +45,11 @@ export const UpBar = () => {
       <span className="text-gray-40 ml-2">Upper-intermediate</span>
 
       <button
-        onClick={() => setIsHorizontalLayout((prev) => !prev)}
+        onClick={toggleLayout}
         type="button"
         className="ml-auto flex h-10 w-[95px] flex-row items-center justify-center gap-2 rounded-[20px] bg-gray-100"
       >
-        <Grid className="fill-gray-0" />
+        {getViewIcon()}
         <span className="text-gray-0">Вид</span>
       </button>
       <button

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -15,6 +16,7 @@ import {
   usePinnedTracks,
   useTracks,
 } from '@livekit/components-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ParticipantTile } from './ParticipantTile';
 import { CarouselContainer, GridLayout, FocusLayoutContainer } from './VideoConferenceLayout';
 
@@ -24,6 +26,9 @@ export function VideoConference({
   chatMessageEncoder,
   ...props
 }: VideoConferenceProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
     showChat: false,
     unreadMessages: 0,
@@ -78,6 +83,24 @@ export function VideoConference({
       .join(),
     focusTrack?.publication?.trackSid,
   ]);
+
+  React.useEffect(() => {
+    const carouselType = searchParams.get('carouselType');
+    if (carouselType === 'horizontal' || carouselType === 'vertical') {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('carouselType', carouselType);
+      layoutContext.pin.dispatch?.({
+        msg: 'set_pin',
+        trackReference: lastAutoFocusedScreenShareTrack.current ? screenShareTracks[0] : tracks[0],
+      });
+      router.push(`${pathname}?${params.toString()}`);
+    } else if (!carouselType) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('carouselType');
+      layoutContext.pin.dispatch?.({ msg: 'clear_pin' });
+      router.push(`${pathname}?${params.toString()}`);
+    }
+  }, [router, pathname, searchParams]);
 
   return (
     <div className="lk-video-conference" {...props}>
