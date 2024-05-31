@@ -25,18 +25,26 @@ export const Header = () => {
     }, 2000);
   };
 
+  const handleArrow = () => {
+    if (isCloseActive) {
+      return setIsMenu(true);
+    }
+
+    return createAnimation();
+  };
+
   return (
     <div className="relative flex h-[40px] w-full items-center justify-start">
-      {isMenu && (
+      {!isMenu && (
         <button
           type="button"
-          onClick={() => setIsMenu(false)}
+          onClick={handleArrow}
           className="flex h-10 w-10 bg-transparent p-2 sm:hidden"
         >
           <ArrowLeft />
         </button>
       )}
-      {isMenu && (
+      {!isMenu && (
         <span className="ml-4 flex  font-semibold sm:hidden">{menuLabels[Number(page)]}</span>
       )}
       {isCloseActive ? (

@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { Camera } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
+import React from 'react';
 
 export const Customization = () => {
   const isMobile = useMedia('(max-width: 719px)');

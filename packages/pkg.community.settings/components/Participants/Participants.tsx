@@ -15,7 +15,6 @@ import {
 
 // JSON со временным списком пользователей
 import usersTemplate from './usersTemplate.json';
-import { Header } from '../Header';
 
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
@@ -202,7 +201,6 @@ export const Participants = () => {
 
   return (
     <>
-      <Header />
       <span className="hidden text-3xl font-semibold sm:inline-block">Участники</span>
       <div className="mt-4">
         <div className="relative">

@@ -8,7 +8,6 @@ import { Badge } from '@xipkg/badge';
 import { Button } from '@xipkg/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@xipkg/avatar';
 import { Copy, Trash, Plus } from '@xipkg/icons';
-import { Header } from '../Header';
 
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
@@ -235,9 +234,11 @@ export const Invites = () => {
 
   const handleInviteCreate = (requestData: {
     community_id: number | null;
-    data: { expiry: string | null; usage_limit: string | null };
+    data: { expiry: string | null; usage_limit: number | null };
   }) => {
     const { community_id: communityId, data } = requestData;
+
+    console.log('data', data, communityId);
 
     socket.emit(
       'create-invitation',
@@ -246,6 +247,7 @@ export const Invites = () => {
         data,
       },
       (status: number, data: any) => {
+        console.log('status', status, data);
         if (status === 200) {
           setInvitations((prevInvites) => [...prevInvites, data]);
           setModalOpen(false);
@@ -262,7 +264,6 @@ export const Invites = () => {
 
   return (
     <>
-      <Header />
       <div className="flex justify-between">
         <span className="hidden text-3xl font-semibold sm:inline-block">Приглашения</span>
         <Button

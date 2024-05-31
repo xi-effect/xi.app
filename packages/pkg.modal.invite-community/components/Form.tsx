@@ -54,7 +54,7 @@ type FormBlockPropsT = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleInviteCreate: (requestData: {
     community_id: number | null;
-    data: { expiry: string | null; usage_limit: string | null };
+    data: { expiry: string | null; usage_limit: number | null };
   }) => void;
 };
 
@@ -133,7 +133,7 @@ export const Form = ({ setIsOpen, handleInviteCreate }: FormBlockPropsT) => {
       community_id: communityId,
       data: {
         expiry: values.date ? `${values.date}T${values.time || '00:00'}:00.000Z` : null,
-        usage_limit: values.maxUsageCount || null,
+        usage_limit: Number(values.maxUsageCount) || null,
       },
     });
   }

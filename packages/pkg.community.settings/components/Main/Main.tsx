@@ -16,7 +16,6 @@ import { Input } from '@xipkg/input';
 import { useSnackbar } from 'notistack';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
-import { Header } from '../Header';
 import { useInterfaceStore } from '../../interfaceStore';
 
 const FormSchema = z.object({
@@ -87,7 +86,6 @@ export const Main = () => {
 
   return (
     <Form {...form}>
-      <Header />
       <div className="border-gray-80 flex h-[120px] w-full rounded-2xl border p-6">
         <button
           type="button"

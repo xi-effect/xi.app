@@ -14,7 +14,7 @@ type InviteCommunityModalPropsT = {
   onOpenChange: (value: React.SetStateAction<boolean>) => void;
   handleInviteCreate?: (requestData: {
     community_id: number | null;
-    data: { expiry: string | null; usage_limit: string | null };
+    data: { expiry: string | null; usage_limit: number | null };
   }) => void;
 };
 
@@ -27,7 +27,7 @@ export const InviteCommunityModal = ({
 
   const defaultHandleInviteCreate = (requestData: {
     community_id: number | null;
-    data: { expiry: string | null; usage_limit: string | null };
+    data: { expiry: string | null; usage_limit: number | null };
   }) => {
     const { community_id: communityId, data } = requestData;
 

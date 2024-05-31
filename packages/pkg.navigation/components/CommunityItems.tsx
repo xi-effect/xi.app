@@ -364,7 +364,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:pl-1 sm:pr-0 ${
+        className={`mt-3 flex h-[calc(100dvh-156px)] sm:h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] md:pl-1 md:pr-0 ${
           className ?? ''
         }`}
       >

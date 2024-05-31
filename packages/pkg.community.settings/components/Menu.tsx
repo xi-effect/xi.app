@@ -29,6 +29,7 @@ type ItemPropsT = {
 const Item = ({ index, item }: ItemPropsT) => {
   const isMobile = useMedia('(max-width: 719px)');
   const page = useInterfaceStore((state) => state.page);
+  const setIsMenu = useInterfaceStore((state) => state.setIsMenu);
   const setPage = useInterfaceStore((state) => state.setPage);
   const isCloseActive = useInterfaceStore((state) => state.isCloseActive);
   const setIsAnimate = useInterfaceStore((state) => state.setIsAnimate);
@@ -38,6 +39,7 @@ const Item = ({ index, item }: ItemPropsT) => {
   const handleChangePage = () => {
     if (isCloseActive) {
       setPage(index);
+      setIsMenu(false);
     }
 
     if (!isActive) {
@@ -66,14 +68,13 @@ const Item = ({ index, item }: ItemPropsT) => {
 };
 
 export const Menu = () => (
-  <div className="flex w-full flex-col gap-1 sm:mt-[56px] sm:w-[220px]">
+  <div className="flex w-full flex-col gap-1 sm:w-[220px]">
     {options.map((item, index) => (
       <Item item={item} index={index} key={index} />
     ))}
     <button
       type="button"
-      // onClick={() => handleExit()}
-      className="text-gray-60 hover:bg-brand-0 group mt-10 flex h-[40px] w-full flex-row items-center rounded-lg bg-transparent p-2 transition-colors ease-in hover:cursor-pointer hover:text-red-100"
+      className="text-gray-60 hover:bg-red-0 group mt-10 flex h-auto w-full flex-row items-center rounded-lg bg-transparent p-2 transition-colors ease-in hover:cursor-pointer hover:text-red-100"
     >
       <span className="pl-2 text-[14px] font-normal">Удалить сообщество</span>
     </button>
