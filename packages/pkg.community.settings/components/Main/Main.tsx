@@ -149,7 +149,7 @@ export const Main = () => {
   return (
     <Form {...form}>
       <Header />
-      <div className="border-gray-80 flex h-[120px] w-full rounded-2xl border p-6">
+      <div className="border-gray-80 flex w-full rounded-2xl border p-6">
         <AvatarEditor
           file={file}
           open={isAvatarOpen}
@@ -159,7 +159,7 @@ export const Main = () => {
         <input className="hidden" ref={inputRef} onChange={handleInput} type="file" key={inputKey} />
         <DropdownMenu>
           <DropdownMenuTrigger className="cursor-pointer" asChild>
-            <Avatar size="xl">
+            <Avatar size="xxl">
               <AvatarImage
                 src={`https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`}
                 imageProps={{
@@ -190,7 +190,7 @@ export const Main = () => {
         <form
           id="community-settings-main-page-form"
           onSubmit={handleSubmit(onSubmit)}
-          className="ml-4 flex flex-col justify-center gap-0.5"
+          className="ml-8 flex flex-col justify-start gap-0.5"
         >
           <FormField
             control={control}
