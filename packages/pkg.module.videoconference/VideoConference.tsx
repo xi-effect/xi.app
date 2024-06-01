@@ -32,7 +32,7 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
   return (
     <div>
       {isStarted ? (
-        <div className="bg-gray-100">
+        <div id="videoConferenceContainer" className="bg-gray-100">
           <ActiveRoom
             userChoice={userChoice}
             room={room}

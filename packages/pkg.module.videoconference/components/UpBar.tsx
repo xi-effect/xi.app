@@ -11,6 +11,18 @@ export const UpBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [carouselType, setCarouselType] = React.useState<string>('grid');
+  const [isFullScreen, setIsFullScreen] = React.useState<boolean>(false);
+  const toggleFullScreen = () => {
+    const element = document.getElementById('videoConferenceContainer');
+    const fullScreen = document.fullscreenElement;
+
+    if (fullScreen) {
+      document.exitFullscreen();
+    } else {
+      element?.requestFullscreen();
+    }
+    setIsFullScreen((prev) => !prev);
+  };
 
   const toggleLayout = () => {
     setCarouselType((prev) => {
@@ -53,6 +65,7 @@ export const UpBar = () => {
         <span className="text-gray-0">Вид</span>
       </button>
       <button
+        onClick={toggleFullScreen}
         type="button"
         className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
       >
