@@ -6,8 +6,10 @@ import { toast } from 'sonner';
 import { InviteCommunityModal } from 'pkg.modal.invite-community';
 import { Badge } from '@xipkg/badge';
 import { Button } from '@xipkg/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@xipkg/avatar';
 import { Copy, Trash, Plus } from '@xipkg/icons';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { UserProfile } from '@xipkg/userprofile';
+import { get } from 'pkg.utils';
 
 // Временные типы для Роли пользователя и для пропсов Бейджа пользователя
 type UserRoleT = {
@@ -27,19 +29,22 @@ const UserBadge = ({ name, bgColorMain, bgColorSecondary }: UserRoleT) => (
 
 // Временные типы для Пользователя и для пропсов Карточки пользователя
 type UserT = {
-  name: string;
-  nickname: string;
   roles: UserRoleT[];
 };
 
 type UserCardPropsT = UserT & {
-  // user: UserT;
   id: string;
   inviteCode: string;
   usageCount: number;
   usageLimit: number | null;
+  creatorId: number | null;
   expires: string | null;
   handleInviteDelete: (inviteCode: string) => void;
+};
+
+type UserProfileT = {
+  username: string;
+  displayName: string;
 };
 
 type InvitationT = {
@@ -47,21 +52,28 @@ type InvitationT = {
   token: string;
   usageCount: number;
   usageLimit: number | null;
+  creatorId: number | null;
   expiry: string | null;
 };
 
+type ResponseBodyT = {
+  id: number;
+  username: string;
+  display_name: string;
+};
+
 const UserCard = ({
-  // user,
-  name,
   roles,
-  nickname,
   inviteCode,
   usageCount,
   usageLimit,
+  creatorId,
   expires,
   id,
   handleInviteDelete,
 }: UserCardPropsT) => {
+  const [user, setUser] = React.useState<UserProfileT | null>(null);
+
   const [diffDays, setDiffDays] = React.useState(0);
   const [diffHours, setDiffHours] = React.useState(0);
   const [diffMinutes, setDiffMinutes] = React.useState(0);
@@ -84,11 +96,37 @@ const UserCard = ({
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(inviteCode);
+      await navigator.clipboard.writeText(`https://app.xieffect.ru/invite/${inviteCode}`);
+      toast(
+        'Ссылка-приглашение скопирована. Отправьте её человеку, которого хотите пригласить в сообщество',
+      );
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { status, data } = await get<ResponseBodyT>({
+        service: 'auth',
+        path: `/api/users/by-id/${creatorId}/profile/`,
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      });
+
+      if (status === 200) {
+        setUser({
+          username: data.username,
+          displayName: data.display_name,
+        });
+      }
+    };
+
+    getUser();
+  }, []);
 
   return (
     <li className="border-gray-30 md:items-cente flex rounded-lg border p-4">
@@ -105,22 +143,20 @@ const UserCard = ({
               <Trash className="h-4 w-4" />
             </button>
           </div>
-          <div className="flex items-center self-start">
-            <Avatar size="m">
-              <AvatarImage
-                src="https://auth.xieffect.ru/api/users/4/avatar.webp"
-                imageProps={{
-                  src: 'https://auth.xieffect.ru/api/users/4/avatar.webp',
-                  alt: '@shadcn',
-                }}
-                alt="@shadcn"
+          <div className="flex w-full items-center self-start">
+            {user !== null ? (
+              <UserProfile
+                userId={creatorId}
+                text={user.displayName}
+                label={user.username}
+                size="m"
               />
-              <AvatarFallback size="m">CN</AvatarFallback>
-            </Avatar>
-            <div className="ml-2">
-              <p className="text-sm font-medium text-gray-100 max-[700px]:text-base">{name}</p>
-              <p className="text-gray-60 text-xs font-normal">@{nickname}</p>
-            </div>
+            ) : (
+              <div className="flex h-full w-full flex-row gap-2">
+                <div className="bg-gray-10 h-[32px] w-[32px] animate-pulse rounded-[16px]" />
+                <div className="bg-gray-10 mt-1 h-[16px] w-[56px] animate-pulse rounded-sm" />
+              </div>
+            )}
           </div>
         </div>
 
@@ -128,14 +164,23 @@ const UserCard = ({
           <p className="mb-2 text-xs font-medium text-gray-100">Код:</p>
           <div className="flex items-center self-start">
             <p className="max-w-20 truncate text-base font-medium text-gray-100">{inviteCode}</p>
-            <button
-              type="button"
-              className="bg-gray-10 hover:bg-brand-0 group mb-auto ml-5 rounded p-1 transition-all"
-              onClick={copyToClipboard}
-              aria-label="Скопировать код"
-            >
-              <Copy className="h-[10px] w-[10px] transition-all group-active:scale-105" />
-            </button>
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className="bg-gray-10 hover:bg-brand-0 group mb-auto ml-5 rounded p-1 transition-all"
+                    onClick={copyToClipboard}
+                    aria-label="Скопировать код"
+                  >
+                    <Copy className="h-[10px] w-[10px] transition-all group-active:scale-105" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Скопировать ссылку-приглашение в сообщество</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
 
@@ -208,7 +253,14 @@ export const Invites = () => {
   useEffect(() => {
     socket.emit('list-invitations', { community_id: communityId }, (status: number, data: any) => {
       if (status === 200 && data) {
-        setInvitations(data);
+        const formatedData = data.map((item: any) => ({
+          usageCount: item.usage_count,
+          usageLimit: item.usage_limit,
+          creatorId: item.creator_id,
+          ...item,
+        }));
+        console.log('data', formatedData);
+        setInvitations(formatedData);
       } else {
         toast('Ошибка получения приглашений');
       }
@@ -289,6 +341,7 @@ export const Invites = () => {
                 key={invite.id}
                 id={invite.id}
                 inviteCode={invite.token}
+                creatorId={invite.creatorId}
                 usageCount={invite.usageCount}
                 usageLimit={invite.usageLimit}
                 expires={invite.expiry}
@@ -299,9 +352,6 @@ export const Invites = () => {
                     bgColorSecondary: 'bg-green-0',
                   },
                 ]}
-                // user={{} as UserT}
-                name="Пользователь"
-                nickname="nickname"
                 handleInviteDelete={handleInviteDelete}
               />
             ))}
