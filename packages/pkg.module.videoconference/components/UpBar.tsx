@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 
@@ -14,23 +15,18 @@ import {
   Minimize,
 } from '@xipkg/icons';
 import { usePathname, useRouter } from 'next/navigation';
+import { useFullScreen } from 'pkg.utils/useFullScreen';
 
 export const UpBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [carouselType, setCarouselType] = React.useState<string>('grid');
-  const [isFullScreen, setIsFullScreen] = React.useState<boolean>(false);
-  const toggleFullScreen = () => {
-    const element = document.getElementById('videoConferenceContainer');
-    const fullScreen = document.fullscreenElement;
+  const { isFullScreen, toggleFullScreen } = useFullScreen('videoConferenceContainer');
 
-    if (fullScreen) {
-      document.exitFullscreen();
-    } else {
-      element?.requestFullscreen();
-    }
-    setIsFullScreen((prev) => !prev);
-  };
+  useEffect(() => {
+    if (isFullScreen == null) return;
+    sessionStorage.setItem('fullScreenVideoConference', String(isFullScreen));
+  }, [isFullScreen]);
 
   const toggleLayout = () => {
     setCarouselType((prev) => {
