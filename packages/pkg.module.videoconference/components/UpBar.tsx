@@ -4,7 +4,15 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Grid, Settings, External, Speaker, SpeakerHorizontal, Maximize } from '@xipkg/icons';
+import {
+  Grid,
+  Settings,
+  External,
+  Speaker,
+  SpeakerHorizontal,
+  Maximize,
+  Minimize,
+} from '@xipkg/icons';
 import { usePathname, useRouter } from 'next/navigation';
 
 export const UpBar = () => {
@@ -69,7 +77,7 @@ export const UpBar = () => {
         type="button"
         className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
       >
-        <Maximize className="fill-gray-0" />
+        {isFullScreen ? <Maximize className="fill-gray-0" /> : <Minimize className="fill-gray-0" />}
       </button>
       <button
         type="button"
