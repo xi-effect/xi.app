@@ -6,7 +6,6 @@ import { isTrackReference, isTrackReferencePinned } from '@livekit/components-co
 import {
   AudioTrack,
   ConnectionQualityIndicator,
-  FocusToggle,
   LockLockedIcon,
   ParticipantContextIfNeeded,
   ParticipantName,
@@ -19,13 +18,13 @@ import {
   useEnsureParticipant,
   useFeatureContext,
   useIsEncrypted,
-  useIsSpeaking,
   useMaybeLayoutContext,
   useMaybeTrackRefContext,
   useParticipantTile,
   useTrackMutedIndicator,
 } from '@livekit/components-react';
 import { MicrophoneOff, RedLine } from '@xipkg/icons';
+import { FocusToggle } from './FocusToggle';
 import '../utility/style.css';
 
 function TrackRefContextIfNeeded({
@@ -68,6 +67,10 @@ export function TrackMutedIndicator({
   );
 }
 
+interface IFocusToggleDisable {
+  isFocusToggleDisable?: boolean;
+}
+
 export function ParticipantTile({
   trackRef,
   participant,
@@ -76,11 +79,11 @@ export function ParticipantTile({
   onParticipantClick,
   publication,
   disableSpeakingIndicator,
+  isFocusToggleDisable,
   ...htmlProps
-}: ParticipantTileProps) {
+}: ParticipantTileProps & IFocusToggleDisable) {
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
-  const isSpeaking = useIsSpeaking(participant);
   const trackReference: TrackReferenceOrPlaceholder = React.useMemo(
     () => ({
       participant: trackRef?.participant ?? maybeTrackRef?.participant ?? p,
@@ -141,6 +144,7 @@ export function ParticipantTile({
                         transform: 'rotateY(180deg)',
                       }),
                       boxSizing: 'border-box',
+                      background: 'black',
                     }}
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
@@ -192,10 +196,12 @@ export function ParticipantTile({
               </div>
             )}
           </div>
-          <FocusToggle
-            style={{ background: 'transparent', padding: '5px' }}
-            trackRef={trackReference}
-          />
+          {isFocusToggleDisable ? null : (
+            <FocusToggle
+              style={{ background: 'transparent', padding: '5px' }}
+              trackRef={trackReference}
+            />
+          )}
         </ParticipantContextIfNeeded>
       </TrackRefContextIfNeeded>
     </div>

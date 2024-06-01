@@ -1,8 +1,8 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import { redirect, useParams, usePathname } from 'next/navigation';
-import { ReactNode, useEffect } from 'react';
+import { redirect, useParams, usePathname, useSearchParams } from 'next/navigation';
+import { ReactNode, useEffect, Suspense } from 'react';
 import { toast, Toaster } from 'sonner';
 import { useMainSt } from 'pkg.stores';
 import Load from './load';
@@ -80,6 +80,8 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
 
 const AuthProvider = ({ children }: AuthProviderT) => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const { 'community-id': comIdParams } = useParams<{ 'community-id': string }>();
 
   const isLogin = useMainSt((state) => state.isLogin);
@@ -155,13 +157,20 @@ const AuthProvider = ({ children }: AuthProviderT) => {
   // Показываем скелетон, пока запрос на проверку сессии не пришёл
   if (isLogin === null) return <Load />;
 
+  // Сохраняем уникальные параметры при редиректе
+  const getUrlWithParams = (url: string) => {
+    const params = new URLSearchParams(Object.fromEntries(searchParams)).toString();
+
+    return params ? `${url}?${params}` : url;
+  };
+
   // Если пользователь не залогинен,
   // то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
   if (
     !isLogin &&
     !(mapsOfPathsWithoutRedirect.includes(pathname) || pathname.includes('/reset-password/'))
   ) {
-    redirect('/signin');
+    redirect(getUrlWithParams('/signin'));
     // toast('Требуется авторизация');
   }
 
@@ -173,7 +182,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     onboardingStage === 'completed' &&
     welcomePagesPaths.includes(pathname)
   ) {
-    redirect(`/communities/${communityId}/home`);
+    redirect(getUrlWithParams(`/communities/${communityId}/home`));
   }
 
   if (
@@ -183,7 +192,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
     onboardingStage !== 'final' &&
     !welcomePagesPaths.includes(pathname)
   ) {
-    redirect(welcomePagesPathsDict[onboardingStage]);
+    redirect(getUrlWithParams(welcomePagesPathsDict[onboardingStage]));
   }
 
   return children;
@@ -196,8 +205,10 @@ type ProvidersT = {
 export const Providers = ({ children }: ProvidersT) => (
   <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
     <Toaster visibleToasts={1} />
-    <AuthProvider>
-      <SocketProvider>{children}</SocketProvider>
-    </AuthProvider>
+    <Suspense fallback={<Load />}>
+      <AuthProvider>
+        <SocketProvider>{children}</SocketProvider>
+      </AuthProvider>
+    </Suspense>
   </ThemeProvider>
 );

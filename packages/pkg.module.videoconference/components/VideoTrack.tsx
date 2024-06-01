@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -15,13 +16,9 @@ import {
   usePinnedTracks,
   useTracks,
 } from '@livekit/components-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ParticipantTile } from './ParticipantTile';
-import {
-  FocusLayout,
-  CarouselLayout,
-  GridLayout,
-  FocusLayoutContainer,
-} from './VideoConferenceLayout';
+import { CarouselContainer, GridLayout, FocusLayoutContainer } from './VideoConferenceLayout';
 
 export function VideoConference({
   chatMessageFormatter,
@@ -29,6 +26,9 @@ export function VideoConference({
   chatMessageEncoder,
   ...props
 }: VideoConferenceProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [widgetState, setWidgetState] = React.useState<WidgetState>({
     showChat: false,
     unreadMessages: 0,
@@ -84,6 +84,24 @@ export function VideoConference({
     focusTrack?.publication?.trackSid,
   ]);
 
+  React.useEffect(() => {
+    const carouselType = searchParams.get('carouselType');
+    if (carouselType === 'horizontal' || carouselType === 'vertical') {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('carouselType', carouselType);
+      layoutContext.pin.dispatch?.({
+        msg: 'set_pin',
+        trackReference: lastAutoFocusedScreenShareTrack.current ? screenShareTracks[0] : tracks[0],
+      });
+      router.push(`${pathname}?${params.toString()}`);
+    } else if (!carouselType) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('carouselType');
+      layoutContext.pin.dispatch?.({ msg: 'clear_pin' });
+      router.push(`${pathname}?${params.toString()}`);
+    }
+  }, [router, pathname, searchParams]);
+
   return (
     <div className="lk-video-conference" {...props}>
       {isWeb() && (
@@ -93,22 +111,19 @@ export function VideoConference({
               <div className="min-h-sreen">
                 <GridLayout tracks={tracks}>
                   <ParticipantTile
+                    isFocusToggleDisable
                     style={{ flexDirection: 'column', maxWidth: '100%', maxHeight: '100%' }}
                   />
                 </GridLayout>
               </div>
             ) : (
-              <FocusLayoutContainer className="flex min-h-screen flex-col">
-                <div className="flex h-full flex-col justify-between gap-4">
-                  <CarouselLayout
-                    orientation="horizontal"
-                    userTracks={tracks}
-                    tracks={carouselTracks}
-                  >
-                    <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
-                  </CarouselLayout>
-                  {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                </div>
+              <FocusLayoutContainer className="min-h-screen">
+                <CarouselContainer
+                  orientation="vertical"
+                  focusTrack={focusTrack}
+                  tracks={tracks}
+                  carouselTracks={carouselTracks}
+                />
               </FocusLayoutContainer>
             )}
           </div>

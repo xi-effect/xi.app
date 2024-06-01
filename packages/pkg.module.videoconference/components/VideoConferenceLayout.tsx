@@ -19,6 +19,7 @@ import {
   useSwipe,
 } from '@livekit/components-react';
 import { ChevronLeft, ChevronRight } from '@xipkg/icons';
+import { useSearchParams } from 'next/navigation';
 import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
 
@@ -29,10 +30,12 @@ export interface PaginationControlProps
   > {
   pagesContainer?: React.RefObject<HTMLElement>;
 }
-
 export interface PaginationIndicatorProps {
   totalPageCount: number;
   currentPage: number;
+}
+export interface IOrientationLayout {
+  orientation: 'vertical' | 'horizontal' | 'grid';
 }
 
 function EmptyItemContainerOfUser({ ...restProps }) {
@@ -54,11 +57,19 @@ function useEmptyItemContainerOfUser(tracksLength: number) {
   return isOneItem;
 }
 
-export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps) {
+export function FocusLayout({
+  trackRef,
+  track,
+  orientation,
+  ...htmlProps
+}: FocusLayoutProps & IOrientationLayout) {
   const trackReference = trackRef ?? track;
   return (
-    <div className="m-auto flex h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)] flex-col">
+    <div
+      className={`${orientation === 'vertical' ? 'h-[calc(100vh-14rem)] w-[calc(100%-277px)]' : 'm-auto h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)]'} flex flex-col`}
+    >
       <ParticipantTile
+        isFocusToggleDisable
         style={{
           width: '100%',
           height: '100%',
@@ -71,7 +82,7 @@ export function FocusLayout({ trackRef, track, ...htmlProps }: FocusLayoutProps)
 }
 const MIN_HEIGHT = 250;
 const MIN_WIDTH = 250;
-const MIN_VISIBLE_TILES = 10;
+const MIN_VISIBLE_TILES = 3;
 const ASPECT_RATIO = 8 / 10;
 const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
 
@@ -214,6 +225,36 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
           />
         )}
       </div>
+    </div>
+  );
+}
+
+export function CarouselContainer({ focusTrack, tracks, carouselTracks }: any) {
+  const searchParams = useSearchParams();
+  const [orientation, setCarouselType] = useState<string | any>('horizontal');
+
+  useEffect(() => {
+    setCarouselType(searchParams.get('carouselType') || 'horizontal');
+  }, [searchParams]);
+  return (
+    <div
+      className={`flex h-full ${orientation === 'horizontal' ? 'flex-col' : ''} items-start justify-between gap-4`}
+    >
+      {orientation === 'vertical' ? (
+        <>
+          {focusTrack && <FocusLayout orientation={orientation} trackRef={focusTrack} />}
+          <CarouselLayout orientation={orientation} userTracks={tracks} tracks={carouselTracks}>
+            <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
+          </CarouselLayout>
+        </>
+      ) : (
+        <>
+          <CarouselLayout orientation={orientation} userTracks={tracks} tracks={carouselTracks}>
+            <ParticipantTile style={{ flex: 'unset' }} className="h-[144px] w-[250px]" />
+          </CarouselLayout>
+          {focusTrack && <FocusLayout orientation={orientation} trackRef={focusTrack} />}
+        </>
+      )}
     </div>
   );
 }
