@@ -126,7 +126,7 @@ const UserCard = ({
     };
 
     getUser();
-  }, []);
+  }, [id]);
 
   return (
     <li className="border-gray-30 md:items-cente flex rounded-lg border p-4">
@@ -301,7 +301,15 @@ export const Invites = () => {
       (status: number, data: any) => {
         console.log('status', status, data);
         if (status === 200) {
-          setInvitations((prevInvites) => [...prevInvites, data]);
+          setInvitations((prevInvites) => [
+            ...prevInvites,
+            {
+              usageCount: data.usage_count,
+              usageLimit: data.usage_limit,
+              creatorId: data.creator_id,
+              ...data,
+            },
+          ]);
           setModalOpen(false);
         } else {
           toast('Не удалось создать приглашение');
