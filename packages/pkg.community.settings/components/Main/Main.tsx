@@ -144,7 +144,6 @@ export const Main = () => {
 
   return (
     <Form {...form}>
-      <Header />
       <div className="border-gray-80 flex w-full rounded-2xl border p-6">
         <AvatarEditor
           file={file}
