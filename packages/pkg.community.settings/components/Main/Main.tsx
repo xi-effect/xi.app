@@ -112,7 +112,6 @@ export const Main = () => {
     });
 
   const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.files);
     if (!event.target.files) {
       return;
     }
@@ -129,7 +128,7 @@ export const Main = () => {
   };
 
   const handleDeleteAvatar = async () => {
-    const { data, status } = await del({
+    const { status } = await del({
       service: 'backend',
       path: `/api/protected/community-service/communities/${communityId}/avatar/`,
       config: {
@@ -142,8 +141,6 @@ export const Main = () => {
     if (status === 204) {
       toast('Аватарка удалена. Скоро она исчезнет с сайта');
     }
-
-    console.log('data', data);
   };
 
   return (
