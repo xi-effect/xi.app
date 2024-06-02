@@ -166,8 +166,8 @@ export const Main = () => {
                 alt="community avatar"
               />
               <AvatarFallback
-                size="xl"
-                className='bg-gray-5 rounded-[36px]" flex h-[64px] w-[64px] place-items-center justify-center'
+                size="xxl"
+                className='bg-gray-5 rounded-[36px]" flex h-[128px] w-[128px] place-items-center justify-center'
               >
                 <Camera size="l" className="fill-gray-60" />
               </AvatarFallback>
