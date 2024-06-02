@@ -84,27 +84,30 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
   }
 
   return (
-    <ScrollArea>
-      <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
-        <div className="my-2 mr-2">
-          <CategoryContainer
-            setSlideIndex={setSlideIndex}
-            category={firstCategory}
-            channels={channels.filter((channel) => channel.categoryId === 'empty')}
-          />
-        </div>
-        {categories.length !== 0 &&
-          categories.map((category) => (
-            <div key={category.id} className="my-2 mr-2">
-              <CategoryContainer
-                setSlideIndex={setSlideIndex}
-                category={category}
-                channels={channels.filter((channel) => channel.categoryId === category.id)}
-              />
-            </div>
-          ))}
-      </SortableContext>
-    </ScrollArea>
+    <>
+      <DropdownMenuSeparator className="bg-gray-10" />
+      <ScrollArea>
+        <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+          <div className="my-2 mr-2">
+            <CategoryContainer
+              setSlideIndex={setSlideIndex}
+              category={firstCategory}
+              channels={channels.filter((channel) => channel.categoryId === 'empty')}
+            />
+          </div>
+          {categories.length !== 0 &&
+            categories.map((category) => (
+              <div key={category.id} className="my-2 mr-2">
+                <CategoryContainer
+                  setSlideIndex={setSlideIndex}
+                  category={category}
+                  channels={channels.filter((channel) => channel.categoryId === category.id)}
+                />
+              </div>
+            ))}
+        </SortableContext>
+      </ScrollArea>
+    </>
   );
 };
 
@@ -427,7 +430,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
             <span className="pl-2 text-[14px] font-normal">Расписание</span>
           </div>
         </div>
-        <DropdownMenuSeparator />
         <ItemsList
           channels={channels}
           categories={categories}

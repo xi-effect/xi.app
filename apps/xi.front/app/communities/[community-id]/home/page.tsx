@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+import { ScrollArea } from '@xipkg/scrollarea';
 
 type AvatarPreviewPropsT = {
   communityId: number;
@@ -90,7 +91,7 @@ const InfoCardList = () => (
       </div>
       <h3 className="font-semibold text-2xl max-xs:text-xl mt-4">Роли</h3>
       <p className="font-normal text-base max-xs:text-sm max-xs:mt-1 mt-2 text-gray-100">
-        В рамках сообщества могут взаимодейтсвовать только студенты и преподаватели
+        В рамках сообщества могут взаимодействовать только студенты и преподаватели
       </p>
     </li>
     <li>
@@ -146,10 +147,12 @@ const SupportBox = () => (
 
 export default function CommunityHomePage() {
   return (
-    <div className="flex flex-col min-h-[100vh] h-full p-8 max-xs:p-4">
-      <Header />
-      <InfoCardList />
-      <SupportBox />
-    </div>
+    <ScrollArea>
+      <div className="flex flex-col min-h-[100vh] h-screen p-8 max-xs:p-4">
+        <Header />
+        <InfoCardList />
+        <SupportBox />
+      </div>
+    </ScrollArea>
   );
 }
