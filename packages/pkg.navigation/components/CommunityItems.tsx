@@ -44,8 +44,74 @@ const firstCategory = {
   description: null,
 };
 
+type ItemsListT = {
+  channels: ChannelT[] | null;
+  categories: CategoryT[] | null;
+  categoryIds: string[];
+  isOwner: boolean | null;
+  setSlideIndex: (value: number) => void;
+};
+
+const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }: ItemsListT) => {
+  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
+
+  if ((categories && categories.length === 0) || (channels && channels.length === 0)) {
+    if (isOwner) {
+      return (
+        <>
+          <CategoryCreate
+            open={isCategoryCreateOpen}
+            onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
+          />
+          <div
+            onClick={() => setIsCategoryCreateOpen(true)}
+            className="hover:bg-gray-5 group mt-8 flex h-[40px] w-full flex-row items-center justify-between rounded-lg border border-dashed p-2 transition-colors ease-in hover:cursor-pointer"
+          >
+            <div className="flex items-center">
+              <Plus className="fill-gray-90 hover:bg-gray-5" />
+              <span className="pl-2 text-[14px] font-normal">Добавить категорию</span>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    return null;
+  }
+
+  if (categories === null || channels === null) {
+    return <CommunityItemsSkeleton />;
+  }
+
+  return (
+    <ScrollArea>
+      <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+        <div className="my-2 mr-2">
+          <CategoryContainer
+            setSlideIndex={setSlideIndex}
+            category={firstCategory}
+            channels={channels.filter((channel) => channel.categoryId === 'empty')}
+          />
+        </div>
+        {categories.length !== 0 &&
+          categories.map((category) => (
+            <div key={category.id} className="my-2 mr-2">
+              <CategoryContainer
+                setSlideIndex={setSlideIndex}
+                category={category}
+                channels={channels.filter((channel) => channel.categoryId === category.id)}
+              />
+            </div>
+          ))}
+      </SortableContext>
+    </ScrollArea>
+  );
+};
+
 export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsPropsT) => {
   const router = useRouter();
+
+  const communityMeta = useMainSt((state) => state.communityMeta);
 
   const categories = useMainSt((state) => state.categories);
   const channels = useMainSt((state) => state.channels);
@@ -323,30 +389,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     );
   };
 
-  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
-
-  if ((categories && categories.length === 0) || (channels && channels.length === 0)) {
-    return (
-      <>
-        <CategoryCreate
-          open={isCategoryCreateOpen}
-          onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
-        />
-        <div
-          onClick={() => setIsCategoryCreateOpen(true)}
-          className="hover:bg-gray-5 group mt-8 flex h-[40px] w-full flex-row items-center justify-between rounded-lg border border-dashed p-2 transition-colors ease-in hover:cursor-pointer"
-        >
-          <div className="flex items-center">
-            <Plus className="fill-gray-90 hover:bg-gray-5" />
-            <span className="pl-2 text-[14px] font-normal">Добавить категорию</span>
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  if (categories === null || channels === null) return <CommunityItemsSkeleton />;
-
   // console.log('categoryIds', categoryIds);
   // console.log('channelsIds', channelsIds);
 
@@ -364,7 +406,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-156px)] sm:h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] md:pl-1 md:pr-0 ${
+        className={`mt-3 flex h-[calc(100dvh-156px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:h-[calc(100dvh-282px)] md:pl-1 md:pr-0 ${
           className ?? ''
         }`}
       >
@@ -386,34 +428,22 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           </div>
         </div>
         <DropdownMenuSeparator />
-        <ScrollArea>
-          <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
-            <div className="my-2 mr-2">
-              <CategoryContainer
-                setSlideIndex={setSlideIndex}
-                category={firstCategory}
-                channels={channels.filter((channel) => channel.categoryId === 'empty')}
-              />
-            </div>
-            {categories.length !== 0 &&
-              categories.map((category) => (
-                <div key={category.id} className="my-2 mr-2">
-                  <CategoryContainer
-                    setSlideIndex={setSlideIndex}
-                    category={category}
-                    channels={channels.filter((channel) => channel.categoryId === category.id)}
-                  />
-                </div>
-              ))}
-          </SortableContext>
-        </ScrollArea>
+        <ItemsList
+          channels={channels}
+          categories={categories}
+          categoryIds={categoryIds}
+          isOwner={communityMeta.isOwner}
+          setSlideIndex={setSlideIndex}
+        />
       </ul>
       {createPortal(
         <DragOverlay>
           {activeCategory && (
             <CategoryContainer
               category={activeCategory}
-              channels={channels.filter((channel) => channel.categoryId === activeCategory.id)}
+              channels={(channels || []).filter(
+                (channel) => channel.categoryId === activeCategory.id,
+              )}
               // firstEmptyCategoryIndex={firstEmptyCategoryIndex}
             />
           )}

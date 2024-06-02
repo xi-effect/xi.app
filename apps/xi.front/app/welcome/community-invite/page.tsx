@@ -34,7 +34,11 @@ const FormSchema = z.object({
 });
 
 export default function WelcomeCommunityInvite() {
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const updateUser = useMainSt((state) => state.updateUser);
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   const router = useRouter();
 
@@ -73,24 +77,52 @@ export default function WelcomeCommunityInvite() {
 
   const watchInvite = watch('invite');
 
-  const onSubmit = async () => {
-    const { status } = await put<RequestBody, ResponseBody>({
-      service: 'auth',
-      path: '/api/onboarding/stages/completed/',
-      body: {},
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    });
+  const onSubmit = ({ invite }: z.infer<typeof FormSchema>) => {
+    setIsLoading(true);
+    const arrayFromInvite = invite.split('/');
 
-    if (status === 204) {
-      updateUser({ onboardingStage: 'final' });
-      router.push('/welcome/final');
-    } else {
-      toast('Ошибка сервера');
-    }
+    socket.emit(
+      'join-community',
+      {
+        code: arrayFromInvite[arrayFromInvite.length - 1],
+      },
+      async (status: number, { community, participant }: { community: any; participant: any }) => {
+        console.log('status', status);
+
+        if (status === 409) {
+          toast('Вы уже являетесь участником сообщества');
+        }
+
+        if (status === 200) {
+          const { status } = await put<RequestBody, ResponseBody>({
+            service: 'auth',
+            path: '/api/onboarding/stages/completed/',
+            body: {},
+            config: {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          });
+
+          updateCommunityMeta({
+            id: community.id,
+            isOwner: participant.is_owner,
+            name: community.name,
+            description: community.description,
+          });
+
+          if (status === 204) {
+            updateUser({ onboardingStage: 'final' });
+            router.push('/welcome/final');
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
+            toast('Ошибка сервера');
+          }
+        }
+      },
+    );
   };
 
   return (
@@ -135,9 +167,13 @@ export default function WelcomeCommunityInvite() {
                 <Button onClick={handleBack} variant="ghost" className="w-[98px]">
                   Назад
                 </Button>
-                <Button disabled={watchInvite.length === 0} type="submit" className="w-full">
-                  Продолжить
-                </Button>
+                {isLoading ? (
+                  <Button disabled variant="default-spinner" type="submit" className="w-full" />
+                ) : (
+                  <Button disabled={watchInvite.length === 0} type="submit" className="w-full">
+                    Продолжить
+                  </Button>
+                )}
               </div>
             </form>
           </Form>
