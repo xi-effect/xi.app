@@ -47,7 +47,6 @@ const firstCategory = {
 export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsPropsT) => {
   const router = useRouter();
 
-  // const [categories, setCategories] = useState<CategoryT[]>(defaultCategories);
   const categories = useMainSt((state) => state.categories);
   const channels = useMainSt((state) => state.channels);
 
@@ -75,7 +74,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         community_id: currentCommunityId,
       },
       (status: number, answer: CategoryT[]) => {
-        console.log('answer', answer);
         if (status === 200) {
           const withUid = answer.map((item) => ({ ...item, uid: nanoid() }));
 
@@ -92,7 +90,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         community_id: currentCommunityId,
       },
       (status: number, answer: { category: CategoryT; channels: ChannelT[] }[]) => {
-        console.log('answer', answer);
         if (status === 200) {
           const newChannels: ChannelT[] = [];
 
@@ -165,9 +162,9 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     const categoryOverId = over.data.current?.category?.id;
 
-    if (categoryOverId === 'empty' && !isActiveAChannel) return;
+    // if (categoryOverId === 'empty' && !isActiveAChannel) return;
 
-    if (!isActiveAChannel) return;
+    // if (!isActiveAChannel) return;
 
     if (isActiveAChannel && isOverAChannel) {
       console.log('isActiveAChannel && isOverAChannel');
@@ -188,8 +185,11 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           return chnItem;
         });
 
-        updateChannels(arrayMove(newChannels, activeIndex, overIndex));
+        console.log('Problem');
+
+        updateChannels(arrayMove(newChannels, activeIndex, overIndex - 1));
       } else if (channels) {
+        console.log('Pro');
         updateChannels(arrayMove(channels, activeIndex, overIndex));
       }
     }
@@ -226,6 +226,11 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     const isActiveACategory = active.data.current?.type === 'Category';
 
+    console.log('active.data', active.data, isActiveACategory);
+
+    // Если перемещение не произошло
+    // if (activeId === overId && !isActiveACategory) return;
+
     if (!isActiveACategory && channels) {
       const activeChannelIndex = channels?.findIndex((channel) => channel.uid === activeId);
 
@@ -253,6 +258,14 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         return channels[activeChannelIndex + 1].id;
       };
 
+      console.log(
+        'move-channel',
+        activeChannelIndex,
+        channels[activeChannelIndex],
+        getAfterId(),
+        getBeforeId(),
+      );
+
       socket.emit(
         'move-channel',
         {
@@ -266,8 +279,8 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           before_id: getBeforeId(),
         },
         (status: number) => {
-          if (status !== 204) {
-            toast('Произошла ошибка при перемещении категории');
+          if (status !== 204 && status !== 409) {
+            toast('Произошла ошибка при перемещении канала');
           }
         },
       );
@@ -286,18 +299,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     const newActiveCategoryIndex = (newCategories || []).findIndex(
       (category) => category.uid === activeId,
-    );
-
-    console.log('categories', newCategories);
-    console.log(
-      'after_id',
-      newActiveCategoryIndex > 0 ? newCategories[newActiveCategoryIndex - 1].id : null,
-    );
-    console.log(
-      'before_id',
-      newActiveCategoryIndex < newCategories.length - 1
-        ? newCategories[newActiveCategoryIndex + 1].id
-        : null,
     );
 
     updateCategories(newCategories);
@@ -363,7 +364,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:pl-1 sm:pr-0 ${
+        className={`mt-3 flex h-[calc(100dvh-156px)] sm:h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] md:pl-1 md:pr-0 ${
           className ?? ''
         }`}
       >

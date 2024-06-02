@@ -50,7 +50,7 @@ export const ConfirmSave = React.forwardRef<HTMLDivElement, ConfirmSaveProps>((p
 
   return (
     // @ts-ignore
-    <SnackbarContent ref={ref} role="alert" {...other}>
+    <SnackbarContent ref={ref} role="alert" {...other} className="justify-center">
       <div
         className={`${isAnimation && 'animate-shake'} bg-gray-0 border-gray-30 flex min-h-[80px] w-fit flex-col items-center gap-4 rounded-[16px] border p-4 pl-8 md:flex-row`}
       >

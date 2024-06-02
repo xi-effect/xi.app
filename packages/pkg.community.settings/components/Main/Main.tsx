@@ -25,7 +25,6 @@ import { Input } from '@xipkg/input';
 import { useSnackbar } from 'notistack';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
-import { Header } from '../Header';
 import { useInterfaceStore } from '../../interfaceStore';
 
 const FormSchema = z.object({

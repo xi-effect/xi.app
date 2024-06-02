@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           src="https://analytics.xieffect.ru/umami.js"
         />
         <Providers>
-          <div className="flex flex-row w-full min-h-screen h-screen">{children}</div>
+          <div className="flex flex-row w-full min-h-screen">{children}</div>
         </Providers>
       </body>
     </html>
