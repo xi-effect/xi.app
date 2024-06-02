@@ -24,6 +24,7 @@ type AvatarEditorT = {
   setDate?: (value: Date) => void;
   withLoadingToServer?: boolean;
   onBase64Return?: (resizedImageBase: string, form: FormData) => void;
+  communityId?: number | undefined;
 };
 
 export const AvatarEditorComponent = ({
@@ -33,6 +34,7 @@ export const AvatarEditorComponent = ({
   onOpenChange,
   setDate,
   onBase64Return,
+  communityId,
 }: AvatarEditorT) => {
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
@@ -89,9 +91,12 @@ export const AvatarEditorComponent = ({
         return onBase64Return(resizedImageBase, form);
       }
 
+      const pathAddress = communityId ? `/api/protected/community-service/communities/${communityId}/avatar/` : '/api/users/current/avatar/';
+      const currentService = communityId ? 'backend' : 'auth';
+
       const { data, status } = await put({
-        service: 'auth',
-        path: '/api/users/current/avatar/',
+        service: currentService,
+        path: pathAddress,
         body: form,
         config: {
           headers: {},
