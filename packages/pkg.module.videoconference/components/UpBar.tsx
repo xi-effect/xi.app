@@ -23,11 +23,6 @@ export const UpBar = () => {
   const [carouselType, setCarouselType] = React.useState<string>('grid');
   const { isFullScreen, toggleFullScreen } = useFullScreen('videoConferenceContainer');
 
-  useEffect(() => {
-    if (isFullScreen == null) return;
-    sessionStorage.setItem('fullScreenVideoConference', String(isFullScreen));
-  }, [isFullScreen]);
-
   const toggleLayout = () => {
     setCarouselType((prev) => {
       if (prev === 'horizontal') return 'vertical';
