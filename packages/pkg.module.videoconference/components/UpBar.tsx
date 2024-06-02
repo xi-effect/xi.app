@@ -71,9 +71,9 @@ export const UpBar = () => {
       <button
         onClick={toggleFullScreen}
         type="button"
-        className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
+        className="ml-2 hidden h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100 md:flex"
       >
-        {isFullScreen ? <Maximize className="fill-gray-0" /> : <Minimize className="fill-gray-0" />}
+        {isFullScreen ? <Minimize className="fill-gray-0" /> : <Maximize className="fill-gray-0" />}
       </button>
       <button
         type="button"
