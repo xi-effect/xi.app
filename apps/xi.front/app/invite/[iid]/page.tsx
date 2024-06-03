@@ -1,9 +1,7 @@
 'use client';
 
 import React, { RefObject, useRef } from 'react';
-import { redirect } from 'next/navigation';
-
-import { useMainSt } from 'pkg.stores';
+import { redirect, useRouter } from 'next/navigation';
 
 import { Logo } from 'pkg.logo';
 // import { Badge } from '@xipkg/badge';
@@ -111,33 +109,38 @@ const AvatarPreview = ({ date, communityId }: AvatarPreviewProps) => (
 );
 
 export default function InvitePage({ params }: { params: { iid: string } }) {
-  const isLogin = useMainSt((state) => state.isLogin);
   const [invite, setInvite] = React.useState<ResponseBodyT | null>(null);
+  const router = useRouter();
 
   React.useEffect(() => {
-    if (isLogin) {
-      const getInviteData = async () => {
-        const { status, data } = await get<ResponseBodyT>({
-          service: 'backend',
-          path: `/api/public/community-service/invitations/by-code/${params.iid}/community/`,
-          config: {
-            headers: {
-              'Content-Type': 'application/json',
-            },
+    const getInviteData = async () => {
+      const { status, data } = await get<ResponseBodyT>({
+        service: 'backend',
+        path: `/api/public/community-service/invitations/by-code/${params.iid}/community/`,
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
           },
-        });
+        },
+      });
 
-        if (status === 200) {
-          setInvite(data);
-        }
-      };
+      if (status === 200) {
+        setInvite(data);
+      }
+    };
 
-      getInviteData();
-    }
+    getInviteData();
   }, []);
 
-  if (isLogin === null || invite === null) return <Load />;
-  if (!isLogin || !invite.is_authorized) redirect(`/signin?iid=${params.iid}`);
+  if (invite === null) return <Load />;
+  if (!invite.is_authorized) {
+    const newUrl = new URL(window.location.href);
+    newUrl.pathname = '/signin';
+    newUrl.searchParams.set('iid', params.iid);
+    newUrl.searchParams.set('community', invite.community.name);
+
+    router.push(newUrl.toString());
+  }
 
   return <InviteCard invite={invite} />;
 }
