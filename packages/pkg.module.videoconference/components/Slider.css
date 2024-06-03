@@ -1,0 +1,8 @@
+.slider-container {
+  margin: 0 auto;
+}
+
+.slider-container .slick-prev:before,
+.slider-container .slick-next:before {
+  color: white;
+}

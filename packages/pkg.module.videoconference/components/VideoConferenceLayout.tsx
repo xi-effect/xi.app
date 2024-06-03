@@ -23,6 +23,7 @@ import { useSearchParams } from 'next/navigation';
 // import Slider from 'react-slick';
 import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
+import { SliderVideoConference } from './SliderVideoConference';
 
 export interface PaginationControlProps
   extends Pick<
@@ -39,7 +40,7 @@ export interface IOrientationLayout {
   orientation: 'vertical' | 'horizontal' | 'grid';
 }
 
-function EmptyItemContainerOfUser({ ...restProps }) {
+export function EmptyItemContainerOfUser({ ...restProps }) {
   return (
     <div
       {...restProps}
@@ -160,13 +161,16 @@ export function CarouselLayout({
   };
 
   return (
-    <div className="lk-carousel" {...settings}>
-      {isOneItem && (
-        <div className="h-[144px] w-[250px]">
-          <EmptyItemContainerOfUser />
-        </div>
-      )}
-      <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
+    <div className="m-auto w-[95%]">
+      <SliderVideoConference />
+      <div className="lk-carousel">
+        {isOneItem && (
+          <div className="h-[144px] w-[250px]">
+            <EmptyItemContainerOfUser />
+          </div>
+        )}
+        <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
+      </div>
     </div>
   );
 }
