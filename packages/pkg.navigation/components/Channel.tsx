@@ -17,6 +17,12 @@ import {
   WhiteBoard,
   Settings,
 } from '@xipkg/icons';
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+} from '@xipkg/contextmenu';
 import { useMainSt } from 'pkg.stores';
 import { ChannelT } from './types';
 
@@ -119,31 +125,39 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
   }
 
   return (
-    <div
-      onMouseEnter={() => setMouseOver(true)}
-      onMouseLeave={() => setMouseOver(false)}
-      ref={setNodeRef}
-      style={style}
-      onClick={() => handleRouteChange()}
-    >
-      <div
-        className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
-      >
-        <div className="flex items-center">
-          {iconsDict[channel.kind]}
-          <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
-        </div>
-        {isOwner && mouseOver ? (
-          <div {...attributes} {...listeners} className="flex items-center gap-3">
-            {activeChannel ? (
-              <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />
-            ) : (
-              ''
-            )}
-            <Move size="s" className={currentStyles.moveIcon} />
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div
+          onMouseEnter={() => setMouseOver(true)}
+          onMouseLeave={() => setMouseOver(false)}
+          ref={setNodeRef}
+          style={style}
+          onClick={() => handleRouteChange()}
+        >
+          <div
+            className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
+          >
+            <div className="flex items-center">
+              {iconsDict[channel.kind]}
+              <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
+            </div>
+            {isOwner && mouseOver ? (
+              <div {...attributes} {...listeners} className="flex items-center gap-3">
+                {activeChannel ? (
+                  <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />
+                ) : (
+                  ''
+                )}
+                <Move size="s" className={currentStyles.moveIcon} />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-    </div>
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem>Редактировать</ContextMenuItem>
+        <ContextMenuItem>Удалить</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 };
