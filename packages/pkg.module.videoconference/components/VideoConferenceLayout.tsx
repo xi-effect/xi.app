@@ -20,6 +20,7 @@ import {
 } from '@livekit/components-react';
 import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import { useSearchParams } from 'next/navigation';
+// import Slider from 'react-slick';
 import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
 
@@ -124,21 +125,49 @@ export function CarouselLayout({
     }
   }, [maxVisibleTiles, carouselOrientation]);
 
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: maxVisibleTiles,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
-    <aside
-      key={carouselOrientation}
-      className="lk-carousel"
-      style={{ gap: '1rem', width: 'full' }}
-      ref={asideEl}
-      {...props}
-    >
+    <div className="lk-carousel" {...settings}>
       {isOneItem && (
         <div className="h-[144px] w-[250px]">
           <EmptyItemContainerOfUser />
         </div>
       )}
       <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
-    </aside>
+    </div>
   );
 }
 export function PaginationControl({

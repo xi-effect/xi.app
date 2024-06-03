@@ -25,6 +25,8 @@
     "@xipkg/input": "^0.1.1",
     "@xipkg/select": "^0.2.0",
     "lodash": "^4.17.21",
-    "pkg.module.announces": "^0.0.0"
+    "pkg.module.announces": "^0.0.0",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1"
   }
 }
