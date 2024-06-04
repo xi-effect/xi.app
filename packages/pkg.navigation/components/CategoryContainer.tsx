@@ -2,12 +2,7 @@ import React, { useMemo } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useMainSt } from 'pkg.stores';
-import {
-  ContextMenu,
-  ContextMenuTrigger,
-  ContextMenuContent,
-  ContextMenuItem,
-} from '@xipkg/contextmenu';
+import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
 
@@ -51,30 +46,24 @@ export function CategoryContainer({
   }
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <div ref={setNodeRef} style={categoryStyle}>
-          <div {...attributes} {...listeners}>
-            {name && description && (
-              <div className="flex flex-col items-start p-2">
-                <span className="text-[16px] font-semibold">{name}</span>
-                <span className="text-[14px] font-normal">{description}</span>
-              </div>
-            )}
-          </div>
-          <div className="flex min-h-[28px] flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
-            <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
-              {channels.map((channel: ChannelT) => (
-                <Channel setSlideIndex={setSlideIndex} key={channel.uid} channel={channel} />
-              ))}
-            </SortableContext>
-          </div>
+    <div ref={setNodeRef} style={categoryStyle}>
+      <ItemContextMenu isTriggerActive={isOwner} handleEdit={() => console.log('Редактировать категорию')} handleDelete={() => console.log('Удалить категорию')}>
+        <div {...attributes} {...listeners}>
+          {name && description && (
+            <div className="flex flex-col items-start p-2">
+              <span className="text-[16px] font-semibold">{name}</span>
+              <span className="text-[14px] font-normal">{description}</span>
+            </div>
+          )}
         </div>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem>Редактировать</ContextMenuItem>
-        <ContextMenuItem>Удалить</ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+        <div className="flex min-h-[28px] flex-grow flex-col gap-2 overflow-x-hidden overflow-y-hidden">
+          <SortableContext strategy={verticalListSortingStrategy} items={channelsIds}>
+            {channels.map((channel: ChannelT) => (
+              <Channel setSlideIndex={setSlideIndex} key={channel.uid} channel={channel} />
+            ))}
+          </SortableContext>
+        </div>
+      </ItemContextMenu>
+    </div>
   );
 }
