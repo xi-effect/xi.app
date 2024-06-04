@@ -3,7 +3,7 @@
 import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Form,
   FormControl,
@@ -34,6 +34,8 @@ const FormSchema = z.object({
 });
 
 export default function WelcomeCommunityInvite() {
+  const searchParams = useSearchParams();
+
   const [isLoading, setIsLoading] = React.useState(false);
 
   const updateUser = useMainSt((state) => state.updateUser);
@@ -55,7 +57,7 @@ export default function WelcomeCommunityInvite() {
 
     if (status === 204) {
       updateUser({ onboardingStage: 'community-choice' });
-      router.push('/welcome/community');
+      router.back();
     } else {
       toast('Ошибка сервера');
     }
@@ -64,7 +66,7 @@ export default function WelcomeCommunityInvite() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      invite: '',
+      invite: searchParams.has('iid') ? searchParams.get('iid')?.toString() : '',
     },
   });
 

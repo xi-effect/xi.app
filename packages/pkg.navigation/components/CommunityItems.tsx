@@ -59,6 +59,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
     if (isOwner) {
       return (
         <>
+          <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
           <CategoryCreate
             open={isCategoryCreateOpen}
             onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
@@ -85,7 +86,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
 
   return (
     <>
-      <DropdownMenuSeparator className="bg-gray-10" />
+      <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
       <ScrollArea>
         <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
           <div className="my-2 mr-2">

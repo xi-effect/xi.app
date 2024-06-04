@@ -159,6 +159,7 @@ const AuthProvider = ({ children }: AuthProviderT) => {
 
   // Сохраняем уникальные параметры при редиректе
   const getUrlWithParams = (url: string) => {
+    console.log('searchParams', searchParams);
     const params = new URLSearchParams(Object.fromEntries(searchParams)).toString();
 
     return params ? `${url}?${params}` : url;
@@ -166,10 +167,24 @@ const AuthProvider = ({ children }: AuthProviderT) => {
 
   // Если пользователь не залогинен,
   // то редиректим на форму входа, исключая страницы входа, регистрации и восстановления пароля
+  console.log(
+    "pathname.includes('/invite/')",
+    !(
+      mapsOfPathsWithoutRedirect.includes(pathname) ||
+      pathname.includes('/reset-password/') ||
+      pathname.includes('/invite/')
+    ),
+  );
+
   if (
     !isLogin &&
-    !(mapsOfPathsWithoutRedirect.includes(pathname) || pathname.includes('/reset-password/'))
+    !(
+      mapsOfPathsWithoutRedirect.includes(pathname) ||
+      pathname.includes('/reset-password/') ||
+      pathname.includes('/invite/')
+    )
   ) {
+    console.log("getUrlWithParams('/signin')", getUrlWithParams('/signin'));
     redirect(getUrlWithParams('/signin'));
     // toast('Требуется авторизация');
   }

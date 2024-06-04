@@ -1,9 +1,7 @@
 'use client';
 
 import React, { RefObject, useRef } from 'react';
-import { redirect } from 'next/navigation';
-
-import { useMainSt } from 'pkg.stores';
+import { useRouter } from 'next/navigation';
 
 import { Logo } from 'pkg.logo';
 // import { Badge } from '@xipkg/badge';
@@ -11,6 +9,8 @@ import { Button } from '@xipkg/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import Load from 'app/load';
 import { get } from 'pkg.utils';
+import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 
 type AvatarPreviewProps = {
   date: RefObject<'' | Date>;
@@ -24,9 +24,6 @@ type AvatarPreviewProps = {
 // };
 
 // Отправляем запрос, получаем следующие данные:
-// const isInviteValid = true; // если false, отображаем страницу ошибки
-// const errorMessage = 'Приглашение не действительно';
-// const errorDescription = 'Срок действия этого приглашения истёк.';
 // const communityName = 'Иванова А. Г.';
 // const communityRoles = [
 //   { name: 'Cтудент', roleColor: 'bg-brand-80', roleType: 'circle' },
@@ -59,13 +56,52 @@ type ResponseBodyT = {
 
 type InviteCardT = {
   invite: ResponseBodyT;
+  iid: string;
 };
 
-const InviteCard = ({ invite }: InviteCardT) => {
+const InviteCard = ({ invite, iid }: InviteCardT) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const date = useRef(new Date());
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   const onSubmit = () => {
-    redirect(`/communities/${invite.community.id}/home`);
+    setIsLoading(true);
+
+    console.log('onSubmit', invite);
+    socket.emit(
+      'join-community',
+      {
+        code: iid,
+      },
+      async (status: number, { community, participant }: { community: any; participant: any }) => {
+        console.log('status', status);
+
+        if (status === 409) {
+          toast('Вы уже являетесь участником сообщества');
+          setIsLoading(false);
+
+          // TODO: Придумать лучший пользовательский сценарий
+          setTimeout(() => {
+            router.push('/');
+          }, 1000);
+        }
+
+        if (status === 200) {
+          updateCommunityMeta({
+            id: community.id,
+            isOwner: participant.is_owner,
+            name: community.name,
+            description: community.description,
+          });
+
+          setIsLoading(false);
+          router.push(`/communities/${community.id}/home`);
+        }
+      },
+    );
   };
 
   return (
@@ -86,9 +122,13 @@ const InviteCard = ({ invite }: InviteCardT) => {
               />
             ))}
           </ul> */}
-          <Button className="ml-0 mt-8 w-full text-xl" onClick={onSubmit}>
-            Принять приглашение
-          </Button>
+          {isLoading ? (
+            <Button disabled variant="default-spinner" className="ml-0 mt-8 w-full text-xl" />
+          ) : (
+            <Button className="ml-0 mt-8 w-full text-xl" onClick={onSubmit}>
+              Принять приглашение
+            </Button>
+          )}
         </div>
       </div>
     </div>
@@ -99,9 +139,9 @@ const AvatarPreview = ({ date, communityId }: AvatarPreviewProps) => (
   <Avatar size="xxl" className="absolute -top-16">
     <AvatarImage
       // временная заглушка для изображения, вместо директории users будет community
-      src={`https://auth.xieffect.ru/api/users/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`}
+      src={`https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`}
       imageProps={{
-        src: `https://auth.xieffect.ru/api/users/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`,
+        src: `https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`,
         alt: 'community avatar',
       }}
       alt="community avatar"
@@ -111,33 +151,38 @@ const AvatarPreview = ({ date, communityId }: AvatarPreviewProps) => (
 );
 
 export default function InvitePage({ params }: { params: { iid: string } }) {
-  const isLogin = useMainSt((state) => state.isLogin);
   const [invite, setInvite] = React.useState<ResponseBodyT | null>(null);
+  const router = useRouter();
 
   React.useEffect(() => {
-    if (isLogin) {
-      const getInviteData = async () => {
-        const { status, data } = await get<ResponseBodyT>({
-          service: 'backend',
-          path: `/api/public/community-service/invitations/by-code/${params.iid}/community/`,
-          config: {
-            headers: {
-              'Content-Type': 'application/json',
-            },
+    const getInviteData = async () => {
+      const { status, data } = await get<ResponseBodyT>({
+        service: 'backend',
+        path: `/api/public/community-service/invitations/by-code/${params.iid}/community/`,
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
           },
-        });
+        },
+      });
 
-        if (status === 200) {
-          setInvite(data);
-        }
-      };
+      if (status === 200) {
+        setInvite(data);
+      }
+    };
 
-      getInviteData();
-    }
+    getInviteData();
   }, []);
 
-  if (isLogin === null || invite === null) return <Load />;
-  if (!isLogin || !invite.is_authorized) redirect(`/signin?iid=${params.iid}`);
+  if (invite === null) return <Load />;
+  if (!invite.is_authorized) {
+    const newUrl = new URL(window.location.href);
+    newUrl.pathname = '/signin';
+    newUrl.searchParams.set('iid', params.iid);
+    newUrl.searchParams.set('community', invite.community.name);
 
-  return <InviteCard invite={invite} />;
+    router.push(newUrl.toString());
+  }
+
+  return <InviteCard iid={params.iid} invite={invite} />;
 }
