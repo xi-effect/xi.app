@@ -6,3 +6,13 @@
 .slider-container .slick-next:before {
   color: white;
 }
+
+.slick-slide {
+  width: 250px !important;
+  height: 144px !important;
+}
+.slick-track {
+  display: flex;
+  gap: 10px;
+  width: 100% !important;
+}
