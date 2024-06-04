@@ -48,7 +48,7 @@ const FormCreateBlock = () => {
       (status: number, data: any) => {
         console.log('on data', status, data);
         if (status === 200) {
-          router.push(`/communities/${data.id}/home`);
+          router.push(`/communities/${data.community.id}/home`);
         } else {
           toast('Ошибка при создании сообщества');
         }

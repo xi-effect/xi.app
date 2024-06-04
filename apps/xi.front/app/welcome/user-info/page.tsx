@@ -3,7 +3,7 @@
 import { Button } from '@xipkg/button';
 import React, { RefObject } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { put, useMedia } from 'pkg.utils';
 import { AvatarEditor } from 'pkg.avatar.editor';
 import {
@@ -69,6 +69,8 @@ export default function WelcomeUserInfo() {
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
 
+  const searchParams = useSearchParams();
+
   const isMobile = useMedia('(max-width: 960px)');
 
   const [isAvatarEditorOpen, setIsAvatarEditorOpen] = React.useState(false);
@@ -122,7 +124,14 @@ export default function WelcomeUserInfo() {
 
     if (status === 204) {
       updateUser({ onboardingStage: 'community-choice' });
-      router.push('/welcome/community');
+
+      if (searchParams.has('iid') && searchParams.has('community')) {
+        router.push(
+          `/welcome/community?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
+        );
+      } else {
+        router.push('/welcome/community');
+      }
     } else {
       toast('Ошибка сервера');
     }

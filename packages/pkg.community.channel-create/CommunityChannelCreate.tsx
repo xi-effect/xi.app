@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { useMainSt } from 'pkg.stores';
 import { Input } from '@xipkg/input';
-import { Close, Announce, Task, Conference, Chat } from '@xipkg/icons';
+import { Close, Announce, Task, Conference, Chat, WhiteBoard } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { toast } from 'sonner';
 import { nanoid } from 'nanoid';
@@ -41,14 +41,13 @@ const actionsSheetList = [
     icon: Announce,
     title: 'Объявления',
     type: 'posts',
-    desctiption: 'Держите ваших студентов в курсе всех новостей по курсу',
+    desctiption: 'Держите ваших студентов в курсе всех новостей вашего сообщества',
   },
   {
-    icon: Task,
-    title: 'Задания',
-    type: 'tasks',
-    desctiption:
-      'Создавайте задания, тесты, получайте ответы от учеников, оценивайте и улучшайте знания',
+    icon: WhiteBoard,
+    title: 'Интерактивная доска',
+    type: 'whiteboard',
+    desctiption: 'Проводите уроки и совместные занятия с помощью удобной и функциональной доски',
   },
   {
     icon: Conference,
@@ -58,10 +57,19 @@ const actionsSheetList = [
       'Проводите уроки онлайн, проводите активности, работайте со студентами из любой точки мира',
   },
   {
+    icon: Task,
+    title: 'Задания',
+    type: 'tasks',
+    desctiption:
+      'Создавайте задания, тесты, получайте ответы от учеников, оценивайте и улучшайте знания',
+    disabled: true,
+  },
+  {
     icon: Chat,
     title: 'Чат со студентами',
     type: 'chats',
     desctiption: 'Общайтесь, отвечайте на вопросы, объясняйте непонятные моменты',
+    disabled: true,
   },
 ];
 
@@ -100,7 +108,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
           toast('Канал успешно создан');
 
           updateChannels([
-            ...channels,
+            ...(channels || []),
             {
               uid: nanoid(),
               id: dataAnswer.id,
@@ -159,6 +167,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
                             Icon={item.icon}
                             title={item.title}
                             desctiption={item.desctiption}
+                            disabled={item?.disabled}
                             index={index}
                             сlassName={value === item.type ? classBtnActive : classBtnNotActive}
                             onClick={() => onChange(item.type)}

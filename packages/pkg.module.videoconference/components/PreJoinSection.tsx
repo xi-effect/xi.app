@@ -172,17 +172,21 @@ export function PreJoinSection({
   return (
     <div className="mt-4">
       <h2 className="mb-8 font-sans text-[32px] font-medium">Присоединиться к конференции</h2>
-      <div className="flex w-full gap-6">
-        <div className="relative">
-          <div className="h-[476px] w-[847px] rounded-[16px]">
+      <div className="mr-8 grid grid-cols-2 gap-2">
+        <div className="relative flex aspect-video h-full w-full items-center justify-center overflow-hidden rounded-[16px] bg-gray-100">
+          <div className="relative">
             {videoTrack && videoEnabled && (
-              <div className="aspect-video h-[476px] [transform:rotateY(180deg)]">
+              <div className="aspect-video h-full w-full [transform:rotateY(180deg)]">
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video className="rounded-[16px]" ref={videoEl} data-lk-facing-mode={facingMode} />
+                <video
+                  ref={videoEl}
+                  data-lk-facing-mode={facingMode}
+                  className="h-full w-full object-cover"
+                />
               </div>
             )}
             {(!videoTrack || !videoEnabled) && (
-              <div className="flex h-[476px] items-center justify-center rounded-[16px] bg-gray-100">
+              <div className="flex items-center justify-center rounded-[16px] bg-gray-100">
                 <ParticipantPlaceholder />
               </div>
             )}
@@ -190,7 +194,7 @@ export function PreJoinSection({
           <div className="absolute bottom-5 left-5">
             <div className="flex gap-1 rounded-[24px] bg-gray-100 p-1">
               <div
-                className={`border-4 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
+                className={`border-2 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
               >
                 <TrackToggle
                   className="bg-transparent text-white"
@@ -203,7 +207,7 @@ export function PreJoinSection({
                 </TrackToggle>
               </div>
               <div
-                className={`border-4 ${videoEnabled && videoTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
+                className={`border-2 ${videoEnabled && videoTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
               >
                 <TrackToggle
                   showIcon={false}
@@ -218,7 +222,7 @@ export function PreJoinSection({
             </div>
           </div>
         </div>
-        <div className="border-gray-30 flex w-[737px] flex-col justify-between rounded-[16px] border p-5">
+        <div className="border-gray-30 flex flex-col justify-between rounded-[16px] border p-5">
           <div>
             {/* eslint-disable-next-line no-nested-ternary */}
             {!permissionByBrowser ? (

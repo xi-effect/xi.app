@@ -91,7 +91,7 @@ export default function WelcomeCommunityCreate() {
 
     if (status === 204) {
       updateUser({ onboardingStage: 'community-choice' });
-      router.push('/welcome/community');
+      router.back();
     } else {
       toast('Ошибка сервера');
     }

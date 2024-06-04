@@ -18,13 +18,15 @@ import {
   MeasuringStrategy,
   closestCorners,
 } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'; // arrayMove
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
 import { ScrollArea } from '@xipkg/scrollarea';
-import { Calendar, Home } from '@xipkg/icons';
+import { Calendar, Home, Plus } from '@xipkg/icons';
 import { DropdownMenuSeparator } from '@xipkg/dropdown';
+import { CategoryCreate } from 'pkg.modal.category-create';
+import { toast } from 'sonner';
 import { CategoryContainer } from './CategoryContainer';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
@@ -35,15 +37,97 @@ type CommunityItemsPropsT = {
   className?: string;
 };
 
+const firstCategory = {
+  uid: nanoid(),
+  id: 'empty' as 'empty',
+  name: null,
+  description: null,
+};
+
+type ItemsListT = {
+  channels: ChannelT[] | null;
+  categories: CategoryT[] | null;
+  categoryIds: string[];
+  isOwner: boolean | null;
+  setSlideIndex: (value: number) => void;
+};
+
+const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }: ItemsListT) => {
+  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
+
+  if ((categories && categories.length === 0) || (channels && channels.length === 0)) {
+    if (isOwner) {
+      return (
+        <>
+          <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
+          <CategoryCreate
+            open={isCategoryCreateOpen}
+            onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
+          />
+          <div
+            onClick={() => setIsCategoryCreateOpen(true)}
+            className="hover:bg-gray-5 group mt-8 flex h-[40px] w-full flex-row items-center justify-between rounded-lg border border-dashed p-2 transition-colors ease-in hover:cursor-pointer"
+          >
+            <div className="flex items-center">
+              <Plus className="fill-gray-90 hover:bg-gray-5" />
+              <span className="pl-2 text-[14px] font-normal">Добавить категорию</span>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    return null;
+  }
+
+  if (categories === null || channels === null) {
+    return <CommunityItemsSkeleton />;
+  }
+
+  return (
+    <>
+      <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
+      <ScrollArea>
+        <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+          <div className="my-2 mr-2">
+            <CategoryContainer
+              setSlideIndex={setSlideIndex}
+              category={firstCategory}
+              channels={channels.filter((channel) => channel.categoryId === 'empty')}
+            />
+          </div>
+          {categories.length !== 0 &&
+            categories.map((category) => (
+              <div key={category.id} className="my-2 mr-2">
+                <CategoryContainer
+                  setSlideIndex={setSlideIndex}
+                  category={category}
+                  channels={channels.filter((channel) => channel.categoryId === category.id)}
+                />
+              </div>
+            ))}
+        </SortableContext>
+      </ScrollArea>
+    </>
+  );
+};
+
 export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsPropsT) => {
   const router = useRouter();
 
-  // const [categories, setCategories] = useState<CategoryT[]>(defaultCategories);
+  const communityMeta = useMainSt((state) => state.communityMeta);
+
   const categories = useMainSt((state) => state.categories);
   const channels = useMainSt((state) => state.channels);
 
-  const categoryIds = useMemo(() => categories.map((category) => category.uid ?? 0), [categories]);
-  const channelsIds = useMemo(() => channels.map((channel) => channel.uid ?? 0), [channels]);
+  const categoryIds = useMemo(
+    () => (categories || []).map((category) => category.uid ?? 0),
+    [categories],
+  );
+  const channelsIds = useMemo(
+    () => (categories || []).map((channel) => channel.uid ?? 0),
+    [channels],
+  );
   const [activeCategory, setActiveCategory] = useState<CategoryT | null>(null);
   const [activeChannel, setActiveChannel] = useState<ChannelT | null>(null);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
@@ -54,41 +138,16 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   const updateChannels = useMainSt((state) => state.updateChannels);
 
   useEffect(() => {
-    const handleNewCategory = (status: number, data: any) => {
-      console.log('handleNewCategory', status, data);
-    };
-
-    socket.on('community-room/create-category', handleNewCategory);
-
-    return () => {
-      socket.off('community-room/create-category', handleNewCategory);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleNewChannel = (status: number, data: any) => {
-      console.log('handleNewChannel', status, data);
-    };
-
-    socket.on('community-room/create-channel', handleNewChannel);
-
-    return () => {
-      socket.off('community-room/create-channel', handleNewChannel);
-    };
-  }, []);
-
-  useEffect(() => {
     socket.emit(
       'list-categories',
       {
         community_id: currentCommunityId,
       },
       (status: number, answer: CategoryT[]) => {
-        console.log('answer', answer);
         if (status === 200) {
           const withUid = answer.map((item) => ({ ...item, uid: nanoid() }));
 
-          updateCategories([{ id: 'empty', name: '', description: '', uid: nanoid() }, ...withUid]);
+          updateCategories([...withUid]);
         }
       },
     );
@@ -101,7 +160,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         community_id: currentCommunityId,
       },
       (status: number, answer: { category: CategoryT; channels: ChannelT[] }[]) => {
-        console.log('answer', answer);
         if (status === 200) {
           const newChannels: ChannelT[] = [];
 
@@ -132,7 +190,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   const pathname = usePathname();
 
   useEffect(() => {
-    setCurrentChannel(checkIsChannelOpened(pathname, channels));
+    setCurrentChannel(checkIsChannelOpened(pathname, channels ?? []));
   }, [pathname, channels]);
 
   const checkIsChannelOpened = (url: string, channels: ChannelT[]) => {
@@ -174,27 +232,21 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     const categoryOverId = over.data.current?.category?.id;
 
-    console.log('overData', categoryOverId);
+    // if (categoryOverId === 'empty' && !isActiveAChannel) return;
 
-    console.log('isActiveAChannel', isActiveAChannel, isOverAChannel);
-
-    if (!isActiveAChannel) return;
+    // if (!isActiveAChannel) return;
 
     if (isActiveAChannel && isOverAChannel) {
-      // console.log('isActiveAChannel && isOverAChannel');
+      console.log('isActiveAChannel && isOverAChannel');
 
-      const activeIndex = channels.findIndex(
+      const activeIndex = (channels || []).findIndex(
         (channel: ChannelT) => channel.uid === activeId,
       ) as number;
-      const overIndex = channels.findIndex((channel: ChannelT) => channel.uid === overId) as number;
+      const overIndex = (channels || []).findIndex(
+        (channel: ChannelT) => channel.uid === overId,
+      ) as number;
 
-      // console.log('activeIndex', activeIndex);
-      // console.log('overIndex', overIndex);
-
-      // console.log('channels[activeIndex].categoryId', channels[activeIndex].categoryId);
-      // console.log('channels[overIndex].categoryId', channels[overIndex].categoryId);
-
-      if (channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
+      if (channels && channels[activeIndex].categoryId !== channels[overIndex].categoryId) {
         const newChannels = channels.map((chnItem, index) => {
           if (index === activeIndex) {
             return { ...chnItem, categoryId: channels[overIndex].categoryId };
@@ -203,28 +255,29 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           return chnItem;
         });
 
-        // console.log('channels[activeIndex].categoryId !== channels[overIndex].categoryId');
+        console.log('Problem');
 
-        updateChannels(arrayMove(newChannels, activeIndex, overIndex));
-      } else {
+        updateChannels(arrayMove(newChannels, activeIndex, overIndex - 1));
+      } else if (channels) {
+        console.log('Pro');
         updateChannels(arrayMove(channels, activeIndex, overIndex));
       }
     }
 
     // Если мы находимся над категорией
     if (isActiveAChannel && !isOverAChannel) {
-      const activeIndex = channels.findIndex((channel: ChannelT) => channel.uid === activeId);
+      const activeIndex = (channels || []).findIndex(
+        (channel: ChannelT) => channel.uid === activeId,
+      );
 
       console.log('activeIndex', activeIndex, channels, overId);
-      const newChannels = channels.map((chnItem, index) => {
+      const newChannels = (channels || []).map((chnItem, index) => {
         if (index === activeIndex) {
           return { ...chnItem, categoryId: categoryOverId };
         }
 
         return chnItem;
       });
-
-      console.log('isActiveAChannel && !isOverAChannel', newChannels);
 
       updateChannels(arrayMove(newChannels, activeIndex, 0));
     }
@@ -241,20 +294,104 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const activeId = active.id;
     const overId = over.id;
 
-    if (activeId === overId) return;
-
     const isActiveACategory = active.data.current?.type === 'Category';
-    if (!isActiveACategory) return;
 
-    const activeCategoryIndex = categories.findIndex((category) => category.uid === activeId);
-    const overCategoryIndex = categories.findIndex((category) => category.uid === overId);
+    console.log('active.data', active.data, isActiveACategory);
 
+    // Если перемещение не произошло
+    // if (activeId === overId && !isActiveACategory) return;
+
+    if (!isActiveACategory && channels) {
+      const activeChannelIndex = channels?.findIndex((channel) => channel.uid === activeId);
+
+      const getAfterId = () => {
+        if (activeChannelIndex === 0) return null;
+
+        if (
+          channels[activeChannelIndex - 1].categoryId !== channels[activeChannelIndex].categoryId
+        ) {
+          return null;
+        }
+
+        return channels[activeChannelIndex - 1].id;
+      };
+
+      const getBeforeId = () => {
+        if (activeChannelIndex === channels.length - 1) return null;
+
+        if (
+          channels[activeChannelIndex + 1].categoryId !== channels[activeChannelIndex].categoryId
+        ) {
+          return null;
+        }
+
+        return channels[activeChannelIndex + 1].id;
+      };
+
+      console.log(
+        'move-channel',
+        activeChannelIndex,
+        channels[activeChannelIndex],
+        getAfterId(),
+        getBeforeId(),
+      );
+
+      socket.emit(
+        'move-channel',
+        {
+          community_id: currentCommunityId,
+          category_id:
+            channels[activeChannelIndex].categoryId === 'empty'
+              ? null
+              : channels[activeChannelIndex].categoryId,
+          channel_id: channels[activeChannelIndex].id,
+          after_id: getAfterId(),
+          before_id: getBeforeId(),
+        },
+        (status: number) => {
+          if (status !== 204 && status !== 409) {
+            toast('Произошла ошибка при перемещении канала');
+          }
+        },
+      );
+
+      return;
+    }
+
+    if (!categories) return;
+
+    const activeCategoryIndex = (categories || []).findIndex(
+      (category) => category.uid === activeId,
+    );
+
+    const overCategoryIndex = (categories || []).findIndex((category) => category.uid === overId);
     const newCategories = arrayMove(categories, activeCategoryIndex, overCategoryIndex);
 
-    updateCategories(newCategories);
-  };
+    const newActiveCategoryIndex = (newCategories || []).findIndex(
+      (category) => category.uid === activeId,
+    );
 
-  if (categories.length === 0 || channels.length === 0) return <CommunityItemsSkeleton />;
+    updateCategories(newCategories);
+
+    socket.emit(
+      'move-category',
+      {
+        community_id: currentCommunityId,
+        category_id: categories[activeCategoryIndex].id,
+        after_id: newActiveCategoryIndex > 0 ? newCategories[newActiveCategoryIndex - 1].id : null,
+        before_id:
+          newActiveCategoryIndex < newCategories.length - 1
+            ? newCategories[newActiveCategoryIndex + 1].id
+            : null,
+      },
+      (status: number) => {
+        if (status !== 204) {
+          toast('Произошла ошибка при перемещении категории');
+          updateCategories(categories);
+        }
+      },
+    );
+  };
 
   // console.log('categoryIds', categoryIds);
   // console.log('channelsIds', channelsIds);
@@ -273,7 +410,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:pl-1 sm:pr-0 ${
+        className={`mt-3 flex h-[calc(100dvh-156px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:h-[calc(100dvh-282px)] md:pl-1 md:pr-0 ${
           className ?? ''
         }`}
       >
@@ -294,28 +431,23 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
             <span className="pl-2 text-[14px] font-normal">Расписание</span>
           </div>
         </div>
-        <DropdownMenuSeparator />
-        <ScrollArea>
-          <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
-            {categories.length !== 0 &&
-              categories.map((category) => (
-                <div key={category.id} className="my-2 mr-2">
-                  <CategoryContainer
-                    setSlideIndex={setSlideIndex}
-                    category={category}
-                    channels={channels.filter((channel) => channel.categoryId === category.id)}
-                  />
-                </div>
-              ))}
-          </SortableContext>
-        </ScrollArea>
+        <ItemsList
+          channels={channels}
+          categories={categories}
+          categoryIds={categoryIds}
+          isOwner={communityMeta.isOwner}
+          setSlideIndex={setSlideIndex}
+        />
       </ul>
       {createPortal(
         <DragOverlay>
           {activeCategory && (
             <CategoryContainer
               category={activeCategory}
-              channels={channels.filter((channel) => channel.categoryId === activeCategory.id)}
+              channels={(channels || []).filter(
+                (channel) => channel.categoryId === activeCategory.id,
+              )}
+              // firstEmptyCategoryIndex={firstEmptyCategoryIndex}
             />
           )}
           {activeChannel && (

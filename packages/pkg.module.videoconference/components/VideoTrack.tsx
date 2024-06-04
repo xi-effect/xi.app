@@ -1,13 +1,14 @@
+/* eslint-disable max-len */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import type { TrackReferenceOrPlaceholder, WidgetState } from '@livekit/components-core';
 import '@livekit/components-styles';
+import type { TrackReferenceOrPlaceholder, WidgetState } from '@livekit/components-core';
 import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/components-core';
 import { RoomEvent, Track } from 'livekit-client';
 import {
-  CarouselLayout,
   ConnectionStateToast,
-  FocusLayoutContainer,
-  GridLayout,
   LayoutContextProvider,
   RoomAudioRenderer,
   VideoConferenceProps,
@@ -15,19 +16,23 @@ import {
   usePinnedTracks,
   useTracks,
 } from '@livekit/components-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ParticipantTile } from './ParticipantTile';
-import { FocusLayout } from './FocusLayout';
+import { CarouselContainer, GridLayout, FocusLayoutContainer } from './VideoConferenceLayout';
 
 export function VideoConference({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   chatMessageFormatter,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   chatMessageDecoder,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   chatMessageEncoder,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ...props
 }: VideoConferenceProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [widgetState, setWidgetState] = React.useState<WidgetState>({
+    showChat: false,
+    unreadMessages: 0,
+  });
   const lastAutoFocusedScreenShareTrack = React.useRef<TrackReferenceOrPlaceholder | null>(null);
 
   const tracks = useTracks(
@@ -40,6 +45,7 @@ export function VideoConference({
 
   const widgetUpdate = (state: WidgetState) => {
     log.debug('updating widget state', state);
+    setWidgetState(state);
   };
 
   const layoutContext = useCreateLayoutContext();
@@ -58,7 +64,6 @@ export function VideoConference({
     ) {
       log.debug('Auto set screen share focus:', { newScreenShareTrack: screenShareTracks[0] });
       layoutContext.pin.dispatch?.({ msg: 'set_pin', trackReference: screenShareTracks[0] });
-      // eslint-disable-next-line prefer-destructuring
       lastAutoFocusedScreenShareTrack.current = screenShareTracks[0];
     } else if (
       lastAutoFocusedScreenShareTrack.current &&
@@ -79,26 +84,47 @@ export function VideoConference({
     focusTrack?.publication?.trackSid,
   ]);
 
+  React.useEffect(() => {
+    const carouselType = searchParams.get('carouselType');
+    if (carouselType === 'horizontal' || carouselType === 'vertical') {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('carouselType', carouselType);
+      layoutContext.pin.dispatch?.({
+        msg: 'set_pin',
+        trackReference: lastAutoFocusedScreenShareTrack.current ? screenShareTracks[0] : tracks[0],
+      });
+      router.push(`${pathname}?${params.toString()}`);
+    } else if (!carouselType) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('carouselType');
+      layoutContext.pin.dispatch?.({ msg: 'clear_pin' });
+      router.push(`${pathname}?${params.toString()}`);
+    }
+  }, [router, pathname, searchParams]);
+
   return (
     <div className="lk-video-conference" {...props}>
       {isWeb() && (
         <LayoutContextProvider value={layoutContext} onWidgetChange={widgetUpdate}>
           <div className="lk-video-conference-inner">
             {!focusTrack ? (
-              <div className="lk-grid-layout-wrapper">
+              <div className="min-h-sreen">
                 <GridLayout tracks={tracks}>
-                  <ParticipantTile />
+                  <ParticipantTile
+                    isFocusToggleDisable
+                    style={{ flexDirection: 'column', maxWidth: '100%', maxHeight: '100%' }}
+                  />
                 </GridLayout>
               </div>
             ) : (
-              <div className="lk-focus-layout-wrapper">
-                <FocusLayoutContainer>
-                  <CarouselLayout tracks={carouselTracks}>
-                    <ParticipantTile />
-                  </CarouselLayout>
-                  {focusTrack && <FocusLayout trackRef={focusTrack} />}
-                </FocusLayoutContainer>
-              </div>
+              <FocusLayoutContainer className="min-h-screen">
+                <CarouselContainer
+                  orientation="vertical"
+                  focusTrack={focusTrack}
+                  tracks={tracks}
+                  carouselTracks={carouselTracks}
+                />
+              </FocusLayoutContainer>
             )}
           </div>
         </LayoutContextProvider>

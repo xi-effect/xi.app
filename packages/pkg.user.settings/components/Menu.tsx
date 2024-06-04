@@ -2,7 +2,7 @@ import { Account, Exit, Home, Key, Palette } from '@xipkg/icons';
 import { useMedia } from 'pkg.utils';
 import React, { Dispatch, SetStateAction } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createQueryString } from 'pkg.router.url';
+import { createQueryString, deleteQuery } from 'pkg.router.url';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type ItemT = {
@@ -89,6 +89,10 @@ type MenuPropsT = {
 };
 
 export const Menu = ({ setActiveContent, setActiveQuery, setShowContent, onExit }: MenuPropsT) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
   const handleMenuItem = (index: number, query: string) => {
     setActiveQuery(query);
     setActiveContent(index);
@@ -96,6 +100,8 @@ export const Menu = ({ setActiveContent, setActiveQuery, setShowContent, onExit 
   };
 
   const handleExit = () => {
+    const updatedParams = deleteQuery(deleteQuery(searchParams, 'profileIsOpen'), 'category');
+    router.replace(`${pathname}?${updatedParams}`);
     if (onExit) onExit();
   };
 

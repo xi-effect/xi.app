@@ -40,7 +40,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
   };
 
   return (
-    <div className="flex w-full overflow-auto md:hidden">
+    <div className="flex w-full overflow-hidden md:hidden">
       <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
         <div className="w-full overflow-auto">
           <div className="sticky left-0 top-0 px-4 pt-4">

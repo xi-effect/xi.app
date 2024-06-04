@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
-      <body className="overflow-hidden xs:overflow-x-hidden bg-gray-0">
+      <body className="overflow-hidden bg-gray-0">
         <Script
           async
           defer
@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           src="https://analytics.xieffect.ru/umami.js"
         />
         <Providers>
-          <div className="flex flex-row w-full min-h-screen h-screen">{children}</div>
+          <div className="flex flex-row w-full min-h-screen">{children}</div>
         </Providers>
       </body>
     </html>

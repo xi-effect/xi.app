@@ -48,6 +48,7 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
 
     if (status === 200) {
       useMainSt.getState().initSocket();
+
       set((state) => ({
         user: {
           ...state.user,

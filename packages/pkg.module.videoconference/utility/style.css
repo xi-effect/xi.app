@@ -1,0 +1,20 @@
+.lk-participant-tile::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: var(--lk-border-radius);
+  border: 0px solid #419b58;
+  transition-property: border opacity;
+  transition-delay: 0.1s;
+  transition-duration: 0.1s;
+  pointer-events: none;
+  border-radius: 8px;
+}
+.lk-participant-tile[data-lk-speaking='true']:not([data-lk-source='screen_share'])::after {
+  transition-delay: 0s;
+  transition-duration: 0.2s;
+  border-width: var(--lk-speaking-indicator-width);
+}

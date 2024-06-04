@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
-import { Toggle } from '@xipkg/toggle';
+// import { Toggle } from '@xipkg/toggle';
 import {
   Form as FormComponent,
   FormControl,
@@ -114,7 +114,7 @@ export const Form = ({ onOpenChange }: FormT) => {
                   console.log('ans', status, dataAnswer);
                   // TODO Каналы не создаются больше одного, надо пофиксить, мб рекурсией
                   updatedChannels([
-                    ...channels,
+                    ...(channels || []),
                     {
                       id: dataAnswer.id,
                       name: dataAnswer.name,
@@ -130,7 +130,7 @@ export const Form = ({ onOpenChange }: FormT) => {
           }
 
           updateCategories([
-            ...categories,
+            ...(categories || []),
             { id: data.id, name: data.name, description: data.description, uid: nanoid() },
           ]);
           onOpenChange();
@@ -194,7 +194,7 @@ export const Form = ({ onOpenChange }: FormT) => {
               </FormItem>
             )}
           />
-          <div className="bg-gray-5 flex items-center justify-between gap-8 rounded-md p-4">
+          {/* <div className="bg-gray-5 flex items-center justify-between gap-8 rounded-md p-4">
             <div>
               <h2 className="text-xl font-semibold text-gray-100">Приватная категория</h2>
               <p className="text-gray-80 mt-2 text-base font-normal">
@@ -216,7 +216,7 @@ export const Form = ({ onOpenChange }: FormT) => {
                 </FormItem>
               )}
             />
-          </div>
+          </div> */}
         </div>
         <M.ModalFooter>
           {isButtonActive ? (

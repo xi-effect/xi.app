@@ -1,5 +1,5 @@
 import { LiveKitRoom, useConnectionQualityIndicator } from '@livekit/components-react';
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import { ConnectionQuality } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
@@ -7,7 +7,6 @@ import { serverUrl, ILocalUserChoice } from '../VideoConference';
 import { ISettingsRoom } from '../types/types';
 import { VideoConference } from './VideoTrack';
 
-// eslint-disable-next-line max-len
 export function ActiveRoom({
   token,
   room,
@@ -29,24 +28,19 @@ export function ActiveRoom({
       connect={connect}
       onConnected={() => setIsConnected(true)}
       onDisconnected={handleDisconnect}
-      audio={userChoice?.audioEnabled}
-      video={userChoice?.videoEnabled}
-      className="h-screen"
+      audio={userChoice?.audioEnabled || false}
+      video={userChoice?.videoEnabled || false}
     >
-      <UpBar />
-      <div className="flex h-[100vh] flex-row px-8 py-4">{isConnected && <Stage />}</div>
-      <BottomBar />
-    </LiveKitRoom>
-  );
-}
-
-export function Stage() {
-  return (
-    <div className="overflow-hidden">
-      <div className="text-gray-5 w-full min-w-[320px]">
-        <VideoConference className="rounded-[16px] border-none" />
+      <div className="flex min-h-screen flex-col justify-between gap-3">
+        <UpBar />
+        <div className="px-4">
+          <div className="text-gray-5 h-full w-full text-center">
+            {isConnected && <VideoConference />}
+          </div>
+        </div>
+        <BottomBar />
       </div>
-    </div>
+    </LiveKitRoom>
   );
 }
 

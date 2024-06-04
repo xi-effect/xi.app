@@ -3,7 +3,7 @@
 import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Form,
   FormControl,
@@ -34,7 +34,13 @@ const FormSchema = z.object({
 });
 
 export default function WelcomeCommunityInvite() {
+  const searchParams = useSearchParams();
+
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const updateUser = useMainSt((state) => state.updateUser);
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   const router = useRouter();
 
@@ -51,7 +57,7 @@ export default function WelcomeCommunityInvite() {
 
     if (status === 204) {
       updateUser({ onboardingStage: 'community-choice' });
-      router.push('/welcome/community');
+      router.back();
     } else {
       toast('Ошибка сервера');
     }
@@ -60,7 +66,7 @@ export default function WelcomeCommunityInvite() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      invite: '',
+      invite: searchParams.has('iid') ? searchParams.get('iid')?.toString() : '',
     },
   });
 
@@ -73,24 +79,52 @@ export default function WelcomeCommunityInvite() {
 
   const watchInvite = watch('invite');
 
-  const onSubmit = async () => {
-    const { status } = await put<RequestBody, ResponseBody>({
-      service: 'auth',
-      path: '/api/onboarding/stages/completed/',
-      body: {},
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    });
+  const onSubmit = ({ invite }: z.infer<typeof FormSchema>) => {
+    setIsLoading(true);
+    const arrayFromInvite = invite.split('/');
 
-    if (status === 204) {
-      updateUser({ onboardingStage: 'final' });
-      router.push('/welcome/final');
-    } else {
-      toast('Ошибка сервера');
-    }
+    socket.emit(
+      'join-community',
+      {
+        code: arrayFromInvite[arrayFromInvite.length - 1],
+      },
+      async (status: number, { community, participant }: { community: any; participant: any }) => {
+        console.log('status', status);
+
+        if (status === 409) {
+          toast('Вы уже являетесь участником сообщества');
+        }
+
+        if (status === 200) {
+          const { status } = await put<RequestBody, ResponseBody>({
+            service: 'auth',
+            path: '/api/onboarding/stages/completed/',
+            body: {},
+            config: {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          });
+
+          updateCommunityMeta({
+            id: community.id,
+            isOwner: participant.is_owner,
+            name: community.name,
+            description: community.description,
+          });
+
+          if (status === 204) {
+            updateUser({ onboardingStage: 'final' });
+            router.push('/welcome/final');
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
+            toast('Ошибка сервера');
+          }
+        }
+      },
+    );
   };
 
   return (
@@ -135,9 +169,13 @@ export default function WelcomeCommunityInvite() {
                 <Button onClick={handleBack} variant="ghost" className="w-[98px]">
                   Назад
                 </Button>
-                <Button disabled={watchInvite.length === 0} type="submit" className="w-full">
-                  Продолжить
-                </Button>
+                {isLoading ? (
+                  <Button disabled variant="default-spinner" type="submit" className="w-full" />
+                ) : (
+                  <Button disabled={watchInvite.length === 0} type="submit" className="w-full">
+                    Продолжить
+                  </Button>
+                )}
               </div>
             </form>
           </Form>

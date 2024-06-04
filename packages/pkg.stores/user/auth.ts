@@ -5,6 +5,7 @@
 import { StateCreator } from 'zustand';
 import { post, put } from 'pkg.utils';
 import { io } from 'socket.io-client';
+import { UseFormSetError } from 'react-hook-form';
 import { Common, useMainSt } from '../main';
 import { ResponseBodyUserT } from './profile';
 
@@ -18,28 +19,24 @@ export type Auth = {
   onSignIn: ({
     email,
     password,
-    redirectFn,
   }: Data & {
-    redirectFn: (value: string) => void;
-    setError: (name: string, error: { type: string; message: string }) => void;
-  }) => void;
+    setError: UseFormSetError<{ email: string; password: string; }>;
+  }) => Promise<200 | 400>;
   onSignUp: ({
     email,
     password,
     username,
-    redirectFn,
   }: Data & {
-    redirectFn: (value: string) => void;
-    setError: (name: string, error: { type: string; message: string }) => void;
+    setError: UseFormSetError<{ email: string; password: string; username: string; }>;
     username: string;
   }) => void;
   onEmailChange: ({
     email,
     password,
   }: Data & {
-    setError: (name: string, error: { type: string; message: string }) => void;
+    setError: UseFormSetError<{ email: string; password: string; }>;
   }) => void;
-  onSignOut: (redirectFn?: (value: string) => void) => void;
+  onSignOut: () => void;
 };
 
 type RequestBodySignIn = {
@@ -73,15 +70,19 @@ type ResponseBodyChangeEmail = {
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   socket: null,
   isLogin: null,
-  initSocket: () => set(() => ({
-    socket: io('https://api.xieffect.ru/', {
-      withCredentials: true,
-      transports: ['websocket'],
-      reconnectionAttempts: 100,
-      reconnectionDelay: 2000,
-      reconnectionDelayMax: 50000,
-    }),
-  })),
+  initSocket: () => {
+    if (!useMainSt.getState().socket) {
+      const socketInstance = io('https://api.xieffect.ru/', {
+        withCredentials: true,
+        transports: ['websocket'],
+        reconnectionAttempts: 100,
+        reconnectionDelay: 2000,
+        reconnectionDelayMax: 50000,
+      });
+
+      set({ socket: socketInstance });
+    }
+  },
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
   onSignIn: async ({ email, password, setError }) => {
     const { data, status } = await post<RequestBodySignIn, ResponseBodySignIn>({
@@ -103,9 +104,9 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     // console.log('onSignIn', data, status);
     if (status === 200) {
       useMainSt.getState().initSocket();
+
       {
         set((state) => ({
-          isLogin: true,
           user: {
             ...state.user,
             onboardingStage: data.onboarding_stage,
@@ -148,6 +149,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     console.log('onSignUp', data, status);
     if (status === 200) {
       useMainSt.getState().initSocket();
+
       {
         set((state) => ({
           isLogin: true,
