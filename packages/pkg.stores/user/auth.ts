@@ -5,6 +5,7 @@
 import { StateCreator } from 'zustand';
 import { post, put } from 'pkg.utils';
 import { io } from 'socket.io-client';
+import { UseFormSetError } from 'react-hook-form';
 import { Common, useMainSt } from '../main';
 import { ResponseBodyUserT } from './profile';
 
@@ -18,28 +19,24 @@ export type Auth = {
   onSignIn: ({
     email,
     password,
-    redirectFn,
   }: Data & {
-    redirectFn: (value: string) => void;
-    setError: (name: string, error: { type: string; message: string }) => void;
-  }) => void;
+    setError: UseFormSetError<{ email: string; password: string; }>;
+  }) => Promise<200 | 400>;
   onSignUp: ({
     email,
     password,
     username,
-    redirectFn,
   }: Data & {
-    redirectFn: (value: string) => void;
-    setError: (name: string, error: { type: string; message: string }) => void;
+    setError: UseFormSetError<{ email: string; password: string; username: string; }>;
     username: string;
   }) => void;
   onEmailChange: ({
     email,
     password,
   }: Data & {
-    setError: (name: string, error: { type: string; message: string }) => void;
+    setError: UseFormSetError<{ email: string; password: string; }>;
   }) => void;
-  onSignOut: (redirectFn?: (value: string) => void) => void;
+  onSignOut: () => void;
 };
 
 type RequestBodySignIn = {
@@ -110,7 +107,6 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
 
       {
         set((state) => ({
-          isLogin: true,
           user: {
             ...state.user,
             onboardingStage: data.onboarding_stage,
