@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
@@ -126,51 +127,16 @@ export function CarouselLayout({
     }
   }, [maxVisibleTiles, carouselOrientation]);
 
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: maxVisibleTiles,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
   return (
     <div className="m-auto w-[95%]">
-      <SliderVideoConference />
-      <div className="lk-carousel">
-        {isOneItem && (
-          <div className="h-[144px] w-[250px]">
-            <EmptyItemContainerOfUser />
-          </div>
-        )}
-        <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
-      </div>
+      {isOneItem && (
+        <div className="h-[144px] w-[250px]">
+          <EmptyItemContainerOfUser />
+        </div>
+      )}
+      <SliderVideoConference maxVisibleTiles={maxVisibleTiles} tracks={sortedTiles}>
+        {props.children}
+      </SliderVideoConference>
     </div>
   );
 }
