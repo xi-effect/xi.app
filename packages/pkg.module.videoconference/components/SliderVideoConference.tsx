@@ -8,6 +8,7 @@ import './Slider.css';
 import { getTrackReferenceId } from '@livekit/components-core';
 import { TrackLoopProps, TrackRefContext } from '@livekit/components-react';
 import { IOrientationLayout } from './VideoConferenceLayout';
+import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 
 interface ITrackLoopProps {
   maxVisibleTiles: number;
@@ -26,6 +27,8 @@ export function SliderVideoConference({
     slidesToShow: maxVisibleTiles,
     vertical: orientation === 'vertical',
     verticalSwiping: orientation === 'vertical',
+    nextArrow: <ChevronRight />,
+    prevArrow: <ChevronLeft />,
     slidesToScroll: 1,
     responsive: [
       {
