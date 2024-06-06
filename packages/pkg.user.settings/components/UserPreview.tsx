@@ -75,7 +75,7 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   };
 
   return (
-    <div className={`border-gray-80 flex h-[120px] w-full rounded-2xl border p-6 ${className}`}>
+    <div className={`border-gray-80 flex items-center h-[120px] w-full rounded-2xl border p-6 ${className}`}>
       <AvatarEditor
         file={file}
         open={isAvatarOpen}
