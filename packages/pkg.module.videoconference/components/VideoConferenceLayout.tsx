@@ -9,7 +9,6 @@ import {
   getScrollBarWidth,
 } from '@livekit/components-core';
 import {
-  CarouselLayoutProps,
   TrackLoop,
   useVisualStableUpdate,
   FocusLayoutProps,
@@ -89,6 +88,12 @@ const MIN_VISIBLE_TILES = 3;
 const ASPECT_RATIO = 8 / 10;
 const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
 
+export interface CarouselLayoutProps extends React.HTMLAttributes<HTMLMediaElement> {
+  tracks: TrackReferenceOrPlaceholder[];
+  children: React.ReactNode;
+  orientation: 'vertical' | 'horizontal' | 'grid';
+}
+
 export function CarouselLayout({
   tracks,
   orientation,
@@ -135,7 +140,7 @@ export function CarouselLayout({
         </div>
       )}
       <SliderVideoConference
-        orientation={carouselOrientation}
+        orientation={orientation}
         maxVisibleTiles={maxVisibleTiles}
         tracks={sortedTiles}
       >
