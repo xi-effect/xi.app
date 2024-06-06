@@ -66,16 +66,18 @@ export function SliderVideoConference({
   }
   return (
     <div className="slider-container">
-      <Slider {...settings}>
-        {tracks.map((trackReference: any) => (
-          <TrackRefContext.Provider
-            value={trackReference}
-            key={getTrackReferenceId(trackReference)}
-          >
-            {cloneSingleChild(props.children)}
-          </TrackRefContext.Provider>
-        ))}
-      </Slider>
+      {tracks.length > 0 && (
+        <Slider {...settings}>
+          {tracks.map((trackReference: any) => (
+            <TrackRefContext.Provider
+              value={trackReference}
+              key={getTrackReferenceId(trackReference)}
+            >
+              {cloneSingleChild(props.children)}
+            </TrackRefContext.Provider>
+          ))}
+        </Slider>
+      )}
     </div>
   );
 }
