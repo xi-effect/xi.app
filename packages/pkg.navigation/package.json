@@ -13,6 +13,7 @@
     "@dnd-kit/utilities": "3.2.2",
     "@xipkg/avatar": "1.0.0",
     "@xipkg/button": "1.3.0",
+    "@xipkg/contextmenu": "^0.1.0",
     "@xipkg/dropdown": "1.2.0",
     "@xipkg/icons": "0.9.4",
     "@xipkg/modal": "2.1.0",
