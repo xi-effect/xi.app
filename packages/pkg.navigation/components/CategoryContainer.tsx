@@ -12,11 +12,7 @@ type CategoryContainerT = {
   setSlideIndex?: (arg: number) => void;
 };
 
-export function CategoryContainer({
-  category,
-  channels,
-  setSlideIndex,
-}: CategoryContainerT) {
+export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
 
   const { name, description, uid } = category;
@@ -47,12 +43,16 @@ export function CategoryContainer({
 
   return (
     <div ref={setNodeRef} style={categoryStyle}>
-      <ItemContextMenu isTriggerActive={isOwner} handleEdit={() => console.log('Редактировать категорию')} handleDelete={() => console.log('Удалить категорию')}>
+      <ItemContextMenu
+        isTriggerActive={isOwner}
+        handleEdit={() => console.log('Редактировать категорию')}
+        handleDelete={() => console.log('Удалить категорию')}
+      >
         <div {...attributes} {...listeners}>
-          {name && description && (
+          {name && (
             <div className="flex flex-col items-start p-2">
               <span className="text-[16px] font-semibold">{name}</span>
-              <span className="text-[14px] font-normal">{description}</span>
+              {description && <span className="text-[14px] font-normal">{description}</span>}
             </div>
           )}
         </div>

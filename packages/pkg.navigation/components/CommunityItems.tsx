@@ -55,7 +55,7 @@ type ItemsListT = {
 const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }: ItemsListT) => {
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
 
-  if ((categories && categories.length === 0) || (channels && channels.length === 0)) {
+  if (categories && categories.length === 0 && channels && channels.length === 0) {
     if (isOwner) {
       return (
         <>
@@ -80,7 +80,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
     return null;
   }
 
-  if (categories === null || channels === null) {
+  if (categories === null && channels === null) {
     return <CommunityItemsSkeleton />;
   }
 
@@ -93,16 +93,19 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
             <CategoryContainer
               setSlideIndex={setSlideIndex}
               category={firstCategory}
-              channels={channels.filter((channel) => channel.categoryId === 'empty')}
+              channels={(channels || []).filter((channel) => channel.categoryId === 'empty')}
             />
           </div>
-          {categories.length !== 0 &&
+          {categories &&
+            categories.length !== 0 &&
             categories.map((category) => (
               <div key={category.id} className="my-2 mr-2">
                 <CategoryContainer
                   setSlideIndex={setSlideIndex}
                   category={category}
-                  channels={channels.filter((channel) => channel.categoryId === category.id)}
+                  channels={(channels || []).filter(
+                    (channel) => channel.categoryId === category.id,
+                  )}
                 />
               </div>
             ))}
@@ -218,7 +221,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   };
 
   const onDragOver = (event: DragOverEvent) => {
-    console.log('onDragOver', event);
+    // console.log('onDragOver', event);
     const { active, over } = event;
     if (!over) return;
 
@@ -232,13 +235,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     const categoryOverId = over.data.current?.category?.id;
 
-    // if (categoryOverId === 'empty' && !isActiveAChannel) return;
-
-    // if (!isActiveAChannel) return;
-
     if (isActiveAChannel && isOverAChannel) {
-      console.log('isActiveAChannel && isOverAChannel');
-
       const activeIndex = (channels || []).findIndex(
         (channel: ChannelT) => channel.uid === activeId,
       ) as number;
@@ -255,11 +252,8 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           return chnItem;
         });
 
-        console.log('Problem');
-
         updateChannels(arrayMove(newChannels, activeIndex, overIndex - 1));
       } else if (channels) {
-        console.log('Pro');
         updateChannels(arrayMove(channels, activeIndex, overIndex));
       }
     }
@@ -270,7 +264,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         (channel: ChannelT) => channel.uid === activeId,
       );
 
-      console.log('activeIndex', activeIndex, channels, overId);
       const newChannels = (channels || []).map((chnItem, index) => {
         if (index === activeIndex) {
           return { ...chnItem, categoryId: categoryOverId };
@@ -284,7 +277,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   };
 
   const onDragEnd = (event: DragEndEvent) => {
-    console.log('onDragEnd', event);
+    // console.log('onDragEnd', event);
     setActiveCategory(null);
     setActiveChannel(null);
 
@@ -295,8 +288,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const overId = over.id;
 
     const isActiveACategory = active.data.current?.type === 'Category';
-
-    console.log('active.data', active.data, isActiveACategory);
 
     // Если перемещение не произошло
     // if (activeId === overId && !isActiveACategory) return;
@@ -327,14 +318,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
         return channels[activeChannelIndex + 1].id;
       };
-
-      console.log(
-        'move-channel',
-        activeChannelIndex,
-        channels[activeChannelIndex],
-        getAfterId(),
-        getBeforeId(),
-      );
 
       socket.emit(
         'move-channel',
@@ -392,9 +375,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       },
     );
   };
-
-  // console.log('categoryIds', categoryIds);
-  // console.log('channelsIds', channelsIds);
 
   return (
     <DndContext
