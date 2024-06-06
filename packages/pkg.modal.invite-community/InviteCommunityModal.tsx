@@ -42,8 +42,16 @@ export const InviteCommunityModal = ({
         community_id: communityId,
         data,
       },
-      (status: number) => {
+      async (status: number, data: any) => {
         if (status === 200) {
+          try {
+            await navigator.clipboard.writeText(`https://app.xieffect.ru/invite/${data.token}`);
+            toast(
+              'Ссылка-приглашение скопирована. Отправьте её человеку, которого хотите пригласить в сообщество',
+            );
+          } catch (err) {
+            console.error('Failed to copy: ', err);
+          }
           onOpenChange(false);
         } else {
           toast('Не удалось создать приглашение');

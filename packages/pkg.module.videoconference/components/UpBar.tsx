@@ -1,16 +1,27 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 
 'use client';
 
 import React, { useEffect } from 'react';
-import { Grid, Settings, External, Speaker, SpeakerHorizontal } from '@xipkg/icons';
+import {
+  Grid,
+  Settings,
+  External,
+  Speaker,
+  SpeakerHorizontal,
+  Maximize,
+  Minimize,
+} from '@xipkg/icons';
 import { usePathname, useRouter } from 'next/navigation';
+import { useFullScreen } from 'pkg.utils/useFullScreen';
 
 export const UpBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [carouselType, setCarouselType] = React.useState<string>('grid');
+  const { isFullScreen, toggleFullScreen } = useFullScreen('videoConferenceContainer');
 
   const toggleLayout = () => {
     setCarouselType((prev) => {
@@ -51,6 +62,13 @@ export const UpBar = () => {
       >
         {getViewIcon()}
         <span className="text-gray-0">Вид</span>
+      </button>
+      <button
+        onClick={toggleFullScreen}
+        type="button"
+        className="ml-2 hidden h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100 md:flex"
+      >
+        {isFullScreen ? <Minimize className="fill-gray-0" /> : <Maximize className="fill-gray-0" />}
       </button>
       <button
         type="button"

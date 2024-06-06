@@ -259,7 +259,6 @@ export const Invites = () => {
           creatorId: item.creator_id,
           ...item,
         }));
-        console.log('data', formatedData);
         setInvitations(formatedData);
       } else {
         toast('Ошибка получения приглашений');

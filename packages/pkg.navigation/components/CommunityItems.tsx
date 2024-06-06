@@ -44,8 +44,81 @@ const firstCategory = {
   description: null,
 };
 
+type ItemsListT = {
+  channels: ChannelT[] | null;
+  categories: CategoryT[] | null;
+  categoryIds: string[];
+  isOwner: boolean | null;
+  setSlideIndex: (value: number) => void;
+};
+
+const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }: ItemsListT) => {
+  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
+
+  if (categories && categories.length === 0 && channels && channels.length === 0) {
+    if (isOwner) {
+      return (
+        <>
+          <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
+          <CategoryCreate
+            open={isCategoryCreateOpen}
+            onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
+          />
+          <div
+            onClick={() => setIsCategoryCreateOpen(true)}
+            className="hover:bg-gray-5 group mt-8 flex h-[40px] w-full flex-row items-center justify-between rounded-lg border border-dashed p-2 transition-colors ease-in hover:cursor-pointer"
+          >
+            <div className="flex items-center">
+              <Plus className="fill-gray-90 hover:bg-gray-5" />
+              <span className="pl-2 text-[14px] font-normal">Добавить категорию</span>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    return null;
+  }
+
+  if (categories === null && channels === null) {
+    return <CommunityItemsSkeleton />;
+  }
+
+  return (
+    <>
+      <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
+      <ScrollArea>
+        <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
+          <div className="my-2 mr-2">
+            <CategoryContainer
+              setSlideIndex={setSlideIndex}
+              category={firstCategory}
+              channels={(channels || []).filter((channel) => channel.categoryId === 'empty')}
+            />
+          </div>
+          {categories &&
+            categories.length !== 0 &&
+            categories.map((category) => (
+              <div key={category.id} className="my-2 mr-2">
+                <CategoryContainer
+                  setSlideIndex={setSlideIndex}
+                  category={category}
+                  channels={(channels || []).filter(
+                    (channel) => channel.categoryId === category.id,
+                  )}
+                />
+              </div>
+            ))}
+        </SortableContext>
+      </ScrollArea>
+    </>
+  );
+};
+
 export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsPropsT) => {
   const router = useRouter();
+
+  const communityMeta = useMainSt((state) => state.communityMeta);
 
   const categories = useMainSt((state) => state.categories);
   const channels = useMainSt((state) => state.channels);
@@ -148,7 +221,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   };
 
   const onDragOver = (event: DragOverEvent) => {
-    console.log('onDragOver', event);
+    // console.log('onDragOver', event);
     const { active, over } = event;
     if (!over) return;
 
@@ -162,13 +235,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     const categoryOverId = over.data.current?.category?.id;
 
-    // if (categoryOverId === 'empty' && !isActiveAChannel) return;
-
-    // if (!isActiveAChannel) return;
-
     if (isActiveAChannel && isOverAChannel) {
-      console.log('isActiveAChannel && isOverAChannel');
-
       const activeIndex = (channels || []).findIndex(
         (channel: ChannelT) => channel.uid === activeId,
       ) as number;
@@ -185,11 +252,8 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           return chnItem;
         });
 
-        console.log('Problem');
-
         updateChannels(arrayMove(newChannels, activeIndex, overIndex - 1));
       } else if (channels) {
-        console.log('Pro');
         updateChannels(arrayMove(channels, activeIndex, overIndex));
       }
     }
@@ -200,7 +264,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         (channel: ChannelT) => channel.uid === activeId,
       );
 
-      console.log('activeIndex', activeIndex, channels, overId);
       const newChannels = (channels || []).map((chnItem, index) => {
         if (index === activeIndex) {
           return { ...chnItem, categoryId: categoryOverId };
@@ -214,7 +277,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   };
 
   const onDragEnd = (event: DragEndEvent) => {
-    console.log('onDragEnd', event);
+    // console.log('onDragEnd', event);
     setActiveCategory(null);
     setActiveChannel(null);
 
@@ -225,8 +288,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     const overId = over.id;
 
     const isActiveACategory = active.data.current?.type === 'Category';
-
-    console.log('active.data', active.data, isActiveACategory);
 
     // Если перемещение не произошло
     // if (activeId === overId && !isActiveACategory) return;
@@ -257,14 +318,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
         return channels[activeChannelIndex + 1].id;
       };
-
-      console.log(
-        'move-channel',
-        activeChannelIndex,
-        channels[activeChannelIndex],
-        getAfterId(),
-        getBeforeId(),
-      );
 
       socket.emit(
         'move-channel',
@@ -323,33 +376,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     );
   };
 
-  const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
-
-  if ((categories && categories.length === 0) || (channels && channels.length === 0)) {
-    return (
-      <>
-        <CategoryCreate
-          open={isCategoryCreateOpen}
-          onOpenChange={() => setIsCategoryCreateOpen((prev) => !prev)}
-        />
-        <div
-          onClick={() => setIsCategoryCreateOpen(true)}
-          className="hover:bg-gray-5 group mt-8 flex h-[40px] w-full flex-row items-center justify-between rounded-lg border border-dashed p-2 transition-colors ease-in hover:cursor-pointer"
-        >
-          <div className="flex items-center">
-            <Plus className="fill-gray-90 hover:bg-gray-5" />
-            <span className="pl-2 text-[14px] font-normal">Добавить категорию</span>
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  if (categories === null || channels === null) return <CommunityItemsSkeleton />;
-
-  // console.log('categoryIds', categoryIds);
-  // console.log('channelsIds', channelsIds);
-
   return (
     <DndContext
       measuring={{
@@ -364,7 +390,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-156px)] sm:h-[calc(100dvh-282px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] md:pl-1 md:pr-0 ${
+        className={`mt-3 flex h-[calc(100dvh-156px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:h-[calc(100dvh-282px)] md:pl-1 md:pr-0 ${
           className ?? ''
         }`}
       >
@@ -385,35 +411,22 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
             <span className="pl-2 text-[14px] font-normal">Расписание</span>
           </div>
         </div>
-        <DropdownMenuSeparator />
-        <ScrollArea>
-          <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
-            <div className="my-2 mr-2">
-              <CategoryContainer
-                setSlideIndex={setSlideIndex}
-                category={firstCategory}
-                channels={channels.filter((channel) => channel.categoryId === 'empty')}
-              />
-            </div>
-            {categories.length !== 0 &&
-              categories.map((category) => (
-                <div key={category.id} className="my-2 mr-2">
-                  <CategoryContainer
-                    setSlideIndex={setSlideIndex}
-                    category={category}
-                    channels={channels.filter((channel) => channel.categoryId === category.id)}
-                  />
-                </div>
-              ))}
-          </SortableContext>
-        </ScrollArea>
+        <ItemsList
+          channels={channels}
+          categories={categories}
+          categoryIds={categoryIds}
+          isOwner={communityMeta.isOwner}
+          setSlideIndex={setSlideIndex}
+        />
       </ul>
       {createPortal(
         <DragOverlay>
           {activeCategory && (
             <CategoryContainer
               category={activeCategory}
-              channels={channels.filter((channel) => channel.categoryId === activeCategory.id)}
+              channels={(channels || []).filter(
+                (channel) => channel.categoryId === activeCategory.id,
+              )}
               // firstEmptyCategoryIndex={firstEmptyCategoryIndex}
             />
           )}

@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@xipkg/button';
-import { Mail, Plus } from '@xipkg/icons';
+import { Group, Mail, Plus } from '@xipkg/icons';
 import Image from 'next/image';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { del, put } from 'pkg.utils/fetch';
-import React from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
 import { Logo } from 'pkg.logo';
@@ -20,11 +20,16 @@ export default function WelcomeCommunity() {
   const updateUser = useMainSt((state) => state.updateUser);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [tab, setTab] = React.useState(0);
+  const [activeButton, setActiveButton] = useState({
+    tab: 0,
+    height: 86,
+    top: 0,
+  });
 
   const handleNext = async () => {
-    if (tab === 0) {
+    if (activeButton.tab === 0) {
       const { status } = await put<RequestBody, ResponseBody>({
         service: 'auth',
         path: '/api/onboarding/stages/community-create/',
@@ -43,7 +48,8 @@ export default function WelcomeCommunity() {
         toast('Ошибка сервера');
       }
     }
-    if (tab === 1) {
+
+    if (activeButton.tab === 1) {
       const { status } = await put<RequestBody, ResponseBody>({
         service: 'auth',
         path: '/api/onboarding/stages/community-invite/',
@@ -58,6 +64,32 @@ export default function WelcomeCommunity() {
       if (status === 204) {
         updateUser({ onboardingStage: 'community-invite' });
         router.push('/welcome/community-invite');
+      } else {
+        toast('Ошибка сервера');
+      }
+    }
+
+    if (activeButton.tab === 2) {
+      const { status } = await put<RequestBody, ResponseBody>({
+        service: 'auth',
+        path: '/api/onboarding/stages/community-invite/',
+        body: {},
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      });
+
+      if (status === 204) {
+        updateUser({ onboardingStage: 'community-invite' });
+        if (searchParams.has('iid') && searchParams.has('community')) {
+          router.push(
+            `/welcome/community-invite?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
+          );
+        } else {
+          router.push('/welcome/community-invite');
+        }
       } else {
         toast('Ошибка сервера');
       }
@@ -77,10 +109,75 @@ export default function WelcomeCommunity() {
 
     if (status === 204) {
       updateUser({ onboardingStage: 'created' });
-      redirect('/welcome/user-info');
+      if (searchParams.has('iid') && searchParams.has('community')) {
+        router.push(
+          `/welcome/user-info?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
+        );
+      } else {
+        router.push('/welcome/user-info');
+      }
     } else {
       toast('Ошибка сервера');
     }
+  };
+
+  const firstButton = useRef<HTMLButtonElement>(null);
+  const secondButton = useRef<HTMLButtonElement>(null);
+  const thirdButton = useRef<HTMLButtonElement>(null);
+
+  useLayoutEffect(() => {
+    if (firstButton === null || firstButton.current === null) return;
+
+    if (searchParams.has('iid') && searchParams.has('community')) {
+      const topForLastButton =
+        firstButton.current?.clientHeight && secondButton.current?.clientHeight
+          ? Number(firstButton.current?.clientHeight) + Number(secondButton.current?.clientHeight)
+          : 0;
+      setActiveButton({
+        tab: 2,
+        height: thirdButton.current?.clientHeight || 0,
+        top: topForLastButton || 0,
+      });
+    } else {
+      const { height } = firstButton.current.getBoundingClientRect();
+      setActiveButton({
+        tab: 0,
+        height,
+        top: 0,
+      });
+    }
+  }, []);
+
+  const onButtonClick = (index: number) => {
+    if (index === 0) {
+      return setActiveButton({
+        tab: 0,
+        height: firstButton.current?.clientHeight || 0,
+        top: 0,
+      });
+    }
+
+    if (index === 1) {
+      return setActiveButton({
+        tab: 1,
+        height: secondButton.current?.clientHeight || 0,
+        top: firstButton.current?.clientHeight || 0,
+      });
+    }
+
+    const topForLastButton =
+      firstButton.current?.clientHeight && secondButton.current?.clientHeight
+        ? Number(firstButton.current?.clientHeight) + Number(secondButton.current?.clientHeight)
+        : 0;
+    if (index === 2) {
+      setActiveButton({
+        tab: 2,
+        height: thirdButton.current?.clientHeight || 0,
+        top: topForLastButton || 0,
+      });
+    }
+
+    return null;
   };
 
   return (
@@ -106,28 +203,28 @@ export default function WelcomeCommunity() {
           </div>
           <div className="relative mt-6 border border-gray-30 bg-gray-0 flex flex-col w-full items-start rounded-2xl">
             <div
-              className={`absolute ${
-                tab === 1
-                  ? 'top-[108px] [@media_(min-width:400px)]:top-[86px] h-[108px] [@media_(min-width:357px)]:h-[86px]'
-                  : 'top-0 [@media_(min-width:400px)]:h-[86px] h-[108px]'
-              } border-solid border-brand-100 bg-brand-0 flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start border rounded-2xl transition-all ease-in duration-300`}
+              style={{ height: activeButton.height, top: activeButton.top }}
+              className="absolute border-solid border-brand-100 bg-brand-0 flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start border rounded-2xl transition-all ease-in duration-300"
             />
             <button
               type="button"
-              onClick={() => setTab(0)}
+              ref={firstButton}
+              onClick={() => onButtonClick(0)}
               className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
             >
-              <Plus className={`z-10 mt-0.5 ${tab === 0 ? 'fill-brand-100' : 'fill-gray-80'}`} />
+              <Plus
+                className={`z-10 mt-0.5 ${activeButton.tab === 0 ? 'fill-brand-100' : 'fill-gray-80'}`}
+              />
               <div className="flex flex-col gap-1 text-start">
                 <span
                   className={`z-10 text-xl font-medium leading-[28px] ${
-                    tab === 0 ? 'text-brand-100' : 'text-gray-80'
+                    activeButton.tab === 0 ? 'text-brand-100' : 'text-gray-80'
                   }`}
                 >
                   Создать
                 </span>
                 <span
-                  className={`z-10 leading-[22px] ${tab === 0 ? 'text-brand-100' : 'text-gray-80'}`}
+                  className={`z-10 leading-[22px] ${activeButton.tab === 0 ? 'text-brand-100' : 'text-gray-80'}`}
                 >
                   Новое сообщество под ваши задачи
                 </span>
@@ -135,25 +232,49 @@ export default function WelcomeCommunity() {
             </button>
             <button
               type="button"
-              onClick={() => setTab(1)}
+              ref={secondButton}
+              onClick={() => onButtonClick(1)}
               className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
             >
-              <Mail className={`z-10 mt-0.5 ${tab === 1 ? 'fill-brand-100' : 'fill-gray-80'}`} />
+              <Mail
+                className={`z-10 mt-0.5 ${activeButton.tab === 1 ? 'fill-brand-100' : 'fill-gray-80'}`}
+              />
               <div className="flex flex-col gap-1 text-start">
                 <span
                   className={`z-10 text-xl font-medium leading-[28px] ${
-                    tab === 1 ? 'text-brand-100' : 'text-gray-80'
+                    activeButton.tab === 1 ? 'text-brand-100' : 'text-gray-80'
                   }`}
                 >
                   Присоединиться
                 </span>
                 <span
-                  className={`z-10 leading-[22px] ${tab === 1 ? 'text-brand-100' : 'text-gray-80'}`}
+                  className={`z-10 leading-[22px] ${activeButton.tab === 1 ? 'text-brand-100' : 'text-gray-80'}`}
                 >
                   Если есть ссылка-приглашение
                 </span>
               </div>
             </button>
+            {searchParams.has('iid') && searchParams.has('community') && (
+              <button
+                type="button"
+                ref={thirdButton}
+                onClick={() => onButtonClick(2)}
+                className="bg-transparent flex flex-row justify-start ml-0 p-4 gap-2 w-full items-start"
+              >
+                <Group
+                  className={`z-10 mt-0.5 ${activeButton.tab === 2 ? 'fill-brand-100' : 'fill-gray-80'}`}
+                />
+                <div className="flex flex-col gap-1 text-start">
+                  <span
+                    className={`z-10 text-xl font-medium leading-[28px] ${
+                      activeButton.tab === 2 ? 'text-brand-100' : 'text-gray-80'
+                    }`}
+                  >
+                    Присоедениться к сообществу «{searchParams.get('community')}»
+                  </span>
+                </div>
+              </button>
+            )}
           </div>
           <div className="pt-4 mt-auto flex flex-row gap-6">
             <Button onClick={handleBack} variant="ghost" className="w-[98px]">
