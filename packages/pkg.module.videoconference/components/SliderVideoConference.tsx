@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import './Slider.css';
 import { getTrackReferenceId } from '@livekit/components-core';
 import { TrackLoopProps, TrackRefContext } from '@livekit/components-react';
+import { IOrientationLayout } from './VideoConferenceLayout';
 
 interface ITrackLoopProps {
   maxVisibleTiles: number;
@@ -15,13 +16,16 @@ interface ITrackLoopProps {
 export function SliderVideoConference({
   tracks,
   maxVisibleTiles,
+  orientation,
   ...props
-}: TrackLoopProps & ITrackLoopProps) {
+}: TrackLoopProps & ITrackLoopProps & IOrientationLayout) {
   const settings = {
     dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: maxVisibleTiles,
+    vertical: orientation === 'vertical',
+    verticalSwiping: orientation === 'vertical',
     slidesToScroll: 1,
     responsive: [
       {

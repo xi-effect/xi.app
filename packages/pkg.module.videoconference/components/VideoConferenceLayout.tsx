@@ -128,13 +128,17 @@ export function CarouselLayout({
   }, [maxVisibleTiles, carouselOrientation]);
 
   return (
-    <div className="m-auto w-[95%]">
+    <div className={`m-auto ${carouselOrientation === 'horizontal' ? 'w-[95%]' : 'mx-5'}`}>
       {isOneItem && (
         <div className="h-[144px] w-[250px]">
           <EmptyItemContainerOfUser />
         </div>
       )}
-      <SliderVideoConference maxVisibleTiles={maxVisibleTiles} tracks={sortedTiles}>
+      <SliderVideoConference
+        orientation={carouselOrientation}
+        maxVisibleTiles={maxVisibleTiles}
+        tracks={sortedTiles}
+      >
         {props.children}
       </SliderVideoConference>
     </div>
