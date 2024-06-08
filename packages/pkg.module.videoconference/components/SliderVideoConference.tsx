@@ -29,33 +29,7 @@ export function SliderVideoConference({
     verticalSwiping: orientation === 'vertical',
     nextArrow: <ChevronRight />,
     prevArrow: <ChevronLeft />,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+    slidesToScroll: maxVisibleTiles,
   };
   function cloneSingleChild(
     children: React.ReactNode | React.ReactNode[],
@@ -63,8 +37,6 @@ export function SliderVideoConference({
     key?: any,
   ) {
     return React.Children.map(children, (child) => {
-      // Checking isValidElement is the safe way and avoids a typescript
-      // error too.
       if (React.isValidElement(child) && React.Children.only(children)) {
         return React.cloneElement(child, { ...props, key });
       }

@@ -19,7 +19,7 @@
     "pkg.utils": "*",
     "next": "^14.2.3",
     "react": "^18.2.0",
-    "react-slick": "^0.30.2",
+    "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
@@ -20,7 +19,6 @@ import {
 } from '@livekit/components-react';
 import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import { useSearchParams } from 'next/navigation';
-// import Slider from 'react-slick';
 import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
 import { SliderVideoConference } from './SliderVideoConference';
@@ -133,7 +131,9 @@ export function CarouselLayout({
   }, [maxVisibleTiles, carouselOrientation]);
 
   return (
-    <div className={`${carouselOrientation === 'horizontal' ? 'm-auto w-[95%]' : 'mx-5'}`}>
+    <div
+      className={`${carouselOrientation === 'horizontal' ? 'm-auto w-[95%]' : 'mx-5 max-w-[277px]'}`}
+    >
       {isOneItem && (
         <div className="h-[144px] w-[250px]">
           <EmptyItemContainerOfUser />
