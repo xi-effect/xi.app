@@ -39,7 +39,7 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
         />
         <div className="mt-4 flex h-full flex-row">
           {isMobile ? (
-            <div>
+            <div className="flex-1">
               {showContent ? (
                 <Content activeQuery={activeQuery} />
               ) : (

@@ -7,7 +7,7 @@ import { Room } from 'livekit-client';
 import { ActiveRoom } from './components/ActiveRoom';
 import { PreJoinSection } from './components/PreJoinSection';
 
-export const serverUrl = 'wss://livekit.xieffect.ru';
+export const serverUrl = 'wss://test-ztiuaccr.livekit.cloud';
 
 type VideoConferenceT = {
   token: string;
