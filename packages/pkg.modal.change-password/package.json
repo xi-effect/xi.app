@@ -18,7 +18,7 @@
     "@xipkg/utils": "1.0.1",
     "next": "^14.2.3",
     "react": "^18.2.0",
-    "@xipkg/modal": "1.4.0",
+    "@xipkg/modal": "^2.1.0",
     "zod": "3.22.4",
     "sonner": "1.4.41",
     "pkg.utils": "*"
