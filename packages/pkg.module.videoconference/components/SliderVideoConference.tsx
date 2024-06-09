@@ -24,7 +24,7 @@ export function SliderVideoConference({
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: maxVisibleTiles,
+    slidesToShow: 2,
     vertical: orientation === 'vertical',
     verticalSwiping: orientation === 'vertical',
     nextArrow: <ChevronRight />,

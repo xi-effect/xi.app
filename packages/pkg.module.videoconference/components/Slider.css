@@ -6,3 +6,12 @@
 .slider-container .slick-next:before {
   color: white;
 }
+
+.slick-track {
+  width: 100% !important;
+  height: 100% !important;
+}
+.slick-current {
+  margin: 0 10px 10px 0;
+  width: unset !important;
+}
