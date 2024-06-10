@@ -14,7 +14,7 @@ interface ITrackLoopProps {
 export function SliderVideoConference({
   tracks,
   // maxVisibleTiles,
-  // orientation,
+  orientation,
   ...props
 }: TrackLoopProps & ITrackLoopProps & IOrientationLayout) {
   function cloneSingleChild(
@@ -30,23 +30,19 @@ export function SliderVideoConference({
     });
   }
   return (
-    <div>
-      {tracks.length > 0 && (
-        <Carousel>
-          {tracks.map((trackReference: any, index: number) => (
-            <TrackRefContext.Provider
-              value={trackReference}
-              key={getTrackReferenceId(trackReference)}
-            >
-              <div key={index} className="carousel-item snap-start text-center">
-                <div className="mx-auto px-3 py-6 text-xl text-white">
-                  {cloneSingleChild(props.children)}
-                </div>
-              </div>
-            </TrackRefContext.Provider>
-          ))}
-        </Carousel>
-      )}
-    </div>
+    tracks.length > 0 && (
+      <Carousel orientation={orientation}>
+        {tracks.map((trackReference: any, index: number) => (
+          <TrackRefContext.Provider
+            value={trackReference}
+            key={getTrackReferenceId(trackReference)}
+          >
+            <div key={index} className="carousel-item snap-start text-center">
+              <div className="mx-auto text-xl text-white">{cloneSingleChild(props.children)}</div>
+            </div>
+          </TrackRefContext.Provider>
+        ))}
+      </Carousel>
+    )
   );
 }
