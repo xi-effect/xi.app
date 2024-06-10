@@ -5,6 +5,7 @@ import { getTrackReferenceId } from '@livekit/components-core';
 import { TrackLoopProps, TrackRefContext } from '@livekit/components-react';
 // import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import { IOrientationLayout } from './VideoConferenceLayout';
+import { Carousel } from './Carousel';
 
 interface ITrackLoopProps {
   maxVisibleTiles: number;
@@ -29,16 +30,23 @@ export function SliderVideoConference({
     });
   }
   return (
-    <div className="slider-container">
-      {tracks.length > 0 &&
-        tracks.map((trackReference: any) => (
-          <TrackRefContext.Provider
-            value={trackReference}
-            key={getTrackReferenceId(trackReference)}
-          >
-            {cloneSingleChild(props.children)}
-          </TrackRefContext.Provider>
-        ))}
+    <div>
+      {tracks.length > 0 && (
+        <Carousel>
+          {tracks.map((trackReference: any, index: number) => (
+            <TrackRefContext.Provider
+              value={trackReference}
+              key={getTrackReferenceId(trackReference)}
+            >
+              <div key={index} className="carousel-item snap-start text-center">
+                <div className="mx-auto px-3 py-6 text-xl text-white">
+                  {cloneSingleChild(props.children)}
+                </div>
+              </div>
+            </TrackRefContext.Provider>
+          ))}
+        </Carousel>
+      )}
     </div>
   );
 }
