@@ -131,7 +131,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
       (status: number) => {
         if (status === 204) {
           toast('Канал успешно удален');
-          deleteChannel(channel);
+          deleteChannel(channel.id);
       } else {
         toast(`Что-то пошло не так. Ошибка ${status}`);
       }

@@ -48,6 +48,16 @@ type MoveChannelT = {
   before_id: number | null;
 };
 
+type DeletedChannelT = {
+  community_id: number;
+  channel_id: number;
+};
+
+type DeletedCategoryT = {
+  community_id: number;
+  category_id: number;
+};
+
 export const Navigation = ({ children, onExit }: NavigationProp) => {
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
@@ -57,6 +67,9 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
 
   const moveCategory = useMainSt((state) => state.moveCategory);
   const moveChannel = useMainSt((state) => state.moveChannel);
+
+  const deleteChannel = useMainSt((state) => state.deleteChannel);
+  const deleteCategory = useMainSt((state) => state.deleteCategory);
 
   useEffect(() => {
     // Инициализация сокета только один раз
@@ -138,6 +151,36 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
       // Очистка обработчиков при размонтировании компонента
       return () => {
         socket.off('move-channel', handleMoveChannel);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    // Инициализация сокета только один раз
+    if (socket) {
+      const handleDeleteChannel = (deletedChannel: DeletedChannelT) => {
+        deleteChannel(deletedChannel.channel_id);
+      };
+
+      socket.on('delete-channel', handleDeleteChannel);
+    // Очистка обработчиков при размонтировании компонента
+      return () => {
+        socket.off('delete-channel', handleDeleteChannel);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    // Инициализация сокета только один раз
+    if (socket) {
+      const handleDeleteCategory = (deletedCategory: DeletedCategoryT) => {
+        deleteCategory(deletedCategory.category_id);
+      };
+
+      socket.on('delete-category', handleDeleteCategory);
+    // Очистка обработчиков при размонтировании компонента
+      return () => {
+        socket.off('delete-category', handleDeleteCategory);
       };
     }
   }, []);

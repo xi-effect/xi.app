@@ -55,7 +55,7 @@ export function CategoryContainer({ category, communityId, channels, setSlideInd
       (status: number) => {
         if (status === 204) {
           toast('Категория успешно удалена');
-          deleteCategoriy(category);
+          deleteCategoriy(category.id);
       } else {
         toast(`Что-то пошло не так. Ошибка ${status}`);
       }
