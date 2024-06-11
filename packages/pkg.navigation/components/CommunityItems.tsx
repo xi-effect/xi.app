@@ -48,11 +48,12 @@ type ItemsListT = {
   channels: ChannelT[] | null;
   categories: CategoryT[] | null;
   categoryIds: string[];
+  communityId: number | null;
   isOwner: boolean | null;
   setSlideIndex: (value: number) => void;
 };
 
-const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }: ItemsListT) => {
+const ItemsList = ({ channels, categories, categoryIds, communityId, isOwner, setSlideIndex }: ItemsListT) => {
   const [isCategoryCreateOpen, setIsCategoryCreateOpen] = React.useState(false);
 
   if (categories && categories.length === 0 && channels && channels.length === 0) {
@@ -93,6 +94,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
             <CategoryContainer
               setSlideIndex={setSlideIndex}
               category={firstCategory}
+              communityId={communityId}
               channels={(channels || []).filter((channel) => channel.categoryId === 'empty')}
             />
           </div>
@@ -103,6 +105,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
                 <CategoryContainer
                   setSlideIndex={setSlideIndex}
                   category={category}
+                  communityId={communityId}
                   channels={(channels || []).filter(
                     (channel) => channel.categoryId === category.id,
                   )}
@@ -417,6 +420,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           categoryIds={categoryIds}
           isOwner={communityMeta.isOwner}
           setSlideIndex={setSlideIndex}
+          communityId={currentCommunityId}
         />
       </ul>
       {createPortal(
@@ -424,6 +428,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
           {activeCategory && (
             <CategoryContainer
               category={activeCategory}
+              communityId={currentCommunityId}
               channels={(channels || []).filter(
                 (channel) => channel.categoryId === activeCategory.id,
               )}

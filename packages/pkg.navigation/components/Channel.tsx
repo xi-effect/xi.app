@@ -18,6 +18,7 @@ import {
   Settings,
 } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 import { ChannelT } from './types';
 import { ItemContextMenu } from './ItemContextMenu';
 
@@ -51,7 +52,8 @@ const stylesDict = {
 
 export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) => {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
-
+  const socket = useMainSt((state) => state.socket);
+  const deleteChannel = useMainSt((state) => state.deleteChannel);
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
@@ -119,8 +121,29 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
     );
   }
 
+  const handleDelete = () => {
+    socket.emit(
+      'delete-channel',
+      {
+        community_id: communityId,
+        channel_id: channel.id,
+      },
+      (status: number) => {
+        if (status === 204) {
+          toast('Канал успешно удален');
+          deleteChannel(channel);
+      } else {
+        toast(`Что-то пошло не так. Ошибка ${status}`);
+      }
+    });
+  };
+
   return (
-    <ItemContextMenu isTriggerActive={isOwner} handleEdit={() => console.log('Редактировать канал')} handleDelete={() => console.log('Удалить канал')}>
+    <ItemContextMenu
+      isTriggerActive={isOwner}
+      handleEdit={() => console.log('Редактировать канал')}
+      handleDelete={handleDelete}
+    >
       <div
         onMouseEnter={() => setMouseOver(true)}
         onMouseLeave={() => setMouseOver(false)}

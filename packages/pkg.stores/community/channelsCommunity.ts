@@ -39,6 +39,8 @@ export type ChannelsCommunity = {
   updateCategories: (value: any) => void;
   addChannel: (value: ChannelT) => void;
   addCategory: (value: CategoryT) => void;
+  deleteChannel: (value: ChannelT) => void;
+  deleteCategory: (value: CategoryT) => void;
   moveCategory: (moveData: MoveCategoryDataT) => void;
   moveChannel: (moveData: MoveChannelDataT) => void;
 };
@@ -59,6 +61,10 @@ export const createChannelsCommunitySt: StateCreator<
     ({ channels: [...(channels || []), value] })),
   addCategory: (value: CategoryT) => set(({ categories }) =>
     ({ categories: [...(categories || []), value] })),
+  deleteCategory: (value: CategoryT) => set(({ categories }) =>
+    categories ? { categories: categories.filter((category) => category.id !== value.id) } : { categories }),
+  deleteChannel: (value: ChannelT) => set(({ channels }) =>
+  channels ? { channels: channels.filter((channel) => channel.id !== value.id) } : { channels }),
   // TODO: разобраться с ts
   // @ts-ignore
   moveCategory: ({ categoryId, afterId, beforeId }: MoveCategoryDataT) => set(({ categories }) => {
