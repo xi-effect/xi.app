@@ -1,12 +1,23 @@
 // Временные типы для Пользователя и для пропсов Карточки пользователя
-import {boolean, number, string} from "zod";
+// export type UserT = {
+//     name: string;
+//     nickname: string;
+//     roles: UserRoleT[];
+//     isOwner: boolean;
+// };
 
 export type UserT = {
-    name: string;
-    nickname: string;
-    roles: UserRoleT[];
-    isOwner: boolean;
+    id: number;
+    display_name: string;
+    username: string
 };
+
+// export type UserCardPropsT = UserT & {
+//     user: UserT;
+//     handleUserDelete: (userToDelete: UserT) => void;
+//     handleRoleAdd: (userToUpdate: UserT, roleToAdd: UserRoleT) => void;
+//     handleRoleDelete: (userToUpdate: UserT, roleToDelete: UserRoleT) => void;
+// };
 
 export type UserCardPropsT = UserT & {
     user: UserT;

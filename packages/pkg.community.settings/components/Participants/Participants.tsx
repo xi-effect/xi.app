@@ -1,56 +1,90 @@
-import React, {useState} from 'react';
-import {Input} from '@xipkg/input';
-import {Button} from '@xipkg/button';
-import {useDebouncedFunction} from '@xipkg/utils';
-import {Search} from '@xipkg/icons';
+import React, { useEffect, useState } from 'react';
+import { Input } from '@xipkg/input';
+import { Button } from '@xipkg/button';
+import { useDebouncedFunction } from '@xipkg/utils';
+import { Search } from '@xipkg/icons';
 
 // JSON со временным списком пользователей
-import usersTemplate from './usersTemplate.json';
-import {UserRoleT, UserT} from "./types";
-import {UserCard} from "./UserCard";
+import { useMainSt } from 'pkg.stores';
+import { get } from 'pkg.utils';
+import { toast } from 'sonner';
+// import usersTemplate from './usersTemplate.json';
+import { ParticipantsList, UserRoleT, UserT } from './types';
+import { UserCard } from './UserCard';
+import DeleteParticipantModal from './DeleteParticipantModal';
 
 export const Participants = () => {
   // Временное решение для рендера, удаления, изменения ролей пользователей
-  const [users, setUsers] = useState(usersTemplate);
+  // const [users, setUsers] = useState(usersTemplate);
+  const [participantsList, setParticipantsList] = useState<UserT[]>([]);
+  const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
+  const [deleteCandidate, setDeleteCandidate] = useState<number>();
+
+  const socket = useMainSt((state) => state.socket);
+  const communityId = useMainSt((state) => state.communityMeta.id);
 
   const handleUserDelete = (userToDelete: UserT) => {
-    const updatedUsers = users.filter((user) => user !== userToDelete);
-    setUsers(updatedUsers);
+    setIsDeleteModalOpened(!isDeleteModalOpened);
+    setDeleteCandidate(userToDelete.id);
+  };
+
+  const handleConfirmDelete = () => {
+    try {
+      if (deleteCandidate) {
+        socket.emit('kick-participant', {
+          community_id: communityId,
+          user_id: deleteCandidate,
+          target_user_id: deleteCandidate,
+        }, (status: number, data: any) => {
+          const updatedUsers = participantsList.filter((user) => user.id !== deleteCandidate);
+          setParticipantsList(updatedUsers);
+          console.log(status, data)
+        });
+      }
+      setIsDeleteModalOpened(false);
+    } catch (e) {
+      setIsDeleteModalOpened(false);
+      toast('Не удалось исключить участника');
+      throw e;
+    }
   };
 
   const handleRoleDelete = (userToUpdate: UserT, roleToDelete: UserRoleT) => {
-    const updatedUsers = users.map((user) => {
-      if (user === userToUpdate) {
-        const updatedRoles = user.roles.filter((role) => role !== roleToDelete);
-        return { ...user, roles: updatedRoles };
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
+    console.log(userToUpdate, roleToDelete)
+    // const updatedUsers = users.map((user) => {
+    //   if (user === userToUpdate) {
+    //     const updatedRoles = user.roles.filter((role) => role !== roleToDelete);
+    //     return { ...user, roles: updatedRoles };
+    //   }
+    //   return user;
+    // });
+    // setUsers(updatedUsers);
   };
 
   const handleRoleAdd = (userToUpdate: UserT, roleToAdd: UserRoleT) => {
-    const updatedUsers = users.map((user) => {
-      if (user === userToUpdate) {
-        const updatedRoles = [...user.roles, roleToAdd];
-        return { ...user, roles: updatedRoles };
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
+    console.log(userToUpdate, roleToAdd)
+    // const updatedUsers = users.map((user) => {
+    //   if (user === userToUpdate) {
+    //     const updatedRoles = [...user.roles, roleToAdd];
+    //     return { ...user, roles: updatedRoles };
+    //   }
+    //   return user;
+    // });
+    // setUsers(updatedUsers);
   };
 
   const setFilteredUsers = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchValue = event.target.value.trim().toLowerCase();
-
-    setUsers(
-      usersTemplate.filter(
-        (user) =>
-          user.name.toLowerCase().startsWith(searchValue) ||
-          user.nickname.toLowerCase().startsWith(searchValue) ||
-          user.name.toLowerCase().split(' ').pop()?.startsWith(searchValue),
-      ),
-    );
+    console.log(event)
+    // const searchValue = event.target.value.trim().toLowerCase();
+    //
+    // setUsers(
+    //   usersTemplate.filter(
+    //     (user) =>
+    //       user.name.toLowerCase().startsWith(searchValue) ||
+    //       user.nickname.toLowerCase().startsWith(searchValue) ||
+    //       user.name.toLowerCase().split(' ').pop()?.startsWith(searchValue),
+    //   ),
+    // );
   };
 
   const debauncedUsersSearch = useDebouncedFunction(setFilteredUsers, 300);
@@ -59,7 +93,32 @@ export const Participants = () => {
     debauncedUsersSearch(event);
   };
 
+  const getUserProfile = async (id: number) => {
+    try {
+      const { status, data } = await get<UserT>({
+        service: 'auth',
+        path: `/api/users/by-id/${id}/profile/`,
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        } });
+      console.log(status)
+        return data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  };
 
+  useEffect(() => {
+    socket.emit('list-participants', { community_id: communityId }, async (status: number, data: ParticipantsList) => {
+      if (status === 200) {
+        const userProfiles = await Promise.all(data.map((user) => getUserProfile(user.user_id)));
+        setParticipantsList(userProfiles);
+      }
+    });
+  }, [communityId]);
 
   return (
     <>
@@ -82,14 +141,13 @@ export const Participants = () => {
         </div>
 
         <ul className="mt-4 grid gap-4">
-          {users.map((user, index) => (
+          {participantsList.map((user, index) => (
             <UserCard
               user={user}
+              display_name={user.display_name}
+              id={user.id}
+              username={user.username}
               key={index}
-              name={user.name}
-              roles={user.roles}
-              isOwner={user.isOwner}
-              nickname={user.nickname}
               handleRoleAdd={handleRoleAdd}
               handleRoleDelete={handleRoleDelete}
               handleUserDelete={handleUserDelete}
@@ -97,6 +155,11 @@ export const Participants = () => {
           ))}
         </ul>
       </div>
+      <DeleteParticipantModal
+        open={isDeleteModalOpened}
+        onOpenChange={setIsDeleteModalOpened}
+        onConfirm={handleConfirmDelete}
+      />
     </>
   );
 };
