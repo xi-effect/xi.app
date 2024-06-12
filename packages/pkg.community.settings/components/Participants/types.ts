@@ -45,6 +45,6 @@ export type Participant = {
     id: number
     is_owner: boolean
     user_id: number
-}
+};
 
-export type ParticipantsList = Participant[]
+export type ParticipantsList = Participant[];

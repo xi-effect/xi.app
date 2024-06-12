@@ -4,18 +4,14 @@ import { Button } from '@xipkg/button';
 import { useDebouncedFunction } from '@xipkg/utils';
 import { Search } from '@xipkg/icons';
 
-// JSON со временным списком пользователей
 import { useMainSt } from 'pkg.stores';
 import { get } from 'pkg.utils';
 import { toast } from 'sonner';
-// import usersTemplate from './usersTemplate.json';
 import { ParticipantsList, UserRoleT, UserT } from './types';
 import { UserCard } from './UserCard';
 import DeleteParticipantModal from './DeleteParticipantModal';
 
 export const Participants = () => {
-  // Временное решение для рендера, удаления, изменения ролей пользователей
-  // const [users, setUsers] = useState(usersTemplate);
   const [participantsList, setParticipantsList] = useState<UserT[]>([]);
   const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
   const [deleteCandidate, setDeleteCandidate] = useState<number>();
@@ -28,7 +24,7 @@ export const Participants = () => {
     setDeleteCandidate(userToDelete.id);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     try {
       if (deleteCandidate) {
         socket.emit('kick-participant', {
@@ -38,7 +34,7 @@ export const Participants = () => {
         }, (status: number, data: any) => {
           const updatedUsers = participantsList.filter((user) => user.id !== deleteCandidate);
           setParticipantsList(updatedUsers);
-          console.log(status, data)
+          console.log(status, data);
         });
       }
       setIsDeleteModalOpened(false);
@@ -50,7 +46,7 @@ export const Participants = () => {
   };
 
   const handleRoleDelete = (userToUpdate: UserT, roleToDelete: UserRoleT) => {
-    console.log(userToUpdate, roleToDelete)
+    console.log(userToUpdate, roleToDelete);
     // const updatedUsers = users.map((user) => {
     //   if (user === userToUpdate) {
     //     const updatedRoles = user.roles.filter((role) => role !== roleToDelete);
@@ -62,7 +58,7 @@ export const Participants = () => {
   };
 
   const handleRoleAdd = (userToUpdate: UserT, roleToAdd: UserRoleT) => {
-    console.log(userToUpdate, roleToAdd)
+    console.log(userToUpdate, roleToAdd);
     // const updatedUsers = users.map((user) => {
     //   if (user === userToUpdate) {
     //     const updatedRoles = [...user.roles, roleToAdd];
@@ -74,7 +70,7 @@ export const Participants = () => {
   };
 
   const setFilteredUsers = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event)
+    console.log(event);
     // const searchValue = event.target.value.trim().toLowerCase();
     //
     // setUsers(
@@ -103,7 +99,7 @@ export const Participants = () => {
             'Content-Type': 'application/json',
           },
         } });
-      console.log(status)
+      console.log(status);
         return data;
     } catch (e) {
       console.log(e);

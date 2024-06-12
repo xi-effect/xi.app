@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
-import { Close, Crown, } from '@xipkg/icons';
+import { Close, Crown } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { useMainSt } from 'pkg.stores';
 import { UserCardPropsT } from './types';
@@ -8,15 +8,6 @@ export const UserCard = ({
                       user,
                       handleUserDelete,
                   }: UserCardPropsT) => {
-    // Временный список ролей
-    // const rolesTemplate = [
-    //     { name: 'Администратор', bgColorMain: 'bg-violet-100', bgColorSecondary: 'bg-violet-20' },
-    //     { name: 'Преподаватель', bgColorMain: 'bg-brand-100', bgColorSecondary: 'bg-brand-0' },
-    //     { name: 'Студент', bgColorMain: 'bg-green-100', bgColorSecondary: 'bg-green-0' },
-    //     { name: 'Гость', bgColorMain: 'bg-red-100', bgColorSecondary: 'bg-red-0' },
-    //     { name: '1', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
-    //     { name: '2', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
-    // ];
     const isOwner = useMainSt((state) => state.communityMeta.isOwner);
     return (
       <li className="border-gray-30 flex rounded-lg border p-4 md:items-center">
@@ -39,39 +30,6 @@ export const UserCard = ({
             </div>
             {isOwner && <Crown className="!size-3 self-start" />}
           </div>
-          {/* <ul className="flex flex-wrap items-center gap-x-4 gap-y-2"> */}
-          {/*    {roles.map((role, index) => ( */}
-          {/*        <UserBadge */}
-          {/*            role={role} */}
-          {/*            key={index} */}
-          {/*            name={role.name} */}
-          {/*            bgColorMain={role.bgColorMain} */}
-          {/*            bgColorSecondary={role.bgColorSecondary} */}
-          {/*            handleRoleDelete={() => handleRoleDelete(user, role)} */}
-          {/*        /> */}
-          {/*    ))} */}
-          {/*    <li className="size-6"> */}
-          {/*        <DropdownMenu> */}
-          {/*            <DropdownMenuTrigger asChild> */}
-          {/*                <Button className="hover:bg-brand-80 group !size-6 bg-transparent p-1"> */}
-          {/*                    <Plus className="group-hover:fill-gray-0 group-focus:fill-gray-0 size-4" /> */}
-          {/*                </Button> */}
-          {/*            </DropdownMenuTrigger> */}
-          {/*            <DropdownMenuContent className="w-56 p-3"> */}
-          {/*                {rolesTemplate.map((roleTemplate, index) => ( */}
-          {/*                    <DropdownMenuItem */}
-          {/*                        key={index} */}
-          {/*                        className="hover:bg-gray-10 rounded-lg" */}
-          {/*                        onClick={() => handleRoleAdd(user, roleTemplate)} */}
-          {/*                    > */}
-          {/*                        <span className={`bg mr-2 size-3 rounded-full ${roleTemplate.bgColorMain}`} /> */}
-          {/*                        <p>{roleTemplate.name}</p> */}
-          {/*                    </DropdownMenuItem> */}
-          {/*                ))} */}
-          {/*            </DropdownMenuContent> */}
-          {/*        </DropdownMenu> */}
-          {/*    </li> */}
-          {/* </ul> */}
         </div>
         <Button
           className="focus:bg-red-80 hover:bg-red-80 group ml-auto h-6 w-6 bg-transparent p-1"
