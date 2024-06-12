@@ -9,15 +9,15 @@ import { Channel } from './Channel';
 
 type CategoryContainerT = {
   category: CategoryT;
-  communityId: number | null;
   channels: ChannelT[];
   setSlideIndex?: (arg: number) => void;
 };
 
-export function CategoryContainer({ category, communityId, channels, setSlideIndex }: CategoryContainerT) {
+export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+  const communityId = useMainSt((state) => state.communityMeta.id);
   const socket = useMainSt((state) => state.socket);
-  const deleteCategoriy = useMainSt((state) => state.deleteCategory);
+  const deleteCategory = useMainSt((state) => state.deleteCategory);
 
   const { name, description, uid } = category;
   const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
@@ -55,7 +55,7 @@ export function CategoryContainer({ category, communityId, channels, setSlideInd
       (status: number) => {
         if (status === 204) {
           toast('Категория успешно удалена');
-          deleteCategoriy(category.id);
+          deleteCategory(category.id);
       } else {
         toast(`Что-то пошло не так. Ошибка ${status}`);
       }
