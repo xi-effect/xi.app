@@ -6,10 +6,13 @@
 //     isOwner: boolean;
 // };
 
+import React from 'react';
+
 export type UserT = {
     id: number;
     display_name: string;
     username: string
+    isOwner: boolean
 };
 
 // export type UserCardPropsT = UserT & {
@@ -40,11 +43,17 @@ export type UserBadgePropsT = UserRoleT & {
 
 // Ответ на событие запрос списка участников
 
-export type Participant = {
+export type ParticipantT = {
     created_at: string
     id: number
     is_owner: boolean
     user_id: number
 };
 
-export type ParticipantsList = Participant[];
+export type ParticipantsList = ParticipantT[];
+
+export type DeleteParticipantModalPropsT = {
+    open: boolean,
+    onOpenChange: (value: React.SetStateAction<boolean>) => void;
+    onConfirm: () => void
+};

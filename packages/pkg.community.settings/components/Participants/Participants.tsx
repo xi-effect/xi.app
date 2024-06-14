@@ -7,12 +7,12 @@ import { Search } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
 import { get } from 'pkg.utils';
 import { toast } from 'sonner';
-import { ParticipantsList, UserRoleT, UserT } from './types';
+import { ParticipantsList, ParticipantT, UserRoleT, UserT } from './types';
 import { UserCard } from './UserCard';
-import DeleteParticipantModal from './DeleteParticipantModal';
+import { DeleteParticipantModal } from './DeleteParticipantModal';
 
 export const Participants = () => {
-  const [participantsList, setParticipantsList] = useState<UserT[]>([]);
+  const [participantsList, setParticipantsList] = useState<UserT[] | null>(null);
   const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
   const [deleteCandidate, setDeleteCandidate] = useState<number>();
 
@@ -20,29 +20,28 @@ export const Participants = () => {
   const communityId = useMainSt((state) => state.communityMeta.id);
 
   const handleUserDelete = (userToDelete: UserT) => {
-    setIsDeleteModalOpened(!isDeleteModalOpened);
+    setIsDeleteModalOpened((prevState) => (!prevState));
     setDeleteCandidate(userToDelete.id);
   };
 
-  const handleConfirmDelete = async () => {
-    try {
+  const handleConfirmDelete = () => {
       if (deleteCandidate) {
         socket.emit('kick-participant', {
           community_id: communityId,
           user_id: deleteCandidate,
           target_user_id: deleteCandidate,
-        }, (status: number, data: any) => {
-          const updatedUsers = participantsList.filter((user) => user.id !== deleteCandidate);
-          setParticipantsList(updatedUsers);
-          console.log(status, data);
+        }, (status: number) => {
+          if (status !== 204) {
+            toast('Не удалось исключить участника');
+            return;
+          }
+          const updatedUsers = participantsList?.filter((user) => user.id !== deleteCandidate);
+          if (updatedUsers) {
+            setParticipantsList(updatedUsers);
+          }
         });
       }
       setIsDeleteModalOpened(false);
-    } catch (e) {
-      setIsDeleteModalOpened(false);
-      toast('Не удалось исключить участника');
-      throw e;
-    }
   };
 
   const handleRoleDelete = (userToUpdate: UserT, roleToDelete: UserRoleT) => {
@@ -89,29 +88,34 @@ export const Participants = () => {
     debauncedUsersSearch(event);
   };
 
-  const getUserProfile = async (id: number) => {
-    try {
-      const { status, data } = await get<UserT>({
-        service: 'auth',
-        path: `/api/users/by-id/${id}/profile/`,
-        config: {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        } });
-      console.log(status);
-        return data;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
+  const getUserProfile = async (user: ParticipantT) => {
+     try {
+       const { status, data } = await get<UserT>({
+         service: 'auth',
+         path: `/api/users/by-id/${user.user_id}/profile/`,
+         config: {
+           headers: {
+             'Content-Type': 'application/json',
+           },
+         } });
+       if (status === 200) {
+         return { ...data, isOwner: user.is_owner };
+       }
+     } catch (e) {
+       console.error('Ошибка при получении профиля пользователя:', e);
+       toast('Ошибка при получении профиля пользователя');
+     }
+      return null;
   };
 
   useEffect(() => {
     socket.emit('list-participants', { community_id: communityId }, async (status: number, data: ParticipantsList) => {
-      if (status === 200) {
-        const userProfiles = await Promise.all(data.map((user) => getUserProfile(user.user_id)));
-        setParticipantsList(userProfiles);
+      if (status === 200 && data) {
+        const participantsProfiles = await Promise.all(
+            data.map(async (participant) => getUserProfile(participant)));
+        const validProfiles = participantsProfiles
+            .filter((profile): profile is UserT => profile !== null);
+        setParticipantsList(validProfiles);
       }
     });
   }, [communityId]);
@@ -137,12 +141,13 @@ export const Participants = () => {
         </div>
 
         <ul className="mt-4 grid gap-4">
-          {participantsList.map((user, index) => (
+          {participantsList && participantsList?.map((user, index) => (
             <UserCard
               user={user}
               display_name={user.display_name}
               id={user.id}
               username={user.username}
+              isOwner={user.isOwner}
               key={index}
               handleRoleAdd={handleRoleAdd}
               handleRoleDelete={handleRoleDelete}
