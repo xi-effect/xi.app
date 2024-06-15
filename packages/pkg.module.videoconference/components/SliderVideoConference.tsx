@@ -10,10 +10,12 @@ export interface ITrackLoopProps {
 
 export function SliderVideoConference({
   tracks,
-  // maxVisibleTiles,
+  maxVisibleTiles,
   orientation,
   ...props
 }: TrackLoopProps & ITrackLoopProps & IOrientationLayout) {
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const visibleTracks = tracks.slice(currentIndex, currentIndex + maxVisibleTiles);
   function cloneSingleChild(
     children: React.ReactNode | React.ReactNode[],
     props?: Record<string, any>,
@@ -26,10 +28,39 @@ export function SliderVideoConference({
       return child;
     });
   }
+
+  const handleCheckDisabled = (type: 'prev' | 'next') => {
+    switch (type) {
+      case 'prev':
+        return currentIndex - maxVisibleTiles < 0;
+      case 'next':
+        return currentIndex + maxVisibleTiles >= tracks.length;
+      default:
+        return false;
+    }
+  };
+
+  const handleNext = () => {
+    if (currentIndex + maxVisibleTiles < tracks.length) {
+      setCurrentIndex(currentIndex + maxVisibleTiles);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentIndex - maxVisibleTiles >= 0) {
+      setCurrentIndex(currentIndex - maxVisibleTiles);
+    }
+  };
+
   return (
-    tracks.length > 0 && (
-      <Carousel orientation={orientation}>
-        {tracks.map((trackReference: any, index: number) => (
+    visibleTracks.length > 0 && (
+      <Carousel
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+        handleCheckDisabled={handleCheckDisabled}
+        orientation={orientation}
+      >
+        {visibleTracks.map((trackReference: any, index: number) => (
           <TrackRefContext.Provider
             value={trackReference}
             key={getTrackReferenceId(trackReference)}

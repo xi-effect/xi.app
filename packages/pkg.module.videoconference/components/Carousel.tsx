@@ -1,19 +1,29 @@
-/* eslint-disable react/button-has-type */
 import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import React from 'react';
 import { IOrientationLayout } from './VideoConferenceLayout';
 
 interface ICarousel {
   children: React.ReactNode;
+  handleNext: () => void;
+  handlePrev: () => void;
+  handleCheckDisabled: (type: 'prev' | 'next') => boolean;
 }
-export const Carousel = ({ children, orientation }: ICarousel & IOrientationLayout) => (
+export const Carousel = ({
+  children,
+  orientation,
+  handleNext,
+  handleCheckDisabled,
+  handlePrev,
+}: ICarousel & IOrientationLayout) => (
   <div className="mx-auto h-full w-full">
     <div className="relative h-full overflow-hidden">
       <div
         className={`absolute flex h-full w-full items-center justify-between ${orientation === 'horizontal' ? 'flex-row' : 'flex-col'}`}
       >
         <button
-          // onClick={movePrev}
+          type="button"
+          disabled={handleCheckDisabled('prev')}
+          onClick={handlePrev}
           className="disabled:fill-gray-80 z-10 bg-transparent fill-white p-0 text-center transition-all duration-300 ease-in-out hover:opacity-100 disabled:cursor-not-allowed"
         >
           {orientation === 'horizontal' ? (
@@ -24,7 +34,9 @@ export const Carousel = ({ children, orientation }: ICarousel & IOrientationLayo
           <span className="sr-only">Prev</span>
         </button>
         <button
-          // onClick={moveNext}
+          type="button"
+          disabled={handleCheckDisabled('next')}
+          onClick={handleNext}
           className="disabled:fill-gray-80 z-10 bg-transparent fill-white p-0 text-center hover:opacity-100 disabled:cursor-not-allowed"
         >
           {orientation === 'horizontal' ? (
