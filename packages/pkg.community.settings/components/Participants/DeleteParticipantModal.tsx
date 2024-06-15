@@ -2,8 +2,12 @@ import * as M from '@xipkg/modal';
 import { Close } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import React from 'react';
-import { DeleteParticipantModalPropsT } from './types';
 
+export type DeleteParticipantModalPropsT = {
+    open: boolean,
+    onOpenChange: (value: React.SetStateAction<boolean>) => void;
+    onConfirm: () => void
+};
 export const DeleteParticipantModal = (
     { open, onOpenChange, onConfirm }: DeleteParticipantModalPropsT) => (
       <M.Modal open={open} onOpenChange={onOpenChange}>

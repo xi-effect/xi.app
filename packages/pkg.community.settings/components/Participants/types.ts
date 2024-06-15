@@ -51,9 +51,3 @@ export type ParticipantT = {
 };
 
 export type ParticipantsList = ParticipantT[];
-
-export type DeleteParticipantModalPropsT = {
-    open: boolean,
-    onOpenChange: (value: React.SetStateAction<boolean>) => void;
-    onConfirm: () => void
-};
