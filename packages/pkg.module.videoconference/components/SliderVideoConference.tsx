@@ -10,7 +10,7 @@ export interface ITrackLoopProps {
 
 export function SliderVideoConference({
   tracks,
-  maxVisibleTiles,
+  // maxVisibleTiles,
   orientation,
   ...props
 }: TrackLoopProps & ITrackLoopProps & IOrientationLayout) {
@@ -28,7 +28,7 @@ export function SliderVideoConference({
   }
   return (
     tracks.length > 0 && (
-      <Carousel maxVisibleTiles={maxVisibleTiles} orientation={orientation}>
+      <Carousel orientation={orientation}>
         {tracks.map((trackReference: any, index: number) => (
           <TrackRefContext.Provider
             value={trackReference}
