@@ -1,19 +1,16 @@
-/* eslint-disable max-len */
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { getTrackReferenceId } from '@livekit/components-core';
 import { TrackLoopProps, TrackRefContext } from '@livekit/components-react';
-// import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import { IOrientationLayout } from './VideoConferenceLayout';
 import { Carousel } from './Carousel';
 
-interface ITrackLoopProps {
+export interface ITrackLoopProps {
   maxVisibleTiles: number;
 }
 
 export function SliderVideoConference({
   tracks,
-  // maxVisibleTiles,
+  maxVisibleTiles,
   orientation,
   ...props
 }: TrackLoopProps & ITrackLoopProps & IOrientationLayout) {
@@ -31,14 +28,16 @@ export function SliderVideoConference({
   }
   return (
     tracks.length > 0 && (
-      <Carousel orientation={orientation}>
+      <Carousel maxVisibleTiles={maxVisibleTiles} orientation={orientation}>
         {tracks.map((trackReference: any, index: number) => (
           <TrackRefContext.Provider
             value={trackReference}
             key={getTrackReferenceId(trackReference)}
           >
-            <div key={index} className="carousel-item snap-start text-center">
-              <div className="mx-auto text-xl text-white">{cloneSingleChild(props.children)}</div>
+            <div key={index} className="text-center">
+              <div className="mx-auto h-full w-full text-xl text-white">
+                {cloneSingleChild(props.children)}
+              </div>
             </div>
           </TrackRefContext.Provider>
         ))}
