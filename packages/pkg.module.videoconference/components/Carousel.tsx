@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@xipkg/icons';
+import { ArrowUp, ChevronLeft, ChevronRight } from '@xipkg/icons';
 import React from 'react';
 import { IOrientationLayout } from './VideoConferenceLayout';
 
@@ -28,9 +28,9 @@ export const Carousel = ({
         >
           <div className="flex items-center justify-center rounded-full bg-[#000000] p-2">
             {orientation === 'horizontal' ? (
-              <ChevronLeft className="fill-inherit" />
+              <ArrowUp className="-rotate-90 fill-inherit" />
             ) : (
-              <ChevronLeft className="rotate-90 fill-inherit" />
+              <ArrowUp className="fill-inherit" />
             )}
           </div>
           <span className="sr-only">Prev</span>
@@ -43,9 +43,9 @@ export const Carousel = ({
         >
           <div className="flex items-center justify-center rounded-full bg-[#000000] p-2">
             {orientation === 'horizontal' ? (
-              <ChevronRight className="fill-inherit" />
+              <ArrowUp className="rotate-90 fill-inherit" />
             ) : (
-              <ChevronRight className="rotate-90 fill-inherit" />
+              <ArrowUp className="rotate-180 fill-inherit" />
             )}
           </div>
           <span className="sr-only">Next</span>
