@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
@@ -14,6 +15,9 @@ type CategoryContainerT = {
 
 export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+  const communityId = useMainSt((state) => state.communityMeta.id);
+  const socket = useMainSt((state) => state.socket);
+  const deleteCategory = useMainSt((state) => state.deleteCategory);
 
   const { name, description, uid } = category;
   const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
@@ -41,12 +45,29 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
     );
   }
 
+  const handleDelete = () => {
+    socket.emit(
+      'delete-category',
+      {
+        community_id: communityId,
+        category_id: category.id,
+      },
+      (status: number) => {
+        if (status === 204) {
+          toast('Категория успешно удалена');
+          deleteCategory(category.id);
+      } else {
+        toast(`Что-то пошло не так. Ошибка ${status}`);
+      }
+    });
+  };
+
   return (
     <div ref={setNodeRef} style={categoryStyle}>
       <ItemContextMenu
         isTriggerActive={isOwner}
         handleEdit={() => console.log('Редактировать категорию')}
-        handleDelete={() => console.log('Удалить категорию')}
+        handleDelete={handleDelete}
       >
         <div {...attributes} {...listeners}>
           {name && (

@@ -20,14 +20,14 @@ type ChannelT = {
 };
 
 type MoveCategoryDataT = {
-  categoryId: number | null;
+  categoryId: number | null | 'empty';
   afterId: number | null;
   beforeId: number | null;
 };
 
 type MoveChannelDataT = {
   channelId: number;
-  categoryId: number;
+  categoryId: number | null | 'empty';
   afterId: number | null;
   beforeId: number | null;
 };
@@ -39,6 +39,8 @@ export type ChannelsCommunity = {
   updateCategories: (value: any) => void;
   addChannel: (value: ChannelT) => void;
   addCategory: (value: CategoryT) => void;
+  deleteChannel: (value: number) => void;
+  deleteCategory: (value: number | null | 'empty') => void;
   moveCategory: (moveData: MoveCategoryDataT) => void;
   moveChannel: (moveData: MoveChannelDataT) => void;
 };
@@ -59,11 +61,12 @@ export const createChannelsCommunitySt: StateCreator<
     ({ channels: [...(channels || []), value] })),
   addCategory: (value: CategoryT) => set(({ categories }) =>
     ({ categories: [...(categories || []), value] })),
-  // TODO: разобраться с ts
-  // @ts-ignore
+  deleteCategory: (value: number | null | 'empty') => set(({ categories }) =>
+    categories ? { categories: categories.filter((category : CategoryT) => category.id !== value) } : { categories }),
+  deleteChannel: (value: number) => set(({ channels }) =>
+    channels ? { channels: channels.filter((channel : ChannelT) => channel.id !== value) } : { channels }),
   moveCategory: ({ categoryId, afterId, beforeId }: MoveCategoryDataT) => set(({ categories }) => {
-    if (categories === null) return null;
-
+    if (categories === null) return { categories };
     const categoryIndex = (categories || []).findIndex((category) => category.id === categoryId);
 
     if (afterId === null) {
@@ -79,10 +82,8 @@ export const createChannelsCommunitySt: StateCreator<
     return { categories: arrayMove(categories, categoryIndex, afterIndex + 1) };
   }),
   moveChannel: ({ channelId, categoryId, afterId, beforeId }: MoveChannelDataT) =>
-    // TODO: разобраться с ts
-    // @ts-ignore
     set(({ channels }) => {
-      if (channels === null) return null;
+      if (channels === null) return { channels };
 
       const channelIndex = (channels || []).findIndex((channel) => channel.id === channelId);
 
