@@ -76,8 +76,8 @@ export function FocusLayout({
     </div>
   );
 }
-const TILE_HEIGHT = 164;
-const TILE_WIDTH = 270;
+const TILE_HEIGHT = 204;
+const TILE_WIDTH = 294;
 
 export interface CarouselLayoutProps extends React.HTMLAttributes<HTMLMediaElement> {
   tracks: TrackReferenceOrPlaceholder[];

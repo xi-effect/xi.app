@@ -1,4 +1,4 @@
-import { ArrowUp, ChevronLeft, ChevronRight } from '@xipkg/icons';
+import { ArrowUp } from '@xipkg/icons';
 import React from 'react';
 import { IOrientationLayout } from './VideoConferenceLayout';
 
@@ -52,7 +52,7 @@ export const Carousel = ({
         </button>
       </div>
       <div
-        className={`${orientation === 'vertical' ? 'my-12 flex h-[calc(100vh-20rem)] flex-col' : 'mx-12'} relative z-0 flex h-full w-full touch-pan-x snap-x snap-mandatory gap-5 overflow-hidden scroll-smooth`}
+        className={`${orientation === 'vertical' ? 'my-14 flex h-[calc(100vh-20rem)] flex-col' : 'mx-14'} relative z-0 flex h-full w-full touch-pan-x snap-x snap-mandatory gap-5 overflow-hidden scroll-smooth`}
       >
         {children}
       </div>
