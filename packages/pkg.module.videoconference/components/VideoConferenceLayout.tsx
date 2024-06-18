@@ -2,13 +2,8 @@
 /* eslint-disable react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
 import '@livekit/components-styles';
+import { TrackReferenceOrPlaceholder, createInteractingObservable } from '@livekit/components-core';
 import {
-  TrackReferenceOrPlaceholder,
-  createInteractingObservable,
-  getScrollBarWidth,
-} from '@livekit/components-core';
-import {
-  CarouselLayoutProps,
   TrackLoop,
   useVisualStableUpdate,
   FocusLayoutProps,
@@ -22,6 +17,7 @@ import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import { useSearchParams } from 'next/navigation';
 import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
+import { SliderVideoConference } from './SliderVideoConference';
 
 export interface PaginationControlProps
   extends Pick<
@@ -38,7 +34,7 @@ export interface IOrientationLayout {
   orientation: 'vertical' | 'horizontal' | 'grid';
 }
 
-function EmptyItemContainerOfUser({ ...restProps }) {
+export function EmptyItemContainerOfUser({ ...restProps }) {
   return (
     <div
       {...restProps}
@@ -80,11 +76,14 @@ export function FocusLayout({
     </div>
   );
 }
-const MIN_HEIGHT = 250;
-const MIN_WIDTH = 250;
-const MIN_VISIBLE_TILES = 3;
-const ASPECT_RATIO = 8 / 10;
-const ASPECT_RATIO_INVERT = (1 - ASPECT_RATIO) * -1;
+const TILE_HEIGHT = 204;
+const TILE_WIDTH = 294;
+
+export interface CarouselLayoutProps extends React.HTMLAttributes<HTMLMediaElement> {
+  tracks: TrackReferenceOrPlaceholder[];
+  children: React.ReactNode;
+  orientation: 'vertical' | 'horizontal' | 'grid';
+}
 
 export function CarouselLayout({
   tracks,
@@ -93,28 +92,14 @@ export function CarouselLayout({
   ...props
 }: CarouselLayoutProps & { userTracks: TrackReferenceOrPlaceholder[] }) {
   const asideEl = React.useRef<HTMLDivElement>(null);
-  const [prevTiles, setPrevTiles] = React.useState(0);
   const { width, height } = useSize(asideEl);
   const carouselOrientation = orientation || (height >= width ? 'vertical' : 'horizontal');
-
-  const tileSpan =
-    carouselOrientation === 'vertical'
-      ? Math.max(width * ASPECT_RATIO_INVERT, MIN_HEIGHT)
-      : Math.max(height * ASPECT_RATIO, MIN_WIDTH);
-  const scrollBarWidth = getScrollBarWidth();
-
   const tilesThatFit =
     carouselOrientation === 'vertical'
-      ? Math.max((height - scrollBarWidth) / tileSpan, MIN_VISIBLE_TILES)
-      : Math.max((width - scrollBarWidth) / tileSpan, MIN_VISIBLE_TILES);
+      ? Math.floor(+height / TILE_HEIGHT)
+      : Math.floor(+width / TILE_WIDTH);
 
-  let maxVisibleTiles = Math.round(tilesThatFit);
-  if (Math.abs(tilesThatFit - prevTiles) < 0.5) {
-    maxVisibleTiles = Math.round(prevTiles);
-  } else if (prevTiles !== tilesThatFit) {
-    setPrevTiles(tilesThatFit);
-  }
-
+  const maxVisibleTiles = Math.floor(tilesThatFit);
   const sortedTiles = useVisualStableUpdate(tracks, maxVisibleTiles);
   const isOneItem = useEmptyItemContainerOfUser(userTracks.length);
   React.useLayoutEffect(() => {
@@ -125,20 +110,23 @@ export function CarouselLayout({
   }, [maxVisibleTiles, carouselOrientation]);
 
   return (
-    <aside
-      key={carouselOrientation}
-      className="lk-carousel"
-      style={{ gap: '1rem', width: 'full' }}
+    <div
       ref={asideEl}
-      {...props}
+      className={`${carouselOrientation === 'horizontal' ? 'm-auto w-[95%]' : 'mx-5 h-[calc(100vh-13rem)] max-w-[277px]'}`}
     >
       {isOneItem && (
         <div className="h-[144px] w-[250px]">
           <EmptyItemContainerOfUser />
         </div>
       )}
-      <TrackLoop tracks={sortedTiles}>{props.children}</TrackLoop>
-    </aside>
+      <SliderVideoConference
+        orientation={orientation}
+        maxVisibleTiles={maxVisibleTiles}
+        tracks={sortedTiles}
+      >
+        {props.children}
+      </SliderVideoConference>
+    </div>
   );
 }
 export function PaginationControl({
