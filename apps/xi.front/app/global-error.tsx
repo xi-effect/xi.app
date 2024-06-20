@@ -1,17 +1,13 @@
 'use client';
 
-import React from 'react';
+import { ErrorPage } from 'pkg.error-page';
 
-export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
-  console.log('error', error);
+export default function Error500() {
   return (
-    <html lang="en">
-      <body>
-        <h2>Something went wrong!</h2>
-        <button type="button" onClick={() => reset()}>
-          Try again
-        </button>
-      </body>
-    </html>
+    <ErrorPage
+      title="Сервис недоступен"
+      text="Попробуйте обновить страницу или зайдите позже"
+      errorCode={500}
+    />
   );
 }

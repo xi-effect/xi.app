@@ -1,15 +1,13 @@
 'use client';
 
-export default function Error({ error, reset }: { error: Error; reset: () => void }) {
-  console.log('error', error);
+import { ErrorPage } from 'pkg.error-page';
+
+export default function Error400() {
   return (
-    <html lang="en">
-      <body>
-        <h2>Something went wrong!</h2>
-        <button type="button" onClick={() => reset()}>
-          Try again
-        </button>
-      </body>
-    </html>
+    <ErrorPage
+      title="Ошибка на странице"
+      text="Попробуйте зайти на страницу позже"
+      errorCode={400}
+    />
   );
 }
