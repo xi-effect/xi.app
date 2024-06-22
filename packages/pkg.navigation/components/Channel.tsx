@@ -21,6 +21,7 @@ import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 import { ChannelT } from './types';
 import { ItemContextMenu } from './ItemContextMenu';
+import { useMedia } from 'pkg.utils';
 
 type ChannelPropsT = {
   channel: ChannelT;
@@ -56,13 +57,16 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
   const deleteChannel = useMainSt((state) => state.deleteChannel);
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
+
+  const isMobile = useMedia('(max-width: 960px)');
+
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: channel.uid,
     data: {
       type: 'Channel',
       channel,
     },
-    disabled: !isOwner,
+    disabled: !isOwner || isMobile,
   });
 
   const pathname = usePathname();
@@ -158,7 +162,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
             {iconsDict[channel.kind]}
             <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
           </div>
-          {isOwner && mouseOver ? (
+          {isOwner && !isMobile && mouseOver ? (
             <div {...attributes} {...listeners} className="flex items-center gap-3">
               {activeChannel ? (
                 <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />

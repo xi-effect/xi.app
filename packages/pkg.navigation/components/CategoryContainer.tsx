@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
+import { useMedia } from 'pkg.utils';
 
 type CategoryContainerT = {
   category: CategoryT;
@@ -22,13 +23,15 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
   const { name, description, uid } = category;
   const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
 
+  const isMobile = useMedia('(max-width: 960px)');
+
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: uid,
     data: {
       type: 'Category',
       category,
     },
-    disabled: !isOwner,
+    disabled: !isOwner || isMobile,
   });
 
   const categoryStyle = {
