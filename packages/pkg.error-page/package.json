@@ -1,0 +1,29 @@
+{
+  "name": "pkg.error-page",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "@xipkg/icons": "^0.10.3",
+    "@xipkg/link": "^0.3.0",
+    "pkg.logo": "*",
+    "next": "^14.2.3",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@xipkg/eslint": "1.4.0",
+    "@xipkg/tailwind": "latest",
+    "@xipkg/typescript": "latest",
+    "eslint-config-custom": "*",
+    "typescript": "^5.4.2"
+  },
+  "description": "error page",
+  "author": "xi.effect"
+}

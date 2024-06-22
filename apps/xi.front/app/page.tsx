@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
 export default function Main() {
-  return redirect('/signint');
+  return redirect('/signin');
 }
