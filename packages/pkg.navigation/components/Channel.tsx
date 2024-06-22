@@ -18,8 +18,10 @@ import {
   Settings,
 } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 import { ChannelT } from './types';
 import { ItemContextMenu } from './ItemContextMenu';
+import { useMedia } from 'pkg.utils';
 
 type ChannelPropsT = {
   channel: ChannelT;
@@ -51,16 +53,20 @@ const stylesDict = {
 
 export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) => {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
-
+  const socket = useMainSt((state) => state.socket);
+  const deleteChannel = useMainSt((state) => state.deleteChannel);
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
+
+  const isMobile = useMedia('(max-width: 960px)');
+
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: channel.uid,
     data: {
       type: 'Channel',
       channel,
     },
-    disabled: !isOwner,
+    disabled: !isOwner || isMobile,
   });
 
   const pathname = usePathname();
@@ -119,8 +125,29 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
     );
   }
 
+  const handleDelete = () => {
+    socket.emit(
+      'delete-channel',
+      {
+        community_id: communityId,
+        channel_id: channel.id,
+      },
+      (status: number) => {
+        if (status === 204) {
+          toast('Канал успешно удален');
+          deleteChannel(channel.id);
+      } else {
+        toast(`Что-то пошло не так. Ошибка ${status}`);
+      }
+    });
+  };
+
   return (
-    <ItemContextMenu isTriggerActive={isOwner} handleEdit={() => console.log('Редактировать канал')} handleDelete={() => console.log('Удалить канал')}>
+    <ItemContextMenu
+      isTriggerActive={isOwner}
+      handleEdit={() => console.log('Редактировать канал')}
+      handleDelete={handleDelete}
+    >
       <div
         onMouseEnter={() => setMouseOver(true)}
         onMouseLeave={() => setMouseOver(false)}
@@ -135,7 +162,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
             {iconsDict[channel.kind]}
             <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
           </div>
-          {isOwner && mouseOver ? (
+          {isOwner && !isMobile && mouseOver ? (
             <div {...attributes} {...listeners} className="flex items-center gap-3">
               {activeChannel ? (
                 <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />
