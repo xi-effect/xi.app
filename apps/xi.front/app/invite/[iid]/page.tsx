@@ -35,13 +35,16 @@ export async function generateMetadata({ params }: PageParamsT): Promise<Metadat
   const data = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/public/community-service/invitations/by-code/${params.iid}/community/`,
   ).then((res) => res.json());
+
   return {
     title: `Приглашение в сообщество ${data.community.name}`,
-    description: data.community.description || 'Добро пожаловать в лучшее сообщество',
+    description: `Вы были приглашены в сообщество «${data.community.name}». 
+        Перейдите по этой ссылке-приглашению, чтобы принять приглашение`,
     openGraph: {
       title: `Приглашение в сообщество ${data.community.name}`,
-      description: data.community.description || 'Добро пожаловать в лучшее сообщество',
-      images: ['./assets/brand/navigationlogo-default-light.svg'],
+      description: `Вы были приглашены в сообщество «${data.community.name}». 
+        Перейдите по этой ссылке-приглашению, чтобы принять приглашение`,
+      images: [`https://api.xieffect.ru/files/communities/${data.community.id}/avatar.webp`],
     },
   };
 }
