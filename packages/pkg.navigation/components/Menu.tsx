@@ -12,6 +12,7 @@ import { Objects } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
+import '../utils/driver.scss';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
 
@@ -37,6 +38,7 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
 
   const driverAction = () => {
     const driverObj = driver({
+      popoverClass: 'my-custom-popover-class',
       showProgress: true,
       steps: [
         {
