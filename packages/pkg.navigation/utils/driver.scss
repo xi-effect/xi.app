@@ -1,6 +1,28 @@
 .my-custom-popover-class {
   border-radius: 16px;
   .driver-popover-next-btn {
+    border-color: transparent;
+    padding: 5px 16px;
+    border-radius: 6px;
+    text-shadow: none;
+    color: white;
     background-color: #445aff;
+  }
+  .driver-popover-navigation-btns button + button {
+    margin-left: 13px;
+  }
+  .driver-popover-next-btn {
+    &:hover {
+      background-color: #445aff;
+    }
+  }
+  .driver-popover-prev-btn {
+    border-radius: 6px;
+    padding: 5px 16px;
+  }
+  .driver-popover-close-btn {
+    color: #707070;
+    right: 8px;
+    top: 8px;
   }
 }
