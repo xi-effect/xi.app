@@ -58,7 +58,7 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
           },
         },
         {
-          element: '#community-services',
+          element: '#community-profile',
           popover: {
             title: 'Сервисы сообщества',
             description:
