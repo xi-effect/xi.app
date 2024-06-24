@@ -7,14 +7,12 @@
     text-shadow: none;
     color: white;
     background-color: #445aff;
-  }
-  .driver-popover-navigation-btns button + button {
-    margin-left: 13px;
-  }
-  .driver-popover-next-btn {
     &:hover {
       background-color: #445aff;
     }
+  }
+  .driver-popover-navigation-btns button + button {
+    margin-left: 13px;
   }
   .driver-popover-prev-btn {
     border-radius: 6px;
