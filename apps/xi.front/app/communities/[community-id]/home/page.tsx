@@ -34,8 +34,8 @@ const Header = () => {
 
   return (
     <header className=" max-xs:pb-4 pb-8 w-full max-w-[1570px]">
-      <div className="font-semibold text-[32px] max-xs:text-2xl leading-10 xl:text-[40px] xl:leading-[48px] flex gap-3 sm:gap-4 flex-wrap text-gray-100">
-        <h2 className="mr-3 sm:mr-4">Добро пожаловать в сообщество</h2>
+      <div className="font-semibold text-[32px] max-xs:text-2xl leading-10 xl:text-[40px] xl:leading-[48px] flex gap-3 flex-wrap text-gray-100">
+        <h2 className="mr-3">Добро пожаловать в сообщество</h2>
         <div className="flex items-center">
           {!id ? (
             <div className="bg-gray-10 size-[48px] animate-pulse rounded-[24px]" />
