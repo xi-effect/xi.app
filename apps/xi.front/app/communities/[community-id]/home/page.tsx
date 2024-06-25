@@ -45,7 +45,7 @@ const Header = () => {
           {!communityName ? (
             <div className="ml-2 xl:ml-4 animate-pulse bg-gray-10 h-[32px] w-[156px] rounded-[8px]" />
           ) : (
-            <p className="ml-2 xl:ml-4">{communityName}</p>
+            <p className="ml-2 xl:ml-4 break-all">{communityName}</p>
           )}
         </div>
       </div>

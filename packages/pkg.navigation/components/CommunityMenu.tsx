@@ -74,7 +74,7 @@ const DropdownHeader = ({
     onClick={() => {
       if (name) setIsOpen((prev: boolean) => !prev);
     }}
-    className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${
+    className={`flex h-12 px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${
       inDropdown ? '' : 'mt-0 sm:mt-8'
     } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
   >
@@ -86,7 +86,7 @@ const DropdownHeader = ({
     {!name ? (
       <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
     ) : (
-      <div className="ml-2 self-center text-[16px] font-semibold">{name}</div>
+      <div className="ml-2 self-center text-[16px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">{name}</div>
     )}
     <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
       <ChevronSmallTop
@@ -146,10 +146,10 @@ const CommunityLink = ({
   return (
     <div
       onClick={handleClick}
-      className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
+      className="hover:bg-gray-5 flex h-12 items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
     >
       <AvatarPreview communityId={community.id} />
-      <div className="ml-2 self-center text-[16px] font-semibold">{community.name}</div>
+      <div className="ml-2 self-center text-[16px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">{community.name}</div>
     </div>
   );
 };
