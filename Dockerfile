@@ -34,7 +34,7 @@ RUN npm install
 # Build the project
 COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
-RUN npm run build --filter=${APP_NAME}...
+RUN npm run build --filter=${APP_NAME}
 
 FROM base AS runner
 ARG APP_NAME=xi.front
