@@ -1,4 +1,18 @@
-import { Cite, H1, H2, H3, IconProps, Objects, Ol, Text, Ul } from '@xipkg/icons';
+import {
+  Cite,
+  H1,
+  H2,
+  H3,
+  IconProps,
+  Objects,
+  Ol,
+  Text,
+  Ul,
+  File,
+  Photo,
+  Video,
+  Code,
+} from '@xipkg/icons';
 import { ComponentType } from 'react';
 import { type CommonCustomElementType } from '../slate';
 
@@ -43,5 +57,21 @@ export default {
   divider: {
     label: 'Разделитель',
     icon: Ul,
+  },
+  image: {
+    label: 'Изображение',
+    icon: Photo,
+  },
+  file: {
+    label: 'Файл',
+    icon: File,
+  },
+  video: {
+    label: 'Видео',
+    icon: Video,
+  },
+  code: {
+    label: 'Код',
+    icon: Code,
   },
 } as const satisfies Partial<Record<CommonCustomElementType, EditorRootElementOptions>>;

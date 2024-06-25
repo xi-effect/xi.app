@@ -21,6 +21,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@xipkg/file": "^1.1.0",
     "@xipkg/icons": "^0.9.3",
     "@xipkg/input": "^0.1.1",
     "@xipkg/select": "^0.2.0",
