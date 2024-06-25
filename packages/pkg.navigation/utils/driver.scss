@@ -1,5 +1,6 @@
 .my-custom-popover-class {
   border-radius: 16px;
+  padding: 18px 16px;
   .driver-popover-next-btn {
     border-color: transparent;
     padding: 5px 16px;
@@ -20,8 +21,7 @@
   }
   .driver-popover-close-btn {
     color: #707070;
-    right: 8px;
-    top: 8px;
+    top: 6px;
   }
   .driver-popover-title {
     width: calc(100% - 30px);
