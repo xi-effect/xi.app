@@ -12,7 +12,7 @@ import { Close, Objects } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
-import '../utils/driver.scss';
+import '../utils/driver.css';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
 import ReactDOM from 'react-dom';
