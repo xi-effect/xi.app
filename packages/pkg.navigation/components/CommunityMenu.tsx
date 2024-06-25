@@ -9,6 +9,7 @@ import { CommunitySettings } from 'pkg.community.settings';
 import { AddCommunityModal } from 'pkg.modal.add-community';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
 import { InviteCommunityModal } from 'pkg.modal.invite-community';
+import { ScrollArea } from '@xipkg/scrollarea';
 
 import {
   CategoryAdd,
@@ -304,11 +305,13 @@ export const CommunityMenu = () => {
               </DropdownMenuItem>
             </div>
             {otherCommunities && (
-              <div className="mt-2">
-                {otherCommunities.map((community, index) => (
-                  <CommunityLink key={index} community={community} handleClose={handleClose} />
-                ))}
-              </div>
+              <ScrollArea className="h-[300px]">
+                <div className="mt-2">
+                  {otherCommunities.map((community, index) => (
+                    <CommunityLink key={index} community={community} handleClose={handleClose} />
+                  ))}
+                </div>
+              </ScrollArea>
             )}
             <DropdownMenuSeparator />
             <AddCommunityModal
