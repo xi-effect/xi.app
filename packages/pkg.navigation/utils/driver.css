@@ -8,11 +8,11 @@
   border-radius: 6px;
   text-shadow: none;
   color: white;
-  background-color: #445aff;
+  background-color: var(--xi-brand-80);
 }
 
 .my-custom-popover-class .driver-popover-next-btn:hover {
-  background-color: #445aff;
+  background-color: var(--xi-brand-80);
 }
 
 .my-custom-popover-class .driver-popover-navigation-btns button + button {
@@ -25,7 +25,6 @@
 }
 
 .my-custom-popover-class .driver-popover-close-btn {
-  color: #707070;
   top: 5px;
 }
 
