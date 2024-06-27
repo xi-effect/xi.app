@@ -10,6 +10,12 @@ import { AddCommunityModal } from 'pkg.modal.add-community';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
 import { InviteCommunityModal } from 'pkg.modal.invite-community';
 import { ScrollArea } from '@xipkg/scrollarea';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@xipkg/tooltip';
 
 import {
   CategoryAdd,
@@ -20,7 +26,7 @@ import {
   Settings,
   Plus,
 } from '@xipkg/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -109,6 +115,8 @@ const CommunityLink = ({
   const currentCommunityId = useMainSt((state) => state.communityMeta.id);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const router = useRouter();
+  const communityTitleRef = useRef<HTMLDivElement>(null);
+  const [isTooltipActive, setIsTooltipActive] = React.useState(false);
 
   const handleClick = () => {
     socket.emit(
@@ -144,13 +152,31 @@ const CommunityLink = ({
     );
   };
 
+  useEffect(() => {
+    const element = communityTitleRef.current;
+    if (element && (element.clientWidth < element.scrollWidth)) {
+      setIsTooltipActive(true);
+    }
+  }, []);
+
   return (
     <div
       onClick={handleClick}
       className="hover:bg-gray-5 flex h-12 items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer w-full"
     >
       <AvatarPreview communityId={community.id} />
-      <div className="ml-2 self-center text-[16px] font-semibold truncate">{community.name}</div>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger className="overflow-hidden bg-transparent">
+            <div className="ml-2 self-center text-[16px] font-semibold truncate" ref={communityTitleRef}>
+              {community.name}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent className={`max-w-[300px] ${isTooltipActive ? 'flex' : 'hidden'}`}>
+            <p>{community.name}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 };
