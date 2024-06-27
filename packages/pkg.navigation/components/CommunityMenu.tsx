@@ -168,12 +168,12 @@ const CommunityLink = ({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger className="overflow-hidden bg-transparent">
-            <div className="ml-2 self-center text-[16px] font-semibold truncate" ref={communityTitleRef}>
+            <div className="ml-2 self-center text-[16px] font-semibold truncate text-gray-100" ref={communityTitleRef}>
               {community.name}
             </div>
           </TooltipTrigger>
           <TooltipContent className={`max-w-[300px] ${isTooltipActive ? 'flex' : 'hidden'}`}>
-            <p>{community.name}</p>
+            <p className="text-gray-100">{community.name}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
