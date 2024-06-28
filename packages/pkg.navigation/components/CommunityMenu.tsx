@@ -160,24 +160,24 @@ const CommunityLink = ({
   }, []);
 
   return (
-    <div
-      onClick={handleClick}
-      className="hover:bg-gray-5 flex h-12 items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer w-full"
-    >
-      <AvatarPreview communityId={community.id} />
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger className="overflow-hidden bg-transparent">
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger className="overflow-hidden bg-transparent" asChild>
+          <div
+            onClick={handleClick}
+            className="hover:bg-gray-5 flex h-12 items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer w-full"
+          >
+            <AvatarPreview communityId={community.id} />
             <div className="ml-2 self-center text-[16px] font-semibold truncate text-gray-100" ref={communityTitleRef}>
               {community.name}
             </div>
-          </TooltipTrigger>
-          <TooltipContent className={`max-w-[300px] ${isTooltipActive ? 'flex' : 'hidden'}`}>
-            <p className="text-gray-100">{community.name}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </div>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent className={`max-w-[300px] ${isTooltipActive ? 'flex' : 'hidden'}`}>
+          <p className="text-gray-100">{community.name}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
