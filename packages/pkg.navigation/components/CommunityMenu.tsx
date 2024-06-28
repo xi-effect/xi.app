@@ -79,7 +79,7 @@ const DropdownHeader = ({
   <div
     id="community-profile"
     onClick={() => {
-      if (name) setIsOpen((prev: boolean) => !prev);
+      if (id) setIsOpen((prev: boolean) => !prev);
     }}
     className={`flex h-12 px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${
       inDropdown ? '' : 'mt-0 sm:mt-8'
@@ -93,6 +93,7 @@ const DropdownHeader = ({
     {!name ? (
       <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
     ) : (
+      
       <div className="ml-2 self-center text-[16px] font-semibold truncate">{name}</div>
     )}
     <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
