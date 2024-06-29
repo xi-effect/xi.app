@@ -136,10 +136,11 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
         if (status === 204) {
           toast('Канал успешно удален');
           deleteChannel(channel.id);
-      } else {
-        toast(`Что-то пошло не так. Ошибка ${status}`);
-      }
-    });
+        } else {
+          toast(`Что-то пошло не так. Ошибка ${status}`);
+        }
+      },
+    );
   };
 
   return (
@@ -149,6 +150,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
       handleDelete={handleDelete}
     >
       <div
+        id={channel.kind == 'video' ? 'video-item-menu' : ''}
         onMouseEnter={() => setMouseOver(true)}
         onMouseLeave={() => setMouseOver(false)}
         ref={setNodeRef}
