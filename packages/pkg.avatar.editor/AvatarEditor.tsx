@@ -9,9 +9,9 @@ import {
   ModalHeader,
   ModalTitle,
 } from '@xipkg/modal';
-import { Slider } from '@xipkg/slider';
 import { Close } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
+import { Slider } from '@xipkg/slider';
 import Cropper from 'react-easy-crop';
 import { put } from 'pkg.utils';
 import { toast } from 'sonner';

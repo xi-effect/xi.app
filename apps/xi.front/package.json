@@ -20,6 +20,7 @@
     "@xipkg/label": "0.0.9",
     "@xipkg/link": "^0.3.0",
     "@xipkg/scrollarea": "0.1.0",
+    "@xipkg/slider": "0.0.0",
     "@xipkg/tailwind": "0.4.0",
     "@xipkg/userprofile": "2.2.0",
     "crypto-js": "^4.1.1",
