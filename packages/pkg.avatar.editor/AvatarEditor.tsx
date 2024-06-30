@@ -9,6 +9,7 @@ import {
   ModalHeader,
   ModalTitle,
 } from '@xipkg/modal';
+import { Slider } from '@xipkg/slider';
 import { Close } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import Cropper from 'react-easy-crop';
@@ -91,7 +92,9 @@ export const AvatarEditorComponent = ({
         return onBase64Return(resizedImageBase, form);
       }
 
-      const pathAddress = communityId ? `/api/protected/community-service/communities/${communityId}/avatar/` : '/api/users/current/avatar/';
+      const pathAddress = communityId
+        ? `/api/protected/community-service/communities/${communityId}/avatar/`
+        : '/api/users/current/avatar/';
       const currentService = communityId ? 'backend' : 'auth';
 
       const { data, status } = await put({
@@ -149,6 +152,17 @@ export const AvatarEditorComponent = ({
               },
             }}
             minZoom={0.8}
+          />
+        </div>
+        <div className="relative flex items-center justify-center px-6 pb-8 pt-6">
+          <Slider
+            className="w-[250px]"
+            value={[zoom]}
+            max={3}
+            step={0.01}
+            min={0.8}
+            defaultValue={[zoom]}
+            onValueChange={(v) => onZoomChange(v[0])}
           />
         </div>
         <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">
