@@ -23,9 +23,12 @@ export const UserCard = ({ user, handleUserDelete, isOwner }: UserCardPropsT) =>
       </div>
     </div>
     {!isOwner && (
-    <Button className="focus:bg-red-80 hover:bg-red-80 group ml-auto h-6 w-6 bg-transparent p-1" onClick={() => handleUserDelete(user)}>
-      <Close className="group-hover:fill-gray-0 group-focus:fill-gray-0 size-4" />
-    </Button>)
-    }
+      <Button
+        className="focus:bg-red-80 hover:bg-red-80 group ml-auto h-6 w-6 bg-transparent p-1"
+        onClick={() => handleUserDelete(user)}
+      >
+        <Close className="group-hover:fill-gray-0 group-focus:fill-gray-0 size-4" />
+      </Button>
+    )}
   </li>
 );

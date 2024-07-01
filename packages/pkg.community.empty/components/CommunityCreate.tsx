@@ -75,7 +75,7 @@ export default function CommunityCreate({ setStage, setTab }: CommunityCreatePro
       },
     });
 
-    if (status === 204) {
+    if (status === 204 && data) {
       console.log('Название сообщества:', data.communityName);
       router.push(`/community/${data.communityName}`);
     } else {

@@ -4,11 +4,11 @@ import { Customization } from './Customization';
 import { Secure } from './Secure';
 import { PersonalData } from './PersonalData';
 
-interface IComponentMap {
+type ComponentMapT = {
   [key: string]: ReactElement;
 }
 
-const componentMap: IComponentMap = {
+const componentMap: ComponentMapT = {
   home: <Main />,
   personalInfo: <PersonalData />,
   personalisation: <Customization />,

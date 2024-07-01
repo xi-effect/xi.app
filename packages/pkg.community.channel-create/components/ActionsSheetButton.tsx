@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ActionsSheetButtonT {
+type ActionsSheetButtonT = {
   Icon: React.ComponentType<any>;
   title: string;
   desctiption: string;
@@ -8,9 +8,9 @@ interface ActionsSheetButtonT {
   onClick: (index: number) => void;
   сlassName: string;
   disabled?: boolean;
-}
+};
 
-export function ActionsSheetButton({
+export const ActionsSheetButton = ({
   Icon,
   title,
   desctiption,
@@ -18,7 +18,7 @@ export function ActionsSheetButton({
   disabled = false,
   index,
   onClick,
-}: ActionsSheetButtonT) {
+}: ActionsSheetButtonT) => {
   return (
     <button
       type="button"
@@ -48,4 +48,4 @@ export function ActionsSheetButton({
       </div>
     </button>
   );
-}
+};

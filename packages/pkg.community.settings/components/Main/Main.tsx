@@ -52,15 +52,7 @@ export const Main = () => {
     },
   });
 
-  const {
-    control,
-    // setError,
-    handleSubmit,
-    watch,
-    reset,
-    // trigger,
-    // formState: { errors },
-  } = form;
+  const { control, handleSubmit, watch, reset } = form;
 
   watch((data) => {
     if (data.name !== communityName) {
@@ -77,7 +69,7 @@ export const Main = () => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    socket.emit(
+    socket?.emit(
       'update-community',
       {
         community_id: communityId,
@@ -151,7 +143,13 @@ export const Main = () => {
           onOpenChange={setIsAvatarOpen}
           communityId={communityId || undefined}
         />
-        <input className="hidden" ref={inputRef} onChange={handleInput} type="file" key={inputKey} />
+        <input
+          className="hidden"
+          ref={inputRef}
+          onChange={handleInput}
+          type="file"
+          key={inputKey}
+        />
         <DropdownMenu>
           <DropdownMenuTrigger className="cursor-pointer" asChild>
             <Avatar size="xxl">
@@ -160,7 +158,7 @@ export const Main = () => {
                 imageProps={{
                   src: `https://api.xieffect.ru/files/communities/${communityId}/avatar.webp?=${date.current instanceof Date ? date.current.getTime() : ''}`,
                   alt: 'community avatar',
-                  }}
+                }}
                 alt="community avatar"
               />
               <AvatarFallback

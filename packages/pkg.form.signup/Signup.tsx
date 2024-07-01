@@ -18,13 +18,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
-
-export type SignUpT = {
-  /**
-   * The store type is the store itself.
-   */
-  onSignUp: any;
-};
+import { useMainSt } from 'pkg.stores';
 
 const FormSchema = z.object({
   username: z
@@ -58,10 +52,11 @@ const FormSchema = z.object({
     }),
 });
 
-export const SignUp = ({ onSignUp }: SignUpT) => {
+export const SignUp = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const onSignUp = useMainSt((state) => state.onSignUp);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });

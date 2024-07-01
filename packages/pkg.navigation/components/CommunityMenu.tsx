@@ -58,17 +58,14 @@ const AvatarPreview = ({ communityId }: AvatarPreviewPropsT) => (
   </Avatar>
 );
 
-const DropdownHeader = ({
-  setIsOpen,
-  inDropdown = false,
-  name,
-  id,
-}: {
+type DropdownHeaderPropsT = {
   setIsOpen: any;
   inDropdown?: boolean;
   name: string | null;
   id: number | null;
-}) => (
+};
+
+const DropdownHeader = ({ setIsOpen, inDropdown = false, name, id }: DropdownHeaderPropsT) => (
   <div
     id="community-profile"
     onClick={() => {
@@ -86,7 +83,7 @@ const DropdownHeader = ({
     {!name ? (
       <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
     ) : (
-      <div className="truncate ml-2 self-center text-[16px] font-semibold">{name}</div>
+      <div className="ml-2 self-center truncate text-[16px] font-semibold">{name}</div>
     )}
     <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
       <ChevronSmallTop
@@ -110,7 +107,7 @@ const CommunityLink = ({
   const router = useRouter();
 
   const handleClick = () => {
-    socket.emit(
+    socket?.emit(
       'close-community',
       {
         community_id: currentCommunityId,
@@ -118,7 +115,7 @@ const CommunityLink = ({
       (data: any) => {
         console.log('close-community', data);
         if (data === 204) {
-          socket.emit(
+          socket?.emit(
             'retrieve-community',
             {
               community_id: community.id,
@@ -175,7 +172,7 @@ export const CommunityMenu = () => {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   useEffect(() => {
-    socket.emit('list-communities', (status: number, communities: any[]) => {
+    socket?.emit('list-communities', (status: number, communities: any[]) => {
       const otherCommunities = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );
@@ -188,9 +185,9 @@ export const CommunityMenu = () => {
   const handleClose = () => setIsOpen(false);
 
   const handleLeaveCommunity = () => {
-    socket.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
+    socket?.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
       if (status === 204 && otherCommunities) {
-        socket.emit(
+        socket?.emit(
           'retrieve-community',
           {
             community_id: otherCommunities[0].id,

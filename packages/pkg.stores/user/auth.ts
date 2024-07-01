@@ -1,17 +1,13 @@
-/* eslint-disable no-lone-blocks */
-
-'use client';
-
 import { StateCreator } from 'zustand';
-import { post, put } from 'pkg.utils';
 import { io } from 'socket.io-client';
 import { UseFormSetError } from 'react-hook-form';
 import { Common, useMainSt } from '../main';
-import { ResponseBodyUserT } from './profile';
+import { postSignin, postSignout, postSignup, putEmail } from 'pkg.api';
 
 type Data = { email: string; password: string };
 
 export type Auth = {
+  // TODO: Типизация SocketIO больная, не на пару минут
   socket: any;
   isLogin: boolean | null;
   initSocket: () => void;
@@ -29,42 +25,14 @@ export type Auth = {
   }: Data & {
     setError: UseFormSetError<{ email: string; password: string; username: string; }>;
     username: string;
-  }) => void;
+  }) => Promise<200 | 400>;
   onEmailChange: ({
     email,
     password,
   }: Data & {
     setError: UseFormSetError<{ email: string; password: string; }>;
-  }) => void;
-  onSignOut: () => void;
-};
-
-type RequestBodySignIn = {
-  email: string;
-  password: string;
-};
-
-type ResponseBodySignIn = {
-  detail: string;
-} & ResponseBodyUserT;
-
-type RequestBodySignUp = {
-  username: string;
-  email: string;
-  password: string;
-};
-
-type ResponseBodySignUp = {
-  detail: string;
-} & ResponseBodyUserT;
-
-type RequestBodyChangeEmail = {
-  detail: string;
-} & ResponseBodyUserT;
-
-type ResponseBodyChangeEmail = {
-  new_email: string;
-  password: string;
+  }) => Promise<200 | 400>;
+  onSignOut: () => Promise<200 | 400>;
 };
 
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
@@ -85,24 +53,10 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   },
   setIsLogin: (value: boolean) => set(() => ({ isLogin: value })),
   onSignIn: async ({ email, password, setError }) => {
-    const { data, status } = await post<RequestBodySignIn, ResponseBodySignIn>({
-      service: 'auth',
-      path: '/api/signin/',
-      body: {
-        email: email.toLowerCase(),
-        password: password.trim().toString(),
-      },
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            : 'false',
-        },
-      },
-    });
+    const { data, status } = await postSignin({ email, password });
+
     console.log('onSignIn', data, status);
-    if (status === 200) {
+    if (status === 200 && data) {
       useMainSt.getState().initSocket();
 
       {
@@ -128,26 +82,10 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     return 400;
   },
   onSignUp: async ({ username, email, password, setError }) => {
-    const { data, status } = await post<RequestBodySignUp, ResponseBodySignUp>({
-      service: 'auth',
-      path: '/api/signup/',
-      body: {
-        email: email.toLowerCase(),
-        password: password.trim().toString(),
-        username,
-      },
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            : 'false',
-        },
-      },
-    });
+    const { data, status } = await postSignup({ username, email, password });
 
     console.log('onSignUp', data, status);
-    if (status === 200) {
+    if (status === 200 && data) {
       useMainSt.getState().initSocket();
 
       {
@@ -174,40 +112,23 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     return 400;
   },
   onSignOut: async () => {
-    const { data, status } = await post({
-      service: 'auth',
-      path: '/api/signout/',
-      body: {},
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            : 'false',
-        },
-      },
-    });
+    const { data, status } = await postSignout();
+
     console.log('status', data, status);
     if (status === 204) {
-      useMainSt.getState().socket.disconnect();
+      const socket = useMainSt.getState().socket;
+      if (socket) socket.disconnect();
+
       set(() => ({ isLogin: false }));
+      return 200;
     }
+
+    return 400;
   },
   onEmailChange: async ({ email, password, setError }) => {
-    const { data, status } = await put<ResponseBodyChangeEmail, RequestBodyChangeEmail>({
-      service: 'auth',
-      path: '/api/users/current/email/',
-      body: {
-        new_email: email.toLowerCase(),
-        password: password.trim().toString(),
-      },
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    });
-    if (status === 200) {
+    const { data, status } = await putEmail({ email, password });
+
+    if (status === 200 && data) {
       set((state) => ({
         user: {
           ...state.user,

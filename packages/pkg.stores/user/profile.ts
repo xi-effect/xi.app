@@ -1,21 +1,12 @@
 import { StateCreator } from 'zustand';
-import { get } from 'pkg.utils';
 import { UserT } from 'pkg.models';
 import { useMainSt } from '../index';
+import { getUser } from 'pkg.api';
 
 export type UserProfile = {
   user: UserT;
   updateUser: (value: { [key: string]: unknown }) => void;
   getUser: () => { redir?: string; isLogin?: boolean };
-};
-
-export type ResponseBodyUserT = {
-  id: UserT['id'];
-  username: UserT['username'];
-  display_name: UserT['displayName'];
-  onboarding_stage: UserT['onboardingStage'];
-  theme: UserT['theme'];
-  email: UserT['email'];
 };
 
 export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile> = (
@@ -31,22 +22,11 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
   },
   updateUser: (value) => set((state) => ({ user: { ...state.user, ...value } })),
   getUser: async () => {
-    const { data, status } = await get<ResponseBodyUserT>({
-      service: 'auth',
-      path: '/api/users/current/home/',
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Testing': process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            ? process.env.NEXT_PUBLIC_ENABLE_X_TESTING
-            : 'false',
-        },
-      },
-    });
+    const { data, status } = await getUser();
 
     console.log('getUser', data, status);
 
-    if (status === 200) {
+    if (status === 200 && data) {
       useMainSt.getState().initSocket();
 
       set((state) => ({
@@ -60,6 +40,8 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
           email: data.email,
         },
       }));
+
+      useMainSt.getState().setIsLogin(true);
     }
 
     if (status === 401) {

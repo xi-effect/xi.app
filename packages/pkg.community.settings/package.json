@@ -22,7 +22,7 @@
     "@xipkg/tabs": "^0.2.0",
     "@xipkg/toggle": "^0.1.0",
     "@xipkg/tooltip": "0.1.0",
-    "@xipkg/userprofile": "2.2.0",
+    "@xipkg/userprofile": "2.3.0",
     "@xipkg/utils": "1.2.3",
     "next": "^14.2.3",
     "notistack": "3.0.1",

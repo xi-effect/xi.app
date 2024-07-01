@@ -38,7 +38,7 @@ const FormCreateBlock = () => {
   const router = useRouter();
 
   const onSubmit = ({ name }: z.infer<typeof FormSchema>) => {
-    socket.emit(
+    socket?.emit(
       'create-community',
       {
         data: {

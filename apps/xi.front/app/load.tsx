@@ -1,3 +1,4 @@
+
 export default function Load() {
   return (
     <div className="h-[100vh] w-full flex flex-col bg-gray-0">

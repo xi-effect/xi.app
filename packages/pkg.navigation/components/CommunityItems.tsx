@@ -141,7 +141,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   const updateChannels = useMainSt((state) => state.updateChannels);
 
   useEffect(() => {
-    socket.emit(
+    socket?.emit(
       'list-categories',
       {
         community_id: currentCommunityId,
@@ -157,7 +157,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   }, []);
 
   useEffect(() => {
-    socket.emit(
+    socket?.emit(
       'list-channels',
       {
         community_id: currentCommunityId,
@@ -319,7 +319,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         return channels[activeChannelIndex + 1].id;
       };
 
-      socket.emit(
+      socket?.emit(
         'move-channel',
         {
           community_id: currentCommunityId,
@@ -356,7 +356,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
 
     updateCategories(newCategories);
 
-    socket.emit(
+    socket?.emit(
       'move-category',
       {
         community_id: currentCommunityId,

@@ -21,7 +21,7 @@ import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 import { ChannelT } from './types';
 import { ItemContextMenu } from './ItemContextMenu';
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 
 type ChannelPropsT = {
   channel: ChannelT;
@@ -29,9 +29,9 @@ type ChannelPropsT = {
   setSlideIndex?: (arg: number) => void;
 };
 
-interface IIconsDict {
+type IconsDictT = {
   [key: string]: ReactNode;
-}
+};
 
 const stylesDict = {
   default: {
@@ -94,7 +94,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
 
   const iconClassName = `transition-colors ease-in ${currentStyles.icon}`;
 
-  const iconsDict: IIconsDict = {
+  const iconsDict: IconsDictT = {
     posts: <Announce className={iconClassName} />,
     calendar: <Calendar className={iconClassName} />,
     updates: <Updates className={iconClassName} />,
@@ -126,7 +126,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
   }
 
   const handleDelete = () => {
-    socket.emit(
+    socket?.emit(
       'delete-channel',
       {
         community_id: communityId,
@@ -136,10 +136,11 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
         if (status === 204) {
           toast('Канал успешно удален');
           deleteChannel(channel.id);
-      } else {
-        toast(`Что-то пошло не так. Ошибка ${status}`);
-      }
-    });
+        } else {
+          toast(`Что-то пошло не так. Ошибка ${status}`);
+        }
+      },
+    );
   };
 
   return (
