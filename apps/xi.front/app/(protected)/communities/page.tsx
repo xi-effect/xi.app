@@ -1,19 +1,24 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
 
 export default function CommunitiesLoading() {
-//   const socket = useMainSt((state) => state.socket);
-//   const initSocket = useMainSt((state) => state.initSocket);
+  const isLogin = useMainSt((state) => state.isLogin);
 
-//   console.log('socket', socket);
+  // Если вдруг что-то пошло не так, ещё раз иницируем соединение сокета
+  // В initSocket есть предотвращение инициализации нескольких соединений
+  const initSocket = useMainSt((state) => state.initSocket);
+  useEffect(() => {
+    initSocket();
+  }, []);
 
-//   useEffect(() => {
-//     console.log('initSocket');
-//     initSocket();
-//   }, [socket]);
+  useEffect(() => {
+    if (isLogin === false) {
+      redirect('/signin');
+    }
+  }, [isLogin]);
 
   return <div>Loading... ....</div>;
 }

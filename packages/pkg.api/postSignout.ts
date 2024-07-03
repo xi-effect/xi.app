@@ -16,4 +16,4 @@ export const postSignout = async () => {
   });
 
   return { data, status };
-}
+};

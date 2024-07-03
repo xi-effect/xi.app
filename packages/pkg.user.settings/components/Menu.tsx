@@ -104,7 +104,7 @@ export const Menu = ({ setActiveContent, setActiveQuery, setShowContent }: MenuP
   const handleExit = async () => {
     const updatedParams = deleteQuery(deleteQuery(searchParams, 'profileIsOpen'), 'category');
     router.replace(`${pathname}?${updatedParams}`);
-  
+
     const isLogout = await onSignOut();
 
     if (isLogout === 200) router.push('/signin');

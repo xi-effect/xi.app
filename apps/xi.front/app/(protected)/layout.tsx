@@ -1,7 +1,11 @@
+import { ReactNode } from 'react';
 import ProtectedProvider from './providers';
 
-const ProtectedLayout = ({ children }) => {
-  return <ProtectedProvider>{children}</ProtectedProvider>;
+type ProtectedLayoutPropsT = {
+  children: ReactNode;
 };
 
+const ProtectedLayout = ({ children }: ProtectedLayoutPropsT) => (
+  <ProtectedProvider>{children}</ProtectedProvider>
+);
 export default ProtectedLayout;

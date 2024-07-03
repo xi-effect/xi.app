@@ -6,7 +6,7 @@ import { PersonalData } from './PersonalData';
 
 type ComponentMapT = {
   [key: string]: ReactElement;
-}
+};
 
 const componentMap: ComponentMapT = {
   home: <Main />,

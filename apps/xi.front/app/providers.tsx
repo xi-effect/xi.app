@@ -1,6 +1,7 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
+import { useMainSt } from 'pkg.stores';
 // import { redirect, useParams, usePathname, useSearchParams } from 'next/navigation';
 import { ReactNode } from 'react';
 import { Toaster } from 'sonner';
@@ -29,54 +30,32 @@ import { Toaster } from 'sonner';
 //   children: ReactNode;
 // };
 
-// const SocketProvider = ({ children }: { children: ReactNode }) => {
-// const socket = useMainSt((state) => state.socket);
-// console.log('socket', socket);
+const SocketProvider = ({ children }: { children: ReactNode }) => {
+  const socket = useMainSt((state) => state.socket);
+  console.log('socket', socket);
 
-// socket?.on('connect', () => {
-//   console.info('SIO connect', socket?.id);
-// });
+  socket?.on('connect', () => {
+    console.info('SIO connect', socket?.id);
+  });
 
-// socket?.on('disconnect', (reason) => {
-//   // the reason of the disconnection, for example "transport error"
-//   console.log('disconnect', reason);
-// });
+  socket?.on('disconnect', (reason) => {
+    // the reason of the disconnection, for example "transport error"
+    console.log('disconnect', reason);
+  });
 
-// socket?.on('connect_error', (err) => {
-//   // the reason of the error, for example "xhr poll error"
-//   console.log('connect_error', err.message);
+  socket?.on('connect_error', (err) => {
+    // the reason of the error, for example "xhr poll error"
+    console.log('connect_error', err.message);
 
-//   // some additional description, for example the status code of the initial HTTP response
-//   console.log(err.description);
+    // some additional description, for example the status code of the initial HTTP response
+    console.log(err.description);
 
-//   // some additional context, for example the XMLHttpRequest object
-//   console.log(err.context);
-// });
+    // some additional context, for example the XMLHttpRequest object
+    console.log(err.context);
+  });
 
-// socket?.on('error', () => {
-//   toast('Ошибка вебсокета');
-// });
-
-// socket.on('create-channel', (data: any) => {
-//   console.log('handleNewChannel', data);
-// });
-
-// useEffect(() => {
-//   // const handleNewChannel = (status: number, data: any) => {
-//   //   console.log('handleNewChannel', status, data);
-//   // };
-
-//   socket.on('create-channel', (data: any) => {
-//     console.log('handleNewChannel socket', data);
-//   });
-
-//   // return () => {
-//   //   socket.off('create-channel', handleNewChannel);
-//   // };
-// }, [socket]);
-
-//   return children;
-// };
+  return children;
+};
 
 // const AuthProvider = ({ children }: AuthProviderT) => {
 //   const pathname = usePathname();
@@ -105,7 +84,8 @@ import { Toaster } from 'sonner';
 //             {
 //               community_id: comIdParams,
 //             },
-//             (stats: number, { community, participant }: { community: any; participant: any }) => {
+//             (stats: number, { community, participant }: { community: any; participant: any })
+//  => {
 //               console.log('stats', stats, community, participant);
 
 //               if (stats === 200) {
@@ -125,7 +105,8 @@ import { Toaster } from 'sonner';
 //         } else {
 //           socket.emit(
 //             'retrieve-any-community',
-//             (stats: number, { community, participant }: { community: any; participant: any }) => {
+//             (stats: number, { community, participant }: { community: any; participant: any })
+//  => {
 //               console.log('stats', stats, community, participant);
 
 //               if (stats === 200) {
@@ -220,6 +201,6 @@ type ProvidersT = {
 export const Providers = ({ children }: ProvidersT) => (
   <ThemeProvider defaultTheme="light" themes={['light', 'dark']} attribute="data-theme">
     <Toaster visibleToasts={1} />
-    {children}
+    <SocketProvider>{children}</SocketProvider>
   </ThemeProvider>
 );

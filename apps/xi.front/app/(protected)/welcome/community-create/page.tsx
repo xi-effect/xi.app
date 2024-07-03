@@ -115,7 +115,7 @@ export default function WelcomeCommunityCreate() {
 
   const onSubmit = ({ community }: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
-    console.log("onSubmit", socket);
+    console.log('onSubmit', socket);
     socket?.emit(
       'create-community',
       {

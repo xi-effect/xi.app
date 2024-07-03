@@ -91,7 +91,9 @@ export const AvatarEditorComponent = ({
         return onBase64Return(resizedImageBase, form);
       }
 
-      const pathAddress = communityId ? `/api/protected/community-service/communities/${communityId}/avatar/` : '/api/users/current/avatar/';
+      const pathAddress = communityId
+        ? `/api/protected/community-service/communities/${communityId}/avatar/`
+        : '/api/users/current/avatar/';
       const currentService = communityId ? 'backend' : 'auth';
 
       const { data, status } = await put({

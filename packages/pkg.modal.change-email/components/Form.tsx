@@ -31,7 +31,7 @@ const schema = z.object({
 type FormBlockPropsT = {
   onEmailChange: any;
   setStage: (arg: { type: string; email: string }) => void;
-}
+};
 
 export type FormDataT = {
   email: string;

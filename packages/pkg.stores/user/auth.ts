@@ -16,21 +16,21 @@ export type Auth = {
     email,
     password,
   }: Data & {
-    setError: UseFormSetError<{ email: string; password: string; }>;
+    setError: UseFormSetError<{ email: string; password: string }>;
   }) => Promise<200 | 400>;
   onSignUp: ({
     email,
     password,
     username,
   }: Data & {
-    setError: UseFormSetError<{ email: string; password: string; username: string; }>;
+    setError: UseFormSetError<{ email: string; password: string; username: string }>;
     username: string;
   }) => Promise<200 | 400>;
   onEmailChange: ({
     email,
     password,
   }: Data & {
-    setError: UseFormSetError<{ email: string; password: string; }>;
+    setError: UseFormSetError<{ email: string; password: string }>;
   }) => Promise<200 | 400>;
   onSignOut: () => Promise<200 | 400>;
 };
@@ -39,7 +39,8 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   socket: null,
   isLogin: null,
   initSocket: () => {
-    if (!useMainSt.getState().socket) {
+    console.log('useMainSt.getState().socket', useMainSt.getState().socket);
+    if (useMainSt.getState().socket === null) {
       const socketInstance = io('https://api.xieffect.ru/', {
         withCredentials: true,
         transports: ['websocket'],
@@ -55,12 +56,12 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   onSignIn: async ({ email, password, setError }) => {
     const { data, status } = await postSignin({ email, password });
 
-    console.log('onSignIn', data, status);
     if (status === 200 && data) {
       useMainSt.getState().initSocket();
 
       {
         set((state) => ({
+          isLogin: true,
           user: {
             ...state.user,
             onboardingStage: data.onboarding_stage,
@@ -84,7 +85,6 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   onSignUp: async ({ username, email, password, setError }) => {
     const { data, status } = await postSignup({ username, email, password });
 
-    console.log('onSignUp', data, status);
     if (status === 200 && data) {
       useMainSt.getState().initSocket();
 
@@ -114,7 +114,6 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   onSignOut: async () => {
     const { data, status } = await postSignout();
 
-    console.log('status', data, status);
     if (status === 204) {
       const socket = useMainSt.getState().socket;
       if (socket) socket.disconnect();

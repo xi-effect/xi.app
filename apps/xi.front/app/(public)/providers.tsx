@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode, useEffect } from 'react';
 
 import { redirect } from 'next/navigation';
-import { useEffect } from 'react';
-import Load from '../load';
 import { useMainSt } from 'pkg.stores';
+import Load from '../load';
 
-const PublicProvider = async ({ children }) => {
-  const socket = useMainSt((state) => state.socket);
+type PublicProviderPropsT = {
+  children: ReactNode;
+};
+
+const PublicProvider = ({ children }: PublicProviderPropsT) => {
   const getUser = useMainSt((state) => state.getUser);
   const isLogin = useMainSt((state) => state.isLogin);
 
@@ -17,7 +19,6 @@ const PublicProvider = async ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log('isLogin', isLogin, socket);
     if (isLogin === true) {
       redirect('/communities');
     }

@@ -9,9 +9,7 @@ export type UserProfile = {
   getUser: () => { redir?: string; isLogin?: boolean };
 };
 
-export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile> = (
-  set,
-) => ({
+export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile> = (set) => ({
   user: {
     id: null, // ID пользователя, уникален
     email: '',

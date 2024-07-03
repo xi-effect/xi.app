@@ -1,7 +1,12 @@
+import { ReactNode } from 'react';
 import PublicProvider from './providers';
 
-const PublicLayout = async ({ children }) => {
-  return <PublicProvider>{children}</PublicProvider>;
+type PublicLayoutPropsT = {
+  children: ReactNode;
 };
+
+const PublicLayout = ({ children }: PublicLayoutPropsT) => (
+  <PublicProvider>{children}</PublicProvider>
+);
 
 export default PublicLayout;
