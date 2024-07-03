@@ -89,7 +89,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
       <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
       <ScrollArea>
         <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
-          <div className="my-2 mr-2">
+          <div id="subitems-menu" className="my-2 mr-2">
             <CategoryContainer
               setSlideIndex={setSlideIndex}
               category={firstCategory}

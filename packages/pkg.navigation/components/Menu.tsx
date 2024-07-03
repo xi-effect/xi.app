@@ -7,13 +7,15 @@ import { createQueryString } from 'pkg.router.url';
 import { Logo } from 'pkg.logo';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Objects } from '@xipkg/icons';
+import { Close, Objects } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
+import '../utils/driver.css';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
 import { useMainSt } from 'pkg.stores';
+import ReactDOM from 'react-dom';
 
 type MenuT = {
   setSlideIndex: (value: number) => void;
@@ -33,10 +35,15 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
     const profileIsOpen = searchParams.has('profileIsOpen');
     setMenuIsOpen(profileIsOpen);
   }, [searchParams]);
+  type PopoverDOM = {
+    closeButton: HTMLElement;
+  };
 
   const driverAction = () => {
     const driverObj = driver({
+      popoverClass: 'my-custom-popover-class',
       showProgress: true,
+
       steps: [
         {
           element: '#header-logo',
@@ -55,7 +62,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
           },
         },
         {
-          element: '#community-services',
+          element: '#community-profile',
           popover: {
             title: 'Сервисы сообщества',
             description:
@@ -95,6 +102,16 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
           },
         },
       ],
+      onPopoverRender: (popover, opts) => {
+        const defaultCloseButton = popover.closeButton;
+        const customCloseButton = document.createElement('button');
+        customCloseButton.className = 'driver-popover-close-btn';
+        ReactDOM.render(<Close className="h-[16px] w-[16px]" />, customCloseButton);
+        defaultCloseButton.replaceWith(customCloseButton);
+        customCloseButton.addEventListener('click', () => {
+          driverObj.destroy();
+        });
+      },
       nextBtnText: 'Вперёд',
       prevBtnText: 'Назад',
       doneBtnText: 'Завершить',

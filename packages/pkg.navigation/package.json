@@ -19,6 +19,7 @@
     "@xipkg/modal": "2.1.0",
     "@xipkg/scrollarea": "0.1.0",
     "@xipkg/userprofile": "2.3.0",
+    "@xipkg/tooltip": "^0.1.0",
     "driver.js": "^1.3.1",
     "nanoid": "5.0.7",
     "next": "^14.2.3",

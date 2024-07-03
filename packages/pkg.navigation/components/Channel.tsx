@@ -150,6 +150,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
       handleDelete={handleDelete}
     >
       <div
+        id={channel.kind == 'video' ? 'video-item-menu' : ''}
         onMouseEnter={() => setMouseOver(true)}
         onMouseLeave={() => setMouseOver(false)}
         ref={setNodeRef}

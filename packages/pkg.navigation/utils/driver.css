@@ -1,0 +1,33 @@
+.my-custom-popover-class {
+  border-radius: 16px;
+}
+
+.my-custom-popover-class .driver-popover-next-btn {
+  border-color: transparent;
+  padding: 5px 16px;
+  border-radius: 6px;
+  text-shadow: none;
+  color: white;
+  background-color: var(--xi-brand-80);
+}
+
+.my-custom-popover-class .driver-popover-next-btn:hover {
+  background-color: var(--xi-brand-80);
+}
+
+.my-custom-popover-class .driver-popover-navigation-btns button + button {
+  margin-left: 13px;
+}
+
+.my-custom-popover-class .driver-popover-prev-btn {
+  border-radius: 6px;
+  padding: 5px 16px;
+}
+
+.my-custom-popover-class .driver-popover-close-btn {
+  top: 5px;
+}
+
+.my-custom-popover-class .driver-popover-title {
+  width: calc(100% - 30px);
+}
