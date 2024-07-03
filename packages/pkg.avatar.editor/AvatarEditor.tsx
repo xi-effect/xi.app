@@ -28,8 +28,9 @@ type AvatarEditorT = {
   communityId?: number | undefined;
 };
 
-const MAX_ZOOM: number = 3;
-const MIN_ZOOM: number = 0.8;
+const MAX_ZOOM = 3;
+const MIN_ZOOM = 0.8;
+const ZOOM_STEP = 0.01;
 
 export const AvatarEditorComponent = ({
   withLoadingToServer = true,
@@ -55,8 +56,6 @@ export const AvatarEditorComponent = ({
   };
 
   const onZoomChange = (zooms: number) => {
-    console.log(zooms);
-
     if (zooms < MIN_ZOOM) {
       setZoom(MIN_ZOOM);
       return;
@@ -67,6 +66,14 @@ export const AvatarEditorComponent = ({
       return;
     }
     setZoom(zooms);
+  };
+
+  const increaseZoom = () => {
+    setZoom((prev) => (prev < MAX_ZOOM ? prev + ZOOM_STEP : MAX_ZOOM));
+  };
+
+  const decreaseZoom = () => {
+    setZoom((prev) => (prev > MIN_ZOOM ? prev - ZOOM_STEP : MIN_ZOOM));
   };
 
   const [croppedAreaPixels, setCroppedAreaPixels] = React.useState<{
@@ -173,7 +180,7 @@ export const AvatarEditorComponent = ({
             aria-label="Минус"
             type="button"
             className="mx-4 bg-transparent p-1"
-            onClick={() => onZoomChange(zoom - 0.1)}
+            onClick={decreaseZoom}
           >
             <Minus size="m" />
           </button>
@@ -181,7 +188,7 @@ export const AvatarEditorComponent = ({
             className="w-[250px]"
             value={[zoom]}
             max={MAX_ZOOM}
-            step={0.01}
+            step={ZOOM_STEP}
             min={MIN_ZOOM}
             defaultValue={[zoom]}
             onValueChange={(v: number[]) => onZoomChange(v[0])}
@@ -190,7 +197,7 @@ export const AvatarEditorComponent = ({
             aria-label="Плюс"
             type="button"
             className="mx-4 bg-transparent p-1"
-            onClick={() => onZoomChange(zoom + 0.1)}
+            onClick={increaseZoom}
           >
             <Plus size="m" />
           </button>
