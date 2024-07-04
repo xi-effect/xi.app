@@ -30,6 +30,7 @@
     "pkg.router.url": "*",
     "pkg.stores": "*",
     "pkg.utils": "*",
+    "pkg.utils.client": "*",
     "react": "^18.2.0",
     "sonner": "1.4.41",
     "zod": "3.22.4"

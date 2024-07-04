@@ -3,10 +3,10 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { CSS } from '@dnd-kit/utilities';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
+import { useMedia } from 'pkg.utils.client';
 import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
-import { useMedia } from 'pkg.utils.client';
 
 type CategoryContainerT = {
   category: CategoryT;

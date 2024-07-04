@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const CommunityItemsSkeleton = () => (
   <ul className="mx-1 mt-3 flex h-[calc(100dvh-128px)] flex-col gap-4 overflow-y-auto px-5 sm:mb-[60px] sm:px-1">
     {[...new Array(7)].map((item, index) => (

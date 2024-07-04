@@ -154,8 +154,6 @@ export default function InvitePage({ params }: { params: { iid: string } }) {
   const [invite, setInvite] = React.useState<ResponseBodyT | null>(null);
   const router = useRouter();
 
-  // console.log(invite);
-
   React.useEffect(() => {
     const getInviteData = async () => {
       const { status, data } = await get<ResponseBodyT>({

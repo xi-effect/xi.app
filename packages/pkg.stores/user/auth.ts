@@ -1,8 +1,8 @@
 import { StateCreator } from 'zustand';
 import { io } from 'socket.io-client';
 import { UseFormSetError } from 'react-hook-form';
-import { Common, useMainSt } from '../main';
 import { postSignin, postSignout, postSignup, putEmail } from 'pkg.api';
+import { Common, useMainSt } from '../main';
 
 type Data = { email: string; password: string };
 
@@ -59,22 +59,22 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     if (status === 200 && data) {
       useMainSt.getState().initSocket();
 
-      {
-        set((state) => ({
-          isLogin: true,
-          user: {
-            ...state.user,
-            onboardingStage: data.onboarding_stage,
-            username: data.username,
-            id: data.id,
-            displayName: data.display_name,
-            theme: data.theme,
-            email: data.email,
-          },
-        }));
-        return 200;
-      }
-    } else if (data?.detail === 'User not found') {
+      set((state) => ({
+        isLogin: true,
+        user: {
+          ...state.user,
+          onboardingStage: data.onboarding_stage,
+          username: data.username,
+          id: data.id,
+          displayName: data.display_name,
+          theme: data.theme,
+          email: data.email,
+        },
+      }));
+      return 200;
+    }
+
+    if (data?.detail === 'User not found') {
       setError('email', { type: 'manual', message: 'Не удалось найти аккаунт' });
     } else if (data?.detail === 'Wrong password') {
       setError('password', { type: 'manual', message: 'Неправильный пароль' });
@@ -88,22 +88,22 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     if (status === 200 && data) {
       useMainSt.getState().initSocket();
 
-      {
-        set((state) => ({
-          isLogin: true,
-          user: {
-            ...state.user,
-            onboardingStage: data.onboarding_stage,
-            username: data.username,
-            id: data.id,
-            displayName: data.display_name,
-            theme: data.theme,
-            email: data.email,
-          },
-        }));
-        return 200;
-      }
-    } else if (data?.detail === 'Username already in use') {
+      set((state) => ({
+        isLogin: true,
+        user: {
+          ...state.user,
+          onboardingStage: data.onboarding_stage,
+          username: data.username,
+          id: data.id,
+          displayName: data.display_name,
+          theme: data.theme,
+          email: data.email,
+        },
+      }));
+      return 200;
+    }
+
+    if (data?.detail === 'Username already in use') {
       setError('username', { type: 'manual', message: 'Такое имя пользователя уже занято' });
     } else if (data?.detail === 'Email already in use') {
       setError('email', { type: 'manual', message: 'Аккаунт с такой почтой уже зарегистрирован' });
@@ -114,8 +114,8 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   onSignOut: async () => {
     const { data, status } = await postSignout();
 
-    if (status === 204) {
-      const socket = useMainSt.getState().socket;
+    if (data && status === 204) {
+      const { socket } = useMainSt.getState();
       if (socket) socket.disconnect();
 
       set(() => ({ isLogin: false }));

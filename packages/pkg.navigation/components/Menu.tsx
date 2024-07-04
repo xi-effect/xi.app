@@ -12,10 +12,10 @@ import { Button } from '@xipkg/button';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import '../utils/driver.css';
+import { useMainSt } from 'pkg.stores';
+import { createRoot } from 'react-dom/client';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
-import { useMainSt } from 'pkg.stores';
-import ReactDOM from 'react-dom';
 
 type MenuT = {
   setSlideIndex: (value: number) => void;
@@ -35,9 +35,6 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
     const profileIsOpen = searchParams.has('profileIsOpen');
     setMenuIsOpen(profileIsOpen);
   }, [searchParams]);
-  type PopoverDOM = {
-    closeButton: HTMLElement;
-  };
 
   const driverAction = () => {
     const driverObj = driver({
@@ -102,11 +99,15 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
           },
         },
       ],
-      onPopoverRender: (popover, opts) => {
+      onPopoverRender: (popover) => {
         const defaultCloseButton = popover.closeButton;
         const customCloseButton = document.createElement('button');
         customCloseButton.className = 'driver-popover-close-btn';
-        ReactDOM.render(<Close className="h-[16px] w-[16px]" />, customCloseButton);
+
+        // Создаем корень для рендеринга компонента
+        const root = createRoot(customCloseButton);
+        root.render(<Close className="h-[16px] w-[16px]" />);
+
         defaultCloseButton.replaceWith(customCloseButton);
         customCloseButton.addEventListener('click', () => {
           driverObj.destroy();

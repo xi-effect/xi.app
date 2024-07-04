@@ -6,8 +6,6 @@
 //     isOwner: boolean;
 // };
 
-import React from 'react';
-
 export type UserT = {
   id: number;
   display_name: string;

@@ -19,9 +19,9 @@ import {
 } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
+import { useMedia } from 'pkg.utils.client';
 import { ChannelT } from './types';
 import { ItemContextMenu } from './ItemContextMenu';
-import { useMedia } from 'pkg.utils.client';
 
 type ChannelPropsT = {
   channel: ChannelT;
@@ -150,7 +150,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
       handleDelete={handleDelete}
     >
       <div
-        id={channel.kind == 'video' ? 'video-item-menu' : ''}
+        id={channel.kind === 'video' ? 'video-item-menu' : ''}
         onMouseEnter={() => setMouseOver(true)}
         onMouseLeave={() => setMouseOver(false)}
         ref={setNodeRef}

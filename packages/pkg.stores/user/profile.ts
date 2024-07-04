@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import { UserT } from 'pkg.models';
-import { useMainSt } from '../index';
 import { getUser } from 'pkg.api';
+import { useMainSt } from '../index';
 
 export type UserProfile = {
   user: UserT;

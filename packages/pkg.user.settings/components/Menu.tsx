@@ -3,7 +3,7 @@ import { useMedia } from 'pkg.utils.client';
 import React, { Dispatch, SetStateAction } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createQueryString, deleteQuery } from 'pkg.router.url';
-import { redirect, usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 
 type ItemT = {

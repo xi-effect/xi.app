@@ -84,9 +84,7 @@ export const SignIn = () => {
       router.push(`/invite/${searchParams.get('iid')}`);
     }
 
-    router.push('/communities');
-
-    return;
+    return router.push('/communities');
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
