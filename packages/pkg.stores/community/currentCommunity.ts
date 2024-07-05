@@ -3,10 +3,10 @@ import { UserProfile } from '../user/profile';
 import { VideoConference } from './videoConference';
 
 type CommunityMeta = {
-  id: number | null,
-  isOwner: boolean | null,
-  name: string | null,
-  description: string | null,
+  id: number | null;
+  isOwner: boolean | null;
+  name: string | null;
+  description: string | null;
 };
 
 export type CurrentCommunity = {
@@ -26,6 +26,6 @@ export const createCurrentCommunitySt: StateCreator<
     name: null,
     description: null,
   },
-  updateCommunityMeta: (value) => set((state) =>
-    ({ communityMeta: { ...state.communityMeta, ...value } })),
+  updateCommunityMeta: (value) =>
+    set((state) => ({ communityMeta: { ...state.communityMeta, ...value } })),
 });

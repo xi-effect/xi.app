@@ -20,7 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { StageType } from '../EmptyCommunity';
 
-type CommunityInviteProps = {
+type CommunityInvitePropsT = {
   setStage: (stage: React.SetStateAction<StageType>) => void;
   setTab: (tab: React.SetStateAction<number>) => void;
 };
@@ -38,7 +38,7 @@ const FormSchema = z.object({
   }),
 });
 
-export default function CommunityInvite({ setStage, setTab }: CommunityInviteProps) {
+export default function CommunityInvite({ setStage, setTab }: CommunityInvitePropsT) {
   const router = useRouter();
 
   const handleBack = () => {
@@ -74,7 +74,7 @@ export default function CommunityInvite({ setStage, setTab }: CommunityInvitePro
       },
     });
 
-    if (status === 204) {
+    if (status === 204 && data) {
       console.log('Название сообщества:', data.communityName);
       router.push(`/community/${data.communityName}`);
     } else {

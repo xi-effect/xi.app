@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Close, Burger } from '@xipkg/icons';
 import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 // @ts-ignore
@@ -15,7 +15,6 @@ import { CommunityMenu } from './CommunityMenu';
 type BottomBarT = {
   slideIndex: number;
   children: ReactNode;
-  onExit: () => void;
   setSlideIndex: (value: number) => void;
 };
 
@@ -28,7 +27,7 @@ const values: ValuesT = {
   1: 0,
 };
 
-export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: BottomBarT) => {
+export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) => {
   const user = useMainSt((state) => state.user);
 
   const handleMenu = () => {
@@ -63,7 +62,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
           <ModalTrigger asChild>
             <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">
               <UserProfile
-                userId={user.id}
+                userId={user?.id || null}
                 text="Ivan Kovylyaev"
                 label="@ikovylyaev"
                 size="m"
@@ -72,7 +71,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
-            <UserSettings onExit={onExit} />
+            <UserSettings />
           </ModalContent>
         </Modal>
         {/* <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ChangeEvent, useRef } from 'react';
 import { Camera, Edit, Trash } from '@xipkg/icons';
 import { AvatarEditor } from 'pkg.avatar.editor';
@@ -75,7 +77,9 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   };
 
   return (
-    <div className={`border-gray-80 flex items-center h-[120px] w-full rounded-2xl border p-6 ${className}`}>
+    <div
+      className={`border-gray-80 flex h-[120px] w-full items-center rounded-2xl border p-6 ${className}`}
+    >
       <AvatarEditor
         file={file}
         open={isAvatarOpen}

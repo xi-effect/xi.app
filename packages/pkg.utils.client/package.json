@@ -1,0 +1,25 @@
+{
+  "name": "pkg.utils.client",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint \"**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "next": "^14.2.3"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "*",
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@xipkg/eslint": "1.4.0",
+    "@xipkg/typescript": "latest",
+    "typescript": "^5.4.2"
+  },
+  "author": "",
+  "description": ""
+}

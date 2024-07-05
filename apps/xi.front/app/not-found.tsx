@@ -13,15 +13,19 @@ export default function Error404() {
       text="В адресе есть ошибка или страница удалена"
       errorCode={404}
     >
-      <p>Вернитесь&nbsp;
+      <p>
+        Вернитесь&nbsp;
         <button
           type="button"
           className="decoration-brand-20 hover:decoration-brand-100 text-brand-80 hover:text-brand-100 underline underline-offset-4 bg-transparent"
           onClick={() => router.back()}
         >
           назад
-        </button> или&nbsp;
-        <Link theme="brand" size="l" href="/">на главную</Link>
+        </button>{' '}
+        или&nbsp;
+        <Link theme="brand" size="l" href="/">
+          на главную
+        </Link>
       </p>
     </ErrorPage>
   );

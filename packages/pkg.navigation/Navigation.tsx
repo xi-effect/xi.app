@@ -3,14 +3,13 @@
 'use client';
 
 import React, { ReactNode, useEffect } from 'react';
-import { useSessionStorage } from 'pkg.utils';
+import { useSessionStorage } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
 import { BottomBar, Menu } from './components';
 
-type NavigationProp = {
+type NavigationPropT = {
   children: ReactNode;
-  onExit: () => void;
 };
 
 type NewChannelT = {
@@ -58,7 +57,7 @@ type DeletedCategoryT = {
   category_id: number;
 };
 
-export const Navigation = ({ children, onExit }: NavigationProp) => {
+export const Navigation = ({ children }: NavigationPropT) => {
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
 
@@ -163,7 +162,7 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
       };
 
       socket.on('delete-channel', handleDeleteChannel);
-    // Очистка обработчиков при размонтировании компонента
+      // Очистка обработчиков при размонтировании компонента
       return () => {
         socket.off('delete-channel', handleDeleteChannel);
       };
@@ -178,7 +177,7 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
       };
 
       socket.on('delete-category', handleDeleteCategory);
-    // Очистка обработчиков при размонтировании компонента
+      // Очистка обработчиков при размонтировании компонента
       return () => {
         socket.off('delete-category', handleDeleteCategory);
       };
@@ -189,11 +188,11 @@ export const Navigation = ({ children, onExit }: NavigationProp) => {
     <>
       <div className="relative hidden flex-row md:flex">
         <div className="fixed flex h-screen min-h-screen min-w-[350px] flex-col p-6">
-          <Menu onExit={onExit} setSlideIndex={setSlideIndex} />
+          <Menu setSlideIndex={setSlideIndex} />
         </div>
-        <div className="ml-[350px] w-[calc(100vw-350px)] overflow-auto h-full">{children}</div>
+        <div className="ml-[350px] h-full w-[calc(100vw-350px)] overflow-auto">{children}</div>
       </div>
-      <BottomBar slideIndex={slideIndex} setSlideIndex={setSlideIndex} onExit={onExit}>
+      <BottomBar slideIndex={slideIndex} setSlideIndex={setSlideIndex}>
         {children}
       </BottomBar>
     </>

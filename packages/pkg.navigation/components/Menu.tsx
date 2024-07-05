@@ -5,7 +5,6 @@ import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 import { UserSettings } from 'pkg.user.settings';
 import { createQueryString } from 'pkg.router.url';
 import { Logo } from 'pkg.logo';
-import { useMainSt } from 'pkg.stores';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Close, Objects } from '@xipkg/icons';
@@ -13,16 +12,16 @@ import { Button } from '@xipkg/button';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import '../utils/driver.css';
+import { useMainSt } from 'pkg.stores';
+import { createRoot } from 'react-dom/client';
 import { CommunityMenu } from './CommunityMenu';
 import { CommunityItems } from './CommunityItems';
-import ReactDOM from 'react-dom';
 
 type MenuT = {
   setSlideIndex: (value: number) => void;
-  onExit: () => void;
 };
 
-export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
+export const Menu = ({ setSlideIndex }: MenuT) => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const user = useMainSt((state) => state.user);
 
@@ -36,9 +35,6 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
     const profileIsOpen = searchParams.has('profileIsOpen');
     setMenuIsOpen(profileIsOpen);
   }, [searchParams]);
-  type PopoverDOM = {
-    closeButton: HTMLElement;
-  };
 
   const driverAction = () => {
     const driverObj = driver({
@@ -103,11 +99,15 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
           },
         },
       ],
-      onPopoverRender: (popover, opts) => {
+      onPopoverRender: (popover) => {
         const defaultCloseButton = popover.closeButton;
         const customCloseButton = document.createElement('button');
         customCloseButton.className = 'driver-popover-close-btn';
-        ReactDOM.render(<Close className="h-[16px] w-[16px]" />, customCloseButton);
+
+        // Создаем корень для рендеринга компонента
+        const root = createRoot(customCloseButton);
+        root.render(<Close className="h-[16px] w-[16px]" />);
+
         defaultCloseButton.replaceWith(customCloseButton);
         customCloseButton.addEventListener('click', () => {
           driverObj.destroy();
@@ -132,6 +132,7 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
         <Modal open={menuIsOpen}>
           <ModalTrigger
             onClick={() => {
+              if (user?.id === null || user?.id === undefined) return;
               setMenuIsOpen(true);
               router.push(
                 `${pathname}?${createQueryString(searchParams, 'profileIsOpen', profileIsOpenValue ? String(profileIsOpenValue) : 'true')}&${createQueryString(searchParams, 'category', 'home')}`,
@@ -144,15 +145,16 @@ export const Menu = ({ onExit, setSlideIndex }: MenuT) => {
               className="hover:bg-gray-5 h-[48px] w-full rounded-lg p-2 hover:cursor-pointer"
             >
               <UserProfile
-                userId={user.id}
-                text={user.displayName}
-                label={user.username}
+                loading={user?.id === null || user?.id === undefined}
+                userId={user?.id || null}
+                text={user?.displayName}
+                label={user?.username}
                 size="m"
               />
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
-            <UserSettings onExit={onExit} />
+            <UserSettings />
           </ModalContent>
         </Modal>
         <Button

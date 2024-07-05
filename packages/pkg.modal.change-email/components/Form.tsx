@@ -28,17 +28,17 @@ const schema = z.object({
   }),
 });
 
-interface IFormBlockProps {
+type FormBlockPropsT = {
   onEmailChange: any;
   setStage: (arg: { type: string; email: string }) => void;
-}
+};
 
 export type FormDataT = {
   email: string;
   password: string;
 };
 
-const FormBlock = ({ onEmailChange, setStage }: IFormBlockProps) => {
+const FormBlock = ({ onEmailChange, setStage }: FormBlockPropsT) => {
   const form = useForm<FormDataT>({
     resolver: zodResolver(schema),
   });

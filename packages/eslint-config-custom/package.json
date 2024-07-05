@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "devDependencies": {
-    "@xipkg/eslint": "^1.0.0",
+    "@xipkg/eslint": "^1.4.0",
     "eslint-config-turbo": "^2.0.4",
     "eslint-plugin-prettier": "5.1.3"
   }

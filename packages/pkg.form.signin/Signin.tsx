@@ -52,7 +52,6 @@ export const SignIn = () => {
   const communityName = searchParams.get('community');
 
   const onSignIn = useMainSt((state) => state.onSignIn);
-  const setIsLogin = useMainSt((state) => state.setIsLogin);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -85,7 +84,7 @@ export const SignIn = () => {
       router.push(`/invite/${searchParams.get('iid')}`);
     }
 
-    return setIsLogin(true);
+    return router.push('/communities');
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);

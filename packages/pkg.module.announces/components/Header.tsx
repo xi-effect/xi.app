@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   return (
     <div className="flex-col py-4 max-[520px]:py-7 sm:py-8">
       <Breadcrumbs isVisible={shouldShowBreadcrumbs} breadcrumbs={breadcrumbs} />
-      <div className="flex items-end justify-between ">
+      <div className="flex items-end justify-between">
         <h1 className="text-3xl font-semibold max-[520px]:text-2xl sm:inline-block sm:text-4xl">
           Объявления
         </h1>

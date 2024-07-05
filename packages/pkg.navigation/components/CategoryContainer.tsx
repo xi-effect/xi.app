@@ -3,10 +3,10 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { CSS } from '@dnd-kit/utilities';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
+import { useMedia } from 'pkg.utils.client';
 import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
-import { useMedia } from 'pkg.utils';
 
 type CategoryContainerT = {
   category: CategoryT;
@@ -14,7 +14,7 @@ type CategoryContainerT = {
   setSlideIndex?: (arg: number) => void;
 };
 
-export function CategoryContainer({ category, channels, setSlideIndex }: CategoryContainerT) {
+export const CategoryContainer = ({ category, channels, setSlideIndex }: CategoryContainerT) => {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
   const communityId = useMainSt((state) => state.communityMeta.id);
   const socket = useMainSt((state) => state.socket);
@@ -49,7 +49,7 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
   }
 
   const handleDelete = () => {
-    socket.emit(
+    socket?.emit(
       'delete-category',
       {
         community_id: communityId,
@@ -59,10 +59,11 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
         if (status === 204) {
           toast('Категория успешно удалена');
           deleteCategory(category.id);
-      } else {
-        toast(`Что-то пошло не так. Ошибка ${status}`);
-      }
-    });
+        } else {
+          toast(`Что-то пошло не так. Ошибка ${status}`);
+        }
+      },
+    );
   };
 
   return (
@@ -90,4 +91,4 @@ export function CategoryContainer({ category, channels, setSlideIndex }: Categor
       </ItemContextMenu>
     </div>
   );
-}
+};

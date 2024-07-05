@@ -10,12 +10,7 @@ import { AddCommunityModal } from 'pkg.modal.add-community';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
 import { InviteCommunityModal } from 'pkg.modal.invite-community';
 import { ScrollArea } from '@xipkg/scrollarea';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@xipkg/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 
 import {
   CategoryAdd,
@@ -65,17 +60,14 @@ const AvatarPreview = ({ communityId }: AvatarPreviewPropsT) => (
   </Avatar>
 );
 
-const DropdownHeader = ({
-  setIsOpen,
-  inDropdown = false,
-  name,
-  id,
-}: {
+type DropdownHeaderPropsT = {
   setIsOpen: any;
   inDropdown?: boolean;
   name: string | null;
   id: number | null;
-}) => (
+};
+
+const DropdownHeader = ({ setIsOpen, inDropdown = false, name, id }: DropdownHeaderPropsT) => (
   <div
     id="community-profile"
     onClick={() => {
@@ -93,8 +85,7 @@ const DropdownHeader = ({
     {!name ? (
       <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
     ) : (
-      
-      <div className="ml-2 self-center text-[16px] font-semibold truncate">{name}</div>
+      <div className="ml-2 self-center truncate text-[16px] font-semibold">{name}</div>
     )}
     <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
       <ChevronSmallTop
@@ -120,7 +111,7 @@ const CommunityLink = ({
   const [isTooltipActive, setIsTooltipActive] = React.useState(false);
 
   const handleClick = () => {
-    socket.emit(
+    socket?.emit(
       'close-community',
       {
         community_id: currentCommunityId,
@@ -128,7 +119,7 @@ const CommunityLink = ({
       (data: any) => {
         console.log('close-community', data);
         if (data === 204) {
-          socket.emit(
+          socket?.emit(
             'retrieve-community',
             {
               community_id: community.id,
@@ -155,7 +146,7 @@ const CommunityLink = ({
 
   useEffect(() => {
     const element = communityTitleRef.current;
-    if (element && (element.clientWidth < element.scrollWidth)) {
+    if (element && element.clientWidth < element.scrollWidth) {
       setIsTooltipActive(true);
     }
   }, []);
@@ -166,10 +157,13 @@ const CommunityLink = ({
         <TooltipTrigger className="overflow-hidden bg-transparent" asChild>
           <div
             onClick={handleClick}
-            className="hover:bg-gray-5 flex h-12 items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer w-full"
+            className="hover:bg-gray-5 flex h-12 w-full items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer"
           >
             <AvatarPreview communityId={community.id} />
-            <div className="ml-2 self-center text-[16px] font-semibold truncate text-gray-100" ref={communityTitleRef}>
+            <div
+              className="ml-2 self-center truncate text-[16px] font-semibold text-gray-100"
+              ref={communityTitleRef}
+            >
               {community.name}
             </div>
           </div>
@@ -203,7 +197,7 @@ export const CommunityMenu = () => {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   useEffect(() => {
-    socket.emit('list-communities', (status: number, communities: any[]) => {
+    socket?.emit('list-communities', (status: number, communities: any[]) => {
       const otherCommunities = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );
@@ -216,9 +210,9 @@ export const CommunityMenu = () => {
   const handleClose = () => setIsOpen(false);
 
   const handleLeaveCommunity = () => {
-    socket.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
+    socket?.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
       if (status === 204 && otherCommunities) {
-        socket.emit(
+        socket?.emit(
           'retrieve-community',
           {
             community_id: otherCommunities[0].id,
