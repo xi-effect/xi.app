@@ -9,8 +9,9 @@ import {
   ModalHeader,
   ModalTitle,
 } from '@xipkg/modal';
-import { Close } from '@xipkg/icons';
+import { Close, Minus, Plus } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
+import { Slider } from '@xipkg/slider';
 import Cropper from 'react-easy-crop';
 import { put } from 'pkg.utils';
 import { toast } from 'sonner';
@@ -26,6 +27,10 @@ type AvatarEditorT = {
   onBase64Return?: (resizedImageBase: string, form: FormData) => void;
   communityId?: number | undefined;
 };
+
+const MAX_ZOOM = 3;
+const MIN_ZOOM = 0.8;
+const ZOOM_STEP = 0.01;
 
 export const AvatarEditorComponent = ({
   withLoadingToServer = true,
@@ -50,8 +55,25 @@ export const AvatarEditorComponent = ({
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
-  const onZoomChange = (zoom: number) => {
-    setZoom(zoom);
+  const onZoomChange = (zooms: number) => {
+    if (zooms < MIN_ZOOM) {
+      setZoom(MIN_ZOOM);
+      return;
+    }
+
+    if (zooms > MAX_ZOOM) {
+      setZoom(MAX_ZOOM);
+      return;
+    }
+    setZoom(zooms);
+  };
+
+  const increaseZoom = () => {
+    setZoom((prev) => (prev < MAX_ZOOM ? prev + ZOOM_STEP : MAX_ZOOM));
+  };
+
+  const decreaseZoom = () => {
+    setZoom((prev) => (prev > MIN_ZOOM ? prev - ZOOM_STEP : MIN_ZOOM));
   };
 
   const [croppedAreaPixels, setCroppedAreaPixels] = React.useState<{
@@ -150,8 +172,35 @@ export const AvatarEditorComponent = ({
                 width: '100%',
               },
             }}
-            minZoom={0.8}
+            minZoom={MIN_ZOOM}
           />
+        </div>
+        <div className="relative flex items-center justify-center px-6 pb-6 pt-4">
+          <button
+            aria-label="Минус"
+            type="button"
+            className="mx-4 bg-transparent p-1"
+            onClick={decreaseZoom}
+          >
+            <Minus size="m" />
+          </button>
+          <Slider
+            className="w-[250px]"
+            value={[zoom]}
+            max={MAX_ZOOM}
+            step={ZOOM_STEP}
+            min={MIN_ZOOM}
+            defaultValue={[zoom]}
+            onValueChange={(v: number[]) => onZoomChange(v[0])}
+          />
+          <button
+            aria-label="Плюс"
+            type="button"
+            className="mx-4 bg-transparent p-1"
+            onClick={increaseZoom}
+          >
+            <Plus size="m" />
+          </button>
         </div>
         <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">
           <Button onClick={() => onOpenChange(false)} className="md:ml-auto" variant="secondary">
