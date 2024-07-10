@@ -46,7 +46,7 @@ const actionsSheetList = [
   {
     icon: WhiteBoard,
     title: 'Интерактивная доска',
-    type: 'whiteboard',
+    type: 'board',
     desctiption: 'Проводите уроки и совместные занятия с помощью удобной и функциональной доски',
   },
   {
@@ -91,7 +91,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
   });
 
   const onSubmit = (values: FormSchemaT) => {
-    socket?.emit(
+    socket.emit(
       'create-channel',
       {
         community_id: communityId,
