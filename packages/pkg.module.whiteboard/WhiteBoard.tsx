@@ -1,17 +1,14 @@
 'use client';
-
 import React from 'react';
 import { Tldraw } from 'tldraw';
-import './index.css';
-
+import { Navbar } from './Navbar';
 import './index.css';
 
 export const WhiteBoard: React.FC = () => {
   console.log();
-
   return (
-    <div className="h-full w-full">
-      <Tldraw />
-    </div>
+    <Tldraw hideUi>
+      <Navbar />
+    </Tldraw>
   );
 };
