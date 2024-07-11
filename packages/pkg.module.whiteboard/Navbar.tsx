@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEditor } from 'tldraw';
-import './custom-ui.css';
+// import './custom-ui.css';
 
 export function Navbar() {
   const editor = useEditor();
@@ -38,46 +38,73 @@ export function Navbar() {
   }, [editor]);
 
   const navBarElements = [
-    { action: 'select', title: 'Cursor' },
-    { action: 'draw', title: 'Draw' },
-    { action: 'eraser', title: 'Eraser' },
+    { action: 'select', title: 'C' },
+    { action: 'draw', title: 'D' },
+    { action: 'eraser', title: 'E' },
   ];
 
   return (
-    <div className="custom-layout">
-      <div className="custom-toolbar">
-        {navBarElements.map((item) => {
-          return (
-            <button
-              className="custom-button"
-              data-isactive={activeBtn == item.action}
-              onClick={() => {
-                editor.setCurrentTool(item.action);
-                setActiveBtn(item.action);
-              }}
-            >
-              {item.title}
-            </button>
-          );
-        })}
+    <div className="pointer-events-none absolute inset-0 z-[300]">
+      <div className="absolute bottom-3 left-0 right-0 flex w-full items-center justify-center">
+        <div className="flex gap-10">
+          <div className="border-gray-10 z-[300] flex gap-2 rounded-[12px] border p-1">
+            {navBarElements.map((item) => (
+              <button
+                key={item.action}
+                className={`pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] ${activeBtn == item.action ? 'bg-brand-0' : 'bg-white'}`}
+                data-isactive={editor.getCurrentToolId() === item.action}
+                onClick={() => {
+                  setActiveBtn(item.action);
+                  editor.setCurrentTool(item.action);
+                }}
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
+          <div className="border-gray-10 flex gap-2 rounded-[12px] border p-1">
+            {navBarElements.map((item) => (
+              <button
+                key={item.action}
+                className={`pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] ${activeBtn == item.action ? 'bg-brand-0' : 'bg-white'}`}
+                data-isactive={editor.getCurrentToolId() === item.action}
+                onClick={() => {
+                  setActiveBtn(item.action);
+                  editor.setCurrentTool(item.action);
+                }}
+              >
+                {item.title}
+              </button>
+            ))}
+            {navBarElements.map((item) => (
+              <button
+                key={item.action}
+                className={`pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] ${activeBtn == item.action ? 'bg-brand-0' : 'bg-white'}`}
+                data-isactive={editor.getCurrentToolId() === item.action}
+                onClick={() => {
+                  setActiveBtn(item.action);
+                  editor.setCurrentTool(item.action);
+                }}
+              >
+                {item.title}
+              </button>
+            ))}
+            {navBarElements.map((item) => (
+              <button
+                key={item.action}
+                className={`pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] ${activeBtn == item.action ? 'bg-brand-0' : 'bg-white'}`}
+                data-isactive={editor.getCurrentToolId() === item.action}
+                onClick={() => {
+                  setActiveBtn(item.action);
+                  editor.setCurrentTool(item.action);
+                }}
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
-}
-
-{
-  /* <div className="z-300 pointer-events-none absolute inset-0">
-      <div className="absolute bottom-0 left-0 flex w-full items-center justify-center gap-2 p-2">
-        {navBarElements.map((item) => (
-          <button
-            key={item.action}
-            className="pointer-events-auto rounded-full border border-gray-100 bg-white px-3 py-1"
-            data-isactive={editor.getCurrentToolId() === item.action}
-            onClick={() => editor.setCurrentTool(item.action)}
-          >
-            {item.title}
-          </button>
-        ))}
-      </div>
-    </div> */
 }
