@@ -4,13 +4,14 @@ import { TLComponents, Tldraw } from 'tldraw';
 import { Navbar } from './Navbar';
 import { CustomBackground } from './CustomBackground';
 import './index.css';
+import { CustomZoomMenu } from './CustomZoomMenu';
 
 export const WhiteBoard: React.FC = () => {
-  console.log();
   return (
     <Tldraw hideUi>
       <Navbar />
       <CustomBackground />
+      <CustomZoomMenu />
     </Tldraw>
   );
 };
