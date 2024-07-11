@@ -38,57 +38,22 @@ export function Navbar() {
   }, [editor]);
 
   const navBarElements = [
-    { action: 'select', title: 'C' },
-    { action: 'draw', title: 'D' },
-    { action: 'eraser', title: 'E' },
+    { action: 'select', title: 'Select' },
+    { action: 'hand', title: 'Hand' },
+    { action: 'draw', title: 'Draw' },
+    { action: 'sticker', title: 'Sticker' },
+    { action: 'text', title: 'Text' },
+    { action: 'shapes', title: 'Shapes' },
+    { action: 'arrow', title: 'Arrow' },
+    { action: 'image', title: 'Image' },
+    { action: 'eraser', title: 'Eraser' },
   ];
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-[300]">
-      <div className="absolute bottom-3 left-0 right-0 flex w-full items-center justify-center">
+    <div className="pointer-events-none absolute inset-0">
+      <div className="absolute bottom-3 left-0 right-0 flex w-full items-center justify-center bg-white">
         <div className="flex gap-10">
           <div className="border-gray-10 z-[300] flex gap-2 rounded-[12px] border p-1">
-            {navBarElements.map((item) => (
-              <button
-                key={item.action}
-                className={`pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] ${activeBtn == item.action ? 'bg-brand-0' : 'bg-white'}`}
-                data-isactive={editor.getCurrentToolId() === item.action}
-                onClick={() => {
-                  setActiveBtn(item.action);
-                  editor.setCurrentTool(item.action);
-                }}
-              >
-                {item.title}
-              </button>
-            ))}
-          </div>
-          <div className="border-gray-10 flex gap-2 rounded-[12px] border p-1">
-            {navBarElements.map((item) => (
-              <button
-                key={item.action}
-                className={`pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] ${activeBtn == item.action ? 'bg-brand-0' : 'bg-white'}`}
-                data-isactive={editor.getCurrentToolId() === item.action}
-                onClick={() => {
-                  setActiveBtn(item.action);
-                  editor.setCurrentTool(item.action);
-                }}
-              >
-                {item.title}
-              </button>
-            ))}
-            {navBarElements.map((item) => (
-              <button
-                key={item.action}
-                className={`pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] ${activeBtn == item.action ? 'bg-brand-0' : 'bg-white'}`}
-                data-isactive={editor.getCurrentToolId() === item.action}
-                onClick={() => {
-                  setActiveBtn(item.action);
-                  editor.setCurrentTool(item.action);
-                }}
-              >
-                {item.title}
-              </button>
-            ))}
             {navBarElements.map((item) => (
               <button
                 key={item.action}
