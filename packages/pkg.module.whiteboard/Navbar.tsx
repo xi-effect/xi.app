@@ -51,8 +51,8 @@ export function Navbar() {
 
   return (
     <div className="pointer-events-none absolute inset-0">
-      <div className="absolute bottom-3 left-0 right-0 flex w-full items-center justify-center bg-white">
-        <div className="flex gap-10">
+      <div className="absolute bottom-3 left-0 right-0 flex w-full items-center justify-center">
+        <div className="z-[300] flex gap-10 bg-white">
           <div className="border-gray-10 z-[300] flex gap-2 rounded-[12px] border p-1">
             {navBarElements.map((item) => (
               <button
