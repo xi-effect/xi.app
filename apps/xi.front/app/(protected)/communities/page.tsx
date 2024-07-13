@@ -1,6 +1,7 @@
 'use client';
 
 import { redirect } from 'next/navigation';
+import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
 
@@ -24,7 +25,7 @@ export default function CommunitiesLoading() {
     <div className="flex">
       <div className="flex-col min-w-[350px] p-6">
         <div className="p-2">
-          <div className="bg-gray-10 h-[32px] w-[150px] animate-pulse rounded-[4px]" />
+          <Logo height={16} width={134} logoVariant="navigation" logoSize="default" />
         </div>
         <div className="flex h-12 px-2.5 py-2 md:w-[302px] mt-0 sm:mt-8 gap-2 items-center rounded-xl">
           <div className="bg-gray-10 h-[32px] w-[32px] animate-pulse rounded-full shrink-0" />
