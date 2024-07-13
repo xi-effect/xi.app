@@ -1,8 +1,11 @@
 import React from 'react';
-import { useEditor } from 'tldraw';
+import { useCanRedo, useCanUndo, useEditor } from 'tldraw';
 
 export function NavbarAction() {
   const editor = useEditor();
+  const canRedo = useCanRedo();
+  const canUndo = useCanUndo();
+
   const handleUndo = () => {
     editor.undo();
   };
@@ -34,12 +37,14 @@ export function NavbarAction() {
       <button
         className="pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] bg-white"
         onClick={handleUndo}
+        disabled={!canUndo}
       >
         Undo
       </button>
       <button
         className="pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] bg-white"
         onClick={handleRedo}
+        disabled={!canRedo}
       >
         Redo
       </button>
