@@ -1,39 +1,44 @@
 import React, { useEffect } from 'react';
-import { track, useEditor } from 'tldraw';
+import { TextToolbarItem, track, useEditor } from 'tldraw';
 import { NavbarAction } from './NavbarAction';
 // import './custom-ui.css';
 
 export const Navbar = track(() => {
   const editor = useEditor();
+  console.log(editor.getCurrentPageState().selectedShapeIds);
   React.useEffect(() => {
-    const handleKeyUp = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'Delete':
-        case 'Backspace': {
-          editor.deleteShapes(editor.getSelectedShapeIds());
-          break;
-        }
-        case 'v': {
-          editor.setCurrentTool('select');
-          break;
-        }
-        case 'e': {
-          editor.setCurrentTool('eraser');
-          break;
-        }
-        case 'x':
-        case 'p':
-        case 'b':
-        case 'd': {
-          editor.setCurrentTool('draw');
-          break;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (editor.getCurrentPageState().selectedShapeIds.length == 1) {
+        return;
+      } else {
+        switch (e.key) {
+          case 'Delete':
+          case 'Backspace': {
+            editor.deleteShapes(editor.getSelectedShapeIds());
+            break;
+          }
+          case 'v': {
+            editor.setCurrentTool('select');
+            break;
+          }
+          case 'e': {
+            editor.setCurrentTool('eraser');
+            break;
+          }
+          case 'x':
+          case 'p':
+          case 'b':
+          case 'd': {
+            editor.setCurrentTool('draw');
+            break;
+          }
         }
       }
     };
 
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [editor]);
 

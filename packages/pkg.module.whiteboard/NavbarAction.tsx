@@ -15,7 +15,6 @@ export function NavbarAction() {
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event);
       if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
         event.preventDefault();
         handleUndo();
