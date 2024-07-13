@@ -22,24 +22,26 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   useEffect(() => {
     console.log('onconnect', socket);
-    socket?.on('connect', () => {
-      socket.emit(
-        'retrieve-any-community',
-        (stats: number, { community, participant }: { community: any; participant: any }) => {
-          if (stats === 200) {
-            updateCommunityMeta({
-              id: community.id,
-              isOwner: participant.is_owner,
-              name: community.name,
-              description: community.description,
-            });
-          }
+    if (onboardingStage === 'completed') {
+      socket?.on('connect', () => {
+        socket.emit(
+          'retrieve-any-community',
+          (stats: number, { community, participant }: { community: any; participant: any }) => {
+            if (stats === 200) {
+              updateCommunityMeta({
+                id: community.id,
+                isOwner: participant.is_owner,
+                name: community.name,
+                description: community.description,
+              });
+            }
 
-          router.push(`/communities/${community.id}/home`);
-        },
-      );
-    });
-  }, [socket?.connected]);
+            if (community.id) router.push(`/communities/${community.id}/home`);
+          },
+        );
+      });
+    }
+  }, [socket?.connected, onboardingStage]);
 
   useEffect(() => {
     if (socket?.connected === false) {
@@ -59,7 +61,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   useEffect(() => {
     console.log('onboardingStage', onboardingStage);
-    if (onboardingStage && onboardingStage !== null && onboardingStage !== 'completed') {
+    if (onboardingStage && onboardingStage !== null && onboardingStage !== 'completed' && !pathname.includes('/welcome/')) {
       redirect('/welcome/user-info');
     }
   }, [isLogin]);
