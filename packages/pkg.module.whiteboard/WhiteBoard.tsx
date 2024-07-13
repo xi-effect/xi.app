@@ -3,7 +3,7 @@ import React from 'react';
 import { Tldraw } from 'tldraw';
 import { Navbar } from './Navbar';
 import './index.css';
-import { CustomZoomMenu } from './CustomZoomMenu';
+import { ZoomMenu } from './ZoomMenu';
 
 export const WhiteBoard: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ export const WhiteBoard: React.FC = () => {
       hideUi
     >
       <Navbar />
-      <CustomZoomMenu />
+      <ZoomMenu />
     </Tldraw>
   );
 };

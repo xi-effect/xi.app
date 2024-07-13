@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
-import { TextToolbarItem, track, useEditor } from 'tldraw';
+import React from 'react';
+import { track, useEditor } from 'tldraw';
 import { NavbarAction } from './NavbarAction';
-// import './custom-ui.css';
 
 export const Navbar = track(() => {
   const editor = useEditor();
-  console.log(editor.getCurrentPageState().selectedShapeIds);
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (editor.getCurrentPageState().selectedShapeIds.length == 1) {

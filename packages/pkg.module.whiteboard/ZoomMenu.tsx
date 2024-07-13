@@ -2,7 +2,7 @@ import { DefaultZoomMenu, DefaultZoomMenuContent, useEditor } from 'tldraw';
 import 'tldraw/tldraw.css';
 import { Plus, Minus } from '@xipkg/icons';
 
-export function CustomZoomMenu() {
+export function ZoomMenu() {
   const editor = useEditor();
 
   const handleZoomIn = () =>
