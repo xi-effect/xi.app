@@ -1,6 +1,6 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
@@ -9,11 +9,18 @@ import { toast } from 'sonner';
 export default function CommunitiesLoading() {
   const isLogin = useMainSt((state) => state.isLogin);
   const initSocket = useMainSt((state) => state.initSocket);
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  const communityMeta = useMainSt((state) => state.communityMeta);
+  const onboardingStage = useMainSt((state) => state.user.onboardingStage);
+
+  const router = useRouter();
 
   // Тоже костыль
   useEffect(() => {
     const toastTimerId = setTimeout(() => {
       toast('Упс, проблемы с загрузкой');
+      initSocket();
     }, 10000);
 
     const redirectTimerId = setTimeout(() => {
@@ -29,6 +36,7 @@ export default function CommunitiesLoading() {
   // Если вдруг что-то пошло не так, ещё раз иницируем соединение сокета
   // В initSocket есть предотвращение инициализации нескольких соединений
   useEffect(() => {
+    console.log('initSocket');
     initSocket();
   }, []);
 
@@ -37,6 +45,66 @@ export default function CommunitiesLoading() {
       redirect('/signin');
     }
   }, [isLogin]);
+
+  useEffect(() => {
+    console.log('onconnect', socket);
+    if (onboardingStage === 'completed') {
+      socket?.on('connect', () => {
+        socket.emit(
+          'retrieve-any-community',
+          (stats: number, { community, participant }: { community: any; participant: any }) => {
+            if (stats === 200) {
+              updateCommunityMeta({
+                id: community.id,
+                isOwner: participant.is_owner,
+                name: community.name,
+                description: community.description,
+              });
+            }
+
+            if (community.id) router.push(`/communities/${community.id}/home`);
+          },
+        );
+      });
+    }
+
+    if (socket?.connected === true && communityMeta.id === null) {
+      socket.emit(
+        'retrieve-any-community',
+        (stats: number, { community, participant }: { community: any; participant: any }) => {
+          if (stats === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+          }
+
+          if (community.id) router.push(`/communities/${community.id}/home`);
+        },
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLogin && socket?.connected === true) {
+      socket.emit('retrieve-any-community',
+        (stats: number, { community, participant }: { community: any; participant: any }) => {
+          if (stats === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+          }
+
+          if (community.id) router.push(`/communities/${community.id}/home`);
+        },
+      );
+    }
+  }, [isLogin, socket?.connected]);
 
   return (
     <div className="flex">

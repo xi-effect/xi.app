@@ -13,6 +13,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const socket = useMainSt((state) => state.socket);
   const getUser = useMainSt((state) => state.getUser);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  const communityMeta = useMainSt((state) => state.communityMeta);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
 
   const isLogin = useMainSt((state) => state.isLogin);
@@ -41,6 +42,24 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
         );
       });
     }
+
+    if (socket?.connected === true && communityMeta.id === null) {
+      socket.emit(
+        'retrieve-any-community',
+        (stats: number, { community, participant }: { community: any; participant: any }) => {
+          if (stats === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+          }
+
+          if (community.id) router.push(`/communities/${community.id}/home`);
+        },
+      );
+    }
   }, [socket?.connected, onboardingStage]);
 
   useEffect(() => {
@@ -51,13 +70,14 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   useEffect(() => {
     if (pathname !== '/communities' || (pathname === '/communities' && isLogin === null)) {
+      console.log('UUU', isLogin);
       if (isLogin === false) {
         redirect('/signin');
       } else {
         getUser();
       }
     }
-  }, []);
+  }, [isLogin]);
 
   useEffect(() => {
     console.log('onboardingStage', onboardingStage);
