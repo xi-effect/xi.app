@@ -1,6 +1,7 @@
 import { DefaultZoomMenu, DefaultZoomMenuContent, useEditor } from 'tldraw';
 import 'tldraw/tldraw.css';
 import { Plus, Minus } from '@xipkg/icons';
+import React from 'react';
 
 export function ZoomMenu() {
   const editor = useEditor();
@@ -10,6 +11,22 @@ export function ZoomMenu() {
 
   const handleZoomOut = () =>
     editor.zoomOut(editor.getViewportScreenCenter(), { animation: { duration: 120 } });
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === '=') {
+        handleZoomIn();
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key === '-') {
+        handleZoomOut();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
 
   return (
     <div className="absolute bottom-3 right-3 z-[300]">
