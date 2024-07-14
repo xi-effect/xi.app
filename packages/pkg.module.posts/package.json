@@ -1,5 +1,5 @@
 {
-  "name": "pkg.module.announces",
+  "name": "pkg.module.posts",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",

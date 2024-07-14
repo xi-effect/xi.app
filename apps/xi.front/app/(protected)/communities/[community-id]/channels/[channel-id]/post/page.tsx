@@ -4,7 +4,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 const Post = dynamic(() =>
-  import('pkg.module.announces/components/AnnouncePost').then((mod) => mod.default),
+  import('pkg.module.posts/components/AnnouncePost').then((mod) => mod.default),
 );
 
 export default function PostPage() {
