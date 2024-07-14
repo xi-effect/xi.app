@@ -12,9 +12,11 @@ export function ZoomMenu() {
   const handleZoomOut = () =>
     editor.zoomOut(editor.getViewportScreenCenter(), { animation: { duration: 120 } });
 
-  const handleZoomTo100 = () => {
-    editor.resetZoom();
-  };
+  const handleZoomTo100 = () =>
+    editor.resetZoom(editor.getViewportScreenCenter(), { animation: { duration: 200 } });
+
+  const handleZoomToFit = () => editor.zoomToFit({ animation: { duration: 200 } });
+
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === '=') {
@@ -23,8 +25,11 @@ export function ZoomMenu() {
       if ((event.ctrlKey || event.metaKey) && event.key === '-') {
         handleZoomOut();
       }
-      if (event.shiftKey && event.key === '0') {
+      if (event.shiftKey && event.code === 'Digit0') {
         handleZoomTo100();
+      }
+      if (event.shiftKey && event.code === 'Digit1') {
+        handleZoomToFit();
       }
     };
 
