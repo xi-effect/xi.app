@@ -12,6 +12,9 @@ export function ZoomMenu() {
   const handleZoomOut = () =>
     editor.zoomOut(editor.getViewportScreenCenter(), { animation: { duration: 120 } });
 
+  const handleZoomTo100 = () => {
+    editor.resetZoom();
+  };
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === '=') {
@@ -19,6 +22,9 @@ export function ZoomMenu() {
       }
       if ((event.ctrlKey || event.metaKey) && event.key === '-') {
         handleZoomOut();
+      }
+      if (event.shiftKey && event.key === '0') {
+        handleZoomTo100();
       }
     };
 
