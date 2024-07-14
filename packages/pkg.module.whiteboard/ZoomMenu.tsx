@@ -17,6 +17,8 @@ export function ZoomMenu() {
 
   const handleZoomToFit = () => editor.zoomToFit({ animation: { duration: 200 } });
 
+  const handleZoomToSelect = () => editor.zoomToSelection({ animation: { duration: 200 } });
+
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === '=') {
@@ -30,6 +32,9 @@ export function ZoomMenu() {
       }
       if (event.shiftKey && event.code === 'Digit1') {
         handleZoomToFit();
+      }
+      if (event.shiftKey && event.code === 'Digit2') {
+        handleZoomToSelect();
       }
     };
 
