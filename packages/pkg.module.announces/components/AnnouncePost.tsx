@@ -61,13 +61,13 @@ const AnnouncePost = ({
       <h1 className="line-clamp-1 text-3xl font-semibold sm:inline-block md:line-clamp-2">
         {postTitle}
       </h1>
-      <div className="mt-4 flex items-center ">
+      <div className="mt-4 flex items-center">
         <p className="ml text-xs font-medium leading-4 after:ml-1 after:content-['•']">{date}</p>
         <p className="ml-1 text-xs font-medium leading-4">{author}</p>
       </div>
     </div>
     <div className="border-gray-80 rounded-2xl border p-6">
-      <p className="mt-4  text-base font-normal leading-[22px] text-gray-100 ">{postText}</p>
+      <p className="mt-4 text-base font-normal leading-[22px] text-gray-100">{postText}</p>
     </div>
   </section>
 );

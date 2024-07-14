@@ -169,7 +169,7 @@ export function ParticipantTile({
                   <ParticipantPlaceholder />
                 </div>
                 <div className="lk-participant-metadata p-1">
-                  <div className=" bg-transperent">
+                  <div className="bg-transperent">
                     {trackReference.source === Track.Source.Camera ? (
                       <div className="flex h-[24px] w-full gap-[6px] rounded-[4px] bg-gray-100 px-[6px] py-[4px]">
                         {isEncrypted && <LockLockedIcon style={{ background: 'transperent' }} />}

@@ -1,17 +1,17 @@
 import React from 'react';
 import { ChevronRight } from '@xipkg/icons';
 
-interface BreadcrumbItem {
+type BreadcrumbItemT = {
   title: string;
   href: string;
-}
+};
 
-interface BreadcrumbsProps {
+type BreadcrumbsPropsT = {
   isVisible: boolean;
-  breadcrumbs: BreadcrumbItem[];
-}
+  breadcrumbs: BreadcrumbItemT[];
+};
 
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ isVisible, breadcrumbs }) => {
+const Breadcrumbs: React.FC<BreadcrumbsPropsT> = ({ isVisible, breadcrumbs }) => {
   if (!isVisible) {
     return null;
   }

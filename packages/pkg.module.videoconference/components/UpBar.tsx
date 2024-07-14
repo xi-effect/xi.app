@@ -15,7 +15,7 @@ import {
   Minimize,
 } from '@xipkg/icons';
 import { usePathname, useRouter } from 'next/navigation';
-import { useFullScreen } from 'pkg.utils/useFullScreen';
+import { useFullScreen } from 'pkg.utils.client';
 
 export const UpBar = () => {
   const router = useRouter();

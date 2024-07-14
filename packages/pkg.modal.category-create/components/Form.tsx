@@ -84,7 +84,7 @@ export const Form = ({ onOpenChange }: FormT) => {
   const onSubmit = (values: FormSchemaT) => {
     setIsButtonActive(false);
 
-    socket.emit(
+    socket?.emit(
       'create-category',
       {
         community_id: communityId,
@@ -99,7 +99,7 @@ export const Form = ({ onOpenChange }: FormT) => {
 
           if (values.channels.length !== 0) {
             values.channels.forEach((item) => {
-              socket.emit(
+              socket?.emit(
                 'create-channel',
                 {
                   community_id: communityId,

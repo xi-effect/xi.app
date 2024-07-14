@@ -91,8 +91,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
   });
 
   const onSubmit = (values: FormSchemaT) => {
-    console.log('values', values);
-    socket.emit(
+    socket?.emit(
       'create-channel',
       {
         community_id: communityId,
@@ -123,7 +122,6 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
           if (onOpenChange) onOpenChange();
           form.reset();
         }
-        console.log('ans', status, dataAnswer);
       },
     );
   };

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { Camera } from '@xipkg/icons';
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 import React from 'react';
 
 export const Customization = () => {

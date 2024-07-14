@@ -1,5 +1,5 @@
 import { Palette } from '@xipkg/icons';
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 import {
   Select,
   SelectContent,

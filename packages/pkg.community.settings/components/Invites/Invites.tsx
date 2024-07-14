@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 
 import { useMainSt } from 'pkg.stores';
@@ -22,7 +24,7 @@ const UserBadge = ({ name, bgColorMain, bgColorSecondary }: UserRoleT) => (
   <li>
     <Badge className={`text-xs ${bgColorSecondary}`}>
       <span className={`mr-2 size-3 rounded-full ${bgColorMain}`} />
-      {name.slice(0, 1).toUpperCase() + name.slice(1)}
+      {(name ?? '').slice(0, 1).toUpperCase() + name.slice(1)}
     </Badge>
   </li>
 );
@@ -117,7 +119,7 @@ const UserCard = ({
         },
       });
 
-      if (status === 200) {
+      if (status === 200 && data) {
         setUser({
           username: data.username,
           displayName: data.display_name,
@@ -187,7 +189,7 @@ const UserCard = ({
         <div className="flex min-w-40 flex-col">
           <p className="mb-2 text-xs font-medium text-gray-100">Использований:</p>
           <div className="flex items-center self-start">
-            <span className=" text-base font-medium text-gray-100">{usageCount}</span>
+            <span className="text-base font-medium text-gray-100">{usageCount}</span>
             {usageLimit && (
               <span className="text-gray-40 align-self-start mb-0.5 text-xs font-medium before:mx-[0.5px] before:content-['/']">
                 {usageLimit}
@@ -198,7 +200,7 @@ const UserCard = ({
 
         <div className="flex min-w-40 flex-col">
           <p className="mb-2 text-xs font-medium text-gray-100">Роли:</p>
-          <ul className=" gap-x-4 gap-y-2 ">
+          <ul className="gap-x-4 gap-y-2">
             {roles.map((role, index) => (
               <UserBadge
                 key={index}
@@ -251,7 +253,7 @@ export const Invites = () => {
   const socket = useMainSt((state) => state.socket);
 
   useEffect(() => {
-    socket.emit('list-invitations', { community_id: communityId }, (status: number, data: any) => {
+    socket?.emit('list-invitations', { community_id: communityId }, (status: number, data: any) => {
       if (status === 200 && data) {
         const formatedData = data.map((item: any) => ({
           usageCount: item.usage_count,
@@ -267,7 +269,7 @@ export const Invites = () => {
   }, [communityId]);
 
   const handleInviteDelete = (inviteCode: string) => {
-    socket.emit(
+    socket?.emit(
       'delete-invitation',
       {
         community_id: communityId,
@@ -289,9 +291,7 @@ export const Invites = () => {
   }) => {
     const { community_id: communityId, data } = requestData;
 
-    console.log('data', data, communityId);
-
-    socket.emit(
+    socket?.emit(
       'create-invitation',
       {
         community_id: communityId,

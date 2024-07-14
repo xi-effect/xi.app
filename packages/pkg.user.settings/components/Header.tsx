@@ -2,7 +2,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { ArrowLeft, Close } from '@xipkg/icons';
 import { ModalCloseButton } from '@xipkg/modal';
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 
 const menuLabels = ['Главная', 'Личные данные', 'Безопасность'];
 

@@ -270,7 +270,7 @@ export const Form = ({ setIsOpen, handleInviteCreate }: FormBlockPropsT) => {
                       <DropdownMenuTrigger
                         asChild
                         disabled={unusedRoles.length === 0}
-                        className=" disabled:bg-transparent"
+                        className="disabled:bg-transparent"
                       >
                         <Input
                           disabled={unusedRoles.length === 0}

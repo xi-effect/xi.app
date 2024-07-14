@@ -2,9 +2,10 @@ import '@xipkg/tailwind/index.css';
 
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, Suspense } from 'react';
 import Script from 'next/script';
 import { Providers } from './providers';
+import YandexMetrika from './metrika';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -45,12 +46,34 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} text-[16px]`}>
       <body className="overflow-hidden bg-gray-0">
-        <Script
-          async
-          defer
-          data-website-id="484fa2fe-898c-4ffa-8bbb-e0a2afe4e018"
-          src="https://analytics.xieffect.ru/umami.js"
-        />
+        {process.env.NODE_ENV === 'production' &&
+          <>
+            <Script id="metrika-counter" strategy="afterInteractive">
+              {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+              m[i].l=1*new Date();
+              for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+              k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+              (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+ 
+              ym("97825173", "init", {
+                    defer: true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+              });`}
+            </Script>
+            <Suspense>
+              <YandexMetrika />
+            </Suspense>
+            <Script
+              async
+              defer
+              data-website-id="484fa2fe-898c-4ffa-8bbb-e0a2afe4e018"
+              src="https://analytics.xieffect.ru/umami.js"
+            />
+          </>
+        }
         <Providers>
           <div className="flex flex-row w-full min-h-screen">{children}</div>
         </Providers>

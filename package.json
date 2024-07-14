@@ -8,11 +8,11 @@
     "format-check": "prettier --check \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@turbo/gen": "2.0.4",
-    "@xipkg/eslint": "latest",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.11",
-    "turbo": "2.0.4"
+    "@turbo/gen": "2.0.5",
+    "@xipkg/eslint": "1.4.0",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "turbo": "2.0.5"
   },
   "name": "xi.app",
   "packageManager": "npm@9.1.2",
