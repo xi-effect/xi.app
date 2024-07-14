@@ -47,7 +47,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
           </div>
           <CommunityItems setSlideIndex={setSlideIndex} />
         </div>
-        <div className="h-[calc(100dvh-80px)] overflow-auto">{children}</div>
+        <div className="h-[calc(100dvh-80px)] overflow-none">{children}</div>
       </SwipeableViews>
       <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
         <button

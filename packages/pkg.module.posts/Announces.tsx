@@ -69,7 +69,7 @@ export const Announces = () => {
   };
 
   return (
-    <div className="h-full p-8">
+    <div className="h-full">
       <Header onSearch={filterAnnouncements} />
       {filteredAnnouncements.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">

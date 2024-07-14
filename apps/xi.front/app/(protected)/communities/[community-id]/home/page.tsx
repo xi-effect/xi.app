@@ -153,7 +153,7 @@ const SupportBox = () => (
 export default function CommunityHomePage() {
   return (
     <ScrollArea>
-      <div className="flex flex-col min-h-[100vh] h-screen p-8 max-xs:p-4">
+      <div className="flex flex-col h-[calc(100dvh-80px)] md:h-screen p-8 max-xs:p-4">
         <Header />
         <InfoCardList />
         <SupportBox />
