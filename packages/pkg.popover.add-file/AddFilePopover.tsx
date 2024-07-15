@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 
-import { Transforms } from 'slate';
+import { Transforms, Editor } from 'slate';
 import { useSlate } from 'slate-react';
 
 import * as z from 'zod';
@@ -23,6 +23,7 @@ type AddFilePopoverT = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleFileAttached: () => void;
   type: 'image' | 'file' | 'video';
+  editor: Editor;
 };
 
 const getFileNameFromURL = (url: string) => {
@@ -58,9 +59,8 @@ export const AddFilePopover = ({
   setOpen,
   handleFileAttached,
   type,
+  editor,
 }: AddFilePopoverT) => {
-  const editor = useSlate();
-
   const FormSchema = z.object({
     fileLink: z.string().url('Введите корректную ссылку').min(1, 'Ссылка обязательна'),
   });

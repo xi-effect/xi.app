@@ -1,4 +1,3 @@
-// import { type CommonCustomElementType } from '../slate';
 import node from './createNode';
 
 export const createDefaultNode = (type: string, url?: string, fileName?: string, size?: number) => {
@@ -13,11 +12,10 @@ export const createDefaultNode = (type: string, url?: string, fileName?: string,
       return node({ type }, node({ type: 'quoteText' }), node({ type: 'quoteAuthor' }));
 
     case 'tip':
-      return node(
-        { type },
-        node({ type: 'heading3' }, node({ type: 'icon', icon: '🚧' })),
-        node({ type: 'paragraph' }),
-      );
+      return node({
+        type,
+        children: [{ type: 'icon', icon: '🚧' }, { type: 'heading3' }, { type: 'paragraph' }],
+      });
 
     case 'imageBlock':
       return node({ type: 'imageBlock', url: url ?? '', children: [{ text: '' }] });

@@ -11,6 +11,33 @@ import { AddFilePopover } from 'pkg.popover.add-file';
 
 import { createDefaultNode } from './createDefaultNode';
 
+const colorMap = {
+  green: '#00A82C',
+  blue: '#09AEE8',
+  darkBlue: '#445AFF',
+  gray: '#707070',
+  purple: '#8208E1',
+  pink: '#DD09C8',
+  red: '#DD0D0C',
+  orange: '#EC570E',
+  yellow: '#FFCD37',
+};
+
+const backgroundColorMap = {
+  lightGray: '#E8E8E8',
+  lightRed: '#FCE9E9',
+  lightOrange: '#FCE8DE',
+  lightGreen: '#E4F6E9',
+  lightBlue: '#EDEFFF',
+  lightYellow: '#FFF5D7',
+  lightPurple: '#EFDFFB',
+  lightPink: '#FBE0F8',
+  lightCyan: '#DFF4FC',
+};
+
+type ColorMapKeys = keyof typeof colorMap;
+type BackgroundColorMapKeys = keyof typeof backgroundColorMap;
+
 type CustomRenderElementProps = RenderElementProps & {
   element: {
     type: string;
@@ -19,14 +46,17 @@ type CustomRenderElementProps = RenderElementProps & {
     url?: string;
     fileName?: string;
     size?: number;
+    color?: string;
+    bg?: string;
   };
 };
 
 const RenderElement = ({ element, attributes, children }: CustomRenderElementProps) => {
-  // const colorClass = element.color ? `${element.color}` : '';
-
+  console.log(element);
   const editor = useSlate();
-  const isEmpty = element.children[0].text === '' && element.children.length === 1;
+  const isEmpty = element.children && element.children[0].text === '' && element.children.length === 1;
+  const elementColor = element.color ? colorMap[element.color as ColorMapKeys] : '';
+  const elementBackground = element.bg ? backgroundColorMap[element.bg as BackgroundColorMapKeys] : '';
 
   const [open, setOpen] = useState(false);
   const [fileAttached, setFileAttached] = useState(false);
@@ -54,6 +84,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
             }[element.type]
           } 
          `}
+          style={{ color: elementColor }}
           {...attributes}
         >
           {children}
@@ -61,13 +92,13 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
       );
     case 'bulleted-list':
       return (
-        <ul className="list-disc pl-4" {...attributes}>
+        <ul className="list-disc pl-4" style={{ color: elementColor }} {...attributes}>
           {children}
         </ul>
       );
     case 'numbered-list':
       return (
-        <ol className="list-decimal pl-4" {...attributes}>
+        <ol className="list-decimal pl-4" style={{ color: elementColor }} {...attributes}>
           {children}
         </ol>
       );
@@ -75,7 +106,11 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
       return <li {...attributes}>{children}</li>;
     case 'quote':
       return (
-        <blockquote className="border-gray-80 space-y-2 border-l-4 px-5 py-4" {...attributes}>
+        <blockquote
+          className="border-gray-80 space-y-2 border-l-4 px-5 py-4"
+          style={{ color: elementColor }}
+          {...attributes}
+        >
           {children}
         </blockquote>
       );
@@ -103,7 +138,11 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
       );
     case 'tip':
       return (
-        <div className="bg-green-0 space-y-2 rounded-lg p-4" {...attributes}>
+        <div
+          className="bg-green-0 space-y-2 rounded-lg p-4"
+          style={{ backgroundColor: elementBackground }}
+          {...attributes}
+        >
           {children}
         </div>
       );
@@ -185,6 +224,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
                   setOpen={setOpen}
                   handleFileAttached={handleFileAttached}
                   type="image"
+                  editor={editor}
                 />
               </PopoverContent>
             </Popover>
@@ -218,6 +258,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
                   setOpen={setOpen}
                   handleFileAttached={handleFileAttached}
                   type="file"
+                  editor={editor}
                 />
               </PopoverContent>
             </Popover>
@@ -251,6 +292,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
                   setOpen={setOpen}
                   handleFileAttached={handleFileAttached}
                   type="video"
+                  editor={editor}
                 />
               </PopoverContent>
             </Popover>

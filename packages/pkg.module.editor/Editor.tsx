@@ -1,15 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { ComponentProps, useCallback, useEffect, useMemo, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
-  DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 import { createEditor, Transforms, Editor, Range, Element as SlateElement } from 'slate';
-import { Move, Plus, Bold, Italic, Underline, Stroke, Link } from '@xipkg/icons';
+import { Bold, Italic, Underline, Stroke, Link } from '@xipkg/icons';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
@@ -30,7 +29,8 @@ import { type CommonCustomElementType } from './slate';
 import RenderElement from './utils/renderElement';
 import createNode from './utils/createNode';
 
-import { Portal } from './components';
+import { Portal, CellControls } from './components';
+// import { CustomizeElement } from './utils/сustomizeElement';
 
 const useEditor = () =>
   useMemo(() => {
@@ -66,7 +66,7 @@ export const EditorRoot = () => {
     return isTopLevel ? (
       <SortableElement {...props} renderElement={RenderElement} />
     ) : (
-      RenderElement(props)
+      <RenderElement {...props} />
     );
   }, []);
 
@@ -107,6 +107,7 @@ export const EditorRoot = () => {
             setDraggingElementId(undefined);
           }}
           modifiers={[restrictToVerticalAxis]}
+          // sensors={sensors}
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             <HoveringToolbar />
@@ -205,7 +206,7 @@ const SortableElement = ({ attributes, element, children, renderElement }: any) 
           opacity: sortable.isDragging ? 0 : 1,
         }}
       >
-        <CellControls moveProps={sortable.listeners} />
+        <CellControls moveProps={sortable.listeners} element={element} />
         <div className="ml-2 w-full">{renderElement({ element, children })}</div>
       </div>
     </div>
@@ -231,19 +232,6 @@ const DragOverlayContent = ({ element }: any) => {
     </div>
   );
 };
-
-const CellControls = ({ moveProps }: Partial<Record<'moveProps', ComponentProps<'button'>>>) => (
-  <div className="flex items-center opacity-0 transition *:grid *:size-5 *:place-content-center *:bg-transparent group-hover/node:opacity-100">
-    <DropdownMenuTrigger asChild>
-      <button aria-label="add cell above" type="button">
-        <Plus />
-      </button>
-    </DropdownMenuTrigger>
-    <button {...moveProps} aria-label="move" type="button">
-      <Move />
-    </button>
-  </div>
-);
 
 const toggleFormat = (editor: Editor, format: string) => {
   const isActive = isFormatActive(editor, format);

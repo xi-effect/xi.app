@@ -8,11 +8,13 @@ export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: stri
 export type ParagraphElement = {
   id: string;
   type: 'paragraph';
+  children: CustomText[];
 };
 
 export type HeadingElement = {
   id: string;
   type: 'heading1' | 'heading2' | 'heading3' | 'mainTitle';
+  children: CustomText[];
 };
 
 export type ListElement = {
@@ -24,11 +26,13 @@ export type ListElement = {
 export type ListItemElement = {
   id: string;
   type: 'list-item';
+  children: (CustomElement | CustomText)[];
 };
 
 export type QuoteElement = {
   id: string;
   type: 'quote' | 'quoteText' | 'quoteAuthor';
+  children: (CustomElement | CustomText)[];
 };
 
 export type MediaElement = {
@@ -67,7 +71,7 @@ export type CodeElement = {
 export type TipElement = {
   id: string;
   type: 'tip';
-  children: CustomText[];
+  children: (CustomElement | CustomText | IconElement)[];
 };
 
 export type ImageElement = {
@@ -109,11 +113,14 @@ export type CustomElement =
 
 export type CustomText = {
   id: string;
+  type?: string;
   text: string;
   bold?: true;
   italic?: true;
   underlined?: true;
   stroke?: true;
+  color?: string;
+  bg?: string;
 };
 
 declare module 'slate' {
