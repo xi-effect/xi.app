@@ -1,5 +1,5 @@
 import { Minimize, Maximize } from '@xipkg/icons';
-import { useFullScreen } from '../pkg.utils.client/useFullScreen';
+import { useFullScreen } from '../../pkg.utils.client/useFullScreen';
 export function Header() {
   const { isFullScreen, toggleFullScreen } = useFullScreen('whiteboard-container');
   return (

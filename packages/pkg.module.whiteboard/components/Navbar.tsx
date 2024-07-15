@@ -1,44 +1,8 @@
-import React from 'react';
 import { track, useEditor } from 'tldraw';
 import { NavbarAction } from './NavbarAction';
 
 export const Navbar = track(() => {
   const editor = useEditor();
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (editor.getCurrentPageState().selectedShapeIds.length == 1) {
-        return;
-      } else {
-        switch (e.key) {
-          case 'Delete':
-          case 'Backspace': {
-            editor.deleteShapes(editor.getSelectedShapeIds());
-            break;
-          }
-          case 'v': {
-            editor.setCurrentTool('select');
-            break;
-          }
-          case 'e': {
-            editor.setCurrentTool('eraser');
-            break;
-          }
-          case 'x':
-          case 'p':
-          case 'b':
-          case 'd': {
-            editor.setCurrentTool('draw');
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [editor]);
 
   const navBarElements = [
     { action: 'select', title: 'Select' },

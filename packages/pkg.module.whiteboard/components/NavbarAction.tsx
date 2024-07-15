@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCanRedo, useCanUndo, useEditor } from 'tldraw';
 
 export function NavbarAction() {
@@ -12,24 +11,6 @@ export function NavbarAction() {
   const handleRedo = () => {
     editor.redo();
   };
-
-  React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
-        event.preventDefault();
-        handleUndo();
-      }
-      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && event.shiftKey) {
-        event.preventDefault();
-        handleRedo();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  });
 
   return (
     <div className="flex gap-2 p-1">
