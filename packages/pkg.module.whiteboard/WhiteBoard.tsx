@@ -4,6 +4,7 @@ import { Tldraw } from 'tldraw';
 import { Navbar } from './Navbar';
 import './index.css';
 import { ZoomMenu } from './ZoomMenu';
+import { Header } from './Header';
 
 export const WhiteBoard: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ export const WhiteBoard: React.FC = () => {
       }}
       hideUi
     >
+      <Header />
       <Navbar />
       <ZoomMenu />
     </Tldraw>
