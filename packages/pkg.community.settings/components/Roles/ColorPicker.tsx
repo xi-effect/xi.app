@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Check } from '@xipkg/icons';
 
 interface ColorPickerProps {

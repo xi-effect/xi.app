@@ -1,4 +1,4 @@
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 import React from 'react';
 import { useInterfaceStore } from '../interfaceStore';
 
@@ -59,7 +59,7 @@ const Item = ({ index, item }: ItemPropsT) => {
         isActive
           ? 'bg-brand-0 text-brand-80'
           : 'text-gray-90 hover:bg-brand-0 hover:text-brand-80 bg-transparent'
-      } group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in  hover:cursor-pointer`}
+      } group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
       key={index.toString()}
     >
       <span className="pl-2 text-[14px] font-normal">{item.name}</span>

@@ -45,7 +45,7 @@ export const Header = () => {
         </button>
       )}
       {!isMenu && (
-        <span className="ml-4 flex  font-semibold sm:hidden">{menuLabels[Number(page)]}</span>
+        <span className="ml-4 flex font-semibold sm:hidden">{menuLabels[Number(page)]}</span>
       )}
       {isCloseActive ? (
         <ModalCloseButton variant="full" className={buttonStyles}>

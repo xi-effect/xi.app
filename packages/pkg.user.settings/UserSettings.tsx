@@ -1,17 +1,12 @@
 import React from 'react';
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { deleteQuery } from 'pkg.router.url';
 import { Header } from './components/Header';
 import { Menu } from './components/Menu';
 import { Content } from './components/Content';
 
-type UserSettingsT = {
-  onExit: () => void;
-};
-
-export const UserSettings = ({ onExit }: UserSettingsT) => {
+export const UserSettings = () => {
   const isMobile = useMedia('(max-width: 719px)', false);
   const [activeContent, setActiveContent] = React.useState<number>(0);
   const [showContent, setShowContent] = React.useState(false);
@@ -39,7 +34,7 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
         />
         <div className="mt-4 flex h-full flex-row">
           {isMobile ? (
-            <div>
+            <div className="flex-1">
               {showContent ? (
                 <Content activeQuery={activeQuery} />
               ) : (
@@ -47,7 +42,6 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
                   setActiveQuery={setActiveQuery}
                   setActiveContent={setActiveContent}
                   setShowContent={setShowContent}
-                  onExit={onExit}
                 />
               )}
             </div>
@@ -57,7 +51,6 @@ export const UserSettings = ({ onExit }: UserSettingsT) => {
                 setActiveQuery={setActiveQuery}
                 setActiveContent={setActiveContent}
                 setShowContent={setShowContent}
-                onExit={onExit}
               />
               <Content activeQuery={activeQuery} />
             </>

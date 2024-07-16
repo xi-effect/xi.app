@@ -29,12 +29,12 @@ const schema = z
     path: ['confirmPassword'],
   });
 
-type FormProps = {
+type FormPropsT = {
   setStage: (stage: 'form' | 'success') => void;
   onOpenChange: (value: boolean) => void;
 };
 
-const FormBlock = ({ setStage, onOpenChange }: FormProps) => {
+const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {

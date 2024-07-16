@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Close, Burger } from '@xipkg/icons';
 import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 // @ts-ignore
@@ -15,7 +15,6 @@ import { CommunityMenu } from './CommunityMenu';
 type BottomBarT = {
   slideIndex: number;
   children: ReactNode;
-  onExit: () => void;
   setSlideIndex: (value: number) => void;
 };
 
@@ -28,7 +27,7 @@ const values: ValuesT = {
   1: 0,
 };
 
-export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: BottomBarT) => {
+export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) => {
   const user = useMainSt((state) => state.user);
 
   const handleMenu = () => {
@@ -40,15 +39,15 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
   };
 
   return (
-    <div className="flex w-full overflow-auto md:hidden">
-      <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
+    <div className="flex w-full overflow-hidden md:hidden">
+      <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd} className="w-full">
         <div className="w-full overflow-auto">
           <div className="sticky left-0 top-0 px-4 pt-4">
             <CommunityMenu />
           </div>
           <CommunityItems setSlideIndex={setSlideIndex} />
         </div>
-        <div className="h-[calc(100dvh-80px)] overflow-auto">{children}</div>
+        <div className="h-[calc(100dvh-80px)] overflow-none">{children}</div>
       </SwipeableViews>
       <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
         <button
@@ -63,7 +62,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
           <ModalTrigger asChild>
             <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">
               <UserProfile
-                userId={user.id}
+                userId={user?.id || null}
                 text="Ivan Kovylyaev"
                 label="@ikovylyaev"
                 size="m"
@@ -72,7 +71,7 @@ export const BottomBar = ({ children, onExit, slideIndex, setSlideIndex }: Botto
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
-            <UserSettings onExit={onExit} />
+            <UserSettings />
           </ModalContent>
         </Modal>
         {/* <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center

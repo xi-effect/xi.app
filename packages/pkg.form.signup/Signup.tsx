@@ -14,17 +14,11 @@ import {
   FormMessage,
   useForm,
 } from '@xipkg/form';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
-
-export type SignUpT = {
-  /**
-   * The store type is the store itself.
-   */
-  onSignUp: any;
-};
+import { useMainSt } from 'pkg.stores';
 
 const FormSchema = z.object({
   username: z
@@ -58,9 +52,11 @@ const FormSchema = z.object({
     }),
 });
 
-export const SignUp = ({ onSignUp }: SignUpT) => {
+export const SignUp = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
+  const onSignUp = useMainSt((state) => state.onSignUp);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -79,7 +75,11 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
     trigger();
     setIsButtonActive(false);
     const status = await onSignUp({ ...data, setError });
-    if (status === 200) {
+    if (status === 200 && searchParams.has('iid') && searchParams.get('community')) {
+      router.push(
+        `/welcome/user-info?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
+      );
+    } else if (status === 200) {
       router.push('/welcome/user-info');
     } else {
       setIsButtonActive(true);
@@ -90,6 +90,14 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
 
   const changePasswordShow = () => {
     setIsPasswordShow((prev) => !prev);
+  };
+
+  const getSigninHref = () => {
+    if (searchParams.has('iid') && searchParams.get('community')) {
+      return `/signin?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`;
+    }
+
+    return '/signin';
   };
 
   return (
@@ -174,15 +182,17 @@ export const SignUp = ({ onSignUp }: SignUpT) => {
         />
         <div className="flex h-full w-full items-end justify-between">
           <div className="flex h-[48px] items-center">
-            <Link size="l" theme="brand" variant="hover" href="/">
+            <Link size="l" theme="brand" variant="hover" href={getSigninHref()}>
               Войти
             </Link>
           </div>
-          {
-            isButtonActive ?
-              <Button size="m" variant="default" type="submit" className="w-[214px]">Зарегистрироваться</Button>
-              : <Button variant="default-spinner" className="w-[214px]" disabled />
-          }
+          {isButtonActive ? (
+            <Button size="m" variant="default" type="submit" className="w-[214px]">
+              Зарегистрироваться
+            </Button>
+          ) : (
+            <Button variant="default-spinner" className="w-[214px]" disabled />
+          )}
         </div>
       </form>
     </Form>

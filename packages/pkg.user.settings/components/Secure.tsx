@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import React from 'react';
 import { ChevronRight, Key, Mail } from '@xipkg/icons';
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 import { ChangePasswordModal } from 'pkg.modal.change-password';
 import { ChangeEmailModal } from 'pkg.modal.change-email';
 import { useMainSt } from 'pkg.stores';
@@ -15,7 +15,7 @@ export const Secure = () => {
 
   return (
     <>
-      {!isMobile && <h1 className="text-3xl font-semibold mb-4">Безопасность</h1>}
+      {!isMobile && <h1 className="mb-4 text-3xl font-semibold">Безопасность</h1>}
       <div className="flex flex-col gap-6 sm:gap-8">
         <ConfirmEmail buttonText="Оправить повторно" />
         <div className="border-gray-80 flex w-full flex-col rounded-2xl border p-1">
@@ -47,7 +47,7 @@ export const Secure = () => {
               <Mail size="l" className="fill-brand-80" />
               <div className="items-star flex flex-col">
                 <span className="w-fit font-semibold">Почта</span>
-                <span className="text-xs font-normal">{user.email}</span>
+                <span className="text-xs font-normal">{user?.email}</span>
               </div>
               <ChevronRight className="fill-gray-80 ml-auto" />
             </button>

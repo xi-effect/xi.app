@@ -9,6 +9,8 @@ import { CommunitySettings } from 'pkg.community.settings';
 import { AddCommunityModal } from 'pkg.modal.add-community';
 import { CommunityChannelCreate } from 'pkg.community.channel-create';
 import { InviteCommunityModal } from 'pkg.modal.invite-community';
+import { ScrollArea } from '@xipkg/scrollarea';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 
 import {
   CategoryAdd,
@@ -19,7 +21,7 @@ import {
   Settings,
   Plus,
 } from '@xipkg/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,25 +60,21 @@ const AvatarPreview = ({ communityId }: AvatarPreviewPropsT) => (
   </Avatar>
 );
 
-const DropdownHeader = ({
-  setIsOpen,
-  inDropdown = false,
-  name,
-  id,
-}: {
+type DropdownHeaderPropsT = {
   setIsOpen: any;
   inDropdown?: boolean;
   name: string | null;
   id: number | null;
-}) => (
+};
+
+const DropdownHeader = ({ setIsOpen, inDropdown = false, name, id }: DropdownHeaderPropsT) => (
   <div
     id="community-profile"
     onClick={() => {
-      if (name) setIsOpen((prev: boolean) => !prev);
+      if (id) setIsOpen((prev: boolean) => !prev);
     }}
-    className={`flex h-12 flex-wrap px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${
-      inDropdown ? '' : 'mt-0 sm:mt-8'
-    } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
+    className={`flex h-12 px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${inDropdown ? '' : 'mt-0 sm:mt-8'
+      } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
   >
     {!id ? (
       <div className="bg-gray-10 size-[32px] animate-pulse rounded-[16px]" />
@@ -86,7 +84,7 @@ const DropdownHeader = ({
     {!name ? (
       <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
     ) : (
-      <div className="ml-2 self-center text-[16px] font-semibold">{name}</div>
+      <div className="ml-2 self-center truncate text-[16px] font-semibold">{name}</div>
     )}
     <div className="ml-auto flex h-4 w-4 flex-col items-center justify-center">
       <ChevronSmallTop
@@ -108,9 +106,11 @@ const CommunityLink = ({
   const currentCommunityId = useMainSt((state) => state.communityMeta.id);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const router = useRouter();
+  const communityTitleRef = useRef<HTMLDivElement>(null);
+  const [isTooltipActive, setIsTooltipActive] = React.useState(false);
 
   const handleClick = () => {
-    socket.emit(
+    socket?.emit(
       'close-community',
       {
         community_id: currentCommunityId,
@@ -118,7 +118,7 @@ const CommunityLink = ({
       (data: any) => {
         console.log('close-community', data);
         if (data === 204) {
-          socket.emit(
+          socket?.emit(
             'retrieve-community',
             {
               community_id: community.id,
@@ -143,14 +143,35 @@ const CommunityLink = ({
     );
   };
 
+  useEffect(() => {
+    const element = communityTitleRef.current;
+    if (element && element.clientWidth < element.scrollWidth) {
+      setIsTooltipActive(true);
+    }
+  }, []);
+
   return (
-    <div
-      onClick={handleClick}
-      className="hover:bg-gray-5 flex h-12 flex-wrap items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer md:w-[300px]"
-    >
-      <AvatarPreview communityId={community.id} />
-      <div className="ml-2 self-center text-[16px] font-semibold">{community.name}</div>
-    </div>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger className="overflow-hidden bg-transparent" asChild>
+          <div
+            onClick={handleClick}
+            className="hover:bg-gray-5 flex h-12 w-full items-center rounded-xl px-2.5 py-2 transition-colors ease-in hover:cursor-pointer"
+          >
+            <AvatarPreview communityId={community.id} />
+            <div
+              className="ml-2 self-center truncate text-[16px] font-semibold text-gray-100"
+              ref={communityTitleRef}
+            >
+              {community.name}
+            </div>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent className={`max-w-[300px] ${isTooltipActive ? 'flex' : 'hidden'}`}>
+          <p className="text-gray-100">{community.name}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
@@ -175,8 +196,8 @@ export const CommunityMenu = () => {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   useEffect(() => {
-    socket.emit('list-communities', (status: number, communities: any[]) => {
-      const otherCommunities = communities.filter(
+    socket?.emit('list-communities', (status: number, communities: any[]) => {
+      const otherCommunities: CommunityTemplateT[] = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );
       setOtherCommunities(otherCommunities);
@@ -188,9 +209,9 @@ export const CommunityMenu = () => {
   const handleClose = () => setIsOpen(false);
 
   const handleLeaveCommunity = () => {
-    socket.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
+    socket?.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
       if (status === 204 && otherCommunities) {
-        socket.emit(
+        socket?.emit(
           'retrieve-community',
           {
             community_id: otherCommunities[0].id,
@@ -303,12 +324,21 @@ export const CommunityMenu = () => {
                 <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
               </DropdownMenuItem>
             </div>
-            {otherCommunities && (
+            {otherCommunities && otherCommunities.length <= 7 && (
               <div className="mt-2">
                 {otherCommunities.map((community, index) => (
                   <CommunityLink key={index} community={community} handleClose={handleClose} />
                 ))}
               </div>
+            )}
+            {otherCommunities && otherCommunities.length > 7 && (
+              <ScrollArea className="h-[300px] [&>div>div[style]]:!block">
+                <div className="mt-2">
+                  {otherCommunities.map((community, index) => (
+                    <CommunityLink key={index} community={community} handleClose={handleClose} />
+                  ))}
+                </div>
+              </ScrollArea>
             )}
             <DropdownMenuSeparator />
             <AddCommunityModal

@@ -1,9 +1,10 @@
 import { Account, Exit, Home, Key, Palette } from '@xipkg/icons';
-import { useMedia } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 import React, { Dispatch, SetStateAction } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createQueryString } from 'pkg.router.url';
+import { createQueryString, deleteQuery } from 'pkg.router.url';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useMainSt } from 'pkg.stores';
 
 type ItemT = {
   name: string;
@@ -72,7 +73,7 @@ const Item = ({ index, item, onMenuItemChange }: ItemPropsT) => {
         isActive
           ? 'bg-brand-0 text-brand-80'
           : 'text-gray-90 hover:bg-brand-0 hover:text-brand-80 bg-transparent'
-      } group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in  hover:cursor-pointer`}
+      } group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
       key={index.toString()}
     >
       {iconsDict[index]}
@@ -85,18 +86,28 @@ type MenuPropsT = {
   setActiveContent: Dispatch<SetStateAction<number>>;
   setShowContent: Dispatch<SetStateAction<boolean>>;
   setActiveQuery: Dispatch<SetStateAction<string>>;
-  onExit: () => void;
 };
 
-export const Menu = ({ setActiveContent, setActiveQuery, setShowContent, onExit }: MenuPropsT) => {
+export const Menu = ({ setActiveContent, setActiveQuery, setShowContent }: MenuPropsT) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const onSignOut = useMainSt((state) => state.onSignOut);
+
   const handleMenuItem = (index: number, query: string) => {
     setActiveQuery(query);
     setActiveContent(index);
     setShowContent(true);
   };
 
-  const handleExit = () => {
-    if (onExit) onExit();
+  const handleExit = async () => {
+    const updatedParams = deleteQuery(deleteQuery(searchParams, 'profileIsOpen'), 'category');
+    router.replace(`${pathname}?${updatedParams}`);
+
+    const isLogout = await onSignOut();
+
+    if (isLogout === 200) router.push('/signin');
   };
 
   return (

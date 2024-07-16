@@ -33,20 +33,14 @@ export function ActiveRoom({
     >
       <div className="flex min-h-screen flex-col justify-between gap-3">
         <UpBar />
-        <div className="px-10">
-          <div className="h-full w-full text-center">{isConnected && <Stage />}</div>
+        <div className="px-4">
+          <div className="text-gray-5 h-full w-full text-center">
+            {isConnected && <VideoConference />}
+          </div>
         </div>
         <BottomBar />
       </div>
     </LiveKitRoom>
-  );
-}
-
-export function Stage() {
-  return (
-    <div className="text-gray-5 w-full">
-      <VideoConference />
-    </div>
   );
 }
 

@@ -14,17 +14,11 @@ import {
   FormMessage,
   useForm,
 } from '@xipkg/form';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
-
-export type SignInT = {
-  /**
-   * The store type is the store itself.
-   */
-  onSignIn: any;
-};
+import { useMainSt } from 'pkg.stores';
 
 const FormSchema = z.object({
   email: z
@@ -46,15 +40,18 @@ const FormSchema = z.object({
 const InvitationMessage = ({ communityName }: { communityName: string }) => (
   <div className="bg-bkgd-main rounded-lg p-4">
     <p className="text-brand-100 text-sm">
-      Вы были приглашены в сообщество {communityName}. Для того, чтобы продолжить, авторизуйтесь или
-      зарегистрируйтесь.
+      Вы были приглашены в сообщество «{communityName}». Для того, чтобы продолжить, авторизуйтесь
+      или зарегистрируйтесь.
     </p>
   </div>
 );
 
-export const SignIn = ({ onSignIn }: SignInT) => {
+export const SignIn = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const communityName = searchParams.get('community');
+
+  const onSignIn = useMainSt((state) => state.onSignIn);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -78,15 +75,30 @@ export const SignIn = ({ onSignIn }: SignInT) => {
     trigger();
     setIsButtonActive(false);
     const status = await onSignIn({ ...data, setError });
+
     if (status !== 200) {
-      setIsButtonActive(true);
+      return setIsButtonActive(true);
     }
+
+    if (searchParams.has('iid')) {
+      router.push(`/invite/${searchParams.get('iid')}`);
+    }
+
+    return router.push('/communities');
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
   const changePasswordShow = () => {
     setIsPasswordShow((prev) => !prev);
+  };
+
+  const getSignupHref = () => {
+    if (searchParams.has('iid') && searchParams.get('community')) {
+      return `/signup?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`;
+    }
+
+    return '/signup';
   };
 
   return (
@@ -153,7 +165,7 @@ export const SignIn = ({ onSignIn }: SignInT) => {
               size="l"
               theme="brand"
               variant="hover"
-              href="/signup"
+              href={getSignupHref()}
             >
               Зарегистрироваться
             </Link>

@@ -18,7 +18,10 @@ import {
   Settings,
 } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
+import { useMedia } from 'pkg.utils.client';
 import { ChannelT } from './types';
+import { ItemContextMenu } from './ItemContextMenu';
 
 type ChannelPropsT = {
   channel: ChannelT;
@@ -26,9 +29,9 @@ type ChannelPropsT = {
   setSlideIndex?: (arg: number) => void;
 };
 
-interface IIconsDict {
+type IconsDictT = {
   [key: string]: ReactNode;
-}
+};
 
 const stylesDict = {
   default: {
@@ -50,16 +53,20 @@ const stylesDict = {
 
 export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) => {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
-
+  const socket = useMainSt((state) => state.socket);
+  const deleteChannel = useMainSt((state) => state.deleteChannel);
   const communityId = useMainSt((state) => state.communityMeta.id);
   const [mouseOver, setMouseOver] = useState(false);
+
+  const isMobile = useMedia('(max-width: 960px)');
+
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: channel.uid,
     data: {
       type: 'Channel',
       channel,
     },
-    disabled: !isOwner,
+    disabled: !isOwner || isMobile,
   });
 
   const pathname = usePathname();
@@ -87,7 +94,7 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
 
   const iconClassName = `transition-colors ease-in ${currentStyles.icon}`;
 
-  const iconsDict: IIconsDict = {
+  const iconsDict: IconsDictT = {
     posts: <Announce className={iconClassName} />,
     calendar: <Calendar className={iconClassName} />,
     updates: <Updates className={iconClassName} />,
@@ -118,32 +125,57 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
     );
   }
 
+  const handleDelete = () => {
+    socket?.emit(
+      'delete-channel',
+      {
+        community_id: communityId,
+        channel_id: channel.id,
+      },
+      (status: number) => {
+        if (status === 204) {
+          toast('Канал успешно удален');
+          deleteChannel(channel.id);
+        } else {
+          toast(`Что-то пошло не так. Ошибка ${status}`);
+        }
+      },
+    );
+  };
+
   return (
-    <div
-      onMouseEnter={() => setMouseOver(true)}
-      onMouseLeave={() => setMouseOver(false)}
-      ref={setNodeRef}
-      style={style}
-      onClick={() => handleRouteChange()}
+    <ItemContextMenu
+      isTriggerActive={isOwner}
+      handleEdit={() => console.log('Редактировать канал')}
+      handleDelete={handleDelete}
     >
       <div
-        className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
+        id={channel.kind === 'video' ? 'video-item-menu' : ''}
+        onMouseEnter={() => setMouseOver(true)}
+        onMouseLeave={() => setMouseOver(false)}
+        ref={setNodeRef}
+        style={style}
+        onClick={() => handleRouteChange()}
       >
-        <div className="flex items-center">
-          {iconsDict[channel.kind]}
-          <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
-        </div>
-        {isOwner && mouseOver ? (
-          <div {...attributes} {...listeners} className="flex items-center gap-3">
-            {activeChannel ? (
-              <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />
-            ) : (
-              ''
-            )}
-            <Move size="s" className={currentStyles.moveIcon} />
+        <div
+          className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
+        >
+          <div className="flex items-center">
+            {iconsDict[channel.kind]}
+            <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
           </div>
-        ) : null}
+          {isOwner && !isMobile && mouseOver ? (
+            <div {...attributes} {...listeners} className="flex items-center gap-3">
+              {activeChannel ? (
+                <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />
+              ) : (
+                ''
+              )}
+              <Move size="s" className={currentStyles.moveIcon} />
+            </div>
+          ) : null}
+        </div>
       </div>
-    </div>
+    </ItemContextMenu>
   );
 };

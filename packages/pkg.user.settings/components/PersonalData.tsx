@@ -1,5 +1,6 @@
 import { Button } from '@xipkg/button';
-import { patch, useMedia } from 'pkg.utils';
+import { patch } from 'pkg.utils';
+import { useMedia } from 'pkg.utils.client';
 import {
   Form,
   FormControl,
@@ -30,8 +31,8 @@ export const PersonalData = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      displayName: user.displayName,
-      username: user.username,
+      displayName: user?.displayName,
+      username: user?.username,
     },
   });
 

@@ -6,15 +6,13 @@ import { Mail, Plus } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
 import { StageType } from '../EmptyCommunity';
 
-type CommunityNotFoundProps = {
+type CommunityNotFoundPropsT = {
   setStage: (stage: React.SetStateAction<StageType>) => void;
   tab: number;
   setTab: (tab: React.SetStateAction<number>) => void;
 };
 
-export default function CommunityNotFound({ setStage, tab, setTab }: CommunityNotFoundProps) {
-  // const [tab, setTab] = React.useState(0);
-
+export default function CommunityNotFound({ setStage, tab, setTab }: CommunityNotFoundPropsT) {
   const handleNext = () => {
     if (tab === 0) {
       setStage('create');

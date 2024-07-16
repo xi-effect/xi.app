@@ -1,196 +1,89 @@
-import React, { useState } from 'react';
-
-import { Badge } from '@xipkg/badge';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
 import { useDebouncedFunction } from '@xipkg/utils';
-import { Avatar, AvatarImage, AvatarFallback } from '@xipkg/avatar';
-import { Close, CrossCircle, Plus, Search, Crown } from '@xipkg/icons';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@xipkg/dropdown';
+import { Search } from '@xipkg/icons';
 
-// JSON со временным списком пользователей
-import usersTemplate from './usersTemplate.json';
-
-// Временные типы для Роли пользователя и для пропсов Бейджа пользователя
-type UserRoleT = {
-  name: string;
-  bgColorMain: string;
-  bgColorSecondary: string;
-};
-
-type UserBadgePropsT = UserRoleT & {
-  role: UserRoleT;
-  handleRoleDelete: (roleToDelete: UserRoleT) => void;
-};
-
-const UserBadge = ({
-  name,
-  role,
-  bgColorMain,
-  bgColorSecondary,
-  handleRoleDelete,
-}: UserBadgePropsT) => (
-  <li>
-    <Badge className={`text-xs ${bgColorSecondary}`}>
-      <span className={`mr-2 size-3 rounded-full ${bgColorMain}`} />
-      {name.slice(0, 1).toUpperCase() + name.slice(1)}
-      <Button
-        className="focus:bg-red-80 hover:bg-red-80 group ml-3 h-min rounded-full bg-transparent p-0"
-        onClick={() => handleRoleDelete(role)}
-      >
-        <CrossCircle className="group-hover:fill-gray-0 group-focus:fill-gray-0 !size-3" />
-      </Button>
-    </Badge>
-  </li>
-);
-
-// Временные типы для Пользователя и для пропсов Карточки пользователя
-type UserT = {
-  name: string;
-  nickname: string;
-  roles: UserRoleT[];
-  isOwner: boolean;
-};
-
-type UserCardPropsT = UserT & {
-  user: UserT;
-  handleUserDelete: (userToDelete: UserT) => void;
-  handleRoleAdd: (userToUpdate: UserT, roleToAdd: UserRoleT) => void;
-  handleRoleDelete: (userToUpdate: UserT, roleToDelete: UserRoleT) => void;
-};
-
-const UserCard = ({
-  user,
-  name,
-  roles,
-  isOwner,
-  nickname,
-  handleRoleAdd,
-  handleUserDelete,
-  handleRoleDelete,
-}: UserCardPropsT) => {
-  // Временный список ролей
-  const rolesTemplate = [
-    { name: 'Администратор', bgColorMain: 'bg-violet-100', bgColorSecondary: 'bg-violet-20' },
-    { name: 'Преподаватель', bgColorMain: 'bg-brand-100', bgColorSecondary: 'bg-brand-0' },
-    { name: 'Студент', bgColorMain: 'bg-green-100', bgColorSecondary: 'bg-green-0' },
-    { name: 'Гость', bgColorMain: 'bg-red-100', bgColorSecondary: 'bg-red-0' },
-    { name: '1', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
-    { name: '2', bgColorMain: 'bg-gray-80', bgColorSecondary: 'bg-gray-5' },
-  ];
-
-  return (
-    <li className="border-gray-30 flex rounded-lg border p-4 md:items-center">
-      <div className="flex flex-col gap-2 md:flex-row md:gap-8">
-        <div className="flex items-center self-start">
-          <Avatar size="s">
-            <AvatarImage
-              src="https://auth.xieffect.ru/api/users/3/avatar.webp"
-              imageProps={{
-                src: 'https://auth.xieffect.ru/api/users/3/avatar.webp',
-                alt: '@shadcn',
-              }}
-              alt="@shadcn"
-            />
-            <AvatarFallback size="s">CN</AvatarFallback>
-          </Avatar>
-          <div className="ml-2">
-            <p className="text-nowrap text-base font-medium text-gray-100">{name}</p>
-            <p className="text-gray-60 text-nowrap text-xs font-normal">{nickname}</p>
-          </div>
-          {isOwner && <Crown className="!size-3 self-start" />}
-        </div>
-        <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {roles.map((role, index) => (
-            <UserBadge
-              role={role}
-              key={index}
-              name={role.name}
-              bgColorMain={role.bgColorMain}
-              bgColorSecondary={role.bgColorSecondary}
-              handleRoleDelete={() => handleRoleDelete(user, role)}
-            />
-          ))}
-          <li className="size-6">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="hover:bg-brand-80 group !size-6 bg-transparent p-1">
-                  <Plus className="group-hover:fill-gray-0 group-focus:fill-gray-0 size-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 p-3">
-                {rolesTemplate.map((roleTemplate, index) => (
-                  <DropdownMenuItem
-                    key={index}
-                    className="hover:bg-gray-10 rounded-lg"
-                    onClick={() => handleRoleAdd(user, roleTemplate)}
-                  >
-                    <span className={`bg mr-2 size-3 rounded-full ${roleTemplate.bgColorMain}`} />
-                    <p>{roleTemplate.name}</p>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </li>
-        </ul>
-      </div>
-      <Button
-        className="focus:bg-red-80 hover:bg-red-80 group ml-auto h-6 w-6 bg-transparent p-1"
-        onClick={() => handleUserDelete(user)}
-      >
-        <Close className="group-hover:fill-gray-0 group-focus:fill-gray-0 size-4" />
-      </Button>
-    </li>
-  );
-};
+import { useMainSt } from 'pkg.stores';
+import { get } from 'pkg.utils';
+import { toast } from 'sonner';
+import { ParticipantsList, ParticipantT, UserRoleT, UserT } from './types';
+import { UserCard } from './UserCard';
+import { DeleteParticipantModal } from './DeleteParticipantModal';
 
 export const Participants = () => {
-  // Временное решение для рендера, удаления, изменения ролей пользователей
-  const [users, setUsers] = useState(usersTemplate);
+  const [participantsList, setParticipantsList] = useState<UserT[] | null>(null);
+  const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
+  const [deleteCandidate, setDeleteCandidate] = useState<number>();
+
+  const socket = useMainSt((state) => state.socket);
+  const communityId = useMainSt((state) => state.communityMeta.id);
 
   const handleUserDelete = (userToDelete: UserT) => {
-    const updatedUsers = users.filter((user) => user !== userToDelete);
-    setUsers(updatedUsers);
+    setIsDeleteModalOpened((prevState) => !prevState);
+    setDeleteCandidate(userToDelete.id);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteCandidate) {
+      socket?.emit(
+        'kick-participant',
+        {
+          community_id: communityId,
+          user_id: deleteCandidate,
+          target_user_id: deleteCandidate,
+        },
+        (status: number) => {
+          if (status !== 204) {
+            toast('Не удалось исключить участника');
+            return;
+          }
+          const updatedUsers = participantsList?.filter((user) => user.id !== deleteCandidate);
+          if (updatedUsers) {
+            setParticipantsList(updatedUsers);
+          }
+        },
+      );
+    }
+    setIsDeleteModalOpened(false);
   };
 
   const handleRoleDelete = (userToUpdate: UserT, roleToDelete: UserRoleT) => {
-    const updatedUsers = users.map((user) => {
-      if (user === userToUpdate) {
-        const updatedRoles = user.roles.filter((role) => role !== roleToDelete);
-        return { ...user, roles: updatedRoles };
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
+    console.log(userToUpdate, roleToDelete);
+    // const updatedUsers = users.map((user) => {
+    //   if (user === userToUpdate) {
+    //     const updatedRoles = user.roles.filter((role) => role !== roleToDelete);
+    //     return { ...user, roles: updatedRoles };
+    //   }
+    //   return user;
+    // });
+    // setUsers(updatedUsers);
   };
 
   const handleRoleAdd = (userToUpdate: UserT, roleToAdd: UserRoleT) => {
-    const updatedUsers = users.map((user) => {
-      if (user === userToUpdate) {
-        const updatedRoles = [...user.roles, roleToAdd];
-        return { ...user, roles: updatedRoles };
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
+    console.log(userToUpdate, roleToAdd);
+    // const updatedUsers = users.map((user) => {
+    //   if (user === userToUpdate) {
+    //     const updatedRoles = [...user.roles, roleToAdd];
+    //     return { ...user, roles: updatedRoles };
+    //   }
+    //   return user;
+    // });
+    // setUsers(updatedUsers);
   };
 
   const setFilteredUsers = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchValue = event.target.value.trim().toLowerCase();
-
-    setUsers(
-      usersTemplate.filter(
-        (user) =>
-          user.name.toLowerCase().startsWith(searchValue) ||
-          user.nickname.toLowerCase().startsWith(searchValue) ||
-          user.name.toLowerCase().split(' ').pop()?.startsWith(searchValue),
-      ),
-    );
+    console.log(event);
+    // const searchValue = event.target.value.trim().toLowerCase();
+    //
+    // setUsers(
+    //   usersTemplate.filter(
+    //     (user) =>
+    //       user.name.toLowerCase().startsWith(searchValue) ||
+    //       user.nickname.toLowerCase().startsWith(searchValue) ||
+    //       user.name.toLowerCase().split(' ').pop()?.startsWith(searchValue),
+    //   ),
+    // );
   };
 
   const debauncedUsersSearch = useDebouncedFunction(setFilteredUsers, 300);
@@ -198,6 +91,45 @@ export const Participants = () => {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     debauncedUsersSearch(event);
   };
+
+  const getUserProfile = async (user: ParticipantT) => {
+    try {
+      const { status, data } = await get<UserT>({
+        service: 'auth',
+        path: `/api/users/by-id/${user.user_id}/profile/`,
+        config: {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      });
+      if (status === 200) {
+        return { ...data, isOwner: user.is_owner };
+      }
+    } catch (e) {
+      console.error('Ошибка при получении профиля пользователя:', e);
+      toast('Ошибка при получении профиля пользователя');
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    socket?.emit(
+      'list-participants',
+      { community_id: communityId },
+      async (status: number, data: ParticipantsList) => {
+        if (status === 200 && data) {
+          const participantsProfiles = await Promise.all(
+            data.map(async (participant) => getUserProfile(participant)),
+          );
+          const validProfiles = participantsProfiles.filter(
+            (profile): profile is UserT => profile !== null,
+          );
+          setParticipantsList(validProfiles);
+        }
+      },
+    );
+  }, [communityId]);
 
   return (
     <>
@@ -220,21 +152,27 @@ export const Participants = () => {
         </div>
 
         <ul className="mt-4 grid gap-4">
-          {users.map((user, index) => (
-            <UserCard
-              user={user}
-              key={index}
-              name={user.name}
-              roles={user.roles}
-              isOwner={user.isOwner}
-              nickname={user.nickname}
-              handleRoleAdd={handleRoleAdd}
-              handleRoleDelete={handleRoleDelete}
-              handleUserDelete={handleUserDelete}
-            />
-          ))}
+          {participantsList &&
+            participantsList?.map((user, index) => (
+              <UserCard
+                user={user}
+                display_name={user.display_name}
+                id={user.id}
+                username={user.username}
+                isOwner={user.isOwner}
+                key={index}
+                handleRoleAdd={handleRoleAdd}
+                handleRoleDelete={handleRoleDelete}
+                handleUserDelete={handleUserDelete}
+              />
+            ))}
         </ul>
       </div>
+      <DeleteParticipantModal
+        open={isDeleteModalOpened}
+        onOpenChange={setIsDeleteModalOpened}
+        onConfirm={handleConfirmDelete}
+      />
     </>
   );
 };
