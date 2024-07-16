@@ -22,6 +22,10 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const router = useRouter();
 
   useEffect(() => {
+    if (pathname.includes('/editor')) { // временное исключение для редактора
+      return;
+    }
+
     console.log('onconnect', socket);
     if (onboardingStage === 'completed') {
       socket?.on('connect', () => {
@@ -81,7 +85,12 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   useEffect(() => {
     console.log('onboardingStage', onboardingStage);
-    if (onboardingStage && onboardingStage !== null && onboardingStage !== 'completed' && !pathname.includes('/welcome/')) {
+    if (
+      onboardingStage &&
+      onboardingStage !== null &&
+      onboardingStage !== 'completed' &&
+      !pathname.includes('/welcome/')
+    ) {
       redirect('/welcome/user-info');
     }
   }, [isLogin]);
