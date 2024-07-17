@@ -5,7 +5,6 @@
 import React, { useState } from 'react';
 
 import { Transforms, Editor } from 'slate';
-import { useSlate } from 'slate-react';
 
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';

@@ -1,20 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
+
+import { createEditor, Transforms, Editor, Range, Element as SlateElement } from 'slate';
+import { Slate, withReact, Editable, ReactEditor, RenderElementProps, useSlate } from 'slate-react';
+import { withHistory } from 'slate-history';
+
+import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
 } from '@xipkg/dropdown';
-import { createEditor, Transforms, Editor, Range, Element as SlateElement } from 'slate';
 import { Bold, Italic, Underline, Stroke, Link } from '@xipkg/icons';
-import { Slate, withReact, Editable, ReactEditor, RenderElementProps, useSlate } from 'slate-react';
-import { withHistory } from 'slate-history';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { createPortal } from 'react-dom';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import { isUrl, isImageUrl } from './utils/isUrl';
@@ -28,9 +31,7 @@ import { type CommonCustomElementType } from './slate';
 
 import RenderElement from './utils/renderElement';
 import createNode from './utils/createNode';
-
 import { Portal, CellControls } from './components';
-// import { CustomizeElement } from './utils/сustomizeElement';
 
 const useEditor = () =>
   useMemo(() => {
@@ -341,7 +342,7 @@ const HoveringToolbar = () => {
           <>
             <FormatButton
               format="bold"
-              icon={<Bold className=" group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+              icon={<Bold className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
             />
             <FormatButton
               format="italic"

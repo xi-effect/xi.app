@@ -5,6 +5,12 @@ import { ReactNode } from 'react';
 
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: string };
 
+type CustomElement = {
+  children: Array<CustomText | CustomElement>;
+  id: string;
+  type: CustomElementType;
+};
+
 export type ParagraphElement = {
   id: string;
   type: 'paragraph';
@@ -95,7 +101,7 @@ export type VideoElement = {
   children: CustomText[];
 };
 
-export type CustomElement =
+export type CommonCustomElementType =
   | ParagraphElement
   | HeadingElement
   | ListElement
@@ -110,6 +116,7 @@ export type CustomElement =
   | ImageElement
   | FileElement
   | VideoElement;
+type CustomElementType = CustomElement['type'];
 
 export type CustomText = {
   id: string;

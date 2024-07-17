@@ -13,11 +13,11 @@ import {
   DropdownMenuSubContent,
 } from '@xipkg/dropdown';
 import { Transforms, Node } from 'slate';
-import { Move, Plus, Brush, ArrowUp, ArrowBottom, Copy, Trash } from '@xipkg/icons';
 import { ReactEditor, useSlate } from 'slate-react';
 
-import { assignIdRecursively } from './plugins/withNodeId';
+import { Move, Plus, Brush, ArrowUp, ArrowBottom, Copy, Trash } from '@xipkg/icons';
 import { CustomElement } from './slate';
+import { assignIdRecursively } from './plugins/withNodeId';
 
 type PortalProps = {
   children: ReactNode;
@@ -306,7 +306,7 @@ export const CellControls = ({
               }}
             >
               <Trash className="mr-2 h-4 w-4" />
-              <span className=" text-sm">Удалить</span>
+              <span className="text-sm">Удалить</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenuPortal>
