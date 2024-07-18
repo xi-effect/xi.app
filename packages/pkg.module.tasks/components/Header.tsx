@@ -23,7 +23,7 @@ const selectItems = [
 ];
 
 const Header = ({ onSelect, selectValue }: HeaderPropsT) => (
-  <div className="flex flex-col gap-4 p-8">
+  <div className="flex flex-col gap-4 pb-4 md:pb-8">
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} size="s" />
     </div>

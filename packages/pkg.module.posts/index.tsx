@@ -1,1 +1,2 @@
-export { Announces } from './Announces';
+export { Posts } from './components/Posts';
+export { Post } from './components/Post';

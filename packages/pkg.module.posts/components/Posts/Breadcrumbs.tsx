@@ -11,7 +11,7 @@ type BreadcrumbsPropsT = {
   breadcrumbs: BreadcrumbItemT[];
 };
 
-const Breadcrumbs: React.FC<BreadcrumbsPropsT> = ({ isVisible, breadcrumbs }) => {
+const Breadcrumbs = ({ isVisible, breadcrumbs }: BreadcrumbsPropsT) => {
   if (!isVisible) {
     return null;
   }

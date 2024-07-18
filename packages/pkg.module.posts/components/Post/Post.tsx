@@ -1,7 +1,7 @@
 import React from 'react';
-import Breadcrumbs from './Breadcrumbs';
+import Breadcrumbs from '../Posts/Breadcrumbs';
 
-type AnnouncePostProps = {
+type PostProps = {
   postTitle: string;
   postText: string | React.ReactNode;
   date: string;
@@ -18,7 +18,7 @@ const breadcrumbs = [
   { title: 'Объявления', href: '/announcements' },
 ];
 
-const AnnouncePost = ({
+export const Post = ({
   postTitle = 'Победа на чемпионате',
   postText = (
     <>
@@ -54,7 +54,7 @@ const AnnouncePost = ({
   ),
   date = '4 мая 2022',
   author = 'Юшкевич О.А.',
-}: AnnouncePostProps) => (
+}: PostProps) => (
   <section className="p-4 sm:p-8">
     <div className="py-4 sm:py-8">
       <Breadcrumbs isVisible={shouldShowBreadcrumbs} breadcrumbs={breadcrumbs} />
@@ -71,5 +71,3 @@ const AnnouncePost = ({
     </div>
   </section>
 );
-
-export default AnnouncePost;

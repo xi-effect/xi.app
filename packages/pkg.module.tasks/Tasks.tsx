@@ -82,7 +82,7 @@ export const Tasks = () => {
   return (
     <>
       <Header onSelect={handleSelect} selectValue={selectStatus} />
-      <div className="grid gap-4 px-8 [@media(min-width:1250px)]:grid-cols-2 [@media(min-width:1680px)]:grid-cols-3">
+      <div className="grid gap-4 [@media(min-width:1250px)]:grid-cols-2 [@media(min-width:1680px)]:grid-cols-3">
         {filteredTasks.map((task) => (
           <TaskCard
             name={task.name}
