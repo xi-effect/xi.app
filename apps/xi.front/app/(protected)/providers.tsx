@@ -37,7 +37,16 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
               });
             }
 
+            const pathnameArr = pathname.split('/');
+            if (pathnameArr.includes('channels') && community.id) {
+              const betweenChannels = pathname.split('channels');
+
+              return router.push(`/communities/${community.id}/channels${betweenChannels[1]}`);
+            }
+
             if (community.id) router.push(`/communities/${community.id}/home`);
+
+            return null;
           },
         );
       });
