@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';

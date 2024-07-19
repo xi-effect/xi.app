@@ -10,6 +10,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@xipkg/popover';
 import { AddFilePopover } from 'pkg.popover.add-file';
 
 import { createDefaultNode } from './createDefaultNode';
+import { type CustomElement, type CustomText } from '../slate';
 
 const colorMap = {
   green: '#00A82C',
@@ -41,7 +42,7 @@ type BackgroundColorMapKeys = keyof typeof backgroundColorMap;
 type CustomRenderElementProps = RenderElementProps & {
   element: {
     type: string;
-    children?: { text: string }[];
+    children?: (CustomText | CustomElement)[];
     icon?: ReactNode;
     url?: string;
     fileName?: string;
@@ -54,9 +55,14 @@ type CustomRenderElementProps = RenderElementProps & {
 const RenderElement = ({ element, attributes, children }: CustomRenderElementProps) => {
   console.log(element);
   const editor = useSlate();
-  const isEmpty = element.children && element.children[0].text === '' && element.children.length === 1;
+  const isEmpty =
+    element.children &&
+    (element.children[0] as CustomText).text === '' &&
+    element.children.length === 1;
   const elementColor = element.color ? colorMap[element.color as ColorMapKeys] : '';
-  const elementBackground = element.bg ? backgroundColorMap[element.bg as BackgroundColorMapKeys] : '';
+  const elementBackground = element.bg
+    ? backgroundColorMap[element.bg as BackgroundColorMapKeys]
+    : '';
 
   const [open, setOpen] = useState(false);
   const [fileAttached, setFileAttached] = useState(false);
@@ -82,8 +88,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
               heading3: 'text-2xl',
               mainTitle: 'text-[48px] leading-[48px]',
             }[element.type]
-          } 
-         `}
+          } `}
           style={{ color: elementColor }}
           {...attributes}
         >
@@ -157,7 +162,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
       return (
         <figure>
           <img
-            alt={element.children[0].text || 'Подпись изображения'}
+            alt={(element.children[0] as CustomText).text || 'Подпись изображения'}
             src={element.url}
             className="border-gray-10 w-full rounded-lg border"
             {...attributes}

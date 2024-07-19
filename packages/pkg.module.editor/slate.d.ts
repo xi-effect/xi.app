@@ -9,6 +9,9 @@ type CustomElement = {
   children: Array<CustomText | CustomElement>;
   id: string;
   type: CustomElementType;
+  url?: string;
+  fileName?: string;
+  size?: number;
 };
 
 export type ParagraphElement = {
