@@ -12,6 +12,7 @@ type CustomElement = {
   url?: string;
   fileName?: string;
   size?: number;
+  icon?: ReactNode;
 };
 
 export type ParagraphElement = {

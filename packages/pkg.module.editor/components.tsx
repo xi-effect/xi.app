@@ -16,7 +16,7 @@ import { Transforms, Node } from 'slate';
 import { ReactEditor, useSlate } from 'slate-react';
 
 import { Move, Plus, Brush, ArrowUp, ArrowBottom, Copy, Trash } from '@xipkg/icons';
-import { CustomElement } from './slate';
+import { type CustomElement } from './slate';
 import { assignIdRecursively } from './plugins/withNodeId';
 
 type PortalProps = {
