@@ -37,7 +37,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
               });
             }
 
-            if (community.id) router.push(`/communities/${community.id}/home`);
+            // if (community.id) router.push(`/communities/${community.id}/home`);
           },
         );
       });
@@ -81,7 +81,12 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   useEffect(() => {
     console.log('onboardingStage', onboardingStage);
-    if (onboardingStage && onboardingStage !== null && onboardingStage !== 'completed' && !pathname.includes('/welcome/')) {
+    if (
+      onboardingStage &&
+      onboardingStage !== null &&
+      onboardingStage !== 'completed' &&
+      !pathname.includes('/welcome/')
+    ) {
       redirect('/welcome/user-info');
     }
   }, [isLogin]);
