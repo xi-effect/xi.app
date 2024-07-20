@@ -14,7 +14,7 @@ import {
   Code,
 } from '@xipkg/icons';
 import { ComponentType } from 'react';
-import { type CustomElement } from '../slate';
+import { type CustomElementType } from '../slate';
 
 export type EditorRootElementOptions = {
   // eslint-disable-next-line no-undef
@@ -74,4 +74,4 @@ export default {
     label: 'Код',
     icon: Code,
   },
-} as const satisfies Partial<Record<CustomElement, EditorRootElementOptions>>;
+} as const satisfies Partial<Record<CustomElementType, EditorRootElementOptions>>;

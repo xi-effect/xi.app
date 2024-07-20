@@ -1,4 +1,5 @@
 import node from './createNode';
+// import { type CustomElementType } from '../slate';
 
 export const createDefaultNode = (type: string, url?: string, fileName?: string, size?: number) => {
   switch (type) {
@@ -14,15 +15,18 @@ export const createDefaultNode = (type: string, url?: string, fileName?: string,
     case 'tip':
       return node({
         type,
+        // @ts-ignore
         children: [{ type: 'icon', icon: '🚧' }, { type: 'heading3' }, { type: 'paragraph' }],
       });
 
     case 'imageBlock':
+      // @ts-ignore
       return node({ type: 'imageBlock', url: url ?? '', children: [{ text: '' }] });
 
     case 'fileBlock':
       return node({
         type: 'fileBlock',
+        // @ts-ignore
         fileName: fileName ?? '',
         url: url ?? '',
         size: size ?? 0,
@@ -30,12 +34,14 @@ export const createDefaultNode = (type: string, url?: string, fileName?: string,
       });
 
     case 'videoBlock':
+      // @ts-ignore
       return node({ type: 'videoBlock', url: url ?? '', children: [{ text: '' }] });
 
     case 'code':
       return node({ type: 'code' });
 
     default:
+      // @ts-ignore
       return node({ type });
   }
 };

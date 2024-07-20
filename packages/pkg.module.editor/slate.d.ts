@@ -119,7 +119,7 @@ export type CommonCustomElementType =
   | ImageElement
   | FileElement
   | VideoElement;
-type CustomElementType = CustomElement['type'];
+type CustomElementType = CommonCustomElementType['type'];
 
 export type CustomText = {
   id: string;

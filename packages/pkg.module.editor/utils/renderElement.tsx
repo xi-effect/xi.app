@@ -53,7 +53,6 @@ type CustomRenderElementProps = RenderElementProps & {
 };
 
 const RenderElement = ({ element, attributes, children }: CustomRenderElementProps) => {
-  console.log(element);
   const editor = useSlate();
   const isEmpty =
     element.children &&

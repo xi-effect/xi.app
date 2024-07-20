@@ -28,7 +28,12 @@ import { withNodeId, makeNodeId } from './plugins/withNodeId';
 import { toPx } from './utils/toPx';
 import mockValues from './const/mockValues';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
-import { type CommonCustomElementType } from './slate';
+import {
+  type CommonCustomElementType,
+  type CustomElementType,
+  type MediaElement,
+  type CustomElement,
+} from './slate';
 
 import RenderElement from './utils/renderElement';
 import createNode from './utils/createNode';
@@ -74,7 +79,7 @@ export const EditorRoot = () => {
 
   const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
 
-  const handleDropdownSelect = (type: CommonCustomElementType) => {
+  const handleDropdownSelect = (type: CustomElementType) => {
     Transforms.insertNodes(editor, createDefaultNode(type), {
       at: [editor.children.length],
     });
@@ -122,13 +127,10 @@ export const EditorRoot = () => {
                     .readText()
                     .then((text) => {
                       if (isImageUrl(text)) {
-                        Transforms.insertNodes(
-                          editor,
-                          createNode({ type: 'imageBlock', url: text }),
-                          {
-                            at: [editor.children.length],
-                          },
-                        );
+                        const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
+                        Transforms.insertNodes(editor, node, {
+                          at: [editor.children.length],
+                        });
                       }
                     })
                     .catch((err) => {
@@ -139,19 +141,6 @@ export const EditorRoot = () => {
               className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
               renderElement={renderElement}
               renderLeaf={(props) => <Leaf {...props} />}
-              // onDOMBeforeInput={(event) => {
-              //   event.preventDefault();
-              //   switch (event.inputType) {
-              //     case 'formatBold':
-              //       return toggleFormat(editor, 'bold');
-              //     case 'formatItalic':
-              //       return toggleFormat(editor, 'italic');
-              //     case 'formatUnderline':
-              //       return toggleFormat(editor, 'underlined');
-              //     default:
-              //       console.log(event.inputType);
-              //   }
-              // }}
             />
           </SortableContext>
           {createPortal(
@@ -165,14 +154,14 @@ export const EditorRoot = () => {
       <DropdownMenuPortal>
         <DropdownMenuContent side="right">
           {(
-            Object.entries(rootElements) as Array<
+            Object.entries(rootElements) as unknown as Array<
               [CommonCustomElementType, EditorRootElementOptions]
             >
           ).map(([type, opt]) => (
             <DropdownMenuItem
               className="gap-2"
-              key={type}
-              onSelect={() => handleDropdownSelect(type)}
+              key={type as unknown as string}
+              onSelect={() => handleDropdownSelect(type as unknown as CustomElementType)}
             >
               <opt.icon className="h-4 w-4" />
               <span className="text-sm">{opt.label}</span>
@@ -247,7 +236,7 @@ const toggleFormat = (editor: Editor, format: string) => {
 
 const isFormatActive = (editor: Editor, format: string) => {
   const [match] = Editor.nodes(editor, {
-    match: (n) => n[format] === true,
+    match: (n) => (n as any)?.[format] === true,
     mode: 'all',
   });
   return !!match;
@@ -311,11 +300,13 @@ const HoveringToolbar = () => {
     }
 
     const domSelection = window.getSelection();
-    const domRange = domSelection.getRangeAt(0);
-    const rect = domRange.getBoundingClientRect();
-    el.style.opacity = '1';
-    el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
-    el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
+    if (domSelection) {
+      const domRange = domSelection.getRangeAt(0);
+      const rect = domRange.getBoundingClientRect();
+      el.style.opacity = '1';
+      el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
+      el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
+    }
   });
 
   return (
@@ -439,7 +430,7 @@ const wrapLink = (editor: Editor, url: string) => {
 
   const { selection } = editor;
   const isCollapsed = selection && Range.isCollapsed(selection);
-  const link = {
+  const link: CustomElement = {
     type: 'link',
     url,
     children: [{ text: '', id: makeNodeId() }],

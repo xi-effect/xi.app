@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 
-import { Transforms, Editor } from 'slate';
+import { Transforms } from 'slate';
 
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +15,8 @@ import { Input } from '@xipkg/input';
 import { FileUploader } from '@xipkg/fileuploader';
 import { Form, FormControl, FormField, FormItem, FormMessage, useForm } from '@xipkg/form';
 
+import { type CustomEditor } from 'pkg.module.editor/slate';
+
 export type StageType = 'load' | 'link';
 
 type AddFilePopoverT = {
@@ -22,7 +24,7 @@ type AddFilePopoverT = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleFileAttached: () => void;
   type: 'image' | 'file' | 'video';
-  editor: Editor;
+  editor: CustomEditor;
 };
 
 const getFileNameFromURL = (url: string) => {
@@ -91,7 +93,6 @@ export const AddFilePopover = ({
           const blob = await response.blob();
           fileName = getFileNameFromURL(data.fileLink);
           fileSize = blob.size;
-          console.log(data.fileLink, fileName, fileSize);
           newNode = createDefaultNode('fileBlock', data.fileLink, fileName, fileSize);
         } catch (error) {
           toast('Не удалось загрузить файл, попробуйте другой');
@@ -109,6 +110,7 @@ export const AddFilePopover = ({
       default:
         throw new Error('Unknown type');
     }
+    // @ts-ignore
     Transforms.insertNodes(editor, newNode);
     handleFileAttached();
     setOpen(false);

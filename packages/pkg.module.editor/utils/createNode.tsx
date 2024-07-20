@@ -1,19 +1,18 @@
 import { makeNodeId } from '../plugins/withNodeId';
 import { type CustomElement, type CustomText, type CustomElementType } from '../slate';
 
-const createNode = <T extends CustomElementType>(
-  {
-    type,
-    ...rest
-  }: Extract<CustomElement, { type: T }> extends never
+type CreateNodeOptions<T extends CustomElementType> =
+  Extract<CustomElement, { type: T }> extends never
     ? { type: T }
-    : Omit<Extract<CustomElement, { type: T }>, 'id' | 'children'>,
+    : Omit<Extract<CustomElement, { type: T }>, 'id' | 'children'> & { type: T };
+
+const createNode = <T extends CustomElementType>(
+  options: CreateNodeOptions<T>,
   ...children: Array<CustomElement | CustomText>
-) => ({
+): CustomElement => ({
   id: makeNodeId(),
-  type,
   children,
-  ...rest,
+  ...options,
 });
 
 export default createNode;
