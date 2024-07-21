@@ -1,4 +1,5 @@
 import { useCanRedo, useCanUndo, useEditor } from 'tldraw';
+import { Undo, Redo } from '@xipkg/icons';
 
 export function NavbarAction() {
   const editor = useEditor();
@@ -13,20 +14,12 @@ export function NavbarAction() {
   };
 
   return (
-    <div className="flex gap-2 p-1">
-      <button
-        className="pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] bg-white"
-        onClick={handleUndo}
-        disabled={!canUndo}
-      >
-        Undo
+    <div className="pointer-events-auto flex items-center justify-center gap-5">
+      <button className="items-center rounded-[8px] bg-white" onClick={handleUndo}>
+        <Undo className={`${canUndo ? null : 'fill-gray-40'}`} />
       </button>
-      <button
-        className="pointer-events-auto h-[32px] w-[32px] items-center rounded-[8px] bg-white"
-        onClick={handleRedo}
-        disabled={!canRedo}
-      >
-        Redo
+      <button className="items-center rounded-[8px] bg-white" onClick={handleRedo}>
+        <Redo className={`${canRedo ? null : 'fill-gray-40'}`} />
       </button>
     </div>
   );

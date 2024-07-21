@@ -10,7 +10,7 @@
   "dependencies": {
     "next": "^14.2.3",
     "pkg.logo": "*",
-    "@xipkg/icons": "1.0.1",
+    "@xipkg/icons": "1.0.2",
     "react": "^18.2.0",
     "tldraw": "^2.3.0"
   },

@@ -1,11 +1,12 @@
 import { track, useEditor } from 'tldraw';
 import { NavbarAction } from './NavbarAction';
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
+import React from 'react';
 
 type TNavbarElement = {
   action: string;
   title: string;
-  icon: JSX.Element | null;
+  icon: React.ReactNode | null;
 };
 
 export const Navbar = track(() => {
@@ -25,12 +26,12 @@ export const Navbar = track(() => {
 
   return (
     <div className="pointer-events-none absolute inset-0">
-      <div className="absolute bottom-3 left-0 right-0 flex w-full items-center justify-center">
-        <div className="flex gap-7">
-          <div className="border-gray-10 z-[300] flex gap-10 rounded-[12px] border bg-white">
+      <div className="absolute bottom-3 left-0 right-0 z-[300] flex w-full items-center justify-center">
+        <div className="z-[300] flex gap-7">
+          <div className="border-gray-10 z-[300] rounded-[12px] border bg-white p-2">
             <NavbarAction />
           </div>
-          <div className="border-gray-10 z-[300] flex gap-10 rounded-[12px] border bg-white">
+          <div className="border-gray-10 flex gap-10 rounded-[12px] border bg-white">
             <div className="flex gap-2 p-1">
               {navBarElements.map((item: TNavbarElement) => (
                 <button
