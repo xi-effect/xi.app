@@ -65,7 +65,7 @@ export const TasksAdmin = () => {
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-[100dvh] flex-col">
       <Header
         onSelect={handleSelect}
         selectValue={selectStatus}
@@ -73,7 +73,7 @@ export const TasksAdmin = () => {
         sortValue={sortValue}
       />
       {}
-      <div className="flex h-full flex-col gap-4 px-8">
+      <div className="flex h-full flex-col gap-4 overflow-auto px-8 pb-4">
         {filteredTasks.length > 0 ? (
           filteredTasks.map((task) => (
             <TaskCard

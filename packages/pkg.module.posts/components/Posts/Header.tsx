@@ -4,11 +4,11 @@ import { Search } from '@xipkg/icons';
 import debounce from 'lodash/debounce';
 import Breadcrumbs from './Breadcrumbs';
 
-interface HeaderProps {
+type HeaderProps = {
   onSearch: (searchValue: string) => void;
-}
+};
 
-const Header: React.FC<HeaderProps> = ({ onSearch }) => {
+const Header = ({ onSearch }: HeaderProps) => {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim().toLowerCase();
     debouncedSearch(value);
