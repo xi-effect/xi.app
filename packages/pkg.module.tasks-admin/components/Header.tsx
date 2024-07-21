@@ -5,7 +5,8 @@ import { Button } from '@xipkg/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@xipkg/popover';
 import { Plus, Task, TaskFile } from '@xipkg/icons';
 import Link from 'next/link';
-import { statuses } from '../types';
+import { SortValuesT, StatusesT } from '../types';
+import { sortValues, statuses } from '../consts';
 
 const breadcrumbs = [
   { name: 'Моё пространство', link: '/home' },
@@ -13,10 +14,10 @@ const breadcrumbs = [
 ];
 
 type HeaderPropsT = {
-  onSelect: (status: string) => void;
-  onSort: (task: any) => void;
-  selectValue: string;
-  sortValue: string;
+  onSelect: (status: StatusesT) => void;
+  onSort: (task: SortValuesT) => void;
+  selectValue: StatusesT;
+  sortValue: SortValuesT;
 };
 
 const selectItems = [
@@ -26,10 +27,10 @@ const selectItems = [
 ];
 
 const sortItems = [
-  { value: 'creationDate', text: 'По дате создания' },
-  { value: 'openingDate', text: 'По дате открытия' },
-  { value: 'closingDate', text: 'По дате закрытия' },
-  { value: 'unverifiedCount', text: 'По количеству непроверенных ответов' },
+  { value: sortValues.CREATION_DATE, text: 'по дате создания' },
+  { value: sortValues.OPENING_DATE, text: 'по дате открытия' },
+  { value: sortValues.CLOSING_DATE, text: 'по дате закрытия' },
+  { value: sortValues.UNVERIFIED_COUNT, text: 'по количеству непроверенных ответов' },
 ];
 
 const Header = ({ onSelect, selectValue, onSort, sortValue }: HeaderPropsT) => (
@@ -44,12 +45,12 @@ const Header = ({ onSelect, selectValue, onSort, sortValue }: HeaderPropsT) => (
       <div className="min-w-6 grow" />
       <div className="flex w-full items-start justify-between gap-6 xl:justify-end [@media(max-width:425px)]:flex-col">
         <Select value={selectValue} onValueChange={onSelect}>
-          <SelectTrigger className="h-8 w-64 justify-start px-2 py-1 sm:w-72" aria-label="Food">
-            <span>Показывать: &nbsp; </span>
+          <SelectTrigger className="h-8 w-64 justify-start px-2 py-1 sm:w-72 [&>span]:line-clamp-1 [&>span]:break-all [&>svg]:shrink-0">
+            <span className="shrink-0">Показывать: &nbsp; </span>
             <SelectValue />
             <div className="grow" />
           </SelectTrigger>
-          <SelectContent className="w-64">
+          <SelectContent className="w-64 sm:w-72">
             {selectItems.map((item, index) => (
               <SelectItem value={item.value} key={index}>
                 {item.text}
@@ -58,11 +59,8 @@ const Header = ({ onSelect, selectValue, onSort, sortValue }: HeaderPropsT) => (
           </SelectContent>
         </Select>
         <Select value={sortValue} onValueChange={onSort}>
-          <SelectTrigger
-            className="[@media(max-width: 425px)] flex h-8 w-64 justify-start px-2 py-1 sm:w-72 [&>span]:line-clamp-1"
-            aria-label="Food"
-          >
-            <span className="shrink-0 grow">Сортировка: &nbsp; </span>
+          <SelectTrigger className="flex h-8 w-64 justify-start px-2 py-1 sm:w-72 [&>span]:line-clamp-1 [&>span]:break-all [&>svg]:shrink-0">
+            <span className="shrink-0">Сортировка: &nbsp; </span>
             <SelectValue />
             <div className="grow" />
           </SelectTrigger>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Edit, Eyeon, Task, TaskFile, Trash } from '@xipkg/icons';
+import { Button } from '@xipkg/button';
 import { TaskCardT, TaskCardActionsT } from '../types';
 
 type TaskCardPropsT = TaskCardT & TaskCardActionsT;
@@ -71,25 +72,25 @@ export const TaskCard = ({
           <span>Не проверено</span>
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          aria-label="edit"
-          className="bg-transparent p-1.5 sm:inline-block [@media(max-width:425px)]:hidden"
+      <div className="flex items-center gap-1">
+        <Button
+          size="s"
+          variant="ghost"
+          className="p-1.5 sm:inline-block [@media(max-width:425px)]:hidden"
         >
           <Edit />
-        </button>
-        <button type="button" aria-label="edit" className="bg-transparent p-1.5">
+        </Button>
+        <Button variant="ghost" className="p-1.5" size="s">
           <Eyeon />
-        </button>
-        <button
-          type="button"
-          aria-label="edit"
-          className="bg-transparent p-1.5 sm:inline-block [@media(max-width:425px)]:hidden"
+        </Button>
+        <Button
+          size="s"
+          variant="ghost"
+          className="p-1.5 sm:inline-block [@media(max-width:425px)]:hidden"
           onClick={() => onDelete(id)}
         >
           <Trash />
-        </button>
+        </Button>
       </div>
     </div>
   </div>

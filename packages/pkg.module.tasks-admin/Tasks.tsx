@@ -3,17 +3,18 @@ import Header from './components/Header';
 import { TaskCard } from './components/TaskCard';
 import { DeleteTaskModal } from './components/DeleteTaskModal';
 import { EmptyTasksList } from './components/EmptyTasksList';
-import { sortValues, SortValuesT, statuses, TaskCardT } from './types';
+import { SortValuesT, StatusesT, TaskCardT } from './types';
 import { tasksMock } from './mockTasks';
+import { sortValues, statuses } from './consts';
 
 export const TasksAdmin = () => {
   const [filteredTasks, setFilteredTasks] = useState(tasksMock);
-  const [selectStatus, setSelectStatus] = useState(statuses.ALL);
+  const [selectStatus, setSelectStatus] = useState<StatusesT>(statuses.ALL);
   const [sortValue, setSortValue] = useState<SortValuesT>(sortValues.CREATION_DATE);
-  const [deleteCandidate, setDeleteCandidate] = useState<number | undefined>();
+  const [deleteCandidate, setDeleteCandidate] = useState<number | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleSelect = (status: any) => {
+  const handleSelect = (status: StatusesT) => {
     setSelectStatus(status);
     if (status === statuses.ALL) {
       setFilteredTasks(tasksMock);
@@ -56,7 +57,7 @@ export const TasksAdmin = () => {
     }
   };
 
-  const handleDeleteTask = (id: number | undefined) => {
+  const handleDeleteTask = (id: number | null) => {
     if (!id) {
       return;
     }
@@ -65,7 +66,7 @@ export const TasksAdmin = () => {
   };
 
   return (
-    <div className="flex h-[100dvh] flex-col">
+    <div className="flex h-full flex-col md:h-[100dvh]">
       <Header
         onSelect={handleSelect}
         selectValue={selectStatus}

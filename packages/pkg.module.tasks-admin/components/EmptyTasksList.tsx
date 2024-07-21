@@ -1,6 +1,6 @@
+import React from 'react';
 import { Button } from '@xipkg/button';
 import { Task, TaskFile } from '@xipkg/icons';
-import React from 'react';
 
 export const EmptyTasksList = () => (
   <div className="flex h-full flex-col items-center justify-center gap-8">
