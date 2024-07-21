@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PostCard from './PostCard';
 import NoContent from './NoContent';
-import Header from './Header';
+import { Header } from './Header';
 
 export const Posts = () => {
   // Временный набор объявлений. Переделать логику под стейт менеджер

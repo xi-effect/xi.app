@@ -35,7 +35,7 @@ export const Header = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/channels/${params['channel-id']}/tasks`}>{currentTasks[0]?.name}</Link></BreadcrumbLink>
+              <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/channels/${params['channel-id']}/posts`}>{currentTasks[0]?.name}</Link></BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -46,7 +46,7 @@ export const Header = () => {
       </div>
       <div className="flex items-center h-[40px]">
         <h1 className="text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5">
-          Задания
+          Quizzes
         </h1>
       </div>
       <div className="flex items-center h-[16px] gap-1">

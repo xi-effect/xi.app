@@ -2,13 +2,23 @@ import React, { useCallback } from 'react';
 import { Input } from '@xipkg/input';
 import { Search } from '@xipkg/icons';
 import debounce from 'lodash/debounce';
-import Breadcrumbs from './Breadcrumbs';
+import {
+  BreadcrumbsRoot,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from '@xipkg/breadcrumbs';
+import { useParams } from 'next/navigation';
+import { useMainSt } from 'pkg.stores';
+import Link from 'next/link';
 
 type HeaderProps = {
   onSearch: (searchValue: string) => void;
 };
 
-const Header = ({ onSearch }: HeaderProps) => {
+export const Header = ({ onSearch }: HeaderProps) => {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim().toLowerCase();
     debouncedSearch(value);
@@ -21,22 +31,33 @@ const Header = ({ onSearch }: HeaderProps) => {
     [],
   );
 
-  // Временная логика отображения хлебных крошек
-  const shouldShowBreadcrumbs = true;
+  const params = useParams<{ 'community-id': string, 'channel-id': string }>();
 
-  const breadcrumbs = [
-    { title: 'МИПК И. Фёдорова', href: '/home' },
-    { title: 'Объявления', href: '/announcements' },
-    { title: 'Объявления', href: '/announcements' },
-    { title: 'Объявления', href: '/announcements' },
-  ];
+  const communityMeta = useMainSt((state) => state.communityMeta);
+  const channels = useMainSt((state) => state.channels);
+
+  const currentPosts = channels?.filter((item) => Number(params['channel-id']) === item.id);
+
+  if (currentPosts === undefined) return null;
+
+  console.log('channels', channels, currentPosts);
 
   return (
-    <div className="flex-col py-4 max-[520px]:py-7 sm:py-8">
-      <Breadcrumbs isVisible={shouldShowBreadcrumbs} breadcrumbs={breadcrumbs} />
+    <div className="flex flex-col gap-4 pb-4 md:pb-8">
+      <BreadcrumbsRoot size="s">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/home`}>{communityMeta.name ?? 'Моё пространство'}</Link></BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{currentPosts[0]?.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </BreadcrumbsRoot>
       <div className="flex items-end justify-between">
         <h1 className="text-3xl font-semibold max-[520px]:text-2xl sm:inline-block sm:text-4xl">
-          Объявления
+          {currentPosts[0]?.name}
         </h1>
         <div className="hidden w-[250px] p-4 md:block">
           <Input
@@ -53,5 +74,3 @@ const Header = ({ onSearch }: HeaderProps) => {
     </div>
   );
 };
-
-export default Header;
