@@ -1,1 +1,2 @@
-export { Tasks } from './Tasks';
+export { Tasks } from './components/Tasks';
+export { Task } from './components/Task';

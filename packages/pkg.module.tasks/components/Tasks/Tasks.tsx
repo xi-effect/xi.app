@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { endOfTomorrow, endOfToday } from 'date-fns';
-import Header from './components/Header';
-import TaskCard from './components/TaskCard';
-import { grades, statuses, selectStatuses } from './consts';
-import { SelectStatusT, TaskT } from './types';
+import { Header } from './Header';
+import TaskCard from './TaskCard';
+import { grades, statuses, selectStatuses } from '../../consts';
+import { SelectStatusT, TaskT } from '../../types';
 
 const tasksMock: TaskT[] = [
   {
