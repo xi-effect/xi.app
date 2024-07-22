@@ -9,11 +9,6 @@ const Post = dynamic(() =>
 
 export default function PostPage() {
   return (
-    <Post
-      postTitle="Победа на чемпионате"
-      postText={undefined}
-      date="4 мая 2022"
-      author="Юшкевич О.А."
-    />
+    <Post />
   );
 }
