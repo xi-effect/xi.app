@@ -1,5 +1,5 @@
 {
-  "name": "pkg.module.announces",
+  "name": "pkg.module.posts",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -11,6 +11,8 @@
     "@xipkg/utils": "1.0.1",
     "@xipkg/input": "0.1.1",
     "@xipkg/icons": "0.9.3",
+    "@xipkg/breadcrumbs": "1.0.0",
+    "pkg.stores": "*",
     "lodash": "^4.17.21",
     "next": "^14.2.3",
     "pkg.logo": "*",
@@ -22,7 +24,7 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "1.4.0",
-    "@xipkg/tailwind": "0.4.0",
+    "@xipkg/tailwind": "0.5.0",
     "@xipkg/typescript": "latest",
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"

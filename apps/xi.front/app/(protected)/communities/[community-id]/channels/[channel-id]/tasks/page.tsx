@@ -1,9 +1,17 @@
-import React from 'react';
+'use client';
 
-export default function Tasks() {
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { ScrollArea } from '@xipkg/scrollarea';
+
+const Tasks = dynamic(() => import('pkg.module.tasks').then((mod) => mod.Tasks));
+
+export default function TasksPage() {
   return (
-    <div className="w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto bg-gray-0">
-      tasks
-    </div>
+    <ScrollArea>
+      <div className="flex flex-col h-[calc(100dvh-80px)] md:h-screen p-8 max-xs:p-4">
+        <Tasks />
+      </div>
+    </ScrollArea>
   );
 }

@@ -73,9 +73,8 @@ const DropdownHeader = ({ setIsOpen, inDropdown = false, name, id }: DropdownHea
     onClick={() => {
       if (id) setIsOpen((prev: boolean) => !prev);
     }}
-    className={`flex h-12 px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${
-      inDropdown ? '' : 'mt-0 sm:mt-8'
-    } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
+    className={`flex h-12 px-2.5 py-2 md:w-[302px] ${!name ? 'cursor-not-allowed' : 'cursor-pointer'} ${inDropdown ? '' : 'mt-0 sm:mt-8'
+      } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
   >
     {!id ? (
       <div className="bg-gray-10 size-[32px] animate-pulse rounded-[16px]" />
@@ -198,7 +197,7 @@ export const CommunityMenu = () => {
 
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
-      const otherCommunities = communities.filter(
+      const otherCommunities: CommunityTemplateT[] = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );
       setOtherCommunities(otherCommunities);
@@ -325,7 +324,14 @@ export const CommunityMenu = () => {
                 <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
               </DropdownMenuItem>
             </div>
-            {otherCommunities && (
+            {otherCommunities && otherCommunities.length <= 7 && (
+              <div className="mt-2">
+                {otherCommunities.map((community, index) => (
+                  <CommunityLink key={index} community={community} handleClose={handleClose} />
+                ))}
+              </div>
+            )}
+            {otherCommunities && otherCommunities.length > 7 && (
               <ScrollArea className="h-[300px] [&>div>div[style]]:!block">
                 <div className="mt-2">
                   {otherCommunities.map((community, index) => (

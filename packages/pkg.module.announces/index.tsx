@@ -1,1 +1,0 @@
-export { Announces } from './Announces';

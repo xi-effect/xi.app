@@ -40,14 +40,14 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
 
   return (
     <div className="flex w-full overflow-hidden md:hidden">
-      <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd}>
+      <SwipeableViews animateHeight index={slideIndex} onChangeIndex={onSwipeEnd} className="w-full">
         <div className="w-full overflow-auto">
           <div className="sticky left-0 top-0 px-4 pt-4">
             <CommunityMenu />
           </div>
           <CommunityItems setSlideIndex={setSlideIndex} />
         </div>
-        <div className="h-[calc(100dvh-80px)] overflow-auto">{children}</div>
+        <div className="h-[calc(100dvh-80px)] overflow-none">{children}</div>
       </SwipeableViews>
       <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
         <button

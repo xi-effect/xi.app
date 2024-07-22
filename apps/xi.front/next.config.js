@@ -69,6 +69,7 @@ const nextConfig = {
     '@xipkg/calendar',
     '@xipkg/scrollarea',
     '@xipkg/tooltip',
+    '@xipkg/breadcrumbs',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

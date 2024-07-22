@@ -138,9 +138,12 @@ const SupportBox = () => (
         <Button
           variant="secondary"
           className="text-sm h-8 xl:h-12 xl:text-base border-[1px] xl:border-2 font-medium"
+          asChild
         >
-          Посмотреть руководства
-          <span className="bg-[url('/assets/community-home-page/manual-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />
+          <Link href="https://support.xieffect.ru/">
+            Посмотреть руководства
+            <span className="bg-[url('/assets/community-home-page/manual-icon.svg')] bg-no-repeat bg-center bg-contain ml-[6px] xl:ml-2 w-4 h-4 xl:w-6 xl:h-6" />
+          </Link>
         </Button>
       </div>
     </div>
@@ -150,7 +153,7 @@ const SupportBox = () => (
 export default function CommunityHomePage() {
   return (
     <ScrollArea>
-      <div className="flex flex-col min-h-[100vh] h-screen p-8 max-xs:p-4">
+      <div className="flex flex-col h-[calc(100dvh-80px)] md:h-screen p-8 max-xs:p-4">
         <Header />
         <InfoCardList />
         <SupportBox />
