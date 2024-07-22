@@ -90,7 +90,12 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   useEffect(() => {
     console.log('onboardingStage', onboardingStage);
-    if (onboardingStage && onboardingStage !== null && onboardingStage !== 'completed' && !pathname.includes('/welcome/')) {
+    if (
+      onboardingStage &&
+      onboardingStage !== null &&
+      onboardingStage !== 'completed' &&
+      !pathname.includes('/welcome/')
+    ) {
       redirect('/welcome/user-info');
     }
   }, [isLogin]);
