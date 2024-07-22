@@ -99,8 +99,8 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
     calendar: <Calendar className={iconClassName} />,
     updates: <Updates className={iconClassName} />,
     tasks: <Task className={iconClassName} />,
-    chats: <Chat className={iconClassName} />,
-    video: <Conference className={iconClassName} />,
+    chat: <Chat className={iconClassName} />,
+    call: <Conference className={iconClassName} />,
     board: <WhiteBoard className={iconClassName} />,
   };
 
