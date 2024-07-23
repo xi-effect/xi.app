@@ -68,6 +68,7 @@ const nextConfig = {
     '@xipkg/popover',
     '@xipkg/calendar',
     '@xipkg/scrollarea',
+    '@xipkg/file',
     '@xipkg/tooltip',
     '@xipkg/breadcrumbs',
   ],
