@@ -4,8 +4,15 @@ import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import React, { ReactNode, Suspense } from 'react';
 import Script from 'next/script';
+import localFont from 'next/font/local';
 import { Providers } from './providers';
 import YandexMetrika from './metrika';
+
+const markerHand = localFont({
+  src: '../public/fonts/MarkerHand-Regular.woff2',
+  display: 'swap',
+  variable: '--font-marker-hand',
+});
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -44,7 +51,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} text-[16px]`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${markerHand.variable} text-[16px]`}>
       <body className="overflow-hidden bg-gray-0">
         {process.env.NODE_ENV === 'production' &&
           <>
