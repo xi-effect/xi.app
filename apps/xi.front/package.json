@@ -44,6 +44,7 @@
     "pkg.models": "*",
     "pkg.module.posts": "*",
     "pkg.module.tasks": "*",
+    "pkg.module.tasks-admin": "*",
     "pkg.module.editor": "*",
     "pkg.module.videoconference": "*",
     "pkg.module.whiteboard": "*",

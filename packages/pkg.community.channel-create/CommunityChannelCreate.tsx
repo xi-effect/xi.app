@@ -91,7 +91,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
   });
 
   const onSubmit = (values: FormSchemaT) => {
-    socket?.emit(
+    socket.emit(
       'create-channel',
       {
         community_id: communityId,
