@@ -8,10 +8,10 @@ export function NavbarAction() {
 
   return (
     <div className="pointer-events-auto flex items-center justify-center gap-5">
-      <button className="bg-gray-0 items-center rounded-[8px]" onClick={() => editor.undo()}>
+      <button aria-label="Undo" type="button" className="bg-gray-0 items-center rounded-[8px]" onClick={() => editor.undo()}>
         <Undo className={`${canUndo ? null : 'fill-gray-40'}`} />
       </button>
-      <button className="bg-gray-0 items-center rounded-[8px]" onClick={() => editor.redo()}>
+      <button aria-label="Redo" type="button" className="bg-gray-0 items-center rounded-[8px]" onClick={() => editor.redo()}>
         <Redo className={`${canRedo ? null : 'fill-gray-40'}`} />
       </button>
     </div>

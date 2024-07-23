@@ -1,12 +1,12 @@
 import {
-  TLUiActionsContextType,
+  // TLUiActionsContextType,
   TLUiComponents,
-  TLUiOverrides,
-  TLUiToolsContextType,
+  // TLUiOverrides,
+  // TLUiToolsContextType,
 } from 'tldraw';
 
-/* 
-This is necessary because if we set hiddenUi to the 
+/*
+This is necessary because if we set hiddenUi to the
 Tldraw components, all keyboard shortcuts will be hidden as well,
 and you'll have to add them by handling keydown events,
 which is very time-consuming and not optimized.
@@ -33,32 +33,30 @@ export const hiddenComponents: Required<TLUiComponents> = {
   TopPanel: null,
 };
 
-/* 
+/*
 This example shows how you can replace tldraw's default keyboard shortcuts with your own,
 or add a shortcut for an action that doesn't have one. An example of how to add shortcuts
 for custom tools or default tools.
 
-
 You can describe modifier keys with the following syntax:
 
-	shift: !
+shift: !
  ctrl/cmd: $
-	  alt: ?
+ alt: ?
 
 */
+// const overrides: TLUiOverrides = {
+//   actions(_editor, actions): TLUiActionsContextType {
+//     const newActions = {
+//       ...actions,
+//       'toggle-grid': { ...actions['toggle-grid'], kbd: 'x' },
+//       'copy-as-png': { ...actions['copy-as-png'], kbd: '$1' },
+//     };
 
-const overrides: TLUiOverrides = {
-  actions(_editor, actions): TLUiActionsContextType {
-    const newActions = {
-      ...actions,
-      'toggle-grid': { ...actions['toggle-grid'], kbd: 'x' },
-      'copy-as-png': { ...actions['copy-as-png'], kbd: '$1' },
-    };
-
-    return newActions;
-  },
-  tools(_editor, tools): TLUiToolsContextType {
-    const newTools = { ...tools, draw: { ...tools.draw, kbd: 'p' } };
-    return newTools;
-  },
-};
+//     return newActions;
+//   },
+//   tools(_editor, tools): TLUiToolsContextType {
+//     const newTools = { ...tools, draw: { ...tools.draw, kbd: 'p' } };
+//     return newTools;
+//   },
+// };

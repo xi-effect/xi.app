@@ -12,7 +12,8 @@
     "pkg.logo": "*",
     "@xipkg/icons": "1.0.2",
     "react": "^18.2.0",
-    "tldraw": "^2.3.0"
+    "tldraw": "^2.3.0",
+    "pkg.utils.client": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

@@ -1,7 +1,7 @@
 import { track, useEditor } from 'tldraw';
-import { NavbarAction } from './NavbarAction';
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import React from 'react';
+import { NavbarAction } from './NavbarAction';
 
 type TNavbarElement = {
   action: string;
@@ -34,8 +34,9 @@ export const Navbar = track(() => {
             <div className="flex gap-2 p-1">
               {navBarElements.map((item: TNavbarElement) => (
                 <button
+                  type="button"
                   key={item.action}
-                  className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px] ${editor.getCurrentToolId() == item.action ? 'bg-brand-0' : 'bg-gray-0'}`}
+                  className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px] ${editor.getCurrentToolId() === item.action ? 'bg-brand-0' : 'bg-gray-0'}`}
                   data-isactive={editor.getCurrentToolId() === item.action}
                   onClick={() => editor.setCurrentTool(item.action)}
                 >
