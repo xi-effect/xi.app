@@ -13,14 +13,15 @@
     "@xipkg/breadcrumbs": "^0.1.0",
     "next": "^14.2.3",
     "react": "^18.2.0",
-    "date-fns": "3.6.0"
+    "date-fns": "3.6.0",
+    "pkg.stores": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "1.4.0",
-    "@xipkg/tailwind": "0.4.0",
+    "@xipkg/tailwind": "0.5.0",
     "@xipkg/typescript": "latest",
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"

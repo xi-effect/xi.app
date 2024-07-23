@@ -40,7 +40,9 @@ const Header = ({ onSelect, selectValue }: HeaderPropsT) => (
         </SelectTrigger>
         <SelectContent className="w-72">
           {selectItems.map((item, index) => (
-            <SelectItem value={item.value} key={index}>{item.text}</SelectItem>
+            <SelectItem value={item.value} key={index}>
+              {item.text}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>

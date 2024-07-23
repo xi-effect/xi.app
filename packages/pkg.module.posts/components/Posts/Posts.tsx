@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import AnnounceCard from './components/AnnounceCard';
-import NoContent from './components/NoContent';
-import Header from './components/Header';
+import PostCard from './PostCard';
+import NoContent from './NoContent';
+import { Header } from './Header';
 
-export const Announces = () => {
+export const Posts = () => {
   // Временный набор объявлений. Переделать логику под стейт менеджер
   const announcements = [
     {
@@ -74,7 +74,7 @@ export const Announces = () => {
       {filteredAnnouncements.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
           {filteredAnnouncements.map((announcement, index) => (
-            <AnnounceCard
+            <PostCard
               key={index}
               title={announcement.title}
               description={announcement.description}

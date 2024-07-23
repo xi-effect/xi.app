@@ -37,8 +37,8 @@ const channelsOptions = ['Объявления', 'Задания', 'Видеок
 const channelDict: { [key in string]: string } = {
   Объявления: 'posts',
   Задания: 'tasks',
-  Видеоконференция: 'video',
-  Чат: 'chats',
+  Видеоконференция: 'call',
+  Чат: 'chat',
 };
 
 type FormT = {

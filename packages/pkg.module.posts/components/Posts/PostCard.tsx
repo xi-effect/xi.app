@@ -1,18 +1,18 @@
 import { ChevronRight } from '@xipkg/icons';
 
-type AnnounceCardProps = {
+type PostCardProps = {
   title: string;
   description: string;
   date: string;
   author: string;
 };
 
-const AnnounceCard = ({
+const PostCard = ({
   title = 'Заголовок объявления',
   description = 'Текст объявления',
   date = '1 января 1970',
   author = 'Автор',
-}: AnnounceCardProps) => (
+}: PostCardProps) => (
   <div className="border-gray-80 hover:bg-gray-5 group flex h-56 cursor-pointer flex-col rounded-2xl border p-6">
     <h2 className="line-clamp-1 text-xl font-semibold leading-[28px] md:line-clamp-2">{title}</h2>
     <p className="mt-4 line-clamp-1 text-base font-normal leading-[22px] text-gray-100 md:line-clamp-2">
@@ -26,4 +26,4 @@ const AnnounceCard = ({
   </div>
 );
 
-export default AnnounceCard;
+export default PostCard;

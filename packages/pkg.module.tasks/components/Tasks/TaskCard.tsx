@@ -1,8 +1,8 @@
 import React from 'react';
 import { isTomorrow, isToday, differenceInHours, startOfDay } from 'date-fns';
 import { Clock } from '@xipkg/icons';
-import { statuses } from '../consts';
-import { StatusT, GradeT } from '../types';
+import { statuses } from '../../consts';
+import { StatusT, GradeT } from '../../types';
 
 const gradeTextStyle: {[key in GradeT]: string} = {
   5: 'text-green-80',

@@ -46,13 +46,13 @@ const actionsSheetList = [
   {
     icon: WhiteBoard,
     title: 'Интерактивная доска',
-    type: 'whiteboard',
+    type: 'board',
     desctiption: 'Проводите уроки и совместные занятия с помощью удобной и функциональной доски',
   },
   {
     icon: Conference,
     title: 'Видеоконференции',
-    type: 'video',
+    type: 'call',
     desctiption:
       'Проводите уроки онлайн, проводите активности, работайте со студентами из любой точки мира',
   },
@@ -67,7 +67,7 @@ const actionsSheetList = [
   {
     icon: Chat,
     title: 'Чат со студентами',
-    type: 'chats',
+    type: 'chat',
     desctiption: 'Общайтесь, отвечайте на вопросы, объясняйте непонятные моменты',
     disabled: true,
   },
@@ -91,7 +91,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
   });
 
   const onSubmit = (values: FormSchemaT) => {
-    socket?.emit(
+    socket.emit(
       'create-channel',
       {
         community_id: communityId,

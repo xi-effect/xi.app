@@ -4,7 +4,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { ScrollArea } from '@xipkg/scrollarea';
 
-const Posts = dynamic(() => import('pkg.module.posts').then((mod) => mod.Announces));
+const Posts = dynamic(() => import('pkg.module.posts').then((mod) => mod.Posts));
 
 export default function AnnouncesPage() {
   return (

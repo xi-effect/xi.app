@@ -1,23 +1,22 @@
 'use client';
 
 import React from 'react';
-import { Excalidraw, MainMenu } from '@excalidraw/excalidraw';
-
+import { Tldraw } from 'tldraw';
+import { Navbar } from './components/Navbar';
 import './index.css';
+import { ZoomMenu } from './components/ZoomMenu';
+import { Header } from './components/Header';
+import { hiddenComponents } from './customConfig';
 
-export const WhiteBoard: React.FC = () => {
-  console.log();
-
-  return (
-    <div className="h-full w-full">
-      <Excalidraw langCode="ru-RU">
-        <MainMenu>
-          <MainMenu.DefaultItems.Export />
-          <MainMenu.DefaultItems.SaveAsImage />
-          <MainMenu.DefaultItems.ToggleTheme />
-          <MainMenu.DefaultItems.ChangeCanvasBackground />
-        </MainMenu>
-      </Excalidraw>
-    </div>
-  );
-};
+export const WhiteBoard = () => (
+  <Tldraw
+    onMount={(editor) => {
+      editor.updateInstanceState({ isGridMode: true });
+    }}
+    components={hiddenComponents}
+  >
+    <Header />
+    <Navbar />
+    <ZoomMenu />
+  </Tldraw>
+);
