@@ -22,10 +22,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (pathname.includes('/editor')) { // временное исключение для редактора
-      return;
-    }
-
     console.log('onconnect', socket);
     if (onboardingStage === 'completed') {
       socket?.on('connect', () => {
@@ -41,7 +37,16 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
               });
             }
 
+            const pathnameArr = pathname.split('/');
+            if (pathnameArr.includes('channels') && community.id) {
+              const betweenChannels = pathname.split('channels');
+
+              return router.push(`/communities/${community.id}/channels${betweenChannels[1]}`);
+            }
+
             if (community.id) router.push(`/communities/${community.id}/home`);
+
+            return null;
           },
         );
       });

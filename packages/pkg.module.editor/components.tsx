@@ -88,7 +88,6 @@ export const CellControls = ({
     startX.current = e.pageX;
     startY.current = e.pageY;
     isDragging.current = false;
-    console.log(`Mouse down at: (${startX.current}, ${startY.current})`);
     setAutoOpen(false);
 
     const handleMouseMove = (moveEvent: MouseEvent) => {

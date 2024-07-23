@@ -13,27 +13,27 @@ import { createDefaultNode } from './createDefaultNode';
 import { type CustomElement, type CustomText } from '../slate';
 
 const colorMap = {
-  green: '#00A82C',
-  blue: '#09AEE8',
-  darkBlue: '#445AFF',
-  gray: '#707070',
-  purple: '#8208E1',
-  pink: '#DD09C8',
-  red: '#DD0D0C',
-  orange: '#EC570E',
-  yellow: '#FFCD37',
+  green: 'var(--xi-green-80)',
+  blue: 'var(--xi-cyan-100)',
+  darkBlue: 'var(--xi-brand-80)',
+  gray: 'var(--xi-gray-60)',
+  purple: 'var(--xi-violet-100)',
+  pink: 'var(--xi-pink-100)',
+  red: 'var(--xi-red-100)',
+  orange: 'var(--xi-orange-100)',
+  yellow: 'var(--xi-yellow-100)',
 };
 
 const backgroundColorMap = {
-  lightGray: '#E8E8E8',
-  lightRed: '#FCE9E9',
-  lightOrange: '#FCE8DE',
-  lightGreen: '#E4F6E9',
-  lightBlue: '#EDEFFF',
-  lightYellow: '#FFF5D7',
-  lightPurple: '#EFDFFB',
-  lightPink: '#FBE0F8',
-  lightCyan: '#DFF4FC',
+  lightGray: 'var(--xi-gray-10)',
+  lightRed: 'var(--xi-red-0)',
+  lightOrange: 'var(--xi-orange-0)',
+  lightGreen: 'var(--xi-green-0)',
+  lightBlue: 'var(--xi-brand-0)',
+  lightYellow: 'var(--xi-yellow-20)',
+  lightPurple: 'var(--xi-violet-20)',
+  lightPink: 'var(--xi-pink-20)',
+  lightCyan: 'var(--xi-cyan-20)',
 };
 
 type ColorMapKeys = keyof typeof colorMap;
@@ -209,7 +209,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
               <PopoverTrigger asChild>
                 <div
                   className="border-gray-10 flex w-full cursor-pointer items-center rounded-lg border p-3"
-                  onClick={() => setOpen(!open)}
+                  onClick={(prev) => setOpen(!prev)}
                   onKeyDown={(e) => e.key === 'Enter' && setOpen(!open)}
                   role="button"
                   tabIndex={0}
@@ -243,7 +243,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
               <PopoverTrigger asChild>
                 <div
                   className="border-gray-10 flex w-full cursor-pointer items-center rounded-lg border p-3"
-                  onClick={() => setOpen(!open)}
+                  onClick={(prev) => setOpen(!prev)}
                   onKeyDown={(e) => e.key === 'Enter' && setOpen(!open)}
                   role="button"
                   tabIndex={0}
@@ -277,7 +277,7 @@ const RenderElement = ({ element, attributes, children }: CustomRenderElementPro
               <PopoverTrigger asChild>
                 <div
                   className="border-gray-10 flex w-full cursor-pointer items-center rounded-lg border p-3"
-                  onClick={(open) => !open}
+                  onClick={(prev) => setOpen(!prev)}
                   onKeyDown={(e) => e.key === 'Enter' && setOpen(!open)}
                   role="button"
                   tabIndex={0}

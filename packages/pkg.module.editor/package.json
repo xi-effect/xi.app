@@ -18,7 +18,7 @@
     "@xipkg/popover": "^1.2.0",
     "nanoid": "5.0.6",
     "next": "^14.2.3",
-    "pkg.popover.add-file": "^0.0.0",
+    "pkg.popover.add-file": "*",
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
     "slate": "0.102.0",
@@ -33,7 +33,6 @@
     "@xipkg/tailwind": "latest",
     "@xipkg/typescript": "latest",
     "eslint-config-custom": "*",
-    "prismjs": "^1.29.0",
     "typescript": "^5.4.2"
   },
   "description": "form for signin",
