@@ -12,17 +12,17 @@ export function ZoomMenu() {
 
   return (
     <div className="absolute bottom-3 right-3 z-[300]">
-      <div className="rounded-[16px] bg-white">
+      <div className="bg-gray-0 rounded-[16px]">
         <div className="flex items-center px-3">
-          <div className="cursor-pointer text-[32px]" onClick={() => handleZoomOut()}>
-            <Minus className="cursor-pointer text-[32px]" />
+          <div className="cursor-pointer" onClick={() => handleZoomOut()}>
+            <Minus className="cursor-pointer" />
           </div>
           <div>
             <DefaultZoomMenu>
               <DefaultZoomMenuContent />
             </DefaultZoomMenu>
           </div>
-          <div className="cursor-pointer text-[32px]" onClick={() => handleZoomIn()}>
+          <div className="cursor-pointer" onClick={() => handleZoomIn()}>
             <Plus />
           </div>
         </div>
