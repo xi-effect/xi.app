@@ -9,7 +9,10 @@ const WhiteBoard = dynamic(() => import('pkg.module.whiteboard').then((mod) => m
 
 export default function WhiteBoardPage() {
   return (
-    <div className="w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto bg-gray-0">
+    <div
+      id="whiteboard-container"
+      className="w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto bg-gray-0"
+    >
       <WhiteBoard />
     </div>
   );

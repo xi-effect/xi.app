@@ -1,5 +1,11 @@
 {
   "extends": "@xipkg/typescript/react-library.json",
-  "include": ["*"],
+  "include": [
+    "*",
+    "components/Header.tsx",
+    "components/NavbarAction.tsx",
+    "components/Navbar.tsx",
+    "components/ZoomMenu.tsx"
+  ],
   "exclude": ["dist", "build", "node_modules"]
 }
