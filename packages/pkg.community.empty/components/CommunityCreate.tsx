@@ -37,7 +37,7 @@ const FormSchema = z.object({
 });
 
 export default function CommunityCreate({ setStage, setTab }: CommunityCreateProps) {
-  const [file, setFile] = React.useState<any>();
+  const [file, setFile] = React.useState<string | null>(null);
   const [isAvatarEditorOpen, setIsAvatarEditorOpen] = React.useState(false);
 
   const [previewImg, setPreviewImg] = React.useState<string | null>();
@@ -70,9 +70,9 @@ export default function CommunityCreate({ setStage, setTab }: CommunityCreatePro
     }
 
     const readFile = (file: File) =>
-      new Promise((resolve) => {
+      new Promise<string>((resolve) => {
         const reader = new FileReader();
-        reader.addEventListener('load', () => resolve(reader.result), false);
+        reader.addEventListener('load', () => resolve(reader.result as string), false);
         reader.readAsDataURL(file);
       });
 
@@ -109,17 +109,6 @@ export default function CommunityCreate({ setStage, setTab }: CommunityCreatePro
       },
       async (status: number, { community, participant }: JoinResponseT) => {
         if (status === 200) {
-          // const { status } = await put<RequestBody, ResponseBody>({
-          //   service: 'auth',
-          //   path: '/api/onboarding/stages/completed/',
-          //   body: {},
-          //   config: {
-          //     headers: {
-          //       'Content-Type': 'application/json',
-          //     },
-          //   },
-          // });
-
           updateCommunityMeta({
             id: community.id,
             isOwner: participant.is_owner,

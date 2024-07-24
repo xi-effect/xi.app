@@ -70,25 +70,12 @@ export default function CommunityInvite({ setStage, setTab }: CommunityInvitePro
         code: arrayFromInvite[arrayFromInvite.length - 1],
       },
       async (status: number, { community, participant }: JoinResponseT) => {
-        console.log('status', status);
-
         if (status === 409) {
           setIsLoading(false);
           toast('Вы уже являетесь участником сообщества');
         }
 
         if (status === 200) {
-          // const { status } = await put<RequestBody, ResponseBody>({
-          //   service: 'auth',
-          //   path: '/api/onboarding/stages/completed/',
-          //   body: {},
-          //   config: {
-          //     headers: {
-          //       'Content-Type': 'application/json',
-          //     },
-          //   },
-          // });
-
           updateCommunityMeta({
             id: community.id,
             isOwner: participant.is_owner,
