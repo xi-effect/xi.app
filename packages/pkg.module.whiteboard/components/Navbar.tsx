@@ -35,7 +35,7 @@ export const Navbar = track(() => {
             <div className="flex gap-2 p-1">
               {navBarElements.map((item: TNavbarElement) => (
                 <TooltipProvider>
-                  <Tooltip>
+                  <Tooltip open={editor.getCurrentToolId() === item.action}>
                     <TooltipTrigger>
                       <button
                         type="button"
