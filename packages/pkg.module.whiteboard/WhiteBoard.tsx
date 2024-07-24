@@ -1,13 +1,11 @@
 'use client';
-
-import React from 'react';
 import { Tldraw } from 'tldraw';
 import { Navbar } from './components/Navbar';
 import './index.css';
 import { ZoomMenu } from './components/ZoomMenu';
 import { Header } from './components/Header';
 import { hiddenComponents } from './customConfig';
-
+import { StylePanel } from './components/StylePanel';
 export const WhiteBoard = () => (
   <Tldraw
     onMount={(editor) => {
@@ -18,5 +16,6 @@ export const WhiteBoard = () => (
     <Header />
     <Navbar />
     <ZoomMenu />
+    <StylePanel />
   </Tldraw>
 );
