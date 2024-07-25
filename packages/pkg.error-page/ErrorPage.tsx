@@ -13,8 +13,8 @@ export type ErrorPagePropsT = {
 };
 
 export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT) => (
-  <main className="3xl:mx-[360px] mx-8 flex h-[100vh] md:mx-[60px] lg:mx-[120px]">
-    <div className="absolute top-[64px] xl:top-[100px]">
+  <main className="3xl:px-[360px] px-8 flex h-[100dvh] w-full md:px-[60px] lg:px-[120px] flex flex-col justify-between overflow-y-scroll gap-8">
+    <div className="min-h-[44px] h-[88px] xl:h-[132px] xl:min-h-[52px] flex items-end">
       <Image
         width={201}
         height={24}
@@ -32,7 +32,7 @@ export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT)
     </div>
     <div className="flex flex-col justify-center">
       <span className="flex flex-col-reverse sm:flex-row sm:gap-1">
-        <h1 className="text-gray-90 mb-4 text-[40px] font-bold sm:text-[48px] xl:text-[64px]">
+        <h1 className="text-gray-90 mb-4 text-[40px] font-bold leading-[48px] sm:text-[48px] sm:leading=[58px] xl:text-[64px] xl:leading-[78px]">
           {title}
         </h1>
         <span className="text-gray-30 text-[28px] font-bold xl:text-[40px]">{errorCode}</span>
@@ -61,5 +61,6 @@ export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT)
       </p>
       <div className="text-gray-80 mt-[64px] text-[16px]">{children}</div>
     </div>
+    <div className="min-h-[44px] h-[88px] xl:h-[132px] xl:min-h-[52px]" />
   </main>
 );
