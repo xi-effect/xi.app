@@ -17,10 +17,10 @@ import { ComponentType } from 'react';
 import { type CustomElementType } from '../slate';
 
 export type EditorRootElementOptions = {
-  // eslint-disable-next-line no-undef
   label: string;
   icon: ComponentType<IconProps>;
 };
+
 export default {
   paragraph: {
     label: 'Текст',

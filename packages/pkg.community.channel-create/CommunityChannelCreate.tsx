@@ -62,7 +62,6 @@ const actionsSheetList = [
     type: 'tasks',
     desctiption:
       'Создавайте задания, тесты, получайте ответы от учеников, оценивайте и улучшайте знания',
-    disabled: true,
   },
   {
     icon: Chat,
