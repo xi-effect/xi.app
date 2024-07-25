@@ -117,7 +117,7 @@ export const Navbar = track(() => {
                         {item.icon ? item.icon : item.title}
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent className="border-gray-10 bg-gray-0 mb-2 flex gap-10 rounded-[12px] border p-1">
+                    <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-[12px] border p-1 shadow-none">
                       <div className="flex gap-2">
                         {item.menuPopupContent?.map((item) => (
                           <button
