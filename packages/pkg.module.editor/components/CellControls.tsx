@@ -31,11 +31,11 @@ export const CellControls = ({
 
   return (
     <>
-      <button className="hover:bg-gray-5 rounded" onClick={handleNewNode} aria-label="add cell above" type="button">
+      <button className="hover:bg-gray-5 active:bg-gray-5 rounded" onClick={handleNewNode} aria-label="add cell above" type="button">
         {isAddNewNode === null ? <Plus /> : <Close />}
       </button>
       <button
-        className="hover:bg-gray-5 rounded"
+        className="hover:bg-gray-5 active:bg-gray-5 rounded"
         aria-label="move"
         type="button"
         {...moveProps}

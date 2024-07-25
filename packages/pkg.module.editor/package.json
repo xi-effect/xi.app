@@ -15,7 +15,7 @@
     "@xipkg/dropdown": "^2.1.0",
     "@xipkg/input": "1.0.0",
     "@xipkg/file": "^1.1.0",
-    "@xipkg/icons": "1.0.2",
+    "@xipkg/icons": "1.1.0",
     "@xipkg/popover": "^2.0.0",
     "@floating-ui/react": "0.26.20",
     "@floating-ui/core": "1.6.5",

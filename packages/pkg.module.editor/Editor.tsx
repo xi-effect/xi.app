@@ -20,7 +20,7 @@ import {
   type MediaElement,
 } from './slate';
 
-import RenderElement from './utils/renderElement';
+import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
 import { CellControls, SortableElement, AddNewNode, InlineToolbar, Leaf } from './components';
 import { wrapLink } from './components/InlineToolbar';
@@ -170,13 +170,16 @@ const DragOverlayContent = ({ element }: any) => {
     return () => document.body.classList.remove('dragging');
   }, []);
 
+  const renderElement = useCallback((props: RenderElementProps) =>
+    (<RenderElement {...props} />), []);
+
   return (
     <div className="group/node flex">
       <div className="flex absolute items-end transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:flex">
         <CellControls moveProps={{}} />
       </div>
       <Slate editor={editor} initialValue={value}>
-        <Editable className="ml-14 w-full" readOnly renderElement={RenderElement} />
+        <Editable className="ml-14 w-full" readOnly renderElement={renderElement} />
       </Slate>
     </div>
   );

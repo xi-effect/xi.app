@@ -6,7 +6,6 @@ import { Editor, Range, Transforms, Element as SlateElement } from 'slate';
 import { useSlate } from 'slate-react';
 import { Bold, Italic, Underline, Stroke, Link } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
-import { Input } from '@xipkg/input';
 import {
   useFloating,
   useDismiss,
@@ -38,11 +37,11 @@ const isFormatActive = (editor: Editor, format: string) => {
   return !!match;
 };
 
-const insertLink = (editor: Editor, url: string) => {
-  if (editor.selection) {
-    wrapLink(editor, url);
-  }
-};
+// const insertLink = (editor: Editor, url: string) => {
+//   if (editor.selection) {
+//     wrapLink(editor, url);
+//   }
+// };
 
 export const wrapLink = (editor: Editor, url: string) => {
   if (isLinkActive(editor)) {
@@ -82,10 +81,9 @@ const isLinkActive = (editor: Editor) => {
 
 export const InlineToolbar = () => {
   const editor = useSlate();
-  const [showLinkInput, setShowLinkInput] = useState(false);
 
   const handleLinkClick = () => {
-    setShowLinkInput((prev) => !prev);
+    console.log('handleLinkClick');
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -193,46 +191,28 @@ export const InlineToolbar = () => {
             {...getFloatingProps()}
             className="box-border bg-gray-0 border-gray-10 flex flex-row items-center justify-center gap-1 rounded-lg border drop-shadow-md w-[152px] h-[40px]"
           >
-            {showLinkInput ? (
-              <Input
-                className="border-gray-30 text-gray-30 h-8 min-w-72 rounded-lg border text-sm max-[900px]:min-w-full"
-                autoComplete="off"
-                type="url"
-                placeholder="Вставьте ссылку"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    const url = (e.target as HTMLInputElement).value;
-                    if (!url) return;
-                    insertLink(editor, url);
-                    setShowLinkInput(false);
-                  }
-                }}
-              />
-            ) : (
-              <>
-                <FormatButton
-                  format="bold"
-                  icon={<Bold className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                />
-                <FormatButton
-                  format="italic"
-                  icon={<Italic className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                />
-                <FormatButton
-                  format="underlined"
-                  icon={<Underline className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                />
-                <FormatButton
-                  format="stroke"
-                  icon={<Stroke className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                />
-                <FormatButton
-                  onClick={handleLinkClick}
-                  format="link"
-                  icon={<Link className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                />
-              </>
-            )}
+
+            <FormatButton
+              format="bold"
+              icon={<Bold className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+            />
+            <FormatButton
+              format="italic"
+              icon={<Italic className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+            />
+            <FormatButton
+              format="underlined"
+              icon={<Underline className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+            />
+            <FormatButton
+              format="stroke"
+              icon={<Stroke className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+            />
+            <FormatButton
+              onClick={handleLinkClick}
+              format="link"
+              icon={<Link className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+            />
           </div>
         </FloatingFocusManager>
       }
