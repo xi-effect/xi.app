@@ -83,6 +83,7 @@ const navBarElements: TNavbarElement[] = [
 ];
 
 export const Navbar = track(() => {
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const editor = useEditor();
   return (
     <div className="pointer-events-none absolute inset-0">
@@ -95,19 +96,28 @@ export const Navbar = track(() => {
             <div className="flex gap-2 p-1">
               {navBarElements.map((item: TNavbarElement) => (
                 <TooltipProvider>
-                  <Tooltip open={editor.getCurrentToolId() === item.action && item?.hasAToolTip}>
+                  <Tooltip
+                    open={
+                      editor.getCurrentToolId() === item.action &&
+                      item?.hasAToolTip &&
+                      isTooltipOpen
+                    }
+                  >
                     <TooltipTrigger className="rounded-[8px]">
                       <button
                         type="button"
                         key={item.action}
                         className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px] ${editor.getCurrentToolId() === item.action ? 'bg-brand-0' : 'bg-gray-0'}`}
                         data-isactive={editor.getCurrentToolId() === item.action}
-                        onClick={() => editor.setCurrentTool(item.action)}
+                        onClick={() => {
+                          setIsTooltipOpen(true);
+                          editor.setCurrentTool(item.action);
+                        }}
                       >
                         {item.icon ? item.icon : item.title}
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent className="border-gray-10 bg-gray-0 mb-2 flex gap-10 rounded-[12px] border p-1">
                       <div className="flex gap-2">
                         {item.menuPopupContent?.map((item) => (
                           <button
@@ -115,12 +125,13 @@ export const Navbar = track(() => {
                             className={
                               'bg-gray-0 pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px]'
                             }
-                            onClick={() =>
+                            onClick={() => {
+                              setIsTooltipOpen(false);
                               editor.setStyleForNextShapes(
                                 DefaultColorStyle as unknown as StyleProp<string>,
                                 item.color,
-                              )
-                            }
+                              );
+                            }}
                           >
                             <div className="text-s-base">{item.icon ? item.icon : item.action}</div>
                           </button>
