@@ -14,22 +14,16 @@ import {
 import { Input } from '@xipkg/input';
 import { Logo } from 'pkg.logo';
 import { useRouter } from 'next/navigation';
-import { put } from 'pkg.utils/fetch';
+import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { StageType } from '../EmptyCommunity';
+import { JoinResponseT } from '../types';
 
 type CommunityInvitePropsT = {
   setStage: (stage: React.SetStateAction<StageType>) => void;
   setTab: (tab: React.SetStateAction<number>) => void;
-};
-
-type RequestBody = {};
-
-type ResponseBody = {
-  detail: string;
-  communityName: string;
 };
 
 const FormSchema = z.object({
@@ -39,6 +33,10 @@ const FormSchema = z.object({
 });
 
 export default function CommunityInvite({ setStage, setTab }: CommunityInvitePropsT) {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const router = useRouter();
 
   const handleBack = () => {
@@ -62,24 +60,39 @@ export default function CommunityInvite({ setStage, setTab }: CommunityInvitePro
 
   const watchInvite = watch('invite');
 
-  const onSubmit = async () => {
-    const { status, data } = await put<RequestBody, ResponseBody>({
-      service: 'auth',
-      path: '/api/onboarding/stages/completed/',
-      body: {},
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    });
+  const onSubmit = async ({ invite }: z.infer<typeof FormSchema>) => {
+    setIsLoading(true);
+    const arrayFromInvite = invite.split('/');
 
-    if (status === 204 && data) {
-      console.log('Название сообщества:', data.communityName);
-      router.push(`/community/${data.communityName}`);
-    } else {
-      toast('Ошибка сервера');
-    }
+    socket?.emit(
+      'join-community',
+      {
+        code: arrayFromInvite[arrayFromInvite.length - 1],
+      },
+      async (status: number, { community, participant }: JoinResponseT) => {
+        if (status === 409) {
+          setIsLoading(false);
+          toast('Вы уже являетесь участником сообщества');
+        }
+
+        if (status === 200) {
+          updateCommunityMeta({
+            id: community.id,
+            isOwner: participant.is_owner,
+            name: community.name,
+            description: community.description,
+          });
+
+          if (community) {
+            setIsLoading(false);
+            router.push(`/communities/${community.id}/home`);
+          } else {
+            setIsLoading(false);
+            toast('Ошибка сервера');
+          }
+        }
+      },
+    );
   };
 
   return (
@@ -121,9 +134,13 @@ export default function CommunityInvite({ setStage, setTab }: CommunityInvitePro
               <Button onClick={handleBack} variant="ghost" className="w-[98px]">
                 Назад
               </Button>
-              <Button disabled={watchInvite.length === 0} type="submit" className="w-full">
-                Продолжить
-              </Button>
+              {isLoading ? (
+                <Button disabled variant="default-spinner" type="submit" className="w-full" />
+              ) : (
+                <Button disabled={watchInvite.length === 0} type="submit" className="w-full">
+                  Продолжить
+                </Button>
+              )}
             </div>
           </form>
         </Form>
