@@ -10,7 +10,6 @@
   "dependencies": {
     "@xipkg/icons": "^0.10.3",
     "@xipkg/link": "^0.3.0",
-    "pkg.logo": "*",
     "next": "^14.2.3",
     "react": "^18.2.0"
   },

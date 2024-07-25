@@ -3,7 +3,7 @@
 import React from 'react';
 import { Link } from '@xipkg/link';
 import { TelegramFilled, MailRounded } from '@xipkg/icons';
-import { Logo } from 'pkg.logo';
+import Image from 'next/image';
 
 export type ErrorPagePropsT = {
   title: string;
@@ -15,12 +15,19 @@ export type ErrorPagePropsT = {
 export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT) => (
   <main className="3xl:mx-[360px] mx-8 flex h-[100vh] md:mx-[60px] lg:mx-[120px]">
     <div className="absolute top-[64px] xl:top-[100px]">
-      <Logo
-        logoVariant="navigation"
-        logoSize="default"
+      <Image
         width={201}
         height={24}
-        className="xl:h-[32px] xl:w-[269px]"
+        className="xl:h-[32px] xl:w-[269px] block dark:hidden"
+        src="/assets/brand/navigationlogo-default-light.svg"
+        alt="logo"
+      />
+      <Image
+        width={201}
+        height={24}
+        className="xl:h-[32px] xl:w-[269px] hidden dark:block"
+        src="/assets/brand/navigationlogo-default-dark.svg"
+        alt="logo"
       />
     </div>
     <div className="flex flex-col justify-center">
