@@ -1,13 +1,9 @@
-import {
-  DefaultColorStyle,
-  StyleProp,
-  track,
-  useEditor,
-} from 'tldraw';
+import { track, useEditor } from 'tldraw';
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import React from 'react';
 import { NavbarAction } from './NavbarAction';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { MenuPopupContent, TMenuPopupItem } from './MenuPopupContent';
 
 type TNavbarElement = {
   action: string;
@@ -17,15 +13,9 @@ type TNavbarElement = {
   menuPopupContent?: TMenuPopupItem[];
 };
 
-type TMenuPopupItem = {
-  icon: React.ReactNode | null;
-  action: string;
-  color: string;
-};
-
 const navBarElements: TNavbarElement[] = [
   { action: 'select', title: 'Select', icon: <Cursor />, hasAToolTip: true },
-  { action: 'highlight', title: 'Hand', icon: <Hand /> },
+  { action: 'hand', title: 'Hand', icon: <Hand /> },
   { action: 'draw', title: 'Draw', icon: <Pen />, hasAToolTip: true },
   {
     action: 'note',
@@ -123,25 +113,7 @@ export const Navbar = track(() => {
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-[12px] border p-1 shadow-none">
-                      <div className="flex gap-2">
-                        {item.menuPopupContent?.map((item) => (
-                          <button
-                            type="button"
-                            className={
-                              'bg-gray-0 pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px]'
-                            }
-                            onClick={() => {
-                              setIsTooltipOpen(false);
-                              editor.setStyleForNextShapes(
-                                DefaultColorStyle as unknown as StyleProp<string>,
-                                item.color,
-                              );
-                            }}
-                          >
-                            <div className="text-s-base">{item.icon ? item.icon : item.action}</div>
-                          </button>
-                        ))}
-                      </div>
+                      <MenuPopupContent item={item} setIsTooltipOpen={setIsTooltipOpen} />
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
