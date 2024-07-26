@@ -1,81 +1,9 @@
-import { track, useEditor } from 'tldraw';
-import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import React from 'react';
+import { track, useEditor } from 'tldraw';
 import { NavbarAction } from './NavbarAction';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
-import { MenuPopupContent, TMenuPopupItem } from './MenuPopupContent';
-
-type TNavbarElement = {
-  action: string;
-  title: string;
-  icon: React.ReactNode | null;
-  hasAToolTip?: boolean;
-  menuPopupContent?: TMenuPopupItem[];
-};
-
-const navBarElements: TNavbarElement[] = [
-  { action: 'select', title: 'Select', icon: <Cursor />, hasAToolTip: true },
-  { action: 'hand', title: 'Hand', icon: <Hand /> },
-  { action: 'draw', title: 'Draw', icon: <Pen />, hasAToolTip: true },
-  {
-    action: 'note',
-    title: 'Sticker',
-    icon: <Sticker />,
-    hasAToolTip: true,
-    menuPopupContent: [
-      {
-        icon: <Sticker className="fill-gray-60" />,
-        action: 'set-style',
-        color: 'grey',
-      },
-      {
-        icon: <Sticker className="fill-brand-100" />,
-        action: 'set-style',
-        color: 'blue',
-      },
-      {
-        icon: <Sticker className="fill-red-100" />,
-        action: 'set-style',
-        color: 'red',
-      },
-      {
-        icon: <Sticker className="fill-green-100" />,
-        action: 'set-style',
-        color: 'green',
-      },
-      {
-        icon: <Sticker className="fill-orange-100" />,
-        action: 'set-style',
-        color: 'light-red',
-      },
-      {
-        icon: <Sticker className="fill-yellow-100" />,
-        action: 'set-style',
-        color: 'yellow',
-      },
-      {
-        icon: <Sticker className="fill-violet-100" />,
-        action: 'set-style',
-        color: 'violet',
-      },
-      {
-        icon: <Sticker className="fill-pink-100" />,
-        action: 'set-style',
-        color: 'light-violet',
-      },
-      {
-        icon: <Sticker className="fill-cyan-100" />,
-        action: 'set-style',
-        color: 'light-blue',
-      },
-    ],
-  },
-  { action: 'text', title: 'Text', icon: <TText />, hasAToolTip: true },
-  { action: 'rectangle', title: 'Shapes', icon: <Figures />, hasAToolTip: true },
-  { action: 'arrow', title: 'Arrow', icon: <Arrow />, hasAToolTip: true },
-  { action: 'image', title: 'Image', icon: <Image />, hasAToolTip: true },
-  { action: 'eraser', title: 'Eraser', icon: <Eraser /> },
-];
+import { MenuPopupContent } from './MenuPopupContent';
+import { navBarElements, TNavbarElement } from '../navBarElements';
 
 export const Navbar = track(() => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
