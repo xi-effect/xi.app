@@ -1,4 +1,9 @@
-import { DefaultColorStyle, StyleProp, track, useEditor } from 'tldraw';
+import {
+  DefaultColorStyle,
+  StyleProp,
+  track,
+  useEditor,
+} from 'tldraw';
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import React from 'react';
 import { NavbarAction } from './NavbarAction';
@@ -20,7 +25,7 @@ type TMenuPopupItem = {
 
 const navBarElements: TNavbarElement[] = [
   { action: 'select', title: 'Select', icon: <Cursor />, hasAToolTip: true },
-  { action: 'hand', title: 'Hand', icon: <Hand /> },
+  { action: 'highlight', title: 'Hand', icon: <Hand /> },
   { action: 'draw', title: 'Draw', icon: <Pen />, hasAToolTip: true },
   {
     action: 'note',
