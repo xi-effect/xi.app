@@ -14,7 +14,7 @@ export const navBarElements: TNavbarElement[] = [
   { action: 'hand', title: 'Hand', icon: <Hand /> },
   { action: 'draw', title: 'Draw', icon: <Pen /> },
   {
-    action: 'note',
+    action: 'sticker',
     title: 'Sticker',
     icon: <Sticker />,
     hasAToolTip: true,
