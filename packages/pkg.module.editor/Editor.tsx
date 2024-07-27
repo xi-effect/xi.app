@@ -1,35 +1,60 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import { ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuTrigger,
-} from '@xipkg/dropdown';
-import { createEditor, Transforms } from 'slate';
-import { Move, Plus } from '@xipkg/icons';
-import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
-import { withHistory } from 'slate-history';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+
+import { createEditor, Transforms, Editor } from 'slate';
+import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
+import { useFloating, offset, autoUpdate } from '@floating-ui/react';
+import { withHistory } from 'slate-history';
+
+import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import isImageUrl from './utils/isImageUrl';
-import { createDefaultNode } from './utils/createDefaultNode';
-import rootElements, { type EditorRootElementOptions } from './const/rootElements';
+
+import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
-import { toPx } from './utils/toPx';
 import mockValues from './const/mockValues';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
-import { type CommonCustomElementType } from './slate';
-import renderElementContent from './utils/renderElement';
+import {
+  type MediaElement,
+} from './slate';
+
+import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
+import { CellControls, SortableElement, AddNewNode, InlineToolbar, Leaf } from './components';
+import { wrapLink } from './components/InlineToolbar';
+
+const withInlines = (editor: Editor) => {
+  const { insertData, insertText, isInline } = editor;
+
+  editor.isInline = (element) => ['link'].includes(element.type) || isInline(element);
+
+  editor.insertText = (text: string) => {
+    if (text && isUrl(text)) {
+      wrapLink(editor, text);
+    } else {
+      insertText(text);
+    }
+  };
+
+  editor.insertData = (data: DataTransfer) => {
+    const text = data.getData('text/plain');
+
+    if (text && isUrl(text)) {
+      wrapLink(editor, text);
+    } else {
+      insertData(data);
+    }
+  };
+
+  return editor;
+};
 
 const useEditor = () =>
   useMemo(() => {
-    const editor = withNodeId(withHistory(withReact(createEditor())));
+    const editor = withInlines(withNodeId(withHistory(withReact(createEditor()))));
 
     const { normalizeNode, isVoid } = editor;
 
@@ -59,132 +84,90 @@ export const EditorRoot = () => {
     const isTopLevel = ReactEditor.findPath(editor, props.element).length === 1;
 
     return isTopLevel ? (
-      <SortableElement {...props} renderElement={renderElementContent} />
+      <SortableElement {...props} renderElement={RenderElement} />
     ) : (
-      renderElementContent(props)
+      <RenderElement {...props} />
     );
   }, []);
 
   const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
 
-  const handleDropdownSelect = (type: CommonCustomElementType) => {
-    Transforms.insertNodes(editor, createDefaultNode(type), {
-      at: [editor.children.length],
-    });
-  };
-
-  return (
-    <DropdownMenu>
-      {/* @ts-ignore */}
-      <Slate editor={editor} initialValue={value} onChange={setValue}>
-        <DndContext
-          onDragStart={(event) => {
-            if (event.active) {
-              clearSelection();
-              setDraggingElementId(`${event.active.id}`);
-            }
-          }}
-          onDragEnd={(event) => {
-            const overId = event.over?.id;
-            const overIndex = editor.children.findIndex((x) => x.id === overId);
-
-            if (overId !== draggingElementId && overIndex !== -1) {
-              Transforms.moveNodes(editor, {
-                at: [],
-                match: (node) => node.id === draggingElementId,
-                to: [overIndex],
-              });
-            }
-
-            setDraggingElementId(undefined);
-          }}
-          onDragCancel={() => {
-            setDraggingElementId(undefined);
-          }}
-          modifiers={[restrictToVerticalAxis]}
-        >
-          <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <Editable
-              onKeyDown={(event) => {
-                if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
-                  event.preventDefault();
-
-                  navigator.clipboard
-                    .readText()
-                    .then((text) => {
-                      if (isImageUrl(text)) {
-                        Transforms.insertNodes(editor, createNode({ type: 'image', url: text }), {
-                          at: [editor.children.length],
-                        });
-                      }
-                    })
-                    .catch((err) => {
-                      console.error('Failed to paste image:', err);
-                    });
-                }
-              }}
-              className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
-              renderElement={renderElement}
-            />
-          </SortableContext>
-          {createPortal(
-            <DragOverlay>
-              {activeElement && <DragOverlayContent element={activeElement} />}
-            </DragOverlay>,
-            document.body,
-          )}
-        </DndContext>
-      </Slate>
-      <DropdownMenuPortal>
-        <DropdownMenuContent side="right">
-          {(
-            Object.entries(rootElements) as Array<
-              [CommonCustomElementType, EditorRootElementOptions]
-            >
-          ).map(([type, opt]) => (
-            <DropdownMenuItem
-              className="gap-2"
-              key={type}
-              onSelect={() => handleDropdownSelect(type)}
-            >
-              <opt.icon />
-              <span className="text-sm">{opt.label}</span>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenuPortal>
-    </DropdownMenu>
-  );
-};
-
-const SortableElement = ({ attributes, element, children, renderElement }: any) => {
-  const sortable = useSortable({
-    id: element.id,
-    transition: {
-      duration: 350,
-      easing: 'ease',
-    },
+  const floating = useFloating({
+    // open: isAddNewNode !== null,
+    // onOpenChange: () => setIsAddNewNode(null),
+    placement: 'left-start',
+    middleware: [offset({
+      mainAxis: -182,
+    })],
+    whileElementsMounted: autoUpdate,
   });
 
   return (
-    <div {...attributes}>
-      <div
-        className="group/node z-0 flex w-full"
-        {...sortable.attributes}
-        ref={sortable.setNodeRef}
-        style={{
-          transition: sortable.transition,
-          // @ts-ignore
-          '--translate-y': toPx(sortable.transform?.y),
-          transform: 'translate3d(0, var(--translate-y, 0), 0)',
-          pointerEvents: sortable.isSorting ? 'none' : undefined,
-          opacity: sortable.isDragging ? 0 : 1,
+    // @ts-ignore
+    <Slate editor={editor} initialValue={value} onChange={setValue}>
+      <DndContext
+        onDragStart={(event) => {
+          if (event.active) {
+            clearSelection();
+            setDraggingElementId(`${event.active.id}`);
+          }
         }}
+        onDragEnd={(event) => {
+          const overId = event.over?.id;
+          const overIndex = editor.children.findIndex((x) => x.id === overId);
+
+          if (overId !== draggingElementId && overIndex !== -1) {
+            Transforms.moveNodes(editor, {
+              at: [],
+              match: (node) => node.id === draggingElementId,
+              to: [overIndex],
+            });
+          }
+
+          setDraggingElementId(undefined);
+        }}
+        onDragCancel={() => {
+          setDraggingElementId(undefined);
+        }}
+        modifiers={[restrictToVerticalAxis]}
+      // sensors={sensors}
       >
-        <CellControls moveProps={sortable.listeners} />
-        <div className="ml-2 w-full">{renderElement({ element, children })}</div>
-      </div>
-    </div>
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          <InlineToolbar />
+          <AddNewNode floating={floating} />
+          <Editable
+            onKeyDown={(event) => {
+              if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+                event.preventDefault();
+
+                navigator.clipboard
+                  .readText()
+                  .then((text) => {
+                    if (isImageUrl(text)) {
+                      const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
+                      Transforms.insertNodes(editor, node, {
+                        at: [editor.children.length],
+                      });
+                    }
+                  })
+                  .catch((err) => {
+                    console.error('Failed to paste image:', err);
+                  });
+              }
+            }}
+            className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
+            renderElement={renderElement}
+            renderLeaf={(props) => <Leaf {...props} />}
+          />
+        </SortableContext>
+        {createPortal(
+          <DragOverlay>
+            {activeElement && <DragOverlayContent element={activeElement} />}
+          </DragOverlay>,
+          document.body,
+        )}
+      </DndContext>
+    </Slate>
   );
 };
 
@@ -198,25 +181,17 @@ const DragOverlayContent = ({ element }: any) => {
     return () => document.body.classList.remove('dragging');
   }, []);
 
+  const renderElement = useCallback((props: RenderElementProps) =>
+    (<RenderElement {...props} />), []);
+
   return (
     <div className="group/node flex">
-      <CellControls moveProps={{}} />
+      <div className="flex absolute items-end transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:flex">
+        <CellControls moveProps={{}} />
+      </div>
       <Slate editor={editor} initialValue={value}>
-        <Editable className="ml-2 w-full" readOnly renderElement={renderElementContent} />
+        <Editable className="ml-14 w-full" readOnly renderElement={renderElement} />
       </Slate>
     </div>
   );
 };
-
-const CellControls = ({ moveProps }: Partial<Record<'moveProps', ComponentProps<'button'>>>) => (
-  <div className="flex items-center opacity-0 transition *:grid *:size-5 *:place-content-center *:bg-transparent group-hover/node:opacity-100">
-    <DropdownMenuTrigger asChild>
-      <button aria-label="add cell above" type="button">
-        <Plus />
-      </button>
-    </DropdownMenuTrigger>
-    <button {...moveProps} aria-label="move" type="button">
-      <Move />
-    </button>
-  </div>
-);

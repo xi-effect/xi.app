@@ -15,21 +15,17 @@ type NavigationPropT = {
 type NewChannelT = {
   community_id: number;
   category_id: number | null;
-  channel: {
-    id: number;
-    kind: string;
-    name: string;
-    description: string | null;
-  };
+  id: number;
+  kind: string;
+  name: string;
+  description: string | null;
 };
 
 type NewCategoryT = {
   community_id: number;
-  category: {
-    id: number;
-    name: string;
-    description: string | null;
-  };
+  id: number;
+  name: string;
+  description: string | null;
 };
 
 type MoveCategoryT = {
@@ -76,10 +72,10 @@ export const Navigation = ({ children }: NavigationPropT) => {
       const handleNewChannel = (newChannel: NewChannelT) => {
         addChannel({
           uid: nanoid(),
-          id: newChannel.channel.id,
+          id: newChannel.id,
           categoryId: newChannel.category_id ? newChannel.category_id : 'empty',
-          kind: newChannel.channel.kind,
-          name: newChannel.channel.name,
+          kind: newChannel.kind,
+          name: newChannel.name,
         });
       };
 
@@ -98,9 +94,9 @@ export const Navigation = ({ children }: NavigationPropT) => {
       const handleNewCategory = (newCategory: NewCategoryT) => {
         addCategory({
           uid: nanoid(),
-          id: newCategory.category.id,
-          name: newCategory.category.name,
-          description: newCategory.category.description,
+          id: newCategory.id,
+          name: newCategory.name,
+          description: newCategory.description,
         });
       };
 
