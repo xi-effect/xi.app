@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 
 import { createEditor, Transforms, Editor } from 'slate';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
+import { useFloating, offset, autoUpdate } from '@floating-ui/react';
 import { withHistory } from 'slate-history';
 
 import { DndContext, DragOverlay } from '@dnd-kit/core';
@@ -91,6 +92,16 @@ export const EditorRoot = () => {
 
   const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
 
+  const floating = useFloating({
+    // open: isAddNewNode !== null,
+    // onOpenChange: () => setIsAddNewNode(null),
+    placement: 'left-start',
+    middleware: [offset({
+      mainAxis: -182,
+    })],
+    whileElementsMounted: autoUpdate,
+  });
+
   return (
     // @ts-ignore
     <Slate editor={editor} initialValue={value} onChange={setValue}>
@@ -123,7 +134,7 @@ export const EditorRoot = () => {
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           <InlineToolbar />
-          <AddNewNode />
+          <AddNewNode floating={floating} />
           <Editable
             onKeyDown={(event) => {
               if ((event.ctrlKey || event.metaKey) && event.key === 'v') {

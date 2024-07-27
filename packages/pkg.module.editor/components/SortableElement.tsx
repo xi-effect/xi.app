@@ -29,6 +29,7 @@ export const SortableElement = ({ attributes, element, children, renderElement }
       <div
         className="group/node z-0 flex w-full relative"
         {...sortable.attributes}
+        role="none"
         ref={sortable.setNodeRef}
         style={{
           transition: sortable.transition,
@@ -40,7 +41,10 @@ export const SortableElement = ({ attributes, element, children, renderElement }
         }}
       >
         <div className={`absolute ${''} hidden items-end transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:flex`}>
-          <CellControls moveProps={sortable.listeners} element={element} />
+          <CellControls
+            moveProps={sortable.listeners}
+            element={element}
+          />
         </div>
         <div id={srtElId} className="ml-14 w-full">{renderElement({ element, children })}</div>
       </div>

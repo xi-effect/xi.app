@@ -17,11 +17,9 @@ export const Portal = ({ children }: PortalProps) =>
 export const CellControls = ({
   moveProps,
   element,
-}: Partial<Record<'moveProps', ComponentProps<'button'>> & { element?: CustomElement }>) => {
+}: Partial<Record<'moveProps', ComponentProps<'button'>> & { element: CustomElement }>) => {
   const isAddNewNode = useInterfaceStore((state) => state.isAddNewNode);
   const setIsAddNewNode = useInterfaceStore((state) => state.setIsAddNewNode);
-
-  console.log('isAddNewNode', isAddNewNode);
 
   const handleNewNode = () => {
     if (isAddNewNode === null) return setIsAddNewNode(element ? element.id : '');
@@ -35,7 +33,7 @@ export const CellControls = ({
         {isAddNewNode === null ? <Plus /> : <Close />}
       </button>
       <button
-        className="hover:bg-gray-5 active:bg-gray-5 rounded"
+        className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-grab"
         aria-label="move"
         type="button"
         {...moveProps}
