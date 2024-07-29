@@ -52,7 +52,7 @@ export const Task = () => {
           <div className="border-gray-30 flex w-full flex-col gap-6 rounded-lg border p-6 xl:w-[400px] 2xl:w-[450px]">
             <div className="flex justify-between">
               <p>Решение до 14 мая 2024</p>
-              <span className="bg-orange-0 rounded px-2 py-1 text-xs">Назначено</span>
+              <span className="bg-orange-0 text-xs-base rounded px-2 py-1">Назначено</span>
             </div>
             <div className="flex flex-col gap-4">
               {files.length > 0 && (

@@ -17,16 +17,16 @@ export const EditorModal = ({ isOpen, onConfirm, onOpenChange }: EditorModalProp
         <M.ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />
         </M.ModalCloseButton>
-        <M.ModalHeader className="text-xl-base flex flex-row items-baseline gap-1">
-          <div>Создание ответа</div>
+        <M.ModalHeader className="flex flex-row items-baseline gap-1">
+          <h2 className="text-xl-base">Создание ответа</h2>
           <span className="text-s-base text-gray-60 font-normal">Черновик сохранен в 16:10</span>
         </M.ModalHeader>
 
         <div className="flex h-full flex-col gap-6 p-6">
           <div className="flex flex-col gap-4 p-6 xl:px-[376px]">
-            <div contentEditable className="text-h3 text-gray-30 outline-none">
+            <h3 contentEditable className="text-h3 text-gray-30 outline-none">
               Введите название
-            </div>
+            </h3>
             <span className="text-l-base text-gray-30">Нажмите Tab для выбора инструмента</span>
           </div>
         </div>
