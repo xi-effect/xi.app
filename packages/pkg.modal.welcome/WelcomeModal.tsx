@@ -35,7 +35,7 @@ export const WelcomeModal = ({ ...props }: WelcomeModalPropsT) => {
         <div className="flex flex-row items-center w-full md:h-[400px] max-h-[calc(100dvh-16px)] rounded-2xl overflow-auto md:overflow-hidden">
           <div className="hidden md:flex flex-col pl-6 pr-4">
             <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
-            <div className="rounded-full h-[160px] w-[160px] bg-brand-40" />
+            <div className="rounded-full h-[160px] w-[160px] bg-[url('/assets/welcome/welcome-modal-image.jpg')]" />
             <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
           </div>
           <div className="flex flex-col flex-1 w-full h-full">
@@ -50,7 +50,7 @@ export const WelcomeModal = ({ ...props }: WelcomeModalPropsT) => {
             <div className="md:hidden w-full min-h-[160px] flex flex-row justify-center items-center overflow-hidden mt-10 mb-[58px]">
               <div className="flex flex-row justify-center min-w-[480px]">
                 <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
-                <div className="rounded-full h-[160px] w-[160px] bg-brand-40" />
+                <div className="rounded-full h-[160px] w-[160px] bg-[url('/assets/welcome/welcome-modal-image.jpg')]" />
                 <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
               </div>
             </div>
