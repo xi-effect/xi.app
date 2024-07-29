@@ -4,9 +4,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { ScrollArea } from '@xipkg/scrollarea';
 
-const Task = dynamic(() =>
-  import('pkg.module.tasks').then((mod) => mod.Task),
-);
+const Task = dynamic(() => import('pkg.module.tasks').then((mod) => mod.Task));
 
 export default function TaskPage() {
   return (

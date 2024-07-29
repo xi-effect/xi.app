@@ -8,13 +8,19 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@xipkg/icons": "0.9.3",
-    "@xipkg/select": "^0.2.0",
     "@xipkg/breadcrumbs": "^0.1.0",
-    "next": "^14.2.3",
-    "react": "^18.2.0",
+    "@xipkg/button": "*",
+    "@xipkg/dropdown": "*",
+    "@xipkg/file": "^2.0.0",
+    "@xipkg/fileuploader": "^2.0.0",
+    "@xipkg/icons": "^1.1.0",
+    "@xipkg/input": "^1.0.0",
+    "@xipkg/modal": "^3.0.0",
+    "@xipkg/select": "^0.2.0",
     "date-fns": "3.6.0",
-    "pkg.stores": "*"
+    "next": "^14.2.3",
+    "pkg.stores": "*",
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
