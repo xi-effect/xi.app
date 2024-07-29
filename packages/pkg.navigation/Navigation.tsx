@@ -2,8 +2,10 @@
 
 'use client';
 
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { useSessionStorage } from 'pkg.utils.client';
+import { useSearchParams } from 'next/navigation';
+import { WelcomeModal } from 'pkg.modal.welcome';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
 import { BottomBar, Menu } from './components';
@@ -184,6 +186,13 @@ export const Navigation = ({ children }: NavigationPropT) => {
     }
   }, []);
 
+  // Чтение параметров из url и открытие модального окна, если есть параметр welcome-modal=true
+  const searchParams = useSearchParams();
+  const [modalOpen, setModalOpen] = useState(searchParams.get('welcome-modal') === 'true');
+  useEffect(() => {
+    setModalOpen(searchParams.get('welcome-modal') === 'true');
+  }, [searchParams]);
+
   return (
     <>
       <div className="relative hidden flex-row md:flex">
@@ -195,6 +204,7 @@ export const Navigation = ({ children }: NavigationPropT) => {
       <BottomBar slideIndex={slideIndex} setSlideIndex={setSlideIndex}>
         {children}
       </BottomBar>
+      <WelcomeModal open={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 };

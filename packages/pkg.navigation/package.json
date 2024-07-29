@@ -29,6 +29,7 @@
     "pkg.modal.add-community": "*",
     "pkg.modal.category-create": "*",
     "pkg.modal.invite-community": "*",
+    "pkg.modal.welcome": "*",
     "pkg.models": "*",
     "pkg.router.url": "*",
     "pkg.stores": "*",
