@@ -131,6 +131,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
     () => (categories || []).map((channel) => channel.uid ?? 0),
     [channels],
   );
+
   const [activeCategory, setActiveCategory] = useState<CategoryT | null>(null);
   const [activeChannel, setActiveChannel] = useState<ChannelT | null>(null);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
@@ -390,8 +391,9 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-156px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:h-[calc(100dvh-282px)] md:pl-1 md:pr-0 ${className ?? ''
-          }`}
+        className={`mt-3 flex h-[calc(100dvh-156px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:h-[calc(100dvh-282px)] md:pl-1 md:pr-0 ${
+          className ?? ''
+        }`}
       >
         <div
           onClick={() => router.push(`/communities/${currentCommunityId}/home`)}
@@ -426,7 +428,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
               channels={(channels || []).filter(
                 (channel) => channel.categoryId === activeCategory.id,
               )}
-            // firstEmptyCategoryIndex={firstEmptyCategoryIndex}
+              // firstEmptyCategoryIndex={firstEmptyCategoryIndex}
             />
           )}
           {activeChannel && (
@@ -434,8 +436,9 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
               <Channel
                 channel={activeChannel}
                 // стили нужны для отображения при захвате через DnD
-                className={`rounded-lg border-[1px] drop-shadow-lg ${currentChannel?.uid === activeChannel.uid ? 'border-brand-100' : 'border-gray-30'
-                  }`}
+                className={`rounded-lg border-[1px] drop-shadow-lg ${
+                  currentChannel?.uid === activeChannel.uid ? 'border-brand-100' : 'border-gray-30'
+                }`}
               />
             </SortableContext>
           )}

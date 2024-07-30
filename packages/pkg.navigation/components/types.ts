@@ -13,3 +13,12 @@ export type ChannelT = {
   name: string;
   disabled?: boolean;
 };
+
+export type UpdateChannelReqT = {
+  community_id: number;
+  channel_id: number;
+  data: {
+    name: string;
+    description: string;
+  };
+};
