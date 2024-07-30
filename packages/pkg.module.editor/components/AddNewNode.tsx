@@ -1,44 +1,64 @@
-/* eslint-disable no-useless-return */
-import React from 'react';
-import { FloatingFocusManager, UseFloatingReturn } from '@floating-ui/react';
-import rootElements, { EditorRootElementOptions } from '../const/rootElements';
-import { CommonCustomElementType, type CustomElementType } from '../slate';
-// import { useInterfaceStore } from '../interfaceStore';
+import React, { Dispatch, ReactNode, SetStateAction } from 'react';
+import { Transforms } from 'slate';
+import { useSlate } from 'slate-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@xipkg/dropdown';
+import rootElements from '../const/rootElements';
+import { useInterfaceStore } from '../interfaceStore';
+import { createDefaultNode } from '../utils/createDefaultNode';
+import { type CustomElement } from '../slate';
 
 type AddNewNodePropsT = {
-  floating: UseFloatingReturn;
+  children: ReactNode
+  element: CustomElement;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export const AddNewNode = ({ floating }: AddNewNodePropsT) => {
-  const handleDropdownSelect = (type: string) => { console.log('type', type); };
+export const AddNewNode = ({ children, element, isOpen, setIsOpen }: AddNewNodePropsT) => {
+  const editor = useSlate();
+
+  console.log('focusedEl', editor, element);
+
+  const handleDropdownSelect = (type: string) => {
+    const currentElId = editor.children.findIndex((item) => item.id === element.id);
+
+    console.log('currentElId', currentElId);
+
+    if (currentElId === -1) return;
+
+    Transforms.insertNodes(editor, createDefaultNode(type), {
+      at: [currentElId + 1],
+    });
+  };
+
+  const isAddNewNode = useInterfaceStore((state) => state.isAddNewNode);
+
+  if (isAddNewNode === element?.id) console.log('isAddNewNode', isOpen, isAddNewNode, element);
 
   return (
-    <FloatingFocusManager context={floating?.context} modal={false}>
-      <div
-        ref={floating.refs.setFloating}
-        style={{
-          position: floating?.strategy,
-          top: floating?.y ?? 0,
-          left: floating?.x ?? 0,
-          zIndex: 1000,
-        }}
-        className="w-[216px] p-2 border border-gray-10 rounded-lg bg-gray-0"
-      >
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>
+        {children}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="right" align="start" alignOffset={-12}>
         {(
-          Object.entries(rootElements) as unknown as Array<
-            [CommonCustomElementType, EditorRootElementOptions]
-          >
+          Object.entries(rootElements)
         ).map(([type, opt]) => (
-          <div
-            className="flex flex-row items-center justify-start gap-2 hover:bg-gray-5 rounded p-1 cursor-pointer"
-            key={type as unknown as string}
-            onSelect={() => handleDropdownSelect(type as unknown as CustomElementType)}
+          <DropdownMenuItem
+            className="gap-2 hover:bg-gray-5 rounded"
+            key={type}
+            onSelect={() => handleDropdownSelect(type)}
           >
-            <opt.icon className="h-4 w-4" />
-            <span className="text-s-base">{opt.label}</span>
-          </div>
+            <opt.icon />
+            <span className="text-sm">{opt.label}</span>
+          </DropdownMenuItem>
         ))}
-      </div>
-    </FloatingFocusManager>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

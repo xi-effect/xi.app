@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 
 import { createEditor, Transforms, Editor } from 'slate';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
-import { useFloating, offset, autoUpdate } from '@floating-ui/react';
+// import { useFloating, offset, autoUpdate, inline, shift, flip } from '@floating-ui/react';
 import { withHistory } from 'slate-history';
 
 import { DndContext, DragOverlay } from '@dnd-kit/core';
@@ -23,7 +23,7 @@ import {
 
 import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
-import { CellControls, SortableElement, AddNewNode, InlineToolbar, Leaf } from './components';
+import { CellControls, SortableElement, InlineToolbar, Leaf } from './components';
 import { wrapLink } from './components/InlineToolbar';
 
 const withInlines = (editor: Editor) => {
@@ -52,7 +52,7 @@ const withInlines = (editor: Editor) => {
   return editor;
 };
 
-const useEditor = () =>
+export const useEditor = () =>
   useMemo(() => {
     const editor = withInlines(withNodeId(withHistory(withReact(createEditor()))));
 
@@ -70,7 +70,7 @@ const useEditor = () =>
 export const EditorRoot = () => {
   const editor = useEditor();
 
-  const [value, setValue] = useState(mockValues);
+  const [value] = useState(mockValues);
   const [draggingElementId, setDraggingElementId] = useState<string>();
   const activeElement = editor.children.find((x) => x.id === draggingElementId);
 
@@ -92,19 +92,8 @@ export const EditorRoot = () => {
 
   const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
 
-  const floating = useFloating({
-    // open: isAddNewNode !== null,
-    // onOpenChange: () => setIsAddNewNode(null),
-    placement: 'left-start',
-    middleware: [offset({
-      mainAxis: -182,
-    })],
-    whileElementsMounted: autoUpdate,
-  });
-
   return (
-    // @ts-ignore
-    <Slate editor={editor} initialValue={value} onChange={setValue}>
+    <Slate editor={editor} initialValue={value} onChange={(value) => console.log('onChange', value)}>
       <DndContext
         onDragStart={(event) => {
           if (event.active) {
@@ -130,11 +119,9 @@ export const EditorRoot = () => {
           setDraggingElementId(undefined);
         }}
         modifiers={[restrictToVerticalAxis]}
-      // sensors={sensors}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           <InlineToolbar />
-          <AddNewNode floating={floating} />
           <Editable
             onKeyDown={(event) => {
               if ((event.ctrlKey || event.metaKey) && event.key === 'v') {

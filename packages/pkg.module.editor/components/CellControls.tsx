@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { Close, Move, Plus } from '@xipkg/icons';
 import { type CustomElement } from '../slate';
-
-// import { AddNewNode } from './AddNewNode';
-import { useInterfaceStore } from '../interfaceStore';
+import { AddNewNode } from './AddNewNode';
 
 type PortalProps = {
   children: ReactNode;
@@ -18,20 +16,21 @@ export const CellControls = ({
   moveProps,
   element,
 }: Partial<Record<'moveProps', ComponentProps<'button'>> & { element: CustomElement }>) => {
-  const isAddNewNode = useInterfaceStore((state) => state.isAddNewNode);
-  const setIsAddNewNode = useInterfaceStore((state) => state.setIsAddNewNode);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleNewNode = () => {
-    if (isAddNewNode === null) return setIsAddNewNode(element ? element.id : '');
-
-    return setIsAddNewNode(null);
+    setIsOpen((prev) => !prev);
   };
 
+  if (!element) return null;
+
   return (
-    <>
-      <button className="hover:bg-gray-5 active:bg-gray-5 rounded" onClick={handleNewNode} aria-label="add cell above" type="button">
-        {isAddNewNode === null ? <Plus /> : <Close />}
-      </button>
+    <div className={`absolute ${isOpen ? 'opacity-100' : ''} flex items-end opacity-0 transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:opacity-100`}>
+      <AddNewNode element={element} isOpen={isOpen} setIsOpen={setIsOpen}>
+        <button className="hover:bg-gray-5 active:bg-gray-5 rounded" onClick={handleNewNode} type="button">
+          {isOpen ? <Close /> : <Plus />}
+        </button>
+      </AddNewNode>
       <button
         className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-grab"
         aria-label="move"
@@ -41,6 +40,6 @@ export const CellControls = ({
       >
         <Move />
       </button>
-    </>
+    </div>
   );
 };
