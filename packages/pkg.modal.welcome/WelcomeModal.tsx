@@ -11,6 +11,7 @@ import {
 } from '@xipkg/modal';
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
+import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { deleteQuery } from '@xipkg/routerurl';
 
@@ -26,7 +27,7 @@ export const WelcomeModal = ({ ...props }: WelcomeModalPropsT) => {
   // При закрытии окна изменять значение в параметрах URL
   const onClose = () => {
     const updatedParams = deleteQuery(searchParams, 'welcome-modal');
-    router.push(`${pathname}?${updatedParams}`);
+    router.replace(`${pathname}?${updatedParams}`);
   };
 
   return (
@@ -35,7 +36,7 @@ export const WelcomeModal = ({ ...props }: WelcomeModalPropsT) => {
         <div className="flex flex-row items-center w-full md:h-[400px] max-h-[calc(100dvh-16px)] rounded-2xl overflow-auto md:overflow-hidden">
           <div className="hidden md:flex flex-col pl-6 pr-4">
             <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
-            <div className="rounded-full h-[160px] w-[160px] bg-[url('/assets/welcome/welcome-modal-image.jpg')]" />
+            <Image className="rounded-full" height={160} width={160} src="/assets/welcome/welcome-modal-image.webp" alt="Девушка проходит тур по сервису" />
             <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
           </div>
           <div className="flex flex-col flex-1 w-full h-full">
@@ -50,7 +51,7 @@ export const WelcomeModal = ({ ...props }: WelcomeModalPropsT) => {
             <div className="md:hidden w-full min-h-[160px] flex flex-row justify-center items-center overflow-hidden mt-10 mb-[58px]">
               <div className="flex flex-row justify-center min-w-[480px]">
                 <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
-                <div className="rounded-full h-[160px] w-[160px] bg-[url('/assets/welcome/welcome-modal-image.jpg')]" />
+                <Image className="rounded-full" height={160} width={160} src="/assets/welcome/welcome-modal-image.webp" alt="Девушка проходит тур по сервису" />
                 <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
               </div>
             </div>
