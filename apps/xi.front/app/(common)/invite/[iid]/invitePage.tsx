@@ -70,7 +70,6 @@ const InviteCard = ({ invite, iid }: InviteCardT) => {
   const onSubmit = () => {
     setIsLoading(true);
 
-    // console.log('onSubmit', invite);
     socket.emit(
       'join-community',
       {
