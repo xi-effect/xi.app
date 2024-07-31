@@ -161,6 +161,10 @@ export const InlineToolbar = () => {
 
   useEffect(() => {
     const handleDocumentKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 's' && (/Mac|iPod|iPhone|iPad/.test(navigator.platform) ? event.metaKey : event.ctrlKey)) {
+        event.preventDefault(); // Prevent default save action
+      }
+
       if (event && event.target) {
         handleKeyDown(event as KeyboardEvent<HTMLDivElement>);
       }
