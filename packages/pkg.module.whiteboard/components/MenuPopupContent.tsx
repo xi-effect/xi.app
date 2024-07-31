@@ -7,7 +7,7 @@ type MenuPopupContentT = {
   setIsTooltipOpen: (arg: boolean) => void;
 };
 
-type MenuPopupItemT = {
+export type MenuPopupItemT = {
   icon: React.ReactNode | null;
   action: string;
   color: string;

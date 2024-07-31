@@ -1,5 +1,5 @@
 'use client';
-import { DefaultContextMenu, DefaultContextMenuContent, Tldraw } from 'tldraw';
+import { DefaultContextMenu, Tldraw } from 'tldraw';
 import { Navbar } from './components/Navbar';
 import './index.css';
 import { ZoomMenu } from './components/ZoomMenu';

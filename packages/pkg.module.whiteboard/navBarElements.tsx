@@ -1,12 +1,12 @@
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
-import { TMenuPopupItem } from './components/MenuPopupContent';
+import { MenuPopupItemT } from './components/MenuPopupContent';
 
 export type TNavbarElement = {
   action: string;
   title: string;
   icon: React.ReactNode | null;
   hasAToolTip?: boolean;
-  menuPopupContent?: TMenuPopupItem[];
+  menuPopupContent?: MenuPopupItemT[];
 };
 
 export const navBarElements: TNavbarElement[] = [
