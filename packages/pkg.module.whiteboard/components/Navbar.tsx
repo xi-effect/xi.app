@@ -8,6 +8,7 @@ import { navBarElements, TNavbarElement } from '../navBarElements';
 export const Navbar = track(() => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const editor = useEditor();
+
   return (
     <div className="pointer-events-none absolute inset-0">
       <div className="absolute bottom-3 left-0 right-0 z-[300] flex w-full items-center justify-center">

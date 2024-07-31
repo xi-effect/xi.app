@@ -4,6 +4,7 @@ import { Button } from '@xipkg/button';
 
 export function Header() {
   const { isFullScreen, toggleFullScreen } = useFullScreen('whiteboard-container');
+
   return (
     <div className="bg-gray-0 text-xl-base absolute z-[300] w-full px-4 py-4">
       <div className="flex items-center justify-between">
