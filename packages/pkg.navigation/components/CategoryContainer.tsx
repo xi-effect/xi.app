@@ -127,7 +127,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
                 setSlideIndex={setSlideIndex}
                 key={channel.uid}
                 channel={channel}
-                onOpenEditModal={handleOpenEditModal}
+                onOpenEditModal={() => handleOpenEditModal(channel)}
               />
             ))}
           </SortableContext>
@@ -137,7 +137,10 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
         <EditChannelModal
           isOpen={isEditModalOpen}
           onConfirm={handleEditChannel}
-          onOpenChange={setIsEditModalOpen}
+          onOpenChange={(value) => {
+            setIsEditModalOpen(value);
+            setCurrentChannel(null);
+          }}
           channel={currentChannel}
         />
       )}

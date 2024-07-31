@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React from 'react';
 import * as M from '@xipkg/modal';
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
+import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
 import { ChannelT } from './types';
 
@@ -13,16 +14,26 @@ export type EditChannelModalPropsT = {
   channel: ChannelT;
 };
 
+type EditChannelFormT = {
+  name: string;
+};
+
 export const EditChannelModal = ({
   isOpen,
   onConfirm,
   onOpenChange,
   channel,
 }: EditChannelModalPropsT) => {
-  const [channelName, setChannelName] = useState(channel.name);
+  const form = useForm({
+    defaultValues: {
+      name: channel.name || '',
+    },
+  });
+  const { control, handleSubmit, trigger } = form;
 
-  const handleConfirmUpdate = () => {
-    onConfirm({ ...channel, name: channelName });
+  const onSubmit = async (data: EditChannelFormT) => {
+    trigger();
+    onConfirm({ ...channel, name: data.name });
     onOpenChange(false);
   };
 
@@ -35,12 +46,24 @@ export const EditChannelModal = ({
         <M.ModalHeader>
           <M.ModalTitle>Редактирование канала</M.ModalTitle>
         </M.ModalHeader>
-        <div className="flex flex-col gap-1 p-6">
-          <label>Название</label>
-          <Input value={channelName} onChange={(e) => setChannelName(e.currentTarget.value)} />
-        </div>
+        <Form {...form}>
+          <form id="edit_channel_form" onSubmit={handleSubmit(onSubmit)}>
+            <FormField
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-2 p-6">
+                  <FormLabel>Название</FormLabel>
+                  <FormControl>
+                    <Input type="text" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
         <M.ModalFooter className="flex items-center justify-start gap-4">
-          <Button disabled={!channelName} onClick={handleConfirmUpdate} className="w-full">
+          <Button form="edit_channel_form" className="w-full">
             Сохранить
           </Button>
         </M.ModalFooter>

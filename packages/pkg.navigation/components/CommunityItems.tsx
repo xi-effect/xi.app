@@ -428,7 +428,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
               channels={(channels || []).filter(
                 (channel) => channel.categoryId === activeCategory.id,
               )}
-              // firstEmptyCategoryIndex={firstEmptyCategoryIndex}
             />
           )}
           {activeChannel && (
