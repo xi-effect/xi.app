@@ -3,7 +3,7 @@ import { track, useEditor } from 'tldraw';
 import { NavbarAction } from './NavbarAction';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { MenuPopupContent } from './MenuPopupContent';
-import { navBarElements, TNavbarElement } from '../navBarElements';
+import { navBarElements, NavbarElementT } from '../navBarElements';
 
 export const Navbar = track(() => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
@@ -18,7 +18,7 @@ export const Navbar = track(() => {
           </div>
           <div className="border-gray-10 bg-gray-0 flex gap-10 rounded-[12px] border">
             <div className="flex gap-2 p-1">
-              {navBarElements.map((item: TNavbarElement) => (
+              {navBarElements.map((item: NavbarElementT) => (
                 <TooltipProvider>
                   <Tooltip
                     open={

@@ -1,9 +1,9 @@
 import React from 'react';
 import { DefaultColorStyle, StyleProp, useEditor } from 'tldraw';
-import { TNavbarElement } from '../navBarElements';
+import { NavbarElementT } from '../navBarElements';
 
 type MenuPopupContentT = {
-  item: TNavbarElement;
+  item: NavbarElementT;
   setIsTooltipOpen: (arg: boolean) => void;
 };
 
