@@ -1,7 +1,7 @@
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import { MenuPopupItemT } from './components/MenuPopupContent';
 
-export type TNavbarElement = {
+export type NavbarElementT = {
   action: string;
   title: string;
   icon: React.ReactNode | null;
@@ -9,7 +9,7 @@ export type TNavbarElement = {
   menuPopupContent?: MenuPopupItemT[];
 };
 
-export const navBarElements: TNavbarElement[] = [
+export const navBarElements: NavbarElementT[] = [
   { action: 'select', title: 'Select', icon: <Cursor /> },
   { action: 'hand', title: 'Hand', icon: <Hand /> },
   { action: 'draw', title: 'Draw', icon: <Pen /> },
