@@ -4,7 +4,7 @@ import React, { useEffect, useState, KeyboardEvent } from 'react';
 
 import { Editor, Range, Transforms, Element as SlateElement } from 'slate';
 import { useSlate } from 'slate-react';
-import { Bold, Italic, Underline, Stroke, Link } from '@xipkg/icons';
+import { Bold, Italic, Underline, Stroke } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import {
   useFloating,
@@ -36,12 +36,6 @@ const isFormatActive = (editor: Editor, format: string) => {
   });
   return !!match;
 };
-
-// const insertLink = (editor: Editor, url: string) => {
-//   if (editor.selection) {
-//     wrapLink(editor, url);
-//   }
-// };
 
 export const wrapLink = (editor: Editor, url: string) => {
   if (isLinkActive(editor)) {
@@ -82,12 +76,7 @@ const isLinkActive = (editor: Editor) => {
 export const InlineToolbar = () => {
   const editor = useSlate();
 
-  const handleLinkClick = () => {
-    console.log('handleLinkClick');
-  };
-
   const [isOpen, setIsOpen] = useState(false);
-  console.log('isOpen', isOpen);
 
   const { refs, floatingStyles, context } = useFloating({
     placement: 'top',
@@ -102,8 +91,11 @@ export const InlineToolbar = () => {
   const { getFloatingProps } = useInteractions([dismiss]);
 
   useEffect(() => {
-    function handleMouseUp(event: MouseEvent) {
-      if (refs.floating.current?.contains(event.target as Element | null)) {
+    const handleMouseUp = (event: MouseEvent) => {
+      console.log('handleMouseUp', event);
+
+      if (event && event?.target &&
+        refs.floating.current?.contains(event?.target as Element | null)) {
         return;
       }
 
@@ -127,17 +119,20 @@ export const InlineToolbar = () => {
           setIsOpen(true);
         }
       });
-    }
+    };
 
-    function handleMouseDown(event: MouseEvent) {
-      if (refs.floating.current?.contains(event.target as Element | null)) {
+    const handleMouseDown = (event: MouseEvent) => {
+      console.log('handleMouseDown', event);
+
+      if (event && event?.target &&
+        refs.floating.current?.contains(event.target as Element | null)) {
         return;
       }
 
       if (window.getSelection()?.isCollapsed) {
         setIsOpen(false);
       }
-    }
+    };
 
     window.addEventListener('mouseup', handleMouseUp);
     window.addEventListener('mousedown', handleMouseDown);
@@ -166,7 +161,9 @@ export const InlineToolbar = () => {
 
   useEffect(() => {
     const handleDocumentKeyDown = (event: KeyboardEvent) => {
-      handleKeyDown(event as KeyboardEvent<HTMLDivElement>);
+      if (event && event.target) {
+        handleKeyDown(event as KeyboardEvent<HTMLDivElement>);
+      }
     };
 
     // TODO: разобраться с типизацией
@@ -189,7 +186,7 @@ export const InlineToolbar = () => {
               zIndex: 1000,
             }}
             {...getFloatingProps()}
-            className="box-border bg-gray-0 border-gray-10 flex flex-row items-center justify-center gap-1 rounded-lg border drop-shadow-md w-[152px] h-[40px]"
+            className="px-2 box-border bg-gray-0 border-gray-10 flex flex-row items-center justify-center gap-1 rounded-lg border drop-shadow-md h-[40px]"
           >
 
             <FormatButton
@@ -208,11 +205,11 @@ export const InlineToolbar = () => {
               format="stroke"
               icon={<Stroke className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
             />
-            <FormatButton
+            {/* <FormatButton
               onClick={handleLinkClick}
               format="link"
               icon={<Link className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-            />
+            /> */}
           </div>
         </FloatingFocusManager>
       }

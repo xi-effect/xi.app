@@ -22,17 +22,13 @@ type AddNewNodePropsT = {
 export const AddNewNode = ({ children, element, isOpen, setIsOpen }: AddNewNodePropsT) => {
   const editor = useSlate();
 
-  console.log('focusedEl', editor, element);
-
   const handleDropdownSelect = (type: string) => {
-    const currentElId = editor.children.findIndex((item) => item.id === element.id);
+    const currentElIndex = editor.children.findIndex((item) => item.id === element.id);
 
-    console.log('currentElId', currentElId);
-
-    if (currentElId === -1) return;
+    if (currentElIndex === -1) return;
 
     Transforms.insertNodes(editor, createDefaultNode(type), {
-      at: [currentElId + 1],
+      at: [currentElIndex + 1],
     });
   };
 

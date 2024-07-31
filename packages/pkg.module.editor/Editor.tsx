@@ -9,10 +9,11 @@ import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'sla
 // import { useFloating, offset, autoUpdate, inline, shift, flip } from '@floating-ui/react';
 import { withHistory } from 'slate-history';
 
-import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
+import { Move, Plus } from '@xipkg/icons';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import mockValues from './const/mockValues';
@@ -23,7 +24,7 @@ import {
 
 import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
-import { CellControls, SortableElement, InlineToolbar, Leaf } from './components';
+import { SortableElement, InlineToolbar, Leaf } from './components';
 import { wrapLink } from './components/InlineToolbar';
 
 const withInlines = (editor: Editor) => {
@@ -92,6 +93,16 @@ export const EditorRoot = () => {
 
   const items = useMemo(() => editor.children.map((element) => element.id), [editor.children]);
 
+  const pointSensor = useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 1,
+    },
+  });
+
+  const sensors = useSensors(
+    pointSensor,
+  );
+
   return (
     <Slate editor={editor} initialValue={value} onChange={(value) => console.log('onChange', value)}>
       <DndContext
@@ -119,6 +130,7 @@ export const EditorRoot = () => {
           setDraggingElementId(undefined);
         }}
         modifiers={[restrictToVerticalAxis]}
+        sensors={sensors}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           <InlineToolbar />
@@ -162,6 +174,8 @@ const DragOverlayContent = ({ element }: any) => {
   const editor = useEditor();
   const [value] = useState([JSON.parse(JSON.stringify(element))]); // clone
 
+  console.log('DragOverlayContent');
+
   useEffect(() => {
     document.body.classList.add('dragging');
 
@@ -174,7 +188,12 @@ const DragOverlayContent = ({ element }: any) => {
   return (
     <div className="group/node flex">
       <div className="flex absolute items-end transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:flex">
-        <CellControls moveProps={{}} />
+        <button className="hover:bg-gray-5 active:bg-gray-5 rounded" aria-label="plus" type="button">
+          <Plus />
+        </button>
+        <button className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-grabbing" aria-label="move" type="button">
+          <Move />
+        </button>
       </div>
       <Slate editor={editor} initialValue={value}>
         <Editable className="ml-14 w-full" readOnly renderElement={renderElement} />

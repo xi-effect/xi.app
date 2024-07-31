@@ -1,16 +1,22 @@
-/* eslint-disable jsx-a11y/mouse-events-have-key-events */
-
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
+import { RenderElementProps } from 'slate-react';
 import { toPx } from '../utils/toPx';
 import { CellControls } from './CellControls';
+
+type SortableElementPropsT = {
+  attributes: RenderElementProps['attributes'];
+  element: RenderElementProps['element'];
+  children: ReactNode;
+  renderElement: any;
+};
 
 export const SortableElement = ({
   attributes,
   element,
   children,
   renderElement,
-}: any) => {
+}: SortableElementPropsT) => {
   const sortable = useSortable({
     id: element.id,
     transition: {

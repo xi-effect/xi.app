@@ -94,65 +94,65 @@ export default [
       },
     ],
   },
-  {
-    id: makeNodeId(),
-    type: 'quote',
-    children: [
-      {
-        id: makeNodeId(),
-        type: 'quoteText',
-        children: [
-          {
-            text: 'The only limit to our realization of tomorrow is our doubts of today.',
-            id: makeNodeId(),
-          },
-        ],
-      },
-      {
-        id: makeNodeId(),
-        type: 'quoteAuthor',
-        children: [
-          {
-            text: 'Franklin D. Roosevelt',
-            id: makeNodeId(),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    type: 'tip',
-    children: [
-      {
-        id: makeNodeId(),
-        type: 'quoteText',
-        children: [
-          {
-            id: makeNodeId(),
-            type: 'icon',
-            children: [
-              {
-                text: 'Wash your hands',
-                id: makeNodeId(),
-              },
-            ],
-            icon: '🚧',
-          },
-        ],
-      },
-      {
-        id: makeNodeId(),
-        type: 'quoteAuthor',
-        children: [
-          {
-            text: 'Wash your hands',
-            id: makeNodeId(),
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   id: makeNodeId(),
+  //   type: 'quote',
+  //   children: [
+  //     {
+  //       id: makeNodeId(),
+  //       type: 'quoteText',
+  //       children: [
+  //         {
+  //           text: 'The only limit to our realization of tomorrow is our doubts of today.',
+  //           id: makeNodeId(),
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       id: makeNodeId(),
+  //       type: 'quoteAuthor',
+  //       children: [
+  //         {
+  //           text: 'Franklin D. Roosevelt',
+  //           id: makeNodeId(),
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: makeNodeId(),
+  //   type: 'tip',
+  //   children: [
+  //     {
+  //       id: makeNodeId(),
+  //       type: 'quoteText',
+  //       children: [
+  //         {
+  //           id: makeNodeId(),
+  //           type: 'icon',
+  //           children: [
+  //             {
+  //               text: 'Wash your hands',
+  //               id: makeNodeId(),
+  //             },
+  //           ],
+  //           icon: '🚧',
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       id: makeNodeId(),
+  //       type: 'quoteAuthor',
+  //       children: [
+  //         {
+  //           text: 'Wash your hands',
+  //           id: makeNodeId(),
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
     id: makeNodeId(),
     type: 'divider',
@@ -163,44 +163,44 @@ export default [
       },
     ],
   },
-  {
-    id: makeNodeId(),
-    type: 'image',
-    children: [
-      {
-        text: '',
-        id: makeNodeId(),
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    type: 'file',
-    children: [
-      {
-        text: '',
-        id: makeNodeId(),
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    type: 'video',
-    children: [
-      {
-        text: '',
-        id: makeNodeId(),
-      },
-    ],
-  },
-  {
-    id: makeNodeId(),
-    type: 'code',
-    children: [
-      {
-        text: '',
-        id: makeNodeId(),
-      },
-    ],
-  },
+  // {
+  //   id: makeNodeId(),
+  //   type: 'image',
+  //   children: [
+  //     {
+  //       text: '',
+  //       id: makeNodeId(),
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: makeNodeId(),
+  //   type: 'file',
+  //   children: [
+  //     {
+  //       text: '',
+  //       id: makeNodeId(),
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: makeNodeId(),
+  //   type: 'video',
+  //   children: [
+  //     {
+  //       text: '',
+  //       id: makeNodeId(),
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: makeNodeId(),
+  //   type: 'code',
+  //   children: [
+  //     {
+  //       text: '',
+  //       id: makeNodeId(),
+  //     },
+  //   ],
+  // },
 ] satisfies CustomElement[];
