@@ -1,6 +1,7 @@
 'use client';
 
 import { redirect, useRouter } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
@@ -13,8 +14,8 @@ export default function CommunitiesLoading() {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const communityMeta = useMainSt((state) => state.communityMeta);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
-
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   // Тоже костыль
   useEffect(() => {
@@ -62,7 +63,7 @@ export default function CommunitiesLoading() {
               });
             }
 
-            if (community.id) router.push(`/communities/${community.id}/home`);
+            if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
           },
         );
       });
@@ -81,7 +82,7 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community.id) router.push(`/communities/${community.id}/home`);
+          if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
         },
       );
     }
@@ -100,7 +101,7 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community.id) router.push(`/communities/${community.id}/home`);
+          if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
         },
       );
     }

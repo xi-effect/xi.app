@@ -59,7 +59,7 @@ export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT)
           </span>
         </span>
       </p>
-      <div className="text-gray-80 mt-[64px] text-m-base">{children}</div>
+      <div className="text-gray-80 mt-[64px] text-[16px]">{children}</div>
     </div>
     <div className="min-h-[44px] h-[88px] xl:h-[132px] xl:min-h-[52px]" />
   </main>

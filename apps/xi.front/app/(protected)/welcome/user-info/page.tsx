@@ -4,6 +4,7 @@ import { Button } from '@xipkg/button';
 import React, { RefObject } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { put } from 'pkg.utils';
 import { useMedia } from 'pkg.utils.client';
 import { AvatarEditor } from 'pkg.avatar.editor';
@@ -92,6 +93,7 @@ export default function WelcomeUserInfo() {
   };
 
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -127,11 +129,11 @@ export default function WelcomeUserInfo() {
       updateUser({ onboardingStage: 'community-choice' });
 
       if (searchParams.has('iid') && searchParams.has('community')) {
-        router.push(
+        router.push(getUrlWithParams(
           `/welcome/community?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
-        );
+        ));
       } else {
-        router.push('/welcome/community');
+        router.push(getUrlWithParams('/welcome/community'));
       }
     } else {
       toast('Ошибка сервера');
