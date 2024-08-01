@@ -2,8 +2,10 @@
 
 'use client';
 
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { useSessionStorage } from 'pkg.utils.client';
+import { useSearchParams } from 'next/navigation';
+import { WelcomeModal } from 'pkg.modal.welcome';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
 import { BottomBar, Menu } from './components';
@@ -15,17 +17,21 @@ type NavigationPropT = {
 type NewChannelT = {
   community_id: number;
   category_id: number | null;
-  id: number;
-  kind: string;
-  name: string;
-  description: string | null;
+  channel: {
+    id: number;
+    kind: string;
+    name: string;
+    description: string | null;
+  };
 };
 
 type NewCategoryT = {
   community_id: number;
-  id: number;
-  name: string;
-  description: string | null;
+  category: {
+    id: number;
+    name: string;
+    description: string | null;
+  };
 };
 
 type MoveCategoryT = {
@@ -72,10 +78,10 @@ export const Navigation = ({ children }: NavigationPropT) => {
       const handleNewChannel = (newChannel: NewChannelT) => {
         addChannel({
           uid: nanoid(),
-          id: newChannel.id,
+          id: newChannel.channel.id,
           categoryId: newChannel.category_id ? newChannel.category_id : 'empty',
-          kind: newChannel.kind,
-          name: newChannel.name,
+          kind: newChannel.channel.kind,
+          name: newChannel.channel.name,
         });
       };
 
@@ -94,9 +100,9 @@ export const Navigation = ({ children }: NavigationPropT) => {
       const handleNewCategory = (newCategory: NewCategoryT) => {
         addCategory({
           uid: nanoid(),
-          id: newCategory.id,
-          name: newCategory.name,
-          description: newCategory.description,
+          id: newCategory.category.id,
+          name: newCategory.category.name,
+          description: newCategory.category.description,
         });
       };
 
@@ -180,6 +186,13 @@ export const Navigation = ({ children }: NavigationPropT) => {
     }
   }, []);
 
+  // Чтение параметров из url и открытие модального окна, если есть параметр welcome-modal=true
+  const searchParams = useSearchParams();
+  const [modalOpen, setModalOpen] = useState(searchParams.get('welcome-modal') === 'true');
+  useEffect(() => {
+    setModalOpen(searchParams.get('welcome-modal') === 'true');
+  }, [searchParams]);
+
   return (
     <>
       <div className="relative hidden flex-row md:flex">
@@ -191,6 +204,7 @@ export const Navigation = ({ children }: NavigationPropT) => {
       <BottomBar slideIndex={slideIndex} setSlideIndex={setSlideIndex}>
         {children}
       </BottomBar>
+      <WelcomeModal open={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 };

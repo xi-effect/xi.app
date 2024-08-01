@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useEffect } from 'react';
 import { redirect, usePathname, useRouter } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
 import Load from '../load';
 
@@ -20,6 +21,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   const pathname = usePathname();
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   useEffect(() => {
     console.log('onconnect', socket);
@@ -41,10 +43,10 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             if (pathnameArr.includes('channels') && community.id) {
               const betweenChannels = pathname.split('channels');
 
-              return router.push(`/communities/${community.id}/channels${betweenChannels[1]}`);
+              return router.push(getUrlWithParams(`/communities/${community.id}/channels${betweenChannels[1]}`));
             }
 
-            if (community.id) router.push(`/communities/${community.id}/home`);
+            if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
 
             return null;
           },
@@ -65,7 +67,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             });
           }
 
-          if (community.id) router.push(`/communities/${community.id}/home`);
+          if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
         },
       );
     }
