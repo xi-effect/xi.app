@@ -21,6 +21,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
   const socket = useMainSt((state) => state.socket);
   const deleteCategory = useMainSt((state) => state.deleteCategory);
   const updateChannels = useMainSt((state) => state.updateChannels);
+  const currentChannels = useMainSt((state) => state.channels);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
@@ -77,10 +78,12 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     );
   };
 
-  // не нашел точечного обновления канала в сторе
-  const filterChannels = (ch: ChannelT) => {
-    const a = channels.filter((channel) => channel.id !== ch.id);
-    return [...a, ch].sort((a, b) => a.id - b.id);
+  const updateChannelName = (updatedChannel: ChannelT) => {
+    if (!currentChannels) return null;
+
+    return currentChannels.map((channel) =>
+      channel.id === updatedChannel.id ? { ...channel, name: updatedChannel.name } : channel,
+    );
   };
 
   const handleEditChannel = (channelData: ChannelT) => {
@@ -97,7 +100,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
       (status: number) => {
         if (status === 200) {
           toast('Канал успешно обновлен');
-          updateChannels(filterChannels(channelData));
+          updateChannels(updateChannelName(channelData));
         } else {
           toast(`Что-то пошло не так. Ошибка ${status}`);
         }
