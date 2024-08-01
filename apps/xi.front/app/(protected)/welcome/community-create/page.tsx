@@ -6,6 +6,7 @@ import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import {
   Form,
   FormControl,
@@ -63,6 +64,7 @@ export default function WelcomeCommunityCreate() {
   const [formData, setFormData] = React.useState<FormData | null>();
 
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   const handleInput = async (files: File[]) => {
     if (!files) return;
@@ -146,7 +148,7 @@ export default function WelcomeCommunityCreate() {
 
           if (status === 204) {
             updateUser({ onboardingStage: 'final' });
-            router.push('/welcome/final');
+            router.push(getUrlWithParams('/welcome/final'));
           } else {
             toast('Ошибка сервера');
           }

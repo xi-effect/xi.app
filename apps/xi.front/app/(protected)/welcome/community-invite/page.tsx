@@ -4,6 +4,7 @@ import { Button } from '@xipkg/button';
 import React from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import {
   Form,
   FormControl,
@@ -43,6 +44,7 @@ export default function WelcomeCommunityInvite() {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   const handleBack = async () => {
     const { status } = await del({
@@ -116,7 +118,7 @@ export default function WelcomeCommunityInvite() {
 
           if (status === 204) {
             updateUser({ onboardingStage: 'final' });
-            router.push('/welcome/final');
+            router.push(getUrlWithParams('/welcome/final'));
             setIsLoading(false);
           } else {
             setIsLoading(false);
