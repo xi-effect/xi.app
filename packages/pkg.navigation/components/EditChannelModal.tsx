@@ -47,7 +47,7 @@ export const EditChannelModal = ({
           <M.ModalTitle>Редактирование канала</M.ModalTitle>
         </M.ModalHeader>
         <Form {...form}>
-          <form id="edit_channel_form" onSubmit={handleSubmit(onSubmit)}>
+          <form id="edit-channel-form" onSubmit={handleSubmit(onSubmit)}>
             <FormField
               control={control}
               name="name"
@@ -63,7 +63,7 @@ export const EditChannelModal = ({
           </form>
         </Form>
         <M.ModalFooter className="flex items-center justify-start gap-4">
-          <Button form="edit_channel_form" className="w-full">
+          <Button form="edit-channel-form" type="submit" className="w-full">
             Сохранить
           </Button>
         </M.ModalFooter>
