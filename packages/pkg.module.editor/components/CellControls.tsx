@@ -2,6 +2,7 @@ import React, { ComponentProps, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 
 import { Close, Move, Plus } from '@xipkg/icons';
+import { useReadOnly } from 'slate-react';
 import { type CustomElement } from '../slate';
 import { AddNewNode } from './AddNewNode';
 import { ElementControlsModal } from './ElementControlsModal';
@@ -17,6 +18,8 @@ export const CellControls = ({
   moveProps,
   element,
 }: Partial<Record<'moveProps', ComponentProps<'button'>> & { element: CustomElement }>) => {
+  const isReadOnly = useReadOnly();
+
   const [isOpenNewNode, setIsOpenNewNode] = React.useState(false);
   const [isOpenElementControls, setIsOpenElementControls] = React.useState(false);
 
@@ -28,7 +31,7 @@ export const CellControls = ({
     setIsOpenElementControls((prev) => !prev);
   };
 
-  if (!element) return null;
+  if (!element || isReadOnly) return null;
 
   return (
     <div className={`${isOpenNewNode || isOpenElementControls ? 'opacity-100' : ''} absolute flex items-end opacity-0 transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:opacity-100 group-visited/node:opacity-100`}>

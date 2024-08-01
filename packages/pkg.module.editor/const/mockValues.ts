@@ -1,7 +1,7 @@
 import { makeNodeId } from '../plugins/withNodeId';
 import { type CustomElement } from '../slate';
 
-export default [
+export const mockValues = [
   {
     id: makeNodeId(),
     type: 'paragraph',
@@ -94,6 +94,7 @@ export default [
       },
     ],
   },
+
   // {
   //   id: makeNodeId(),
   //   type: 'quote',

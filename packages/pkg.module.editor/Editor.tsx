@@ -4,7 +4,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { createEditor, Transforms, Editor } from 'slate';
+import { createEditor, Transforms, Editor, Descendant } from 'slate';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
 // import { useFloating, offset, autoUpdate, inline, shift, flip } from '@floating-ui/react';
 import { withHistory } from 'slate-history';
@@ -16,7 +16,6 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { Move, Plus } from '@xipkg/icons';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
-import mockValues from './const/mockValues';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
 import {
   type MediaElement,
@@ -68,10 +67,15 @@ export const useEditor = () =>
     return editor;
   }, []);
 
-export const EditorRoot = () => {
+type EditorPropsT = {
+  initialValue?: Descendant[];
+  onChange?: (value: Descendant[]) => void;
+  readOnly?: boolean;
+};
+
+export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorPropsT) => {
   const editor = useEditor();
 
-  const [value] = useState(mockValues);
   const [draggingElementId, setDraggingElementId] = useState<string>();
   const activeElement = editor.children.find((x) => x.id === draggingElementId);
 
@@ -103,8 +107,27 @@ export const EditorRoot = () => {
     pointSensor,
   );
 
+  const handleChange = (value: Descendant[]) => {
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
+  if (readOnly) {
+    return (
+      <Slate editor={editor} initialValue={initialValue ?? []}>
+        <Editable
+          readOnly
+          className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
+          renderElement={renderElement}
+          renderLeaf={(props) => <Leaf {...props} />}
+        />
+      </Slate>
+    );
+  }
+
   return (
-    <Slate editor={editor} initialValue={value} onChange={(value) => console.log('onChange', value)}>
+    <Slate editor={editor} initialValue={initialValue ?? []} onChange={handleChange}>
       <DndContext
         onDragStart={(event) => {
           if (event.active) {
