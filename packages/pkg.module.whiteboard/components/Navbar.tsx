@@ -1,7 +1,7 @@
 import React from 'react';
 import { track, useEditor } from 'tldraw';
-import { NavbarAction } from './NavbarAction';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { NavbarAction } from './NavbarAction';
 import { MenuPopupContent } from './MenuPopupContent';
 import { navBarElements, NavbarElementT } from '../navBarElements';
 
