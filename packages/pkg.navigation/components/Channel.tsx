@@ -27,6 +27,7 @@ type ChannelPropsT = {
   channel: ChannelT;
   className?: string;
   setSlideIndex?: (arg: number) => void;
+  onOpenEditModal?: (value: ChannelT) => void;
 };
 
 type IconsDictT = {
@@ -51,7 +52,7 @@ const stylesDict = {
   },
 };
 
-export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) => {
+export const Channel = ({ channel, className, setSlideIndex, onOpenEditModal }: ChannelPropsT) => {
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
   const socket = useMainSt((state) => state.socket);
   const deleteChannel = useMainSt((state) => state.deleteChannel);
@@ -143,10 +144,16 @@ export const Channel = ({ channel, className, setSlideIndex }: ChannelPropsT) =>
     );
   };
 
+  const handleOPenEditModal = () => {
+    if (onOpenEditModal) {
+      onOpenEditModal(channel);
+    }
+  };
+
   return (
     <ItemContextMenu
       isTriggerActive={isOwner}
-      handleEdit={() => console.log('Редактировать канал')}
+      handleEdit={handleOPenEditModal}
       handleDelete={handleDelete}
     >
       <div
