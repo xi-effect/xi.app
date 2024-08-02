@@ -1,17 +1,17 @@
 import {
-  Cite,
+  // Cite,
   H1,
   H2,
   H3,
   IconProps,
-  Objects,
+  // Objects,
   Ol,
   Text,
   Ul,
-  File,
-  Photo,
-  Video,
-  Code,
+  // File,
+  // Photo,
+  // Video,
+  // Code,
 } from '@xipkg/icons';
 import { ComponentType } from 'react';
 import { type CustomElementType } from '../slate';
@@ -46,32 +46,32 @@ export default {
     label: 'Нумерованный список',
     icon: Ol,
   },
-  quote: {
-    label: 'Цитата',
-    icon: Cite,
-  },
-  tip: {
-    label: 'Совет',
-    icon: Objects,
-  },
+  // quote: {
+  //   label: 'Цитата',
+  //   icon: Cite,
+  // },
+  // tip: {
+  //   label: 'Совет',
+  //   icon: Objects,
+  // },
   divider: {
     label: 'Разделитель',
     icon: Ul,
   },
-  image: {
-    label: 'Изображение',
-    icon: Photo,
-  },
-  file: {
-    label: 'Файл',
-    icon: File,
-  },
-  video: {
-    label: 'Видео',
-    icon: Video,
-  },
-  code: {
-    label: 'Код',
-    icon: Code,
-  },
+  // image: {
+  //   label: 'Изображение',
+  //   icon: Photo,
+  // },
+  // file: {
+  //   label: 'Файл',
+  //   icon: File,
+  // },
+  // video: {
+  //   label: 'Видео',
+  //   icon: Video,
+  // },
+  // code: {
+  //   label: 'Код',
+  //   icon: Code,
+  // },
 } as const satisfies Partial<Record<CustomElementType, EditorRootElementOptions>>;

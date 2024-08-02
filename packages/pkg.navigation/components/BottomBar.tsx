@@ -9,6 +9,7 @@ import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 import { UserProfile } from '@xipkg/userprofile';
 import { useMainSt } from 'pkg.stores';
+import { useParams } from 'next/navigation';
 import { CommunityItems } from './CommunityItems';
 import { CommunityMenu } from './CommunityMenu';
 
@@ -28,6 +29,10 @@ const values: ValuesT = {
 };
 
 export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) => {
+  const params = useParams<{ 'community-id': string }>();
+
+  const isNotCommunityId = typeof params['community-id'] !== 'string';
+
   const user = useMainSt((state) => state.user);
 
   const handleMenu = () => {
@@ -62,9 +67,8 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
           <ModalTrigger asChild>
             <div className="ml-auto flex h-[32px] w-[32px] content-center items-center">
               <UserProfile
+                loading={isNotCommunityId || user?.id === null || user?.id === undefined}
                 userId={user?.id || null}
-                text="Ivan Kovylyaev"
-                label="@ikovylyaev"
                 size="m"
                 withOutText
               />
@@ -74,10 +78,6 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
             <UserSettings />
           </ModalContent>
         </Modal>
-        {/* <button className="bg-gray-0 ml-4 flex h-[48px] w-[48px] content-center
-        //justify-center justify-self-end p-3">
-          <Notification />
-        </button> */}
       </div>
     </div>
   );

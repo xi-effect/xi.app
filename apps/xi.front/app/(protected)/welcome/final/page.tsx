@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
 
@@ -12,6 +13,7 @@ export default function WelcomeFinal() {
   const updateUser = useMainSt((state) => state.updateUser);
   const getUser = useMainSt((state) => state.getUser);
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
   const id = useMainSt((state) => state.communityMeta.id);
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function WelcomeFinal() {
 
   const handleNext = () => {
     updateUser({ onboardingStage: 'completed' });
-    router.push(`/communities/${id}/home`);
+    router.push(getUrlWithParams(`/communities/${id}/home`));
   };
 
   return (

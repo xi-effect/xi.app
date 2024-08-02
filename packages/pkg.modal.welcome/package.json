@@ -1,5 +1,5 @@
 {
-  "name": "pkg.module.whiteboard",
+  "name": "pkg.modal.welcome",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -8,25 +8,24 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@xipkg/button": "1.3.0",
+    "@xipkg/icons": "0.10.3",
+    "@xipkg/modal": "^2.1.0",
+    "@xipkg/routerurl": "^1.0.0",
+    "@xipkg/tailwind": "^0.5.0",
     "next": "^14.2.3",
-    "pkg.logo": "*",
-    "@xipkg/icons": "1.0.2",
-    "@xipkg/button": "2.0.0",
-    "@xipkg/tooltip": "0.1.0",
-    "react": "^18.2.0",
-    "tldraw": "^2.3.0",
-    "pkg.utils.client": "*"
+    "pkg.stores": "*",
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "1.4.0",
-    "@xipkg/tailwind": "0.5.0",
     "@xipkg/typescript": "latest",
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"
   },
-  "description": "",
+  "description": "welcome modal",
   "author": "xi.effect"
 }

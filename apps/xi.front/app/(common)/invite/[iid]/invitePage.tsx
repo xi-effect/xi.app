@@ -2,7 +2,7 @@
 
 import React, { RefObject, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { Logo } from 'pkg.logo';
 // import { Badge } from '@xipkg/badge';
 import { Button } from '@xipkg/button';
@@ -61,6 +61,7 @@ type InviteCardT = {
 
 const InviteCard = ({ invite, iid }: InviteCardT) => {
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const date = useRef(new Date());
@@ -84,7 +85,7 @@ const InviteCard = ({ invite, iid }: InviteCardT) => {
 
           // TODO: Придумать лучший пользовательский сценарий
           setTimeout(() => {
-            router.push('/');
+            router.push(getUrlWithParams('/'));
           }, 1000);
         }
 
@@ -97,7 +98,7 @@ const InviteCard = ({ invite, iid }: InviteCardT) => {
           });
 
           setIsLoading(false);
-          router.push(`/communities/${community.id}/home`);
+          router.push(getUrlWithParams(`/communities/${community.id}/home`));
         }
       },
     );
@@ -152,6 +153,7 @@ const AvatarPreview = ({ date, communityId }: AvatarPreviewProps) => (
 export default function InvitePage({ params }: { params: { iid: string } }) {
   const [invite, setInvite] = React.useState<ResponseBodyT | null>(null);
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   React.useEffect(() => {
     const getInviteData = async () => {
@@ -180,7 +182,7 @@ export default function InvitePage({ params }: { params: { iid: string } }) {
     newUrl.searchParams.set('iid', params.iid);
     newUrl.searchParams.set('community', invite.community.name);
 
-    router.push(newUrl.toString());
+    router.push(getUrlWithParams(newUrl.toString()));
   }
 
   return <InviteCard iid={params.iid} invite={invite} />;

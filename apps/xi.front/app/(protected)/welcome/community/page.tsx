@@ -4,6 +4,7 @@ import { Button } from '@xipkg/button';
 import { Group, Mail, Plus } from '@xipkg/icons';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { del, put } from 'pkg.utils/fetch';
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -21,6 +22,7 @@ export default function WelcomeCommunity() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const getUrlWithParams = useGetUrlWithParams();
 
   const [activeButton, setActiveButton] = useState({
     tab: 0,
@@ -43,7 +45,7 @@ export default function WelcomeCommunity() {
 
       if (status === 204) {
         updateUser({ onboardingStage: 'community-create' });
-        router.push('/welcome/community-create');
+        router.push(getUrlWithParams(getUrlWithParams('/welcome/community-create')));
       } else {
         toast('Ошибка сервера');
       }
@@ -63,7 +65,7 @@ export default function WelcomeCommunity() {
 
       if (status === 204) {
         updateUser({ onboardingStage: 'community-invite' });
-        router.push('/welcome/community-invite');
+        router.push(getUrlWithParams('/welcome/community-invite'));
       } else {
         toast('Ошибка сервера');
       }
@@ -84,11 +86,11 @@ export default function WelcomeCommunity() {
       if (status === 204) {
         updateUser({ onboardingStage: 'community-invite' });
         if (searchParams.has('iid') && searchParams.has('community')) {
-          router.push(
+          router.push(getUrlWithParams(
             `/welcome/community-invite?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
-          );
+          ));
         } else {
-          router.push('/welcome/community-invite');
+          router.push(getUrlWithParams('/welcome/community-invite'));
         }
       } else {
         toast('Ошибка сервера');
@@ -110,11 +112,11 @@ export default function WelcomeCommunity() {
     if (status === 204) {
       updateUser({ onboardingStage: 'created' });
       if (searchParams.has('iid') && searchParams.has('community')) {
-        router.push(
+        router.push(getUrlWithParams(
           `/welcome/user-info?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
-        );
+        ));
       } else {
-        router.push('/welcome/user-info');
+        router.push(getUrlWithParams('/welcome/user-info'));
       }
     } else {
       toast('Ошибка сервера');

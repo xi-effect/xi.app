@@ -1,7 +1,7 @@
 'use client';
 
 import { redirect, useRouter } from 'next/navigation';
-import { Logo } from 'pkg.logo';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -13,8 +13,8 @@ export default function CommunitiesLoading() {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const communityMeta = useMainSt((state) => state.communityMeta);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
-
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   // Тоже костыль
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function CommunitiesLoading() {
               });
             }
 
-            if (community.id) router.push(`/communities/${community.id}/home`);
+            if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
           },
         );
       });
@@ -81,7 +81,7 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community.id) router.push(`/communities/${community.id}/home`);
+          if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
         },
       );
     }
@@ -100,7 +100,7 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community.id) router.push(`/communities/${community.id}/home`);
+          if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
         },
       );
     }
@@ -109,34 +109,6 @@ export default function CommunitiesLoading() {
   return (
     <>
       <div className="hidden md:flex">
-        <div className="flex-col min-w-[350px] p-6">
-          <div className="p-2">
-            <Logo height={16} width={134} logoVariant="navigation" logoSize="default" />
-          </div>
-          <div className="flex h-12 px-2.5 py-2 md:w-[302px] mt-0 sm:mt-8 gap-2 items-center rounded-xl">
-            <div className="bg-gray-10 h-[32px] w-[32px] animate-pulse rounded-full shrink-0" />
-            <div className="bg-gray-10 h-[24px] w-full animate-pulse rounded-[4px]" />
-          </div>
-          <div className="w-full h-[calc(100dvh-124px)] p-2">
-            <ul className="mt-3 flex flex-col gap-4 overflow-hidden sm:mb-[60px]">
-              {[...new Array(7)].map((item, index) => (
-                <li
-                  key={index.toString()}
-                  className="bg-gray-10 h-[28px] w-full animate-pulse rounded-[4px]"
-                />
-              ))}
-            </ul>
-          </div>
-          <div className="fixed bottom-0 flex flex-col pb-6 sm:w-[302px]">
-            <div className="flex gap-2 items-center p-2">
-              <div className="bg-gray-10 h-[32px] w-[32px] animate-pulse rounded-full shrink-0" />
-              <div className="bg-gray-10 h-[24px] w-full animate-pulse rounded-[4px]" />
-            </div>
-            <div className="mt-1 p-2">
-              <div className="bg-gray-10 h-[32px] w-full animate-pulse rounded-[4px]" />
-            </div>
-          </div>
-        </div>
         <div className="p-8 w-[calc(100vw-350px)] overflow-auto h-full">
           <div className="pb-8 max-w-[1570px]">
             <div className="flex gap-4 sm:flex-col xl:flex-row">
@@ -198,11 +170,6 @@ export default function CommunitiesLoading() {
               <div className="bg-gray-10 h-[72px] w-full animate-pulse rounded-[4px]" />
             </div>
           </div>
-        </div>
-        <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
-          <div className="mr-4 flex h-[48px] w-[48px] items-center p-3 animate-pulse bg-gray-10 rounded-md" />
-          <Logo height={16} width={134} logoVariant="navigation" logoSize="default" />
-          <div className="ml-auto flex h-[32px] w-[32px] content-center items-center animate-pulse bg-gray-10 rounded-full" />
         </div>
       </div>
     </>
