@@ -5,7 +5,7 @@ import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
 import { UserSettings } from 'pkg.user.settings';
 import { createQueryString } from 'pkg.router.url';
 import { Logo } from 'pkg.logo';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Close, Objects } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
@@ -22,6 +22,10 @@ type MenuT = {
 };
 
 export const Menu = ({ setSlideIndex }: MenuT) => {
+  const params = useParams<{ 'community-id': string }>();
+
+  const isNotCommunityId = typeof params['community-id'] !== 'string';
+
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const user = useMainSt((state) => state.user);
 
@@ -132,7 +136,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
         <Modal open={menuIsOpen}>
           <ModalTrigger
             onClick={() => {
-              if (user?.id === null || user?.id === undefined) return;
+              if (isNotCommunityId || user?.id === null || user?.id === undefined) return;
               setMenuIsOpen(true);
               router.push(
                 `${pathname}?${createQueryString(searchParams, 'profileIsOpen', profileIsOpenValue ? String(profileIsOpenValue) : 'true')}&${createQueryString(searchParams, 'category', 'home')}`,
@@ -145,7 +149,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
               className="hover:bg-gray-5 h-[48px] w-full rounded-lg p-2 hover:cursor-pointer"
             >
               <UserProfile
-                loading={user?.id === null || user?.id === undefined}
+                loading={isNotCommunityId || user?.id === null || user?.id === undefined}
                 userId={user?.id || null}
                 text={user?.displayName}
                 label={user?.username}
@@ -166,17 +170,6 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
           <Objects size="s" className="h-4 w-4 group-hover:fill-gray-100" />
           <span className="pl-2 text-[14px] font-normal">Пройти обучение</span>
         </Button>
-        {/* <div
-          id="notification-menu"
-          onClick={() => toast(`Уведомления пока в разработке`)}
-          className="text-gray-90 hover:bg-brand-0 hover:text-brand-80
-          group mx-1 mt-2 flex h-[40px] w-full flex-row items-center
-          rounded-lg p-2 transition-colors
-          ease-in hover:cursor-pointer"
-        >
-          <Notification className="group-hover:fill-brand-80 transition-colors ease-in" />
-          <span className="pl-2 text-[14px] font-normal">Уведомления</span>
-        </div> */}
       </div>
     </>
   );

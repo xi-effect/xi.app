@@ -4,7 +4,7 @@
 
 import React, { ReactNode, useState, useEffect } from 'react';
 import { useSessionStorage } from 'pkg.utils.client';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { WelcomeModal } from 'pkg.modal.welcome';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
@@ -60,6 +60,8 @@ type DeletedCategoryT = {
 };
 
 export const Navigation = ({ children }: NavigationPropT) => {
+  const pathname = usePathname();
+
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
 
@@ -192,6 +194,8 @@ export const Navigation = ({ children }: NavigationPropT) => {
   useEffect(() => {
     setModalOpen(searchParams.get('welcome-modal') === 'true');
   }, [searchParams]);
+
+  if (pathname.includes('/empty/')) return children;
 
   return (
     <>

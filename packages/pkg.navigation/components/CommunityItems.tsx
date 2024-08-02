@@ -155,7 +155,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         }
       },
     );
-  }, []);
+  }, [communityMeta.id]);
 
   useEffect(() => {
     socket?.emit(
@@ -181,7 +181,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         }
       },
     );
-  }, []);
+  }, [communityMeta.id]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
