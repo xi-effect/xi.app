@@ -25,6 +25,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
+  const [isEditCategoryModal, setIsEditCategoryModal] = useState(false);
 
   const { name, description, uid } = category;
   const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
@@ -78,6 +79,10 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     );
   };
 
+  const handleEditCategory = () => {
+    setIsEditCategoryModal((prev) => !prev);
+  };
+
   const updateChannelName = (updatedChannel: ChannelT) => {
     if (!currentChannels) return null;
 
@@ -112,7 +117,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     <div ref={setNodeRef} style={categoryStyle}>
       <ItemContextMenu
         isTriggerActive={isOwner}
-        handleEdit={() => console.log('Редактировать категорию')}
+        handleEdit={handleEditCategory}
         handleDelete={handleDelete}
       >
         <div {...attributes} {...listeners}>
