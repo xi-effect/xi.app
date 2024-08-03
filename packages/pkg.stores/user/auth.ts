@@ -39,7 +39,6 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
   socket: null,
   isLogin: null,
   initSocket: () => {
-    console.log('useMainSt.getState().socket', useMainSt.getState().socket);
     if (useMainSt.getState().socket === null) {
       const socketInstance = io('https://api.xieffect.ru/', {
         withCredentials: true,
@@ -115,10 +114,24 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
     const { data, status } = await postSignout();
 
     if (data && status === 204) {
-      const { socket } = useMainSt.getState();
+      const { socket, updateChannels, updateCategories } = useMainSt.getState();
       if (socket) socket.disconnect();
 
-      set(() => ({ isLogin: false }));
+      updateChannels([]);
+      updateCategories([]);
+
+      set(() => ({
+        isLogin: false,
+        user: {
+          onboardingStage: null,
+          username: '',
+          id: null,
+          displayName: '',
+          theme: '',
+          email: '',
+        },
+      }));
+
       return 200;
     }
 
