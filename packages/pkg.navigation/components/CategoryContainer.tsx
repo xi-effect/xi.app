@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useMainSt } from 'pkg.stores';
@@ -26,6 +26,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
+  const [currentCategory, setCurrentCategory] = useState<CategoryT | null>(null);
   const [isEditCategoryModal, setIsEditCategoryModal] = useState(false);
 
   const { name, description, uid } = category;
@@ -61,6 +62,11 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     // временное решение проблемы с pointer-events на body
     setTimeout(() => setIsEditModalOpen(true), 0);
   };
+  const handleOpenEditCategory = (category: CategoryT) => {
+    setCurrentCategory(category);
+    // временное решение проблемы с pointer-events на body
+    setTimeout(() => setIsEditCategoryModal(true), 0);
+  };
 
   const handleDelete = () => {
     socket?.emit(
@@ -80,8 +86,9 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     );
   };
 
-  const handleEditCategory = () => {
-    setIsEditCategoryModal((prev) => !prev);
+  const handleEditCategory = (updatedCategory: CategoryT) => {
+    if (!currentCategory) return null;
+    console.log(updatedCategory);
   };
 
   const updateChannelName = (updatedChannel: ChannelT) => {
@@ -118,7 +125,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     <div ref={setNodeRef} style={categoryStyle}>
       <ItemContextMenu
         isTriggerActive={isOwner}
-        handleEdit={handleEditCategory}
+        handleEdit={() => handleOpenEditCategory(category)}
         handleDelete={handleDelete}
       >
         <div {...attributes} {...listeners}>
@@ -153,14 +160,17 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
           channel={currentChannel}
         />
       )}
-      <EditCategoryModal 
+      {currentCategory && (
+        <EditCategoryModal
+          onOpenChange={(value) => {
+            setIsEditCategoryModal(value);
+            setCurrentCategory(null);
+          }}
           isOpen={isEditCategoryModal}
           onConfirm={handleEditCategory}
-          onOpenChange={(value) => {
-            setIsEditCategoryModal(value)
-          }}      
-          category={category}
-      />
+          category={currentCategory}
+        />
+      )}
     </div>
   );
 };

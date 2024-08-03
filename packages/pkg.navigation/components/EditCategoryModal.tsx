@@ -3,19 +3,22 @@ import * as M from '@xipkg/modal';
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
+import { Controller } from 'react-hook-form';
 import { Input } from '@xipkg/input';
+import { PrivateCategoryToggle } from './PrivateCategoryToggle';
 import { CategoryT } from './types';
 
 export type EditCategoryModalPropsT = {
   isOpen: boolean;
   onOpenChange: (value: React.SetStateAction<boolean>) => void;
-  onConfirm: (value: CategoryT) => void;
+  onConfirm: (value: CategoryT & { privateCategory: boolean }) => void;
   category: CategoryT;
 };
 
 type EditCategoryFormT = {
   name: string;
   description: string;
+  privateCategory: boolean;
 };
 
 export const EditCategoryModal = ({
@@ -28,18 +31,24 @@ export const EditCategoryModal = ({
     defaultValues: {
       name: category.name || '',
       description: category.description || '',
+      privateCategory: false,
     },
   });
   const { control, handleSubmit, trigger } = form;
 
   const onSubmit = async (data: EditCategoryFormT) => {
     trigger();
-    onConfirm({ ...category, name: data.name, description: data.description });
+    onConfirm({
+      ...category,
+      name: data.name,
+      description: data.description,
+      privateCategory: data.privateCategory,
+    });
     onOpenChange(false);
   };
 
   return (
-    <M.Modal open={isOpen} onOpenChange={onOpenChange}>
+    <M.Modal open={isOpen} onOpenChange={() => onOpenChange(!isOpen)}>
       <M.ModalContent>
         <M.ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />
@@ -69,6 +78,20 @@ export const EditCategoryModal = ({
                   <FormLabel>Подзаголовок</FormLabel>
                   <FormControl>
                     <Input placeholder="Advanced" type="text" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="privateCategory"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-2 p-6">
+                  <FormControl>
+                    <PrivateCategoryToggle
+                      checked={field.value}
+                      onChange={(value: boolean) => field.onChange(value)}
+                    />
                   </FormControl>
                 </FormItem>
               )}
