@@ -297,7 +297,10 @@ export const CommunityMenu = () => {
                 <>
                   <DropdownMenuItem
                     className="group sm:w-[302px]"
-                    onClick={() => setIsInviteCommunityModalOpen((prev) => !prev)}
+                    onClick={() => {
+                      setIsInviteCommunityModalOpen((prev) => !prev);
+                      handleClose();
+                    }}
                   >
                     <span>Пригласить людей</span>
                     <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
@@ -315,14 +318,20 @@ export const CommunityMenu = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="group sm:w-[302px]"
-                    onClick={() => setIsCommunityChannelCreateOpen((prev) => !prev)}
+                    onClick={() => {
+                      setIsCommunityChannelCreateOpen((prev) => !prev);
+                      handleClose();
+                    }}
                   >
                     <span>Создать канал</span>
                     <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="group sm:w-[302px]"
-                    onClick={() => setIsCategoryCreateOpen((prev) => !prev)}
+                    onClick={() => {
+                      setIsCategoryCreateOpen((prev) => !prev);
+                      handleClose();
+                    }}
                   >
                     <span>Создать категорию</span>
                     <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />

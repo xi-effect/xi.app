@@ -11,9 +11,9 @@ export const Navbar = track(() => {
 
   return (
     <div className="pointer-events-none absolute inset-0">
-      <div className="absolute bottom-3 left-0 right-0 z-[300] flex w-full items-center justify-center">
-        <div className="z-[300] flex gap-7">
-          <div className="border-gray-10 bg-gray-0 z-[300] rounded-[12px] border p-2">
+      <div className="absolute bottom-3 left-0 right-0 z-30 flex w-full items-center justify-center">
+        <div className="z-30 flex gap-7">
+          <div className="border-gray-10 bg-gray-0 z-30 rounded-[12px] border p-2">
             <NavbarAction />
           </div>
           <div className="border-gray-10 bg-gray-0 flex gap-10 rounded-[12px] border">

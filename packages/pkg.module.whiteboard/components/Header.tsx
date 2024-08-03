@@ -6,7 +6,7 @@ export function Header() {
   const { isFullScreen, toggleFullScreen } = useFullScreen('whiteboard-container');
 
   return (
-    <div className="bg-gray-0 text-xl-base absolute z-[300] w-full px-4 py-4">
+    <div className="bg-gray-0 text-xl-base absolute z-30 w-full px-4 py-4">
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           <h1 className="text-xl-base">B1.2</h1>
