@@ -8,6 +8,7 @@ import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
 import { EditChannelModal } from './EditChannelModal';
+import { EditCategoryModal } from './EditCategoryModal';
 
 type CategoryContainerT = {
   category: CategoryT;
@@ -152,6 +153,14 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
           channel={currentChannel}
         />
       )}
+      <EditCategoryModal 
+          isOpen={isEditCategoryModal}
+          onConfirm={handleEditCategory}
+          onOpenChange={(value) => {
+            setIsEditCategoryModal(value)
+          }}      
+          category={category}
+      />
     </div>
   );
 };

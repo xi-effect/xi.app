@@ -4,15 +4,26 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
+import { CategoryT } from './types';
 
 export type EditCategoryModalPropsT = {
   isOpen: boolean;
   onOpenChange: (value: React.SetStateAction<boolean>) => void;
-  onConfirm: (value: any) => void;
-  category: any;
+  onConfirm: (value: CategoryT) => void;
+  category: CategoryT;
 };
 
-export const EditCategoryModal = ({ isOpen, onConfirm, onOpenChange, category }: any) => {
+type EditCategoryFormT = {
+  name: string;
+  description: string;
+};
+
+export const EditCategoryModal = ({
+  isOpen,
+  onConfirm,
+  onOpenChange,
+  category,
+}: EditCategoryModalPropsT) => {
   const form = useForm({
     defaultValues: {
       name: category.name || '',
@@ -21,7 +32,7 @@ export const EditCategoryModal = ({ isOpen, onConfirm, onOpenChange, category }:
   });
   const { control, handleSubmit, trigger } = form;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: EditCategoryFormT) => {
     trigger();
     onConfirm({ ...category, name: data.name, description: data.description });
     onOpenChange(false);
