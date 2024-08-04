@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useMainSt } from 'pkg.stores';
@@ -8,6 +8,7 @@ import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
 import { EditChannelModal } from './EditChannelModal';
+import { EditCategoryModal } from './EditCategoryModal';
 
 type CategoryContainerT = {
   category: CategoryT;
@@ -21,10 +22,13 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
   const socket = useMainSt((state) => state.socket);
   const deleteCategory = useMainSt((state) => state.deleteCategory);
   const updateChannels = useMainSt((state) => state.updateChannels);
+  const updateCategories = useMainSt((state) => state.updateCategories);
   const currentChannels = useMainSt((state) => state.channels);
-
+  const currentCategories = useMainSt((state) => state.categories);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
+  const [currentCategory, setCurrentCategory] = useState<CategoryT | null>(null);
+  const [isEditCategoryModal, setIsEditCategoryModal] = useState(false);
 
   const { name, description, uid } = category;
   const channelsIds = useMemo(() => channels.map((channel: ChannelT) => channel.uid), [channels]);
@@ -59,6 +63,11 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     // временное решение проблемы с pointer-events на body
     setTimeout(() => setIsEditModalOpen(true), 0);
   };
+  const handleOpenEditCategory = (category: CategoryT) => {
+    setCurrentCategory(category);
+    // временное решение проблемы с pointer-events на body
+    setTimeout(() => setIsEditCategoryModal(true), 0);
+  };
 
   const handleDelete = () => {
     socket?.emit(
@@ -71,6 +80,38 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
         if (status === 204) {
           toast('Категория успешно удалена');
           deleteCategory(category.id);
+        } else {
+          toast(`Что-то пошло не так. Ошибка ${status}`);
+        }
+      },
+    );
+  };
+
+  const updateCategoryData = (updatedCategory: CategoryT) => {
+    if (!currentCategories) return null;
+
+    return currentCategories.map((category: CategoryT) =>
+      category.id === updatedCategory.id
+        ? { ...category, name: updatedCategory.name, description: updatedCategory.description }
+        : category,
+    );
+  };
+
+  const handleEditCategory = (categoryData: CategoryT) => {
+    socket?.emit(
+      'update-category',
+      {
+        community_id: communityId,
+        category_id: categoryData.id,
+        data: {
+          name: categoryData.name,
+          description: categoryData.description,
+        },
+      },
+      (status: number) => {
+        if (status === 200) {
+          toast('Категория успешно обновлена');
+          updateCategories(updateCategoryData(categoryData));
         } else {
           toast(`Что-то пошло не так. Ошибка ${status}`);
         }
@@ -112,7 +153,7 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     <div ref={setNodeRef} style={categoryStyle}>
       <ItemContextMenu
         isTriggerActive={isOwner}
-        handleEdit={() => console.log('Редактировать категорию')}
+        handleEdit={() => handleOpenEditCategory(category)}
         handleDelete={handleDelete}
       >
         <div {...attributes} {...listeners}>
@@ -145,6 +186,17 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
             setCurrentChannel(null);
           }}
           channel={currentChannel}
+        />
+      )}
+      {currentCategory && (
+        <EditCategoryModal
+          onOpenChange={(value) => {
+            setIsEditCategoryModal(value);
+            setCurrentCategory(null);
+          }}
+          isOpen={isEditCategoryModal}
+          onConfirm={handleEditCategory}
+          category={currentCategory}
         />
       )}
     </div>
