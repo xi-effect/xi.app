@@ -3,7 +3,6 @@ import * as M from '@xipkg/modal';
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
-import { Controller } from 'react-hook-form';
 import { Input } from '@xipkg/input';
 import { PrivateCategoryToggle } from './PrivateCategoryToggle';
 import { CategoryT } from './types';
@@ -54,7 +53,7 @@ export const EditCategoryModal = ({
           <Close className="fill-gray-80 sm:fill-gray-0" />
         </M.ModalCloseButton>
         <M.ModalHeader>
-          <M.ModalTitle>Редактирование канала</M.ModalTitle>
+          <M.ModalTitle>Редактирование категории</M.ModalTitle>
         </M.ModalHeader>
         <Form {...form}>
           <form id="edit-channel-form" onSubmit={handleSubmit(onSubmit)}>
@@ -62,7 +61,7 @@ export const EditCategoryModal = ({
               control={control}
               name="name"
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-2 p-6">
+                <FormItem className="flex flex-col gap-2 p-4">
                   <FormLabel>Название</FormLabel>
                   <FormControl>
                     <Input placeholder="C1" type="text" {...field} />
@@ -74,7 +73,7 @@ export const EditCategoryModal = ({
               control={control}
               name="description"
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-2 p-6">
+                <FormItem className="flex flex-col gap-2 p-4">
                   <FormLabel>Подзаголовок</FormLabel>
                   <FormControl>
                     <Input placeholder="Advanced" type="text" {...field} />
@@ -86,7 +85,7 @@ export const EditCategoryModal = ({
               control={control}
               name="privateCategory"
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-2 p-6">
+                <FormItem className="flex flex-col gap-2 p-4">
                   <FormControl>
                     <PrivateCategoryToggle
                       checked={field.value}

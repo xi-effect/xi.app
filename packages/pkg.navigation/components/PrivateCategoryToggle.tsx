@@ -15,8 +15,10 @@ export const PrivateCategoryToggle = ({ checked, onChange }: PrivateCategoryTogg
     <div className="bg-gray-5 rounded-[8px] p-4">
       <div className="flex justify-between">
         <div>
-          <p className="text-l-base text-gray-80">Приватная категория</p>
-          <p>Контент в данной категории будет доступен только выбранным классам и ролям</p>
+          <p className="text-l-base">Приватная категория</p>
+          <p className="text-s-base text-gray-80">
+            Контент в данной категории будет доступен только выбранным классам и ролям
+          </p>
         </div>
         <div className="flex items-center space-x-2">
           <Toggle checked={checked} onClick={handleClick} size="l" id="private-category" />

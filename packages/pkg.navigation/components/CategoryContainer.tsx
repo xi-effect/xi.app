@@ -87,6 +87,16 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     );
   };
 
+  const updateCategoryData = (updatedCategory: CategoryT) => {
+    if (!currentCategories) return null;
+
+    return currentCategories.map((category: CategoryT) =>
+      category.id === updatedCategory.id
+        ? { ...category, name: updatedCategory.name, description: updatedCategory.description }
+        : category,
+    );
+  };
+
   const handleEditCategory = (categoryData: CategoryT) => {
     socket?.emit(
       'update-category',
@@ -106,16 +116,6 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
           toast(`Что-то пошло не так. Ошибка ${status}`);
         }
       },
-    );
-  };
-
-  const updateCategoryData = (updatedCategory: CategoryT) => {
-    if (!currentCategories) return null;
-
-    return currentCategories.map((category: CategoryT) =>
-      category.id === updatedCategory.id
-        ? { ...category, name: updatedCategory.name, description: updatedCategory.description }
-        : category,
     );
   };
 
