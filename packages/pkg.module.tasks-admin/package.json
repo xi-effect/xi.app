@@ -10,13 +10,19 @@
   "dependencies": {
     "@xipkg/breadcrumbs": "^0.1.0",
     "@xipkg/button": "^2.0.0",
+    "@xipkg/datepicker": "^1.0.0",
+    "@xipkg/form": "^3.0.0",
     "@xipkg/icons": "0.9.3",
+    "@xipkg/input": "^1.0.0",
     "@xipkg/modal": "^3.0.0",
     "@xipkg/popover": "^2.0.0",
     "@xipkg/select": "^0.2.0",
+    "@xipkg/utils": "^1.2.3",
     "date-fns": "3.6.0",
     "next": "^14.2.3",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "sonner": "^1.5.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
@@ -27,6 +33,10 @@
     "@xipkg/typescript": "latest",
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"
+  },
+  "peerDependencies": {
+    "@hookform/resolvers": "^3.1.1",
+    "react-hook-form": "^7.0.0"
   },
   "description": "",
   "author": "xi.effect"
