@@ -17,6 +17,7 @@ import * as z from 'zod';
 import { useMainSt } from 'pkg.stores';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 
 const schema = z.object({
   link: z.string().url({ message: 'Неправильный формат ссылки' }),
@@ -42,6 +43,7 @@ const FormJoinBlock = ({ setStage, onOpenChange }: FormJoinProps) => {
   const socket = useMainSt((state) => state.socket);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -77,8 +79,8 @@ const FormJoinBlock = ({ setStage, onOpenChange }: FormJoinProps) => {
             description: community.description,
           });
 
-          if (community) {
-            router.push(`/communities/${community.id}/home`);
+          if (community.id) {
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
           } else {
             toast('Ошибка сервера');
           }
