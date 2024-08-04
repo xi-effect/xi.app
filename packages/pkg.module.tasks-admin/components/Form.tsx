@@ -28,7 +28,7 @@ interface FormProps {
   timer: boolean;
 }
 
-const schema = z
+const FormSchema = z
   .object({
     openDate: z.date({ required_error: 'Обязательное поле' }),
     openTime: z.string({ required_error: 'Обязательное поле' }),
@@ -47,6 +47,7 @@ const schema = z
       path: ['dateConflict'], // специальный путь для ошибки совпадения дат
     },
   );
+
 export type FormDataT = {
   openDate: Date;
   openTime: string;
@@ -58,7 +59,8 @@ export type FormDataT = {
 
 export const FormBlock = ({ timer }: FormProps) => {
   const form = useForm<FormDataT>({
-    resolver: zodResolver(schema),
+    // @ts-ignore
+    resolver: zodResolver(FormSchema),
   });
 
   const {
