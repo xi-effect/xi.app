@@ -22,8 +22,9 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
   const socket = useMainSt((state) => state.socket);
   const deleteCategory = useMainSt((state) => state.deleteCategory);
   const updateChannels = useMainSt((state) => state.updateChannels);
+  const updateCategories = useMainSt((state) => state.updateCategories);
   const currentChannels = useMainSt((state) => state.channels);
-
+  const currentCategories = useMainSt((state) => state.categories);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentChannel, setCurrentChannel] = useState<ChannelT | null>(null);
   const [currentCategory, setCurrentCategory] = useState<CategoryT | null>(null);
@@ -86,9 +87,36 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
     );
   };
 
-  const handleEditCategory = (updatedCategory: CategoryT) => {
-    if (!currentCategory) return null;
-    console.log(updatedCategory);
+  const handleEditCategory = (categoryData: CategoryT) => {
+    socket?.emit(
+      'update-category',
+      {
+        community_id: communityId,
+        category_id: categoryData.id,
+        data: {
+          name: categoryData.name,
+          description: categoryData.description,
+        },
+      },
+      (status: number) => {
+        if (status === 200) {
+          toast('Категория успешно обновлена');
+          updateCategories(updateCategoryData(categoryData));
+        } else {
+          toast(`Что-то пошло не так. Ошибка ${status}`);
+        }
+      },
+    );
+  };
+
+  const updateCategoryData = (updatedCategory: CategoryT) => {
+    if (!currentCategories) return null;
+
+    return currentCategories.map((category: CategoryT) =>
+      category.id === updatedCategory.id
+        ? { ...category, name: updatedCategory.name, description: updatedCategory.description }
+        : category,
+    );
   };
 
   const updateChannelName = (updatedChannel: ChannelT) => {
