@@ -47,7 +47,7 @@ export const EditCategoryModal = ({
   };
 
   return (
-    <M.Modal open={isOpen} onOpenChange={() => onOpenChange(!isOpen)}>
+    <M.Modal open={isOpen} onOpenChange={() => onOpenChange((prev) => !prev)}>
       <M.ModalContent>
         <M.ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />
@@ -64,7 +64,7 @@ export const EditCategoryModal = ({
                 <FormItem className="flex flex-col gap-2 p-4">
                   <FormLabel>Название</FormLabel>
                   <FormControl>
-                    <Input placeholder="C1" type="text" {...field} />
+                    <Input type="text" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -76,7 +76,7 @@ export const EditCategoryModal = ({
                 <FormItem className="flex flex-col gap-2 p-4">
                   <FormLabel>Подзаголовок</FormLabel>
                   <FormControl>
-                    <Input placeholder="Advanced" type="text" {...field} />
+                    <Input type="text" {...field} />
                   </FormControl>
                 </FormItem>
               )}
