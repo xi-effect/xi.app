@@ -34,6 +34,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import { toast } from 'sonner';
+import { RetrieveCommunityT } from './types';
 
 type CommunityTemplateT = {
   name: string;
@@ -78,8 +79,9 @@ const DropdownHeader = ({ setIsOpen, inDropdown = false, name, id }: DropdownHea
       onClick={() => {
         if (id) setIsOpen((prev: boolean) => !prev);
       }}
-      className={`flex h-12 px-2.5 py-2 md:w-[302px] ${!name || isNotCommunityId ? 'cursor-not-allowed' : 'cursor-pointer'} ${inDropdown ? '' : 'mt-0 sm:mt-8'
-        } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
+      className={`flex h-12 px-2.5 py-2 md:w-[302px] ${!name || isNotCommunityId ? 'cursor-not-allowed' : 'cursor-pointer'} ${
+        inDropdown ? '' : 'mt-0 sm:mt-8'
+      } hover:bg-gray-5 items-center rounded-xl transition-colors ease-in`}
     >
       {!id || isNotCommunityId ? (
         <div className="bg-gray-10 size-[32px] animate-pulse rounded-[16px]" />
@@ -121,7 +123,7 @@ const CommunityLink = ({
       {
         community_id: currentCommunityId,
       },
-      (data: any) => {
+      (data: number) => {
         console.log('close-community', data);
         if (data === 204) {
           socket?.emit(
@@ -129,7 +131,7 @@ const CommunityLink = ({
             {
               community_id: community.id,
             },
-            (stats: number, { community, participant }: { community: any; participant: any }) => {
+            (stats: number, { community, participant }: RetrieveCommunityT) => {
               console.log('stats', stats);
               if (stats === 200) {
                 updateCommunityMeta({
@@ -205,6 +207,8 @@ export const CommunityMenu = () => {
 
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
+      console.log('communities', communities);
+
       const otherCommunities: CommunityTemplateT[] = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );
@@ -227,7 +231,7 @@ export const CommunityMenu = () => {
           {
             community_id: otherCommunities[0].id,
           },
-          (stats: number, { community, participant }: { community: any; participant: any }) => {
+          (stats: number, { community, participant }: RetrieveCommunityT) => {
             if (stats === 200) {
               updateCommunityMeta({
                 id: community.id,
@@ -270,6 +274,10 @@ export const CommunityMenu = () => {
       <InviteCommunityModal
         open={isInviteCommunityModalOpen}
         onOpenChange={() => setIsInviteCommunityModalOpen((prev) => !prev)}
+      />
+      <AddCommunityModal
+        open={isAddCommunityModalOpen}
+        onOpenChange={() => setIsAddCommunityModalOpen((prev) => !prev)}
       />
       <DropdownMenu open={isOpen}>
         <>
@@ -361,19 +369,17 @@ export const CommunityMenu = () => {
               </ScrollArea>
             )}
             <DropdownMenuSeparator />
-            <AddCommunityModal
-              open={isAddCommunityModalOpen}
-              onOpenChange={setIsAddCommunityModalOpen}
-            >
-              <DropdownMenuItem
-                className="group text-gray-50 sm:w-[302px]"
-                onClick={() => setIsAddCommunityModalOpen(true)}
-              >
-                <span>Присоединиться к сообществу</span>
 
-                <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />
-              </DropdownMenuItem>
-            </AddCommunityModal>
+            <DropdownMenuItem
+              className="group text-gray-50 sm:w-[302px]"
+              onClick={() => {
+                setIsAddCommunityModalOpen(true);
+                handleClose();
+              }}
+            >
+              <span>Присоединиться к сообществу</span>
+              <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </>
       </DropdownMenu>

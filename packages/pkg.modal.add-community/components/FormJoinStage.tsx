@@ -14,6 +14,9 @@ import {
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
 import * as z from 'zod';
+import { useMainSt } from 'pkg.stores';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const schema = z.object({
   link: z.string().url({ message: 'Неправильный формат ссылки' }),
@@ -24,44 +27,96 @@ type FormJoinProps = {
   onOpenChange?: (value: boolean) => void;
 };
 
-const FormJoinBlock = ({ setStage }: FormJoinProps) => {
+type JoinResponseT = {
+  community: {
+    description: null;
+    id: number;
+    name: string;
+  };
+  participant: {
+    is_owner: boolean;
+  };
+};
+
+const FormJoinBlock = ({ setStage, onOpenChange }: FormJoinProps) => {
+  const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       link: '',
     },
   });
-  const { control } = form;
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = async ({ link }: z.infer<typeof schema>) => {
+    const arrayFromInvite = link.split('/');
+
+    socket?.emit(
+      'join-community',
+      {
+        code: arrayFromInvite[arrayFromInvite.length - 1],
+      },
+
+      async (status: number, { community, participant }: JoinResponseT) => {
+        if (status === 409) {
+          toast('Вы уже являетесь участником сообщества');
+        }
+
+        if (status === 200) {
+          updateCommunityMeta({
+            id: community.id,
+            isOwner: participant.is_owner,
+            name: community.name,
+            description: community.description,
+          });
+
+          if (community) {
+            router.push(`/communities/${community.id}/home`);
+          } else {
+            toast('Ошибка сервера');
+          }
+        }
+
+        if (onOpenChange) {
+          onOpenChange(false);
+        }
+      },
+    );
+  };
 
   return (
     <Form {...form}>
-      <form className="space-y-4 p-6 pt-5">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormField
           control={control}
           name="link"
-          render={({ field, fieldState: { error } }) => (
-            <FormItem>
+          render={({ field }) => (
+            <FormItem className="p-6">
               <FormLabel>Ссылка-приглашение</FormLabel>
               <FormControl className="mt-2">
                 <Input
                   {...field}
-                  error={!!error}
-                  autoComplete="off"
+                  error={!!errors.link}
                   type="text"
+                  autoComplete="off"
                   placeholder="https://xieffect.ru/invite/"
-                  className="mb-6"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="border-gray-20 flex flex-col justify-end gap-4 border-t-[1px] pt-6 min-[700px]:flex-row">
+        <div className="border-gray-20 flex flex-col gap-4 border-t p-6 min-[700px]:flex-row">
+          <Button type="submit">Присоединиться</Button>
           <Button onClick={() => setStage('create')} variant="secondary">
             Отменить
-          </Button>
-          <Button type="submit" className="order-first min-[700px]:order-last">
-            Присоединиться
           </Button>
         </div>
       </form>
