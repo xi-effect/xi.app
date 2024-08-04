@@ -104,8 +104,6 @@ export const AvatarEditorComponent = ({
       const resizedImage = (await resizeFile(f, 'blob')) as Blob;
       const resizedImageBase = (await resizeFile(f, 'base64')) as string;
 
-      console.log('resizedImage', resizedImage);
-
       const form = new FormData();
       form.append('avatar', resizedImage, 'avatar.webp');
 
@@ -118,7 +116,7 @@ export const AvatarEditorComponent = ({
         : '/api/users/current/avatar/';
       const currentService = communityId ? 'backend' : 'auth';
 
-      const { data, status } = await put({
+      const { status } = await put({
         service: currentService,
         path: pathAddress,
         body: form,
@@ -126,8 +124,6 @@ export const AvatarEditorComponent = ({
           headers: {},
         },
       });
-
-      console.log('data', data);
 
       if (status === 204) {
         toast('Аватарка успешно загружена. В ближайшее время она отобразится на сайте');

@@ -298,7 +298,6 @@ export const Invites = () => {
         data,
       },
       (status: number, data: any) => {
-        console.log('status', status, data);
         if (status === 200) {
           setInvitations((prevInvites) => [
             ...prevInvites,

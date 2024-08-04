@@ -122,7 +122,6 @@ const CommunityLink = ({
         community_id: currentCommunityId,
       },
       (data: any) => {
-        console.log('close-community', data);
         if (data === 204) {
           socket?.emit(
             'retrieve-community',
@@ -130,7 +129,6 @@ const CommunityLink = ({
               community_id: community.id,
             },
             (stats: number, { community, participant }: { community: any; participant: any }) => {
-              console.log('stats', stats);
               if (stats === 200) {
                 updateCommunityMeta({
                   id: community.id,

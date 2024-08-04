@@ -37,8 +37,7 @@ async function http<T>(
   };
 
   const request = new Request(url, config);
-  // console.log('request', request);
-  // console.log('config', config);
+
   const response = await fetch(request);
   const data = await response.json().catch(() => ({}));
 

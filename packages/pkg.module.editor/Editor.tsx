@@ -197,8 +197,6 @@ const DragOverlayContent = ({ element }: any) => {
   const editor = useEditor();
   const [value] = useState([JSON.parse(JSON.stringify(element))]); // clone
 
-  console.log('DragOverlayContent');
-
   useEffect(() => {
     document.body.classList.add('dragging');
 

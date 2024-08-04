@@ -11,8 +11,6 @@ import { useMainSt } from 'pkg.stores';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
-// type HeaderPropsT = {};
-
 export const Header = () => {
   const params = useParams<{ 'community-id': string, 'channel-id': string }>();
 
@@ -22,8 +20,6 @@ export const Header = () => {
   const currentTasks = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
   if (currentTasks === undefined) return null;
-
-  console.log('channels', channels, currentTasks);
 
   return (
     <div className="flex flex-col gap-4 pb-4 md:pb-8">

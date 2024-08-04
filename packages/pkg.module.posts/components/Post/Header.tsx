@@ -23,8 +23,6 @@ export const Header = () => {
 
   if (currentTasks === undefined) return null;
 
-  console.log('channels', channels, currentTasks);
-
   return (
     <div className="flex flex-col gap-4 pb-4 md:pb-8">
       <div>
