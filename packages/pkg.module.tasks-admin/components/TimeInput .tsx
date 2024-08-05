@@ -1,28 +1,28 @@
 import React from 'react';
 import { Input } from '@xipkg/input';
 
-interface TimeInputProps {
+type TimeInputPropsT = {
   time: string;
   setTime: React.Dispatch<React.SetStateAction<string>>;
-}
+};
 
-export const TimeInput = ({ time = '', setTime }: TimeInputProps) => {
+const allowedKeys = [
+  'Backspace',
+  'Delete',
+  'Tab',
+  'Escape',
+  'Enter',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+  ':',
+];
+
+export const TimeInput = ({ time = '', setTime }: TimeInputPropsT) => {
   const checkNum = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const allowedKeys = [
-      'Backspace',
-      'Delete',
-      'Tab',
-      'Escape',
-      'Enter',
-      'ArrowLeft',
-      'ArrowRight',
-      'ArrowUp',
-      'ArrowDown',
-      'Home',
-      'End',
-      ':',
-    ];
-
     if (allowedKeys.includes(e.key) || (e.key === 'a' && (e.ctrlKey || e.metaKey))) {
       return;
     }

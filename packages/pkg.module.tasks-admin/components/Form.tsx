@@ -19,14 +19,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { cn } from '@xipkg/utils';
 import { ru } from 'date-fns/locale';
 
 import { TimeInput } from './TimeInput ';
 
-interface FormProps {
+type FormPropsT = {
   timer: boolean;
-}
+};
 
 const FormSchema = z
   .object({
@@ -57,9 +56,8 @@ export type FormDataT = {
   dateConflict?: string;
 };
 
-export const FormBlock = ({ timer }: FormProps) => {
+export const FormBlock = ({ timer }: FormPropsT) => {
   const form = useForm<FormDataT>({
-    // @ts-ignore
     resolver: zodResolver(FormSchema),
   });
 
@@ -69,17 +67,13 @@ export const FormBlock = ({ timer }: FormProps) => {
     formState: { errors },
   } = form;
 
-  const onSubmit = (data: FormDataT) => {
-    console.log('Form data:', data);
+  const onSubmit = () => {
     toast('Задание создано');
   };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="border-gray-30 rounded-xl border-[1px] p-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="border-gray-30 rounded-xl border p-6">
         <h2 className="text-l-base font-semibold text-gray-100">Настройки</h2>
 
         <div className="mt-6 flex-col">
@@ -97,7 +91,7 @@ export const FormBlock = ({ timer }: FormProps) => {
                       <Input
                         value={field.value ? format(field.value, 'PPP', { locale: ru }) : ''}
                         variant="m"
-                        className={cn('cursor-pointer justify-start text-left font-normal')}
+                        className="cursor-pointer justify-start text-left font-normal"
                         after={<Calendar className="fill-gray-60 h-6 w-6" />}
                       />
                     </DatePicker>
@@ -138,7 +132,7 @@ export const FormBlock = ({ timer }: FormProps) => {
                       <Input
                         value={field.value ? format(field.value, 'PPP', { locale: ru }) : ''}
                         variant="m"
-                        className={cn('cursor-pointer justify-start text-left font-normal')}
+                        className="cursor-pointer justify-start text-left font-normal"
                         after={<Calendar className="fill-gray-60 h-6 w-6" />}
                       />
                     </DatePicker>
@@ -175,7 +169,7 @@ export const FormBlock = ({ timer }: FormProps) => {
               name="pointSystem"
               render={({ field }) => (
                 <FormItem className="mt-2 w-full">
-                  <FormControl className="">
+                  <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Модель оценивания" />

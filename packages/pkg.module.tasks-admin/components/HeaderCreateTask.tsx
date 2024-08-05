@@ -3,17 +3,17 @@ import React from 'react';
 import { Breadcrumbs } from '@xipkg/breadcrumbs';
 import Timer from './Timer';
 
-interface HeaderProps {
+type HeaderPropsT = {
   timer: boolean;
   setTimer: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
 const breadcrumbs = [
   { name: 'Моё пространство', link: '/home' },
   { name: 'Задания', link: '/tasks' },
 ];
 
-const Header = ({ timer, setTimer }: HeaderProps) => (
+const Header = ({ timer, setTimer }: HeaderPropsT) => (
   <div className="flex flex-col gap-4 p-4 lg:p-8">
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} size="s" />
