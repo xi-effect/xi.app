@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
-// import { Header } from './components/Header';
 import { SnackbarProvider } from 'notistack';
 import { Menu } from './components/Menu';
 import { Content } from './Content';

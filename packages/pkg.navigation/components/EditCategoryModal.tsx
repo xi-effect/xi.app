@@ -4,20 +4,20 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
-import { PrivateCategoryToggle } from './PrivateCategoryToggle';
+// import { PrivateCategoryToggle } from './PrivateCategoryToggle';
 import { CategoryT } from './types';
 
 export type EditCategoryModalPropsT = {
   isOpen: boolean;
   onOpenChange: (value: React.SetStateAction<boolean>) => void;
-  onConfirm: (value: CategoryT & { privateCategory: boolean }) => void;
+  onConfirm: (value: CategoryT) => void; // & { privateCategory: boolean }
   category: CategoryT;
 };
 
 type EditCategoryFormT = {
   name: string;
   description: string;
-  privateCategory: boolean;
+  // privateCategory: boolean;
 };
 
 export const EditCategoryModal = ({
@@ -30,7 +30,7 @@ export const EditCategoryModal = ({
     defaultValues: {
       name: category.name || '',
       description: category.description || '',
-      privateCategory: false,
+      // privateCategory: false,
     },
   });
   const { control, handleSubmit, trigger } = form;
@@ -41,7 +41,7 @@ export const EditCategoryModal = ({
       ...category,
       name: data.name,
       description: data.description,
-      privateCategory: data.privateCategory,
+      // privateCategory: data.privateCategory,
     });
     onOpenChange(false);
   };
@@ -81,7 +81,7 @@ export const EditCategoryModal = ({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={control}
               name="privateCategory"
               render={({ field }) => (
@@ -94,7 +94,7 @@ export const EditCategoryModal = ({
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
           </form>
         </Form>
         <M.ModalFooter className="flex items-center justify-start gap-4">
