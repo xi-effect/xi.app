@@ -22,3 +22,20 @@ export type UpdateChannelReqT = {
     description: string;
   };
 };
+
+export type RetrieveCommunityT = {
+  community: {
+    id: 0;
+    name: string;
+    description: null;
+  };
+  participant: {
+    is_owner: false;
+  };
+};
+
+export type CommunityListItemT = {
+  id: number;
+  name: string;
+  description: null;
+};
