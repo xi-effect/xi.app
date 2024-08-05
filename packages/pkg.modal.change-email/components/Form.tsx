@@ -31,6 +31,7 @@ const schema = z.object({
 type FormBlockPropsT = {
   onEmailChange: any;
   setStage: (arg: { type: string; email: string }) => void;
+  onOpenChange: (value: boolean) => void;
 };
 
 export type FormDataT = {
@@ -38,7 +39,7 @@ export type FormDataT = {
   password: string;
 };
 
-const FormBlock = ({ onEmailChange, setStage }: FormBlockPropsT) => {
+const FormBlock = ({ onEmailChange, setStage, onOpenChange }: FormBlockPropsT) => {
   const form = useForm<FormDataT>({
     resolver: zodResolver(schema),
   });
@@ -118,7 +119,7 @@ const FormBlock = ({ onEmailChange, setStage }: FormBlockPropsT) => {
           <Button disabled={timer} className="disabled:cursor-not-allowed" type="submit">
             Изменить
           </Button>
-          <Button type="button" variant="secondary">
+          <Button onClick={() => onOpenChange(false)} type="button" variant="secondary">
             Отменить
           </Button>
         </M.ModalFooter>

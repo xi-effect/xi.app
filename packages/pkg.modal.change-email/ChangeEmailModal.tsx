@@ -9,14 +9,17 @@ import { PropsWithChildren, useState } from 'react';
 import { useMainSt } from 'pkg.stores';
 import Form from './components/Form';
 
-type ChangeEmailModalT = PropsWithChildren<{}>;
+type ChangeEmailModalT = PropsWithChildren<{
+  open: boolean;
+  onOpenChange: (value: boolean) => void;
+}>;
 
 interface IEmailModalStage {
   type: string;
   email: string;
 }
 
-export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
+export const ChangeEmailModal = ({ open, onOpenChange, children }: ChangeEmailModalT) => {
   const onEmailChange = useMainSt((state) => state.onEmailChange);
   const [stage, setStage] = useState<IEmailModalStage>({
     type: 'form',
@@ -24,7 +27,7 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
   });
 
   return (
-    <M.Modal>
+    <M.Modal open={open} onOpenChange={(value) => onOpenChange(value)}>
       <M.ModalTrigger asChild>{children}</M.ModalTrigger>
       <M.ModalContent>
         {(stage.type === 'form' && (
@@ -35,7 +38,7 @@ export const ChangeEmailModal = ({ children }: ChangeEmailModalT) => {
             <M.ModalHeader>
               <M.ModalTitle>Изменение электронной почты</M.ModalTitle>
             </M.ModalHeader>
-            <Form onEmailChange={onEmailChange} setStage={setStage} />
+            <Form onEmailChange={onEmailChange} setStage={setStage} onOpenChange={onOpenChange} />
           </>
         )) ||
           (stage.type === 'success' && (
