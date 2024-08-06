@@ -14,13 +14,13 @@ function formatTime(seconds: number) {
   return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-interface TimerProps {
+type TimerPropsT = {
   durationSecs: number;
   getTitle: (currentDuration: string) => string;
   onTimerEnd: () => void;
-}
+};
 
-const Timer = ({ getTitle, onTimerEnd, durationSecs }: TimerProps) => {
+const Timer = ({ getTitle, onTimerEnd, durationSecs }: TimerPropsT) => {
   const [leftSecs, setSecs] = useState(durationSecs);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Timer = ({ getTitle, onTimerEnd, durationSecs }: TimerProps) => {
   });
 
   return (
-    <div className="bg-red-0 lg:ml-8 flex w-[508px] flex-auto items-center gap-2 rounded-lg p-4 text-red-100">
+    <div className="bg-red-0 flex w-[508px] flex-auto items-center gap-2 rounded-lg p-4 text-red-100 lg:ml-8">
       <Clock className="fill-red-100" />
       <p className="text-xs-base font-normal">{getTitle(formatTime(leftSecs))}</p>
     </div>
