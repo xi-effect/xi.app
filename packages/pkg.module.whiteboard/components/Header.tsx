@@ -1,6 +1,7 @@
 import { Minimize, Maximize } from '@xipkg/icons';
 import { useFullScreen } from 'pkg.utils.client';
 import { Button } from '@xipkg/button';
+import { SettingsDropdown } from './SettingsDropdown';
 
 export function Header() {
   const { isFullScreen, toggleFullScreen } = useFullScreen('whiteboard-container');
@@ -22,6 +23,7 @@ export function Header() {
           >
             {isFullScreen ? <Minimize /> : <Maximize />}
           </Button>
+          <SettingsDropdown />
         </div>
       </div>
     </div>
