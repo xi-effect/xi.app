@@ -1,43 +1,89 @@
 import React, { ChangeEvent, useRef } from 'react';
-import { track, useEditor } from 'tldraw';
+import { TLAssetId, TLImageAsset, track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { NavbarAction } from './NavbarAction';
 import { MenuPopupContent } from './MenuPopupContent';
+import { post } from 'pkg.utils/fetch';
 import { navBarElements, NavbarElementT } from '../navBarElements';
 import { toast } from 'sonner';
 
+type MediaResponseT = {
+  creator_user_id: string;
+  id: string;
+  kind: string;
+  name: string;
+};
+
 export const Navbar = track(() => {
+  const WORKER_URL = `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/`;
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const editor = useEditor();
   const [inputKey, setInputKey] = React.useState(1);
-  const [file, setFile] = React.useState<any>();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleMenuEditClick = () => {
     inputRef.current?.click();
   };
 
-  const readFile = (file: File) =>
-    new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => resolve(reader.result), false);
-      reader.readAsDataURL(file);
-    });
   const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) {
+    if (!event.target.files || event.target.files.length === 0) {
       return;
     }
 
-    if (event.target.files[0].size > 5 * 1024 * 1024) {
+    const file = event.target.files[0];
+
+    if (file.size > 5 * 1024 * 1024) {
       toast('Файл слишком большой');
       return;
     }
 
-    const imageDataUrl = await readFile(event.target.files[0]);
-    setFile(imageDataUrl);
+    const formData = new FormData();
+    formData.append('attachment', file);
+
+    try {
+      const { data, status } = await post<unknown, MediaResponseT>({
+        service: 'backend',
+        path: '/api/protected/storage-service/files/attachments/',
+        body: formData,
+      });
+      console.log(status, data);
+
+      if (status !== 201) {
+        throw new Error('Ошибка загрузки файла');
+      }
+
+      toast('Файл успешно загружен');
+      const id = data.id;
+      const url = `${WORKER_URL}${id}`;
+
+      // Create TLImageAsset object
+      const imageAsset: TLImageAsset = {
+        typeName: 'asset',
+        id: ('asset:' + id) as TLAssetId,
+        type: 'image',
+        props: {
+          fileSize: file.size,
+          h: 300,
+          isAnimated: false,
+          mimeType: file.type,
+          name: file.name,
+          src: url,
+          w: 300,
+        },
+        meta: {},
+      };
+
+      // Add the asset to the Tldraw editor
+      editor.createAssets([imageAsset]);
+
+      console.log('Uploaded file:', data);
+    } catch (error) {
+      toast('Ошибка загрузки файла');
+      console.error('File upload error:', error);
+    }
+
     setInputKey(Math.random());
   };
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <div className="pointer-events-none absolute inset-0">
@@ -59,11 +105,11 @@ export const Navbar = track(() => {
                           className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px] ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                           data-isactive={isActive}
                           onClick={() => {
-                            if (item.action === 'image') {
-                              handleMenuEditClick();
-                            } else {
+                            if (item.action !== 'asset') {
                               setIsTooltipOpen(true);
                               editor.setCurrentTool(item.action);
+                            } else {
+                              handleMenuEditClick();
                             }
                           }}
                         >

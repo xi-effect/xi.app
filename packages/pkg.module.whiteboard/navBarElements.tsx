@@ -70,6 +70,6 @@ export const navBarElements: NavbarElementT[] = [
   { action: 'text', title: 'Text', icon: <TText /> },
   { action: 'rectangle', title: 'Shapes', icon: <Figures /> },
   { action: 'arrow', title: 'Arrow', icon: <Arrow /> },
-  { action: 'image', title: 'Image', icon: <Image /> },
+  { action: 'asset', title: 'Image', icon: <Image /> },
   { action: 'eraser', title: 'Eraser', icon: <Eraser /> },
 ];

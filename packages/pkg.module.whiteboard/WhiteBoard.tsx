@@ -8,6 +8,7 @@ import { Header } from './components/Header';
 import { hiddenComponents } from './customConfig';
 import { StylePanel } from './components/StylePanel';
 import { StickerTool } from './components/CustomTools';
+// import { myAssetStore } from './imageStore';
 
 export const WhiteBoard = () => {
   return (
