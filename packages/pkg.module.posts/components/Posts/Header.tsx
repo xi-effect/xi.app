@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
+import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
-import { Search } from '@xipkg/icons';
+import { Search, Plus } from '@xipkg/icons';
 import debounce from 'lodash/debounce';
 import {
   BreadcrumbsRoot,
@@ -34,13 +35,12 @@ export const Header = ({ onSearch }: HeaderProps) => {
   const params = useParams<{ 'community-id': string, 'channel-id': string }>();
 
   const communityMeta = useMainSt((state) => state.communityMeta);
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
   const channels = useMainSt((state) => state.channels);
 
   const currentPosts = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
   if (currentPosts === undefined) return null;
-
-  console.log('channels', channels, currentPosts);
 
   return (
     <div className="flex flex-col gap-4 pb-4 md:pb-8">
@@ -55,13 +55,19 @@ export const Header = ({ onSearch }: HeaderProps) => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </BreadcrumbsRoot>
-      <div className="flex items-end justify-between">
+      <div className="flex items-start md:items-center justify-between flex-col md:flex-row">
         <h1 className="text-3xl font-semibold max-[520px]:text-2xl sm:inline-block sm:text-4xl">
           {currentPosts[0]?.name}
         </h1>
-        <div className="hidden w-[250px] p-4 md:block">
+        <div className="flex flex-row gap-6">
+          { isOwner &&
+            <Button size="s" className="pl-2 w-[100px]">
+              <Plus size="s" className="fill-gray-0 mr-[6px]" />
+              Создать
+            </Button>
+          }
           <Input
-            className="placeholder:text-base"
+            className="placeholder:text-base w-[250px]"
             variant="s"
             placeholder="Поиск"
             before={<Search size="s" className="fill-gray-60" />}

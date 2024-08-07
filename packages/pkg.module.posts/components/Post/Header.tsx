@@ -5,13 +5,10 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-  BreadcrumbPage,
 } from '@xipkg/breadcrumbs';
 import { useMainSt } from 'pkg.stores';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-
-// type HeaderPropsT = {};
 
 export const Header = () => {
   const params = useParams<{ 'community-id': string, 'channel-id': string }>();
@@ -26,7 +23,7 @@ export const Header = () => {
   console.log('channels', channels, currentTasks);
 
   return (
-    <div className="flex flex-col gap-4 pb-4 md:pb-8">
+    <div className="flex flex-col gap-3 pb-4 md:pb-8">
       <div>
         <BreadcrumbsRoot size="s">
           <BreadcrumbList>
@@ -37,10 +34,6 @@ export const Header = () => {
             <BreadcrumbItem>
               <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/channels/${params['channel-id']}/posts`}>{currentTasks[0]?.name}</Link></BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{currentTasks[0]?.name}</BreadcrumbPage>
-            </BreadcrumbItem>
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
@@ -50,13 +43,13 @@ export const Header = () => {
         </h1>
       </div>
       <div className="flex items-center h-[16px] gap-1">
-        <span className="text-xs-base">
+        <span className="text-s-base">
           4 мая 2024
         </span>
         <svg className="fill-gray-100" width="3" height="4" viewBox="0 0 3 4" fill="none">
           <circle cx="1.5" cy="2" r="1.5" />
         </svg>
-        <span className="text-xs-base">
+        <span className="text-s-base">
           Иванова А.Г.
         </span>
       </div>
