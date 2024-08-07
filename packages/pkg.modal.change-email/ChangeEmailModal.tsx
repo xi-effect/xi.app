@@ -5,14 +5,15 @@
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
-import { PropsWithChildren, useState } from 'react';
+import React, { useState } from 'react';
 import { useMainSt } from 'pkg.stores';
 import Form from './components/Form';
 
-type ChangeEmailModalT = PropsWithChildren<{
+type ChangeEmailModalT = {
   open: boolean;
-  onOpenChange: (value: boolean) => void;
-}>;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactElement<HTMLButtonElement>;
+};
 
 interface IEmailModalStage {
   type: string;

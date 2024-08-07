@@ -31,7 +31,7 @@ const schema = z.object({
 type FormBlockPropsT = {
   onEmailChange: any;
   setStage: (arg: { type: string; email: string }) => void;
-  onOpenChange: (value: boolean) => void;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type FormDataT = {

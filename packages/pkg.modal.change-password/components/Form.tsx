@@ -31,7 +31,7 @@ const schema = z
 
 type FormPropsT = {
   setStage: (stage: 'form' | 'success') => void;
-  onOpenChange: (value: boolean) => void;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
