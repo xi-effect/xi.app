@@ -13,6 +13,8 @@ import { StickerTool } from './components/CustomTools';
 export const WhiteBoard = () => {
   return (
     <Tldraw
+      acceptedImageMimeTypes={['image/jpeg']}
+      // assets={myAssetStore}
       onMount={(editor) => {
         editor.updateInstanceState({ isGridMode: true });
       }}

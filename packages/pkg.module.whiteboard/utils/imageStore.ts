@@ -1,4 +1,3 @@
-import { File } from './../../pkg.module.editor/elements/File';
 import { post } from 'pkg.utils/fetch';
 import { TLAsset } from 'tldraw';
 
@@ -17,7 +16,7 @@ export type MediaResponseT = {
 };
 
 export interface TLAssetStore {
-  upload(asset: TLAsset, file: File): Promise<string>;
+  upload(asset: TLAsset | null, file: File): Promise<string>;
   resolve?(asset: TLAsset, ctx: TLAssetContext): Promise<string | null> | string | null;
 }
 
@@ -25,7 +24,7 @@ const WORKER_URL = '/api/protected/storage-service/files/';
 const UPLOAD_URL = '/api/protected/storage-service/files/attachments/';
 
 export const myAssetStore: TLAssetStore = {
-  async upload(asset: TLAsset, file: File) {
+  async upload(asset: TLAsset | null, file: File) {
     const formData = new FormData();
     formData.append('attachment', file);
 
