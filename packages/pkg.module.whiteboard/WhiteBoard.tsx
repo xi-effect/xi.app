@@ -5,7 +5,7 @@ import { Navbar } from './components/Navbar';
 import './index.css';
 import { ZoomMenu } from './components/ZoomMenu';
 import { Header } from './components/Header';
-import { hiddenComponents } from './customConfig';
+import { hiddenComponents } from './utils/customConfig';
 import { StylePanel } from './components/StylePanel';
 import { StickerTool } from './components/CustomTools';
 // import { myAssetStore } from './imageStore';
