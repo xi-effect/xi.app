@@ -1,4 +1,3 @@
-import React from 'react';
 import { DefaultStylePanel, TLUiStylePanelProps, useRelevantStyles } from 'tldraw';
 import { StylePanelContent } from './StylePanelContent';
 

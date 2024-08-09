@@ -1,24 +1,24 @@
-import React, { ChangeEvent, useRef } from 'react';
-import { TLAssetId, TLImageAsset, track, useEditor } from 'tldraw';
+import { track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { NavbarAction } from './NavbarAction';
 import { MenuPopupContent } from './MenuPopupContent';
-import { post } from 'pkg.utils/fetch';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
 import { useInsertMedia } from '../utils/useInsertMedia';
-import { toast } from 'sonner';
-
-type MediaResponseT = {
-  creator_user_id: string;
-  id: string;
-  kind: string;
-  name: string;
-};
+import { useState } from 'react';
 
 export const Navbar = track(() => {
-  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const editor = useEditor();
   const insertMedia = useInsertMedia();
+
+  const hanleTool = (action: string) => {
+    if (action !== 'asset') {
+      setIsTooltipOpen(true);
+      editor.setCurrentTool(action);
+    } else {
+      insertMedia();
+    }
+  };
 
   return (
     <div className="pointer-events-none absolute inset-0">
@@ -39,14 +39,7 @@ export const Navbar = track(() => {
                           type="button"
                           className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px] ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                           data-isactive={isActive}
-                          onClick={() => {
-                            if (item.action !== 'asset') {
-                              setIsTooltipOpen(true);
-                              editor.setCurrentTool(item.action);
-                            } else {
-                              insertMedia();
-                            }
-                          }}
+                          onClick={() => hanleTool(item.action)}
                         >
                           {item.icon ? item.icon : item.title}
                         </button>

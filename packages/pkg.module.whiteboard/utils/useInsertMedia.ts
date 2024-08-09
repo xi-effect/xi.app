@@ -30,12 +30,6 @@ export function useInsertMedia() {
               throw new Error(`Status is ${status} in useInsertMedia`);
             }
 
-            // It doesn't work
-            const newFile = new File([data], file.name, {
-              type: file.type,
-              lastModified: file.lastModified,
-            });
-
             return file;
           }),
         );
