@@ -1,6 +1,6 @@
 import { ChevronRight } from '@xipkg/icons';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 
 type PostCardProps = {
@@ -8,7 +8,7 @@ type PostCardProps = {
   description: string;
   date: string;
   author: string;
-  id: string;
+  id: number;
 };
 
 const PostCard = ({
@@ -16,15 +16,14 @@ const PostCard = ({
   description = 'Текст объявления',
   date = '1 января 1970',
   author = 'Автор',
-  id='001',
+  id = 456456,
 }: PostCardProps) => {
-  const pathname = usePathname();
+  const params = useParams<{ 'community-id': string, 'channel-id': string, }>();
   const communityId = useMainSt((state) => state.communityMeta.id);
-  const [, channelId] = pathname.match(/\/communities\/\d+(?:\/channels\/(\d+)\/(\w+)|\/(\w+))/);
 
   return (
     <Link
-      href={`/communities/${communityId}/channels/${channelId}/posts/${id}`}
+      href={`/communities/${communityId}/channels/${params['channel-id']}/posts/${id}`}
       className="border-gray-80 hover:bg-gray-5 group flex h-56 cursor-pointer flex-col rounded-2xl border p-6"
     >
       <h2 className="line-clamp-1 text-xl font-semibold leading-[28px] md:line-clamp-2">{title}</h2>

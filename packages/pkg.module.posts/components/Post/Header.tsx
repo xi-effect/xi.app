@@ -5,22 +5,23 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
+  BreadcrumbPage,
 } from '@xipkg/breadcrumbs';
 import { useMainSt } from 'pkg.stores';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { announcements } from '../Posts/mockData';
 
 export const Header = () => {
-  const params = useParams<{ 'community-id': string, 'channel-id': string }>();
+  const params = useParams<{ 'community-id': string, 'channel-id': string, 'post-id': string }>();
 
   const communityMeta = useMainSt((state) => state.communityMeta);
   const channels = useMainSt((state) => state.channels);
 
   const currentTasks = channels?.filter((item) => Number(params['channel-id']) === item.id);
-
   if (currentTasks === undefined) return null;
 
-  console.log('channels', channels, currentTasks);
+  const currentPost = announcements?.filter((item) => Number(params['post-id']) === item.id)[0];
 
   return (
     <div className="flex flex-col gap-3 pb-4 md:pb-8">
@@ -34,23 +35,27 @@ export const Header = () => {
             <BreadcrumbItem>
               <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/channels/${params['channel-id']}/posts`}>{currentTasks[0]?.name}</Link></BreadcrumbLink>
             </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{params['post-id']}</BreadcrumbPage>
+            </BreadcrumbItem>
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
-      <div className="flex items-center h-[40px]">
+      <div className="flex items-center">
         <h1 className="text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5">
-          Quizzes
+          {currentPost.title}
         </h1>
       </div>
       <div className="flex items-center h-[16px] gap-1">
         <span className="text-s-base">
-          4 мая 2024
+          {currentPost.date}
         </span>
         <svg className="fill-gray-100" width="3" height="4" viewBox="0 0 3 4" fill="none">
           <circle cx="1.5" cy="2" r="1.5" />
         </svg>
         <span className="text-s-base">
-          Иванова А.Г.
+          {currentPost.author}
         </span>
       </div>
     </div>

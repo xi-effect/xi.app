@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+'use client';
+
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { Button } from '@xipkg/button';
-import { Input } from '@xipkg/input';
-import { Search, Plus } from '@xipkg/icons';
-import debounce from 'lodash/debounce';
+import { Plus } from '@xipkg/icons';
 import {
   BreadcrumbsRoot,
   BreadcrumbItem,
@@ -11,29 +11,14 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@xipkg/breadcrumbs';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import Link from 'next/link';
 
-type HeaderProps = {
-  onSearch: (searchValue: string) => void;
-};
-
-export const Header = ({ onSearch }: HeaderProps) => {
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.trim().toLowerCase();
-    debouncedSearch(value);
-  };
-
-  const debouncedSearch = useCallback(
-    debounce((value) => {
-      onSearch(value);
-    }, 700),
-    [],
-  );
-
+export const Header = () => {
   const params = useParams<{ 'community-id': string, 'channel-id': string }>();
-
+  const getUrlWithParams = useGetUrlWithParams();
+  const router = useRouter();
   const communityMeta = useMainSt((state) => state.communityMeta);
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
   const channels = useMainSt((state) => state.channels);
@@ -41,6 +26,8 @@ export const Header = ({ onSearch }: HeaderProps) => {
   const currentPosts = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
   if (currentPosts === undefined) return null;
+
+  const handleRouteChange = () => router.push(getUrlWithParams(`/communities/${params['community-id']}/channels/${params['channel-id']}/posts/add-post`));
 
   return (
     <div className="flex flex-col gap-4 pb-4 md:pb-8">
@@ -55,26 +42,17 @@ export const Header = ({ onSearch }: HeaderProps) => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </BreadcrumbsRoot>
-      <div className="flex items-start md:items-center justify-between flex-col md:flex-row">
+      <div className="flex items-start md:items-center justify-between flex-col sm:flex-row gap-4">
         <h1 className="text-3xl font-semibold max-[520px]:text-2xl sm:inline-block sm:text-4xl">
           {currentPosts[0]?.name}
         </h1>
-        <div className="flex flex-row gap-6">
+        <div className="flex gap-6 w-full justify-end">
           { isOwner &&
-            <Button size="s" className="pl-2 w-[100px]">
+            <Button size="s" className="pl-2 w-[100px]" onClick={handleRouteChange}>
               <Plus size="s" className="fill-gray-0 mr-[6px]" />
               Создать
             </Button>
           }
-          <Input
-            className="placeholder:text-base w-[250px]"
-            variant="s"
-            placeholder="Поиск"
-            before={<Search size="s" className="fill-gray-60" />}
-            onChange={(event) => {
-              handleSearch(event);
-            }}
-          />
         </div>
       </div>
     </div>
