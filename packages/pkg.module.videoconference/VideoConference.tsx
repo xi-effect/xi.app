@@ -13,13 +13,13 @@ type VideoConferenceT = {
   token: string;
 };
 
-export interface ILocalUserChoice {
+export type LocalUserChoiceT = {
   audioEnabled: boolean;
   videoEnabled: boolean;
-}
+};
 
 export const VideoConference = ({ token }: VideoConferenceT) => {
-  const [userChoice, setUserChoice] = useState<ILocalUserChoice | undefined>(undefined);
+  const [userChoice, setUserChoice] = useState<LocalUserChoiceT | undefined>(undefined);
   const [room] = useState(new Room());
   const [connect, setConnect] = useState(false);
   const [isConnected, setIsConnected] = useState<boolean>(false);

@@ -4,26 +4,23 @@ import { useTrackToggle } from '@livekit/components-react';
 import { getSourceIcon } from './getSourceIcon';
 
 /** @public */
-export interface TrackToggleProps<T extends ToggleSource>
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
+export type TrackToggleProps<T extends ToggleSource> = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
   source: T;
   showIcon?: boolean;
   initialState?: boolean;
   onChange?: (enabled: boolean, isUserInitiated: boolean) => void;
   captureOptions?: CaptureOptionsBySource<T>;
-}
+};
 
-// eslint-disable-next-line max-len
-export function TrackToggle<T extends ToggleSource>({
+export const TrackToggle = <T extends ToggleSource>({
   showIcon = true,
   ...props
-}: TrackToggleProps<T>) {
+}: TrackToggleProps<T>) => {
   const { buttonProps, enabled } = useTrackToggle(props);
   return (
-    // eslint-disable-next-line react/button-has-type
-    <button {...buttonProps} className="bg-transparent p-0">
+    <button type="button" {...buttonProps} className="bg-transparent p-0">
       {(showIcon ?? true) && getSourceIcon(props.source, enabled)}
       {props.children}
     </button>
   );
-}
+};

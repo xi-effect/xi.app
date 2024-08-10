@@ -3,23 +3,24 @@ import { HTMLAttributes } from 'react';
 import { ConnectionQuality } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
-import { serverUrl, ILocalUserChoice } from '../VideoConference';
+import { serverUrl, LocalUserChoiceT } from '../VideoConference';
 import { ISettingsRoom } from '../types/types';
 import { VideoConference } from './VideoTrack';
 
-export function ActiveRoom({
+export const ActiveRoom = ({
   token,
   room,
   connectInfo,
   isConnectInfo,
   userChoice,
-}: ISettingsRoom & { userChoice: ILocalUserChoice | undefined }) {
+}: ISettingsRoom & { userChoice: LocalUserChoiceT | undefined }) => {
   const { connect, setConnect } = connectInfo;
   const { isConnected, setIsConnected } = isConnectInfo;
   const handleDisconnect = () => {
     setConnect(false);
     setIsConnected(false);
   };
+
   return (
     <LiveKitRoom
       room={room}
@@ -42,9 +43,9 @@ export function ActiveRoom({
       </div>
     </LiveKitRoom>
   );
-}
+};
 
-export function UserDefinedConnectionQualityIndicator(props: HTMLAttributes<HTMLSpanElement>) {
+export const UserDefinedConnectionQualityIndicator = (props: HTMLAttributes<HTMLSpanElement>) => {
   const { quality } = useConnectionQualityIndicator();
 
   function qualityToText(quality: ConnectionQuality): string {
@@ -65,4 +66,4 @@ export function UserDefinedConnectionQualityIndicator(props: HTMLAttributes<HTML
   const qualityText = qualityToText(quality);
 
   return <span {...props}>{qualityText}</span>;
-}
+};

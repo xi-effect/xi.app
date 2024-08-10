@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from '@xipkg/button';
-import { LocalUserChoices, TrackReference } from '@livekit/components-core';
+import { LocalUserChoices } from '@livekit/components-core';
 import React, { useEffect } from 'react';
 import type { LocalAudioTrack, LocalVideoTrack } from 'livekit-client';
 import { facingModeFromLocalTrack, Track } from 'livekit-client';
@@ -11,28 +11,25 @@ import {
   TrackToggle,
   usePersistentUserChoices,
   usePreviewTracks,
-  useTracks,
-  useMaybeRoomContext,
 } from '@livekit/components-react';
 import { Conference, Microphone } from '@xipkg/icons';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 import { MessageBeforeJoin } from './MessageBeforeJoin';
 
-export interface PreJoinProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onError'> {
+export type PreJoinT = Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onError'> & {
   onValidate?: (values: LocalUserChoices) => boolean;
   defaults?: Partial<LocalUserChoices>;
   defaultUserChoices?: any;
   persistUserChoices?: boolean;
-}
+};
 
-interface IPreJoinSection {
+type PreJoinSectionT = {
   connect: boolean;
   setConnect: (arg: (prev: boolean) => boolean) => void;
   setUserChoice: (arg: { audioEnabled: boolean; videoEnabled: boolean }) => void | undefined;
-}
+};
 
-export function PreJoinSection({
+export const PreJoinSection = ({
   defaults = {},
   onValidate,
   persistUserChoices = true,
@@ -40,7 +37,7 @@ export function PreJoinSection({
   setConnect,
   connect,
   setUserChoice,
-}: IPreJoinSection & PreJoinProps) {
+}: PreJoinSectionT & PreJoinT) => {
   const dinamicControl = useMediaDeviceSelect({
     kind: 'audiooutput',
   });
@@ -197,7 +194,7 @@ export function PreJoinSection({
                 className={`border-2 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
               >
                 <TrackToggle
-                  className="bg-transparent text-white"
+                  className="bg-transparent text-gray-0"
                   initialState={audioEnabled}
                   showIcon={false}
                   source={Track.Source.Microphone}
@@ -211,7 +208,7 @@ export function PreJoinSection({
               >
                 <TrackToggle
                   showIcon={false}
-                  className="bg-transparent text-white"
+                  className="bg-transparent text-gray-0"
                   initialState={videoEnabled}
                   source={Track.Source.Camera}
                   onChange={(enabled) => permissionByBrowser && setVideoEnabled(enabled)}
@@ -267,4 +264,4 @@ export function PreJoinSection({
       </div>
     </div>
   );
-}
+};

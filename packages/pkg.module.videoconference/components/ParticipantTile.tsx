@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-indent */
 import React from 'react';
-import { Track } from 'livekit-client';
+import { Participant, Track } from 'livekit-client';
 import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isTrackReference, isTrackReferencePinned } from '@livekit/components-core';
 import {
@@ -27,25 +27,28 @@ import { MicrophoneOff, RedLine } from '@xipkg/icons';
 import { FocusToggle } from './FocusToggle';
 import '../utility/style.css';
 
-function TrackRefContextIfNeeded({
-  trackRef,
-  children,
-}: {
+type TrackRefContextIfNeededPropsT = {
   trackRef?: TrackReferenceOrPlaceholder;
   children?: React.ReactNode;
-}) {
+};
+
+const TrackRefContextIfNeeded = ({
+  trackRef,
+  children,
+}: TrackRefContextIfNeededPropsT) => {
   const hasContext = !!useMaybeTrackRefContext();
   return trackRef && !hasContext ? (
     <TrackRefContext.Provider value={trackRef}>{children}</TrackRefContext.Provider>
   ) : (
     children
   );
-}
-export function TrackMutedIndicator({
+};
+
+export const TrackMutedIndicator = ({
   trackRef,
   show = 'always',
   ...props
-}: TrackMutedIndicatorProps) {
+}: TrackMutedIndicatorProps) => {
   const { isMuted } = useTrackMutedIndicator(trackRef);
 
   const showIndicator =
@@ -59,19 +62,23 @@ export function TrackMutedIndicator({
     <div data-lk-muted={isMuted}>
       {props.children ?? isMuted ? (
         <div className="relative w-[12px]">
-          <MicrophoneOff className="absolute h-[16px] w-[16px] fill-white" />
+          <MicrophoneOff className="absolute h-[16px] w-[16px] fill-gray-0" />
           <RedLine className="fill-red-80 absolute h-[16px] w-[16px]" />
         </div>
       ) : null}
     </div>
   );
-}
+};
 
-interface IFocusToggleDisable {
+type FocusToggleDisablePropsT = {
   isFocusToggleDisable?: boolean;
-}
+};
 
-export function ParticipantTile({
+type ParticipantTilePropsT = ParticipantTileProps &
+  FocusToggleDisablePropsT &
+  { participant?: Participant, source?: Track.Source, publication?: any };
+
+export const ParticipantTile = ({
   trackRef,
   participant,
   children,
@@ -81,7 +88,7 @@ export function ParticipantTile({
   disableSpeakingIndicator,
   isFocusToggleDisable,
   ...htmlProps
-}: ParticipantTileProps & IFocusToggleDisable) {
+}: ParticipantTilePropsT) => {
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
   const trackReference: TrackReferenceOrPlaceholder = React.useMemo(
@@ -94,10 +101,7 @@ export function ParticipantTile({
   );
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
-    participant: trackReference.participant,
     htmlProps,
-    source: trackReference.source,
-    publication: trackReference.publication,
     disableSpeakingIndicator,
     onParticipantClick,
   });
@@ -134,9 +138,9 @@ export function ParticipantTile({
             {children ?? (
               <div className="h-full">
                 {isTrackReference(trackReference) &&
-                (trackReference.publication?.kind === 'video' ||
-                  trackReference.source === Track.Source.Camera ||
-                  trackReference.source === Track.Source.ScreenShare) ? (
+                  (trackReference.publication?.kind === 'video' ||
+                    trackReference.source === Track.Source.Camera ||
+                    trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
                     className="rounded-[8px]"
                     style={{
@@ -178,7 +182,6 @@ export function ParticipantTile({
                             participant: trackReference.participant,
                             source: Track.Source.Microphone,
                           }}
-                          source={Track.Source.Microphone}
                           show="muted"
                           style={{ marginRight: '0.45rem', background: 'transperent' }}
                         />
@@ -206,4 +209,4 @@ export function ParticipantTile({
       </TrackRefContextIfNeeded>
     </div>
   );
-}
+};

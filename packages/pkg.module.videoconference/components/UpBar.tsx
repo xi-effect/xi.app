@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 
 'use client';
