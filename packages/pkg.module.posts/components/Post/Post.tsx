@@ -60,7 +60,7 @@ export const Post = () => {
           }
           {isNotification &&
             <div className="rounded-[8px] px-3 py-2 bg-red-0 text-red-100 flex flex-row gap-2 items-center">
-              <div className="flex w-[20px] h-[20px] border-2 border-red-100 rounded-full items-center justify-center">
+              <div className="flex min-w-[20px] h-[20px] border-2 border-red-100 rounded-full items-center justify-center">
                 <span>!</span>
               </div>
               <p className="text-xs-base">При сохранении файла возникла проблема. Повторное сохранение через 0:32</p>
