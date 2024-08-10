@@ -3,13 +3,14 @@
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
-import { PropsWithChildren, useState } from 'react';
+import React, { useState } from 'react';
 import Form from './components/Form';
 
-type ChangePasswordModalT = PropsWithChildren<{
+type ChangePasswordModalT = {
   open: boolean;
-  onOpenChange: (value: boolean) => void;
-}>;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactElement<HTMLButtonElement>;
+};
 
 export const ChangePasswordModal = ({ open, onOpenChange, children }: ChangePasswordModalT) => {
   const [stage, setStage] = useState<'form' | 'success'>('form');

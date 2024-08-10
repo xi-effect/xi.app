@@ -31,7 +31,7 @@ const schema = z
 
 type FormPropsT = {
   setStage: (stage: 'form' | 'success') => void;
-  onOpenChange: (value: boolean) => void;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
@@ -90,102 +90,104 @@ const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
 
   return (
     <Form {...form}>
-      <form className="space-y-4 p-6 pt-5" onSubmit={handleSubmit(onSubmit)}>
-        <FormField
-          control={control}
-          name="currentPassword"
-          render={({ field, fieldState: { error } }) => (
-            <FormItem>
-              <FormLabel>Текущий пароль</FormLabel>
-              <FormControl className="mt-2">
-                <Input
-                  {...field}
-                  error={!!error}
-                  autoComplete="off"
-                  type={isPasswordShow.currentPassword ? 'text' : 'password'}
-                  afterClassName="cursor-pointer"
-                  after={
-                    isPasswordShow.currentPassword ? (
-                      <Eyeoff className="fill-gray-60" />
-                    ) : (
-                      <Eyeon className="fill-gray-60" />
-                    )
-                  }
-                  afterProps={{
-                    onClick: () => changePasswordShow('currentPassword'),
-                  }}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={control}
-          name="newPassword"
-          render={({ field, fieldState: { error } }) => (
-            <FormItem>
-              <FormLabel>Новый пароль</FormLabel>
-              <FormControl className="mt-2">
-                <Input
-                  {...field}
-                  error={!!error}
-                  autoComplete="off"
-                  type={isPasswordShow.newPassword ? 'text' : 'password'}
-                  afterClassName="cursor-pointer"
-                  after={
-                    isPasswordShow.newPassword ? (
-                      <Eyeoff className="fill-gray-60" />
-                    ) : (
-                      <Eyeon className="fill-gray-60" />
-                    )
-                  }
-                  afterProps={{
-                    onClick: () => changePasswordShow('newPassword'),
-                  }}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={control}
-          name="confirmPassword"
-          render={({ field, fieldState: { error } }) => (
-            <FormItem>
-              <FormLabel>Подтвердите пароль</FormLabel>
-              <FormControl className="mt-2">
-                <Input
-                  {...field}
-                  error={!!error}
-                  autoComplete="off"
-                  type={isPasswordShow.confirmPassword ? 'text' : 'password'}
-                  afterClassName="cursor-pointer"
-                  after={
-                    isPasswordShow.confirmPassword ? (
-                      <Eyeoff className="fill-gray-60" />
-                    ) : (
-                      <Eyeon className="fill-gray-60" />
-                    )
-                  }
-                  afterProps={{
-                    onClick: () => changePasswordShow('confirmPassword'),
-                  }}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex justify-end gap-4">
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-3 px-5 pt-5 pb-3">
+          <FormField
+            control={control}
+            name="currentPassword"
+            render={({ field, fieldState: { error } }) => (
+              <FormItem>
+                <FormLabel>Текущий пароль</FormLabel>
+                <FormControl className="mt-2">
+                  <Input
+                    {...field}
+                    error={!!error}
+                    autoComplete="off"
+                    type={isPasswordShow.currentPassword ? 'text' : 'password'}
+                    afterClassName="cursor-pointer"
+                    after={
+                      isPasswordShow.currentPassword ? (
+                        <Eyeoff className="fill-gray-60" />
+                      ) : (
+                        <Eyeon className="fill-gray-60" />
+                      )
+                    }
+                    afterProps={{
+                      onClick: () => changePasswordShow('currentPassword'),
+                    }}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="newPassword"
+            render={({ field, fieldState: { error } }) => (
+              <FormItem>
+                <FormLabel>Новый пароль</FormLabel>
+                <FormControl className="mt-2">
+                  <Input
+                    {...field}
+                    error={!!error}
+                    autoComplete="off"
+                    type={isPasswordShow.newPassword ? 'text' : 'password'}
+                    afterClassName="cursor-pointer"
+                    after={
+                      isPasswordShow.newPassword ? (
+                        <Eyeoff className="fill-gray-60" />
+                      ) : (
+                        <Eyeon className="fill-gray-60" />
+                      )
+                    }
+                    afterProps={{
+                      onClick: () => changePasswordShow('newPassword'),
+                    }}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="confirmPassword"
+            render={({ field, fieldState: { error } }) => (
+              <FormItem>
+                <FormLabel>Подтвердите пароль</FormLabel>
+                <FormControl className="mt-2">
+                  <Input
+                    {...field}
+                    error={!!error}
+                    autoComplete="off"
+                    type={isPasswordShow.confirmPassword ? 'text' : 'password'}
+                    afterClassName="cursor-pointer"
+                    after={
+                      isPasswordShow.confirmPassword ? (
+                        <Eyeoff className="fill-gray-60" />
+                      ) : (
+                        <Eyeon className="fill-gray-60" />
+                      )
+                    }
+                    afterProps={{
+                      onClick: () => changePasswordShow('confirmPassword'),
+                    }}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="p-6 flex justify-start gap-4 px-5 py-5 border-gray-20 border-t">
+          <Button type="submit">Изменить</Button>
           <Button onClick={() => onOpenChange(false)} variant="secondary">
             Отменить
           </Button>
-          <Button type="submit">Изменить</Button>
         </div>
       </form>
     </Form>
