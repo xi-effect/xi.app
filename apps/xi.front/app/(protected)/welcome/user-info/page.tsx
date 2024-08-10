@@ -4,9 +4,8 @@ import { Button } from '@xipkg/button';
 import React, { RefObject } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useGetUrlWithParams } from 'pkg.utils.client';
+import { useGetUrlWithParams, useMedia } from 'pkg.utils.client';
 import { put } from 'pkg.utils';
-import { useMedia } from 'pkg.utils.client';
 import { AvatarEditor } from 'pkg.avatar.editor';
 import {
   Form,
@@ -71,6 +70,8 @@ export default function WelcomeUserInfo() {
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
 
+  const socket = useMainSt((state) => state.socket);
+
   const searchParams = useSearchParams();
 
   const isMobile = useMedia('(max-width: 960px)');
@@ -126,6 +127,10 @@ export default function WelcomeUserInfo() {
     });
 
     if (status === 204) {
+      if (socket && socket.connected === false) {
+        socket.connect();
+      }
+
       updateUser({ onboardingStage: 'community-choice' });
 
       if (searchParams.has('iid') && searchParams.has('community')) {

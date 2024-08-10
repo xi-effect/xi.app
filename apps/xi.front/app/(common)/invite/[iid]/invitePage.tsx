@@ -77,8 +77,6 @@ const InviteCard = ({ invite, iid }: InviteCardT) => {
         code: iid,
       },
       async (status: number, { community, participant }: { community: any; participant: any }) => {
-        console.log('status', status);
-
         if (status === 409) {
           toast('Вы уже являетесь участником сообщества');
           setIsLoading(false);

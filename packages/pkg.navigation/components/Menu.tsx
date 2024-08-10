@@ -164,6 +164,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
         <Button
           variant="ghost"
           type="button"
+          disabled={isNotCommunityId}
           onClick={() => driverAction()}
           className="hover:bg-gray-5 mt-1 flex h-[48px] w-full flex-row items-center justify-start rounded-lg p-2 pl-4 hover:cursor-pointer"
         >

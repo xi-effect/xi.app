@@ -15,12 +15,13 @@
     "@xipkg/input": "^0.1.1",
     "@xipkg/modal": "^2.1.0",
     "@xipkg/utils": "1.0.1",
-    "pkg.utils": "*",
-    "pkg.stores": "*",
     "next": "^14.2.3",
+    "pkg.stores": "*",
+    "pkg.utils": "*",
+    "pkg.utils.client": "*",
     "react": "^18.2.0",
-    "zod": "3.22.4",
-    "sonner": "1.0.3"
+    "sonner": "^1.4.41",
+    "zod": "3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

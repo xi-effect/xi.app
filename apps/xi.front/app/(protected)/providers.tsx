@@ -26,41 +26,11 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const getUrlWithParams = useGetUrlWithParams();
 
   useEffect(() => {
+    if (onboardingStage !== 'completed') return;
+
     if (typeof params['community-id'] !== 'string') {
       // Если мы не знаем id текущего сообщества, мы получаем любое и редиректим туда пользователя
-      if (onboardingStage === 'completed') {
-        socket?.on('connect', () => {
-          socket.emit(
-            'retrieve-any-community',
-            (stats: number, { community, participant }: { community: any; participant: any }) => {
-              if (stats === 200) {
-                updateCommunityMeta({
-                  id: community.id,
-                  isOwner: participant.is_owner,
-                  name: community.name,
-                  description: community.description,
-                });
-              }
-
-              const pathnameArr = pathname.split('/');
-              if (pathnameArr.includes('channels') && community.id) {
-                const betweenChannels = pathname.split('channels');
-
-                return router.push(getUrlWithParams(`/communities/${community.id}/channels${betweenChannels[1]}`));
-              }
-
-              if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
-
-              return null;
-            },
-          );
-        });
-
-        return;
-      }
-
-      // Если мы не знаем id текущего сообщества, но соединение сокета уже установлено
-      if (socket?.connected === true && communityMeta.id === null) {
+      socket?.on('connect', () => {
         socket.emit(
           'retrieve-any-community',
           (stats: number, { community, participant }: { community: any; participant: any }) => {
@@ -73,45 +43,54 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
               });
             }
 
-            if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+            const pathnameArr = pathname.split('/');
+            if (pathnameArr.includes('channels') && community.id) {
+              const betweenChannels = pathname.split('channels');
+
+              return router.push(getUrlWithParams(`/communities/${community.id}/channels${betweenChannels[1]}`));
+            }
+
+            if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+
+            return null;
           },
         );
+      });
 
-        return;
-      }
+      return;
+    }
+
+    // Если мы не знаем id текущего сообщества, но соединение сокета уже установлено
+    if (socket?.connected === true && communityMeta.id === null) {
+      socket.emit(
+        'retrieve-any-community',
+        (stats: number, { community, participant }: { community: any; participant: any }) => {
+          if (stats === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+          }
+
+          if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+
+          return null;
+        },
+      );
+
+      return;
     }
 
     // Если мы уже знаем из url id сообщества, то нам нужно запросить данные по нему
     if (typeof params['community-id'] === 'string') {
-      if (onboardingStage === 'completed') {
-        socket?.on('connect', () => {
-          socket.emit(
-            'retrieve-community',
-            {
-              community_id: params['community-id'],
-            },
-            (stats: number, { community, participant }: { community: any; participant: any }) => {
-              if (stats === 200) {
-                updateCommunityMeta({
-                  id: community.id,
-                  isOwner: participant.is_owner,
-                  name: community.name,
-                  description: community.description,
-                });
-              }
-
-              return null;
-            },
-          );
-        });
-
-        return;
-      }
-
-      // Если мы знаем id текущего сообщества из url, но соединение сокета уже установлено
-      if (socket?.connected === true && communityMeta.id === null) {
+      socket?.on('connect', () => {
         socket.emit(
-          'retrieve-any-community',
+          'retrieve-community',
+          {
+            community_id: params['community-id'],
+          },
           (stats: number, { community, participant }: { community: any; participant: any }) => {
             if (stats === 200) {
               updateCommunityMeta({
@@ -123,7 +102,26 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             }
           },
         );
-      }
+      });
+
+      return;
+    }
+
+    // Если мы знаем id текущего сообщества из url, но соединение сокета уже установлено
+    if (socket?.connected === true && communityMeta.id === null) {
+      socket.emit(
+        'retrieve-any-community',
+        (stats: number, { community, participant }: { community: any; participant: any }) => {
+          if (stats === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+          }
+        },
+      );
     }
   }, [socket?.connected, onboardingStage]);
 

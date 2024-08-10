@@ -117,7 +117,7 @@ export default function WelcomeCommunityCreate() {
 
   const onSubmit = ({ community }: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
-    console.log('onSubmit', socket);
+
     socket?.emit(
       'create-community',
       {
@@ -126,7 +126,6 @@ export default function WelcomeCommunityCreate() {
         },
       },
       async (status: number, { community, participant }: { community: any; participant: any }) => {
-        console.log('on data', status, community);
         if (status === 200) {
           const { status } = await put<RequestBody, ResponseBody>({
             service: 'auth',

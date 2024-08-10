@@ -5,12 +5,9 @@ type LayoutPropT = {
   children: ReactNode;
 };
 
-export const Layout = ({ header, children }: LayoutPropT) => {
-  console.log('Layout');
-  return (
-    <div className="relative flex flex-col">
-      <header className="fixed p-8">{header}</header>
-      <div className="">{children}</div>
-    </div>
-  );
-};
+export const Layout = ({ header, children }: LayoutPropT) => (
+  <div className="relative flex flex-col">
+    <header className="fixed p-8">{header}</header>
+    <div className="">{children}</div>
+  </div>
+);

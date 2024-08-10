@@ -46,7 +46,6 @@ const FormCreateBlock = () => {
         },
       },
       (status: number, data: any) => {
-        console.log('on data', status, data);
         if (status === 200) {
           router.push(`/communities/${data.community.id}/home`);
         } else {

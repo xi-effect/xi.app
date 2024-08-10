@@ -46,7 +46,7 @@ export const PersonalData = () => {
   const onSubmit = async (formData: z.infer<typeof FormSchema>) => {
     trigger();
 
-    const { data, status } = await patch<any, any>({
+    const { status } = await patch<any, any>({
       service: 'auth',
       path: '/api/users/current/profile/',
       body: { username: formData.username, display_name: formData.displayName, theme: 'stringdd' },
@@ -56,8 +56,6 @@ export const PersonalData = () => {
         },
       },
     });
-
-    console.log('data', data, 'status', status);
 
     if (status === 200) {
       toast('Данные успешно обновлены');

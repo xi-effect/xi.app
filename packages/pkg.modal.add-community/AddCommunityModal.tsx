@@ -3,22 +3,20 @@
 import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
-import React, { useState, ReactNode } from 'react';
+import React, { useState } from 'react';
 import FormCreate from './components/FormCreateStage';
 import FormJoin from './components/FormJoinStage';
 
 type AddCommunityModalT = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  children: ReactNode;
 };
 
-export const AddCommunityModal = ({ open, onOpenChange, children }: AddCommunityModalT) => {
+export const AddCommunityModal = ({ open, onOpenChange }: AddCommunityModalT) => {
   const [stage, setStage] = useState<'create' | 'join'>('create');
 
   return (
     <M.Modal open={open} onOpenChange={onOpenChange}>
-      <M.ModalTrigger asChild>{children}</M.ModalTrigger>
       <M.ModalContent>
         <M.ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />

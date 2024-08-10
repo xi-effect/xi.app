@@ -13,7 +13,7 @@ export function ZoomMenu() {
     editor.zoomOut(editor.getViewportScreenCenter(), { animation: { duration: 120 } });
 
   return (
-    <div className="absolute bottom-3 right-3 z-[300]">
+    <div className="absolute bottom-3 right-3 z-30">
       <div className="bg-gray-0 rounded-[16px]">
         <div className="flex items-center px-3">
           <Button

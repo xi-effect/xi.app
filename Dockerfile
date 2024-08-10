@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 FROM base AS pruner
 ARG APP_NAME=xi.front
@@ -21,7 +21,7 @@ ARG APP_NAME=xi.front
 
 # Install system-level components
 RUN apk add --no-cache libc6-compat openssh-client git
-RUN npm install -g npm@9.1.2
+RUN npm install -g npm@10.8.2
 
 # Set working directory
 WORKDIR /app
@@ -41,7 +41,7 @@ ARG APP_NAME=xi.front
 
 # Install system-level components
 RUN apk add --no-cache libc6-compat openssh-client git
-RUN npm install -g npm@9.1.2
+RUN npm install -g npm@10.8.2
 
 # Set working directory
 WORKDIR /app

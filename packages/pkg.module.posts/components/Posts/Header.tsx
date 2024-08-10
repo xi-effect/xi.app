@@ -40,8 +40,6 @@ export const Header = ({ onSearch }: HeaderProps) => {
 
   if (currentPosts === undefined) return null;
 
-  console.log('channels', channels, currentPosts);
-
   return (
     <div className="flex flex-col gap-4 pb-4 md:pb-8">
       <BreadcrumbsRoot size="s">

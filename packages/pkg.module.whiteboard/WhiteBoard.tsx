@@ -1,4 +1,5 @@
 'use client';
+
 import { DefaultContextMenu, Tldraw } from 'tldraw';
 import { Navbar } from './components/Navbar';
 import './index.css';

@@ -1,2 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 @import url('tldraw/tldraw.css');
+
+body .tl-container {
+  --layer-canvas: 1;
+  --layer-panels: 3;
+    --layer-menus: 4;
+    --layer-overlays: 5;
+    --layer-toasts: 6;
+    --layer-cursor: 7;
+}

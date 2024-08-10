@@ -15,6 +15,7 @@ import { ActionButton } from './ActionButton';
 
 const DisconnectButton = () => {
   const { buttonProps } = useDisconnectButton({});
+
   return (
     <button
       type="button"
@@ -71,6 +72,7 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     },
     [setIsScreenShareEnabled],
   );
+
   return (
     <div className="w-full">
       <div className="flex w-full flex-row justify-between p-4">

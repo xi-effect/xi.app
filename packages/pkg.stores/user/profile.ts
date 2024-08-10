@@ -22,8 +22,6 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
   getUser: async () => {
     const { data, status } = await getUser();
 
-    console.log('getUser', data, status);
-
     if (status === 200 && data) {
       useMainSt.getState().initSocket();
 

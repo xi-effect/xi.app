@@ -31,7 +31,7 @@ export function StylePanelContent({ styles }: TLUiStylePanelContentProps) {
   const hideSpline = spline === undefined;
   const hideText = font === undefined;
 
-  const theme = getDefaultColorTheme({ isDarkMode: isDarkMode });
+  const theme = getDefaultColorTheme({ isDarkMode });
 
   return (
     <>

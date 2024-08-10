@@ -14,10 +14,10 @@ import useLatest from '@react-hook/latest';
  *
  * @internal
  */
-export function useResizeObserver<T extends HTMLElement>(
+export const useResizeObserver = <T extends HTMLElement>(
   target: React.RefObject<T>,
   callback: UseResizeObserverCallback,
-) {
+) => {
   const resizeObserver = getResizeObserver();
   const storedCallback = useLatest(callback);
 
@@ -41,9 +41,9 @@ export function useResizeObserver<T extends HTMLElement>(
   }, [target.current, resizeObserver, storedCallback]);
 
   return resizeObserver?.observer;
-}
+};
 
-function createResizeObserver() {
+const createResizeObserver = () => {
   let ticking = false;
   let allEntries: ResizeObserverEntry[] = [];
 
@@ -91,7 +91,7 @@ function createResizeObserver() {
       callbacks.set(target, cbs);
     },
   };
-}
+};
 
 let _resizeObserver: ReturnType<typeof createResizeObserver>;
 

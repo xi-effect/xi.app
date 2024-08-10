@@ -21,9 +21,7 @@ export const MenuPopupContent = ({ item, setIsTooltipOpen }: MenuPopupContentT) 
       {item.menuPopupContent?.map((item: MenuPopupItemT) => (
         <button
           type="button"
-          className={
-            'bg-gray-0 pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px]'
-          }
+          className="bg-gray-0 pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
           onClick={() => {
             setIsTooltipOpen(false);
             editor.setStyleForNextShapes(
