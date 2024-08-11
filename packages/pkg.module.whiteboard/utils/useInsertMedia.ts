@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { myAssetStore } from './imageStore';
 import { get } from 'pkg.utils/fetch';
 
-export function useInsertMedia() {
+export const useInsertMedia = () => {
   const editor = useEditor();
   const inputRef = useRef<HTMLInputElement>();
 
@@ -14,7 +14,7 @@ export function useInsertMedia() {
     input.multiple = true;
     inputRef.current = input;
 
-    async function handleFileChange(e: Event) {
+    const handleFileChange = async (e: Event) => {
       const fileList = (e.target as HTMLInputElement).files;
       if (!fileList || fileList.length === 0) return;
 
@@ -45,7 +45,7 @@ export function useInsertMedia() {
       } catch (error) {
         console.error('Ошибка при загрузке или обработке файлов:', error);
       }
-    }
+    };
 
     input.addEventListener('change', handleFileChange);
     return () => {
@@ -57,4 +57,4 @@ export function useInsertMedia() {
   return useCallback(() => {
     inputRef.current?.click();
   }, []);
-}
+};

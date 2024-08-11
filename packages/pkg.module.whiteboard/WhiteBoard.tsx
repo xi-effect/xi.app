@@ -9,21 +9,19 @@ import { hiddenComponents } from './utils/customConfig';
 import { StylePanel } from './components/StylePanel';
 import { StickerTool } from './components/CustomTools';
 
-export const WhiteBoard = () => {
-  return (
-    <Tldraw
-      acceptedImageMimeTypes={['image/jpeg']}
-      onMount={(editor) => {
-        editor.updateInstanceState({ isGridMode: true });
-      }}
-      tools={[StickerTool]}
-      components={hiddenComponents}
-    >
-      <Header />
-      <Navbar />
-      <ZoomMenu />
-      <StylePanel />
-      <DefaultContextMenu />
-    </Tldraw>
-  );
-};
+export const WhiteBoard = () => (
+  <Tldraw
+    acceptedImageMimeTypes={['image/jpeg']}
+    onMount={(editor) => {
+      editor.updateInstanceState({ isGridMode: true });
+    }}
+    tools={[StickerTool]}
+    components={hiddenComponents}
+  >
+    <Header />
+    <Navbar />
+    <ZoomMenu />
+    <StylePanel />
+    <DefaultContextMenu />
+  </Tldraw>
+);

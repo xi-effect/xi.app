@@ -1,13 +1,14 @@
 import { post } from 'pkg.utils/fetch';
 import { TLAsset } from 'tldraw';
 
-export interface TLAssetContext {
+export type TLAssetContextT = {
   screenScale: number;
   steppedScreenScale: number;
   dpr: number;
   networkEffectiveType: string | null;
   shouldResolveToOriginal: boolean;
-}
+};
+
 export type MediaResponseT = {
   creator_user_id: string;
   id: string;
@@ -15,15 +16,15 @@ export type MediaResponseT = {
   name: string;
 };
 
-export interface TLAssetStore {
+export type TLAssetStoreT = {
   upload(asset: TLAsset | null, file: File): Promise<string>;
-  resolve?(asset: TLAsset, ctx: TLAssetContext): Promise<string | null> | string | null;
-}
+  resolve?(asset: TLAsset, ctx: TLAssetContextT): Promise<string | null> | string | null;
+};
 
 const WORKER_URL = '/api/protected/storage-service/files/';
 const UPLOAD_URL = '/api/protected/storage-service/files/attachments/';
 
-export const myAssetStore: TLAssetStore = {
+export const myAssetStore: TLAssetStoreT = {
   async upload(asset: TLAsset | null, file: File) {
     const formData = new FormData();
     formData.append('attachment', file);
