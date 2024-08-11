@@ -222,7 +222,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   };
 
   const onDragOver = (event: DragOverEvent) => {
-    // console.log('onDragOver', event);
     const { active, over } = event;
     if (!over) return;
 
@@ -278,7 +277,6 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
   };
 
   const onDragEnd = (event: DragEndEvent) => {
-    // console.log('onDragEnd', event);
     setActiveCategory(null);
     setActiveChannel(null);
 

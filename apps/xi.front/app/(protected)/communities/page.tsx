@@ -36,7 +36,6 @@ export default function CommunitiesLoading() {
   // Если вдруг что-то пошло не так, ещё раз иницируем соединение сокета
   // В initSocket есть предотвращение инициализации нескольких соединений
   useEffect(() => {
-    console.log('initSocket');
     initSocket();
   }, []);
 
@@ -47,7 +46,6 @@ export default function CommunitiesLoading() {
   }, [isLogin]);
 
   useEffect(() => {
-    console.log('onconnect', socket);
     if (onboardingStage === 'completed') {
       socket?.on('connect', () => {
         socket.emit(
@@ -62,7 +60,7 @@ export default function CommunitiesLoading() {
               });
             }
 
-            if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+            if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
           },
         );
       });
@@ -81,7 +79,7 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
         },
       );
     }
@@ -100,7 +98,7 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
         },
       );
     }

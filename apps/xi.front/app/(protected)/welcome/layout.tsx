@@ -16,10 +16,7 @@ const WelcomeLayout = ({ children }) => {
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
   const pathname = usePathname();
 
-  console.log('pathname', pathname, onboardingStage);
-
   useEffect(() => {
-    console.log('pathname', pathname, onboardingStage);
     if (onboardingStage !== 'completed' && onboardingStage !== null && welcomePagesPathsDict[onboardingStage] !== pathname) {
       redirect(welcomePagesPathsDict[onboardingStage]);
     }

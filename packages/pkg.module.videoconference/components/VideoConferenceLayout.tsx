@@ -19,47 +19,45 @@ import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
 import { SliderVideoConference } from './SliderVideoConference';
 
-export interface PaginationControlProps
-  extends Pick<
+export type PaginationControlPropsT
+  = Pick<
     ReturnType<typeof usePagination>,
     'totalPageCount' | 'nextPage' | 'prevPage' | 'currentPage'
-  > {
-  pagesContainer?: React.RefObject<HTMLElement>;
-}
+  > & {
+    pagesContainer?: React.RefObject<HTMLElement>;
+  };
 export interface PaginationIndicatorProps {
   totalPageCount: number;
   currentPage: number;
 }
-export interface IOrientationLayout {
+export type OrientationLayoutT = {
   orientation: 'vertical' | 'horizontal' | 'grid';
-}
+};
 
-export function EmptyItemContainerOfUser({ ...restProps }) {
-  return (
-    <div
-      {...restProps}
-      className="bg-gray-90 flex h-full w-full items-center justify-center rounded-[8px] text-center"
-    >
-      <p className="font-sans text-[20px]">Здесь пока никого нет</p>
-    </div>
-  );
-}
+export const EmptyItemContainerOfUser = ({ ...restProps }) => (
+  <div
+    {...restProps}
+    className="bg-gray-90 flex h-full w-full items-center justify-center rounded-lg text-center"
+  >
+    <p className="font-sans text-[20px]">Здесь пока никого нет</p>
+  </div>
+);
 
-function useEmptyItemContainerOfUser(tracksLength: number) {
+const useEmptyItemContainerOfUser = (tracksLength: number) => {
   const [isOneItem, setIsOneItem] = useState(tracksLength === 1);
   useEffect(() => {
     setIsOneItem(tracksLength === 1);
   }, [tracksLength]);
   return isOneItem;
-}
+};
 
-export function FocusLayout({
+export const FocusLayout = ({
   trackRef,
-  track,
   orientation,
   ...htmlProps
-}: FocusLayoutProps & IOrientationLayout) {
-  const trackReference = trackRef ?? track;
+}: FocusLayoutProps & OrientationLayoutT) => {
+  const trackReference = trackRef;
+
   return (
     <div
       className={`${orientation === 'vertical' ? 'h-[calc(100vh-14rem)] w-[calc(100%-277px)]' : 'm-auto h-[calc(100vh-22rem)] w-fit min-w-[calc(100vh-20%)]'} flex flex-col`}
@@ -75,22 +73,23 @@ export function FocusLayout({
       />
     </div>
   );
-}
+};
+
 const TILE_HEIGHT = 204;
 const TILE_WIDTH = 294;
 
-export interface CarouselLayoutProps extends React.HTMLAttributes<HTMLMediaElement> {
+export type CarouselLayoutProps = React.HTMLAttributes<HTMLMediaElement> & {
   tracks: TrackReferenceOrPlaceholder[];
   children: React.ReactNode;
   orientation: 'vertical' | 'horizontal' | 'grid';
-}
+};
 
-export function CarouselLayout({
+export const CarouselLayout = ({
   tracks,
   orientation,
   userTracks,
   ...props
-}: CarouselLayoutProps & { userTracks: TrackReferenceOrPlaceholder[] }) {
+}: CarouselLayoutProps & { userTracks: TrackReferenceOrPlaceholder[] }) => {
   const asideEl = React.useRef<HTMLDivElement>(null);
   const { width, height } = useSize(asideEl);
   const carouselOrientation = orientation || (height >= width ? 'vertical' : 'horizontal');
@@ -128,12 +127,13 @@ export function CarouselLayout({
       </SliderVideoConference>
     </div>
   );
-}
-export function PaginationControl({
+};
+
+export const PaginationControl = ({
   nextPage,
   prevPage,
   pagesContainer: connectedElement,
-}: PaginationControlProps) {
+}: PaginationControlPropsT) => {
   const [interactive, setInteractive] = React.useState(false);
   React.useEffect(() => {
     let subscription:
@@ -154,22 +154,20 @@ export function PaginationControl({
   return (
     <div className="flex items-center justify-center gap-2" data-lk-user-interaction={interactive}>
       <button className="bg-transparent" type="button" onClick={prevPage}>
-        <ChevronLeft className="fill-white" />
+        <ChevronLeft className="fill-gray-0" />
       </button>
       <button className="bg-transparent" type="button" onClick={nextPage}>
-        <ChevronRight className="fill-white" />
+        <ChevronRight className="fill-gray-0" />
       </button>
     </div>
   );
-}
+};
 
-export function PaginationPage({ totalPageCount, currentPage }: PaginationControlProps) {
-  return (
-    <span className="flex items-center justify-center text-white">{`${currentPage} of ${totalPageCount}`}</span>
-  );
-}
+export const PaginationPage = ({ totalPageCount, currentPage }: PaginationControlPropsT) => (
+  <span className="flex items-center justify-center text-gray-0">{`${currentPage} of ${totalPageCount}`}</span>
+);
 
-export function PaginationIndicator({ totalPageCount, currentPage }: PaginationIndicatorProps) {
+export const PaginationIndicator = ({ totalPageCount, currentPage }: PaginationIndicatorProps) => {
   const bubbles = new Array(totalPageCount).fill('').map((_, index) => {
     if (index + 1 === currentPage) {
       return <span data-lk-active key={index} />;
@@ -178,13 +176,12 @@ export function PaginationIndicator({ totalPageCount, currentPage }: PaginationI
   });
 
   return <div className="lk-pagination-indicator">{bubbles}</div>;
-}
+};
 
-export function FocusLayoutContainer({ children }: FocusLayoutContainerProps) {
-  return <div>{children}</div>;
-}
+export const FocusLayoutContainer = ({ children }: FocusLayoutContainerProps) =>
+  <div>{children}</div>;
 
-export function GridLayout({ tracks, ...props }: GridLayoutProps) {
+export const GridLayout = ({ tracks, ...props }: GridLayoutProps) => {
   const isOneItem = useEmptyItemContainerOfUser(tracks.length);
   const gridEl = React.createRef<HTMLDivElement>();
 
@@ -215,9 +212,9 @@ export function GridLayout({ tracks, ...props }: GridLayoutProps) {
       </div>
     </div>
   );
-}
+};
 
-export function CarouselContainer({ focusTrack, tracks, carouselTracks }: any) {
+export const CarouselContainer = ({ focusTrack, tracks, carouselTracks }: any) => {
   const searchParams = useSearchParams();
   const [orientation, setCarouselType] = useState<string | any>('horizontal');
 
@@ -245,4 +242,4 @@ export function CarouselContainer({ focusTrack, tracks, carouselTracks }: any) {
       )}
     </div>
   );
-}
+};

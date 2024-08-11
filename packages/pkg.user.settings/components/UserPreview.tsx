@@ -27,7 +27,6 @@ type UserPreviewPropsT = {
 
 export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   const user = useMainSt((state) => state.user);
-  console.log('UserProfile', user);
 
   const [isAvatarOpen, setIsAvatarOpen] = React.useState(false);
   const [file, setFile] = React.useState<any>();
@@ -39,7 +38,7 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
   };
 
   const handleDeleteAvatar = async () => {
-    const { data, status } = await del({
+    const { status } = await del({
       service: 'auth',
       path: '/api/users/current/avatar/',
       config: {
@@ -52,8 +51,6 @@ export const UserPreview = ({ className = '' }: UserPreviewPropsT) => {
     if (status === 204) {
       toast('Аватарка удалена. Скоро она исчезнет с сайта');
     }
-
-    console.log('data', data);
   };
 
   const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {

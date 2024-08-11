@@ -17,14 +17,14 @@ export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLBut
   requestPermissions?: boolean;
 }
 
-export function MediaDeviceMenu({
+export const MediaDeviceMenu = ({
   warnDisable,
   kind,
   initialSelection,
   onActiveDeviceChange,
   disabled,
   requestPermissions = false,
-}: MediaDeviceMenuProps) {
+}: MediaDeviceMenuProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [updateRequired, setUpdateRequired] = React.useState<boolean>(true);
   const [needPermissions, setNeedPermissions] = React.useState(requestPermissions);
@@ -130,4 +130,4 @@ export function MediaDeviceMenu({
       </Select>
     </div>
   );
-}
+};

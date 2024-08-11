@@ -127,12 +127,7 @@ export const createChannelsCommunitySt: StateCreator<
         return { channels: arrayMove(updatedChannels, channelIndex, beforeIndex - 1) };
       }
 
-      console.log('Проблема тут');
-
       const afterIndex = (updatedChannels || []).findIndex((channel) => channel.id === afterId);
-
-      console.log('channelIndex', channelIndex);
-      console.log('afterIndex', afterIndex);
 
       return { channels: arrayMove(updatedChannels, channelIndex, afterIndex + 1) };
     }),

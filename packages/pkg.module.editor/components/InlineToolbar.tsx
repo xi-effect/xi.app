@@ -92,8 +92,6 @@ export const InlineToolbar = () => {
 
   useEffect(() => {
     const handleMouseUp = (event: MouseEvent) => {
-      console.log('handleMouseUp', event);
-
       if (event && event?.target &&
         refs.floating.current?.contains(event?.target as Element | null)) {
         return;

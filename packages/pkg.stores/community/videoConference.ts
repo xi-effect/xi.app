@@ -35,7 +35,7 @@ export const createVideoConferenceSt: StateCreator<
         },
       },
     });
-    console.log('fetchData', data);
+
     set(() => ({ token: data?.token ?? '' }));
   },
 });
