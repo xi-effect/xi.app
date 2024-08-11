@@ -5,7 +5,7 @@ import { ModalCloseButton } from '@xipkg/modal';
 import { Button } from '@xipkg/button';
 import { useInterfaceStore } from '../interfaceStore';
 
-const menuLabels = ['Главная', 'Роли', 'Безопасность', 'Участники'];
+const menuLabels = ['Главная', 'Безопасность', 'Участники']; // 'Роли',
 
 const buttonStyles =
   'right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 sm:bg-transparent xl:right-[-56px] xl:top-0';

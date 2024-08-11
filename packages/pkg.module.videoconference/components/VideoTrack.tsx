@@ -1,10 +1,6 @@
-/* eslint-disable max-len */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import '@livekit/components-styles';
-import type { TrackReferenceOrPlaceholder, WidgetState } from '@livekit/components-core';
+import type { TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import { isEqualTrackRef, isTrackReference, isWeb, log } from '@livekit/components-core';
 import { RoomEvent, Track } from 'livekit-client';
 import {
@@ -20,19 +16,17 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ParticipantTile } from './ParticipantTile';
 import { CarouselContainer, GridLayout, FocusLayoutContainer } from './VideoConferenceLayout';
 
-export function VideoConference({
-  chatMessageFormatter,
-  chatMessageDecoder,
-  chatMessageEncoder,
+export const VideoConference = ({
   ...props
-}: VideoConferenceProps) {
+}: VideoConferenceProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [widgetState, setWidgetState] = React.useState<WidgetState>({
-    showChat: false,
-    unreadMessages: 0,
-  });
+  // const [widgetState, setWidgetState] = React.useState<WidgetState>({
+  //   showChat: false,
+  //   unreadMessages: 0,
+  // });
+
   const lastAutoFocusedScreenShareTrack = React.useRef<TrackReferenceOrPlaceholder | null>(null);
 
   const tracks = useTracks(
@@ -43,10 +37,10 @@ export function VideoConference({
     { updateOnlyOn: [RoomEvent.ActiveSpeakersChanged], onlySubscribed: false },
   );
 
-  const widgetUpdate = (state: WidgetState) => {
-    log.debug('updating widget state', state);
-    setWidgetState(state);
-  };
+  // const widgetUpdate = (state: WidgetState) => {
+  //   log.debug('updating widget state', state);
+  //   setWidgetState(state);
+  // };
 
   const layoutContext = useCreateLayoutContext();
 
@@ -64,6 +58,7 @@ export function VideoConference({
     ) {
       log.debug('Auto set screen share focus:', { newScreenShareTrack: screenShareTracks[0] });
       layoutContext.pin.dispatch?.({ msg: 'set_pin', trackReference: screenShareTracks[0] });
+      // eslint-disable-next-line prefer-destructuring
       lastAutoFocusedScreenShareTrack.current = screenShareTracks[0];
     } else if (
       lastAutoFocusedScreenShareTrack.current &&
@@ -116,7 +111,7 @@ export function VideoConference({
   return (
     <div className="lk-video-conference" {...props}>
       {isWeb() && (
-        <LayoutContextProvider value={layoutContext} onWidgetChange={widgetUpdate}>
+        <LayoutContextProvider value={layoutContext}>
           <div className="lk-video-conference-inner">
             {!focusTrack ? (
               <div className="min-h-sreen">
@@ -144,4 +139,4 @@ export function VideoConference({
       <ConnectionStateToast />
     </div>
   );
-}
+};

@@ -10,11 +10,6 @@ interface ConfirmSaveProps extends CustomContentProps {
   onReset: () => void;
 }
 
-// type ConfirmSaveT = {
-//   onCancelClick: () => void;
-//   onSave: () => void;
-// };
-
 export const ConfirmSave = React.forwardRef<HTMLDivElement, ConfirmSaveProps>((props, ref) => {
   const {
     // You have access to notistack props and options 👇🏼

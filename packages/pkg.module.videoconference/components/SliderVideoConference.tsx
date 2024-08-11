@@ -1,33 +1,32 @@
 import React from 'react';
 import { getTrackReferenceId } from '@livekit/components-core';
 import { TrackLoopProps, TrackRefContext } from '@livekit/components-react';
-import { IOrientationLayout } from './VideoConferenceLayout';
+import { OrientationLayoutT } from './VideoConferenceLayout';
 import { Carousel } from './Carousel';
 
-export interface ITrackLoopProps {
+export type TrackLoopT = {
   maxVisibleTiles: number;
-}
+};
 
-export function SliderVideoConference({
+const cloneSingleChild = (
+  children: React.ReactNode | React.ReactNode[],
+  props?: Record<string, any>,
+  key?: any,
+) => React.Children.map(children, (child) => {
+  if (React.isValidElement(child) && React.Children.only(children)) {
+    return React.cloneElement(child, { ...props, key });
+  }
+  return child;
+});
+
+export const SliderVideoConference = ({
   tracks,
   maxVisibleTiles,
   orientation,
   ...props
-}: TrackLoopProps & ITrackLoopProps & IOrientationLayout) {
+}: TrackLoopProps & TrackLoopT & OrientationLayoutT) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const visibleTracks = tracks.slice(currentIndex, currentIndex + maxVisibleTiles);
-  function cloneSingleChild(
-    children: React.ReactNode | React.ReactNode[],
-    props?: Record<string, any>,
-    key?: any,
-  ) {
-    return React.Children.map(children, (child) => {
-      if (React.isValidElement(child) && React.Children.only(children)) {
-        return React.cloneElement(child, { ...props, key });
-      }
-      return child;
-    });
-  }
 
   const handleCheckDisabled = (type: 'prev' | 'next') => {
     switch (type) {
@@ -66,7 +65,7 @@ export function SliderVideoConference({
             key={getTrackReferenceId(trackReference)}
           >
             <div key={index} className="text-center">
-              <div className="mx-auto h-full w-full text-xl text-white">
+              <div className="mx-auto h-full w-full text-xl text-gray-0">
                 {cloneSingleChild(props.children)}
               </div>
             </div>
@@ -75,4 +74,4 @@ export function SliderVideoConference({
       </Carousel>
     )
   );
-}
+};

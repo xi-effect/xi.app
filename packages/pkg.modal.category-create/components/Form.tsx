@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@xipkg/input';
 import { Button } from '@xipkg/button';
-// import { Toggle } from '@xipkg/toggle';
+
 import {
   Form as FormComponent,
   FormControl,
@@ -111,7 +111,6 @@ export const Form = ({ onOpenChange }: FormT) => {
                   },
                 },
                 (status: number, dataAnswer: any) => {
-                  console.log('ans', status, dataAnswer);
                   // TODO Каналы не создаются больше одного, надо пофиксить, мб рекурсией
                   updatedChannels([
                     ...(channels || []),
@@ -141,7 +140,6 @@ export const Form = ({ onOpenChange }: FormT) => {
         }
       },
     );
-    console.log(values);
   };
 
   return (
