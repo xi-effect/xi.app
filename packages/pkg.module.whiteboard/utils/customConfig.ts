@@ -12,9 +12,10 @@ and you'll have to add them by handling keydown events,
 which is very time-consuming and not optimized.
 */
 
-export const hiddenComponents: Required<TLUiComponents> = {
+export const hiddenComponents: Required<TLUiComponents | any> = {
   ContextMenu: null,
   ActionsMenu: null,
+  CursorChatBubble: null,
   HelpMenu: null,
   ZoomMenu: null,
   MainMenu: null,
