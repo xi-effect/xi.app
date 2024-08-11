@@ -17,7 +17,7 @@ type DeletePostModalPropsT = {
 
 export const DeletePostModal = ({ children } : DeletePostModalPropsT) => (
   <Modal>
-    <ModalTrigger className="hover:bg-transparent">{children}</ModalTrigger>
+    <ModalTrigger className="hover:bg-transparent" asChild>{children}</ModalTrigger>
     <ModalContent
       className="w-[420px] md:w-[420px] max-w-[calc(100vw-16px)] max-h-[calc(100dvh-16px)] flex flex-col gap-4 justify-center items-center p-8 p-b-5"
       onOpenAutoFocus={(e) => e.preventDefault()}

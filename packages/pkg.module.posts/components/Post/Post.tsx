@@ -30,16 +30,16 @@ export const Post = () => {
         <div className="flex flex-row gap-3">
           <Button
             variant="ghost"
-            className="flex gap-1 px-0 hover:bg-transparent focus:!hover-bg-brand-40 active:!hover-bg-brand-40"
+            className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent"
             onClick={() => setIsReadOnly(!isReadOnly)}
           >
             <Edit />
-            <span className="hover:border-b hover:border-b-gray-40">Редактировать</span>
+            <span className="border-b border-b-gray-40">Редактировать</span>
           </Button>
           <DeletePostModal>
-            <Button variant="ghost" className="flex gap-1 px-0 hover:bg-transparent !focus:hover-bg-transparent !active:hover-bg-transparent">
+            <Button variant="ghost" className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent">
               <Trash className="fill-red-80" />
-              <span className="text-red-80 hover:border-b hover:border-b-red-80">Удалить</span>
+              <span className="text-red-80 border-b border-b-red-80">Удалить</span>
             </Button>
           </DeletePostModal>
         </div>
