@@ -42,10 +42,15 @@ export const Header = () => {
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
-      <div className="flex items-center">
+      <div className="flex flex-col-reverse sm:flex-row items-center gap-2">
         <h1 className="text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5">
           {currentPost.title}
         </h1>
+        {currentPost.isDraft &&
+        <div className="w-full sm:w-auto flex justify-end sm:justify-start h-full pt-2 sm:pt-3 lg:pt-4">
+          <p className="text-gray-60 text-m-base ml-1 font-normal">Черновик</p>
+        </div>
+        }
       </div>
       <div className="flex items-center h-[16px] gap-1">
         <span className="text-s-base">

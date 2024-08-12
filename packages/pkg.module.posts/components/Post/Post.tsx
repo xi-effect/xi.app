@@ -24,7 +24,7 @@ export const Post = () => {
   const handleSubmit = () => setIsNatification(true);
 
   return (
-    <section className="p-4 sm:p-8 flex flex-col h-full">
+    <section className="flex flex-col h-full">
       <Header />
       {isOwner &&
         <div className="flex flex-row gap-3">

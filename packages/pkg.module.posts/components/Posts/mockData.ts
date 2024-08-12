@@ -201,7 +201,7 @@ export const announcements = [
       date: '3 января 2022',
       author: 'Автор 3',
       id: 123,
-      isDraft: false,
+      isDraft: true,
     },
     {
       title: 'Объявление 4',
