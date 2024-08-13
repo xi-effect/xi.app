@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+
 import {
   BreadcrumbsRoot,
   BreadcrumbItem,
@@ -10,12 +11,16 @@ import {
 import { useMainSt } from 'pkg.stores';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { Button } from '@xipkg/button';
+import { DeletePostModal } from 'pkg.modal.delete-post';
+import { Edit, Trash } from '@xipkg/icons';
 import { announcements } from '../Posts/mockData';
 
-export const Header = () => {
+export const Header = ({ editHandler } : any) => {
   const params = useParams<{ 'community-id': string, 'channel-id': string, 'post-id': string }>();
 
   const communityMeta = useMainSt((state) => state.communityMeta);
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
   const channels = useMainSt((state) => state.channels);
 
   const currentTasks = channels?.filter((item) => Number(params['channel-id']) === item.id);
@@ -42,7 +47,7 @@ export const Header = () => {
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
-      <div className="flex flex-col-reverse sm:flex-row items-center gap-2">
+      <div className="flex flex-col-reverse sm:flex-row items-center gap-3">
         <h1 className="text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5">
           {currentPost.title}
         </h1>
@@ -63,6 +68,24 @@ export const Header = () => {
           {currentPost.author}
         </span>
       </div>
+      {isOwner &&
+        <div className="flex flex-row gap-3">
+          <Button
+            variant="ghost"
+            className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent"
+            onClick={() => editHandler(false)}
+          >
+            <Edit />
+            <span className="border-b border-b-gray-40">Редактировать</span>
+          </Button>
+          <DeletePostModal>
+            <Button variant="ghost" className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent">
+              <Trash className="fill-red-80" />
+              <span className="text-red-80 border-b border-b-red-80">Удалить</span>
+            </Button>
+          </DeletePostModal>
+        </div>
+      }
     </div>
   );
 };

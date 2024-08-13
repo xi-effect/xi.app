@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
-import { Button } from '@xipkg/button';
-import { Edit, Trash } from '@xipkg/icons';
 import { Editor } from 'pkg.module.editor';
-import { DeletePostModal } from 'pkg.modal.delete-post';
 import { Header } from './Header';
 import { announcements } from '../Posts/mockData';
 import { Footer } from '../Posts/Footer';
 
 export const Post = () => {
-  const [isReadOnly, setIsReadOnly] = useState(true);
   // Пока показываю/скрываю элементы интерфейса,
   // позволяющие редактировать содержимое,
   // по isOwner, но впослествии там будут другие права (не isOwner, а что-то другое)
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
   const params = useParams<{ 'community-id': string, 'channel-id': string, 'post-id': string }>();
   const currentPost = announcements?.filter((item) => item.id === Number(params['post-id']))[0];
-
+  const [isReadOnly, setIsReadOnly] = useState(true);
   // Временно при нажатии на кнопку Опубликовать вывожу уведомление об ошибке,
   // чтобы наглядно видеть, как выглядит уведомление
   const [isNotification, setIsNatification] = useState(false);
@@ -25,25 +21,7 @@ export const Post = () => {
 
   return (
     <section className="flex flex-col h-full">
-      <Header />
-      {isOwner &&
-        <div className="flex flex-row gap-3">
-          <Button
-            variant="ghost"
-            className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent"
-            onClick={() => setIsReadOnly(!isReadOnly)}
-          >
-            <Edit />
-            <span className="border-b border-b-gray-40">Редактировать</span>
-          </Button>
-          <DeletePostModal>
-            <Button variant="ghost" className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent">
-              <Trash className="fill-red-80" />
-              <span className="text-red-80 border-b border-b-red-80">Удалить</span>
-            </Button>
-          </DeletePostModal>
-        </div>
-      }
+      <Header editHandler={setIsReadOnly} />
       <div className="flex-1">
         <Editor initialValue={currentPost.content} readOnly={isReadOnly} />
       </div>
