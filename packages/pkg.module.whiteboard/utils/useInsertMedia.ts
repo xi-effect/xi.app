@@ -1,7 +1,7 @@
 import { DEFAULT_SUPPORTED_MEDIA_TYPE_LIST, useEditor } from '@tldraw/editor';
 import { useCallback, useEffect, useRef } from 'react';
 
-export function useInsertMedia() {
+export const useInsertMedia = () => {
   const editor = useEditor();
   const inputRef = useRef<HTMLInputElement>();
 
@@ -32,4 +32,4 @@ export function useInsertMedia() {
   return useCallback(() => {
     inputRef.current?.click();
   }, [inputRef]);
-}
+};
