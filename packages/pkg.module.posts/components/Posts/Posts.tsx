@@ -5,7 +5,7 @@ import { Header } from './Header';
 import { announcements } from './mockData';
 
 export const Posts = () => (
-  <div className="h-full">
+  <div className="h-full flex flex-col">
     <Header />
     {announcements.length > 0 ? (
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
