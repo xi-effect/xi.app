@@ -17,6 +17,7 @@ export const Posts = () => (
             date={announcement.date}
             author={announcement.author}
             id={announcement.id}
+            isDraft={announcement.isDraft}
           />
         ))}
       </div>

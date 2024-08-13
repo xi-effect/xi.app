@@ -9,6 +9,7 @@ type PostCardProps = {
   date: string;
   author: string;
   id: number;
+  isDraft: boolean;
 };
 
 const PostCard = ({
@@ -17,6 +18,7 @@ const PostCard = ({
   date = '1 января 1970',
   author = 'Автор',
   id = 456456,
+  isDraft = false,
 }: PostCardProps) => {
   const params = useParams<{ 'community-id': string, 'channel-id': string, }>();
   const communityId = useMainSt((state) => state.communityMeta.id);
@@ -26,7 +28,12 @@ const PostCard = ({
       href={`/communities/${communityId}/channels/${params['channel-id']}/posts/${id}`}
       className="border-gray-80 hover:bg-gray-5 group flex h-56 cursor-pointer flex-col rounded-2xl border p-6"
     >
-      <h2 className="line-clamp-1 text-xl font-semibold leading-[28px] md:line-clamp-2">{title}</h2>
+      <div className="flex flex-row gap-1">
+        <h2 className="line-clamp-1 text-xl font-semibold leading-[28px] md:line-clamp-2">{title}</h2>
+        {isDraft &&
+          <p className="text-s-base text-gray-60 pt-1">Черновик</p>
+        }
+      </div>
       <p className="mt-4 line-clamp-1 text-base font-normal leading-[22px] text-gray-100 md:line-clamp-2">
         {description}
       </p>
