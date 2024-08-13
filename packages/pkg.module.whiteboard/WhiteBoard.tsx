@@ -8,9 +8,11 @@ import { Header } from './components/Header';
 import { hiddenComponents } from './utils/customConfig';
 import { StylePanel } from './components/StylePanel';
 import { StickerTool } from './components/CustomTools';
+import { myAssetStore } from './utils/imageStore';
 
 export const WhiteBoard = () => (
   <Tldraw
+    assets={myAssetStore}
     acceptedImageMimeTypes={['image/jpeg']}
     onMount={(editor) => {
       editor.updateInstanceState({ isGridMode: true });
