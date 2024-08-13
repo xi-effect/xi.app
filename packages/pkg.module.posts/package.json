@@ -10,7 +10,7 @@
   "dependencies": {
     "@xipkg/breadcrumbs": "1.0.0",
     "@xipkg/button": "^2.0.0",
-    "@xipkg/icons": "0.9.3",
+    "@xipkg/icons": "1.1.1",
     "@xipkg/input": "0.1.1",
     "@xipkg/utils": "1.0.1",
     "lodash": "^4.17.21",
@@ -19,7 +19,7 @@
     "pkg.modal.delete-post": "*",
     "pkg.module.editor": "*",
     "pkg.stores": "*",
-    "pkg.utils.client" : "*",
+    "pkg.utils.client": "*",
     "react": "^18.2.0",
     "zod": "3.22.4"
   },

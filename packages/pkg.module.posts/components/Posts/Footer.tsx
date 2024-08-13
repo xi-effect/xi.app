@@ -13,7 +13,7 @@ export const Footer = ({ children, submitButtonText, submitButtonHandler } : Foo
     const handleCancel = () => router.back();
 
     return (
-      <footer className="w-full flex flex-col md:flex-row justify-end items-center gap-4">
+      <footer className="w-full flex flex-col md:flex-row justify-end items-center gap-4 pt-4">
         {children && <div className="w-full flex justify-start items-start">{children}</div>}
         <div className="flex flex-row gap-4 justify-end w-full md:w-auto">
           <Button variant="ghost" onClick={handleCancel}>Отменить</Button>

@@ -29,7 +29,7 @@ export const Header = ({ editHandler } : any) => {
   const currentPost = announcements?.filter((item) => Number(params['post-id']) === item.id)[0];
 
   return (
-    <div className="flex flex-col gap-3 pb-4 md:pb-8">
+    <div className="flex flex-col gap-3 pb-8">
       <div>
         <BreadcrumbsRoot size="s">
           <BreadcrumbList>
@@ -42,18 +42,18 @@ export const Header = ({ editHandler } : any) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{params['post-id']}</BreadcrumbPage>
+              <BreadcrumbPage>{currentPost.title}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
-      <div className="flex flex-col-reverse sm:flex-row items-center gap-3">
-        <h1 className="text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5">
+      <div className="flex flex-col-reverse sm:flex-row items-center gap-2">
+        <h1 className="w-full sm:w-auto text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5">
           {currentPost.title}
         </h1>
         {currentPost.isDraft &&
         <div className="w-full sm:w-auto flex justify-end sm:justify-start h-full pt-2 sm:pt-3 lg:pt-4">
-          <p className="text-gray-60 text-m-base ml-1 font-normal">Черновик</p>
+          <p className="text-gray-60 text-m-base font-normal">Черновик</p>
         </div>
         }
       </div>
@@ -72,14 +72,14 @@ export const Header = ({ editHandler } : any) => {
         <div className="flex flex-row gap-3">
           <Button
             variant="ghost"
-            className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent"
+            className="h-6 flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent"
             onClick={() => editHandler(false)}
           >
             <Edit />
             <span className="border-b border-b-gray-40">Редактировать</span>
           </Button>
           <DeletePostModal>
-            <Button variant="ghost" className="flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent">
+            <Button variant="ghost" className="h-6 flex gap-1 px-0 hover:bg-transparent focus:bg-transparent active:bg-transparent">
               <Trash className="fill-red-80" />
               <span className="text-red-80 border-b border-b-red-80">Удалить</span>
             </Button>

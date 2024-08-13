@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, ChevronRight, Move } from '@xipkg/icons';
+import { Search, Share, MenuDots } from '@xipkg/icons';
 import { Editor, type CustomElement } from 'pkg.module.editor';
 import { Footer } from './Footer';
 
@@ -44,12 +44,18 @@ export const AddPost = () => {
         {/* Временно недостающие иконки заменены другими. Нужно будет добавить в кит иконки */}
         {/* Разобраться, что делает каждый из пунктов меню при нажатии на него */}
         <nav className="flex flex-row">
-          <Search size="l" className="p-2" />
-          <ChevronRight size="l" className="p-2" />
-          <Move size="l" className="p-2" />
+          <div className="cursor-pointer">
+            <Search size="l" className="p-2" />
+          </div>
+          <div className="cursor-pointer">
+            <Share size="l" className="p-2" />
+          </div>
+          <div className="cursor-pointer">
+            <MenuDots size="l" className="p-2" />
+          </div>
         </nav>
       </header>
-      <main className="flex-1 py-8">
+      <main className="flex-1 py-6 sm:py-8">
         <div className="flex flex-col gap-4">
           {/* <h1 className="text-h3 text-gray-30">Ввведите название</h1>
           <p className="text-l-base text-gray-30">Нажмите Tab для выбора инструмента</p> */}
