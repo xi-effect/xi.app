@@ -7,15 +7,11 @@ import { announcements } from '../Posts/mockData';
 import { Footer } from '../Posts/Footer';
 
 export const Post = () => {
-  // Пока показываю/скрываю элементы интерфейса,
-  // позволяющие редактировать содержимое,
-  // по isOwner, но впослествии там будут другие права (не isOwner, а что-то другое)
   const isOwner = useMainSt((state) => state.communityMeta.isOwner);
   const params = useParams<{ 'community-id': string, 'channel-id': string, 'post-id': string }>();
   const currentPost = announcements?.filter((item) => item.id === Number(params['post-id']))[0];
   const [isReadOnly, setIsReadOnly] = useState(true);
-  // Временно при нажатии на кнопку Опубликовать вывожу уведомление об ошибке,
-  // чтобы наглядно видеть, как выглядит уведомление
+  // Временно при нажатии на кнопку Опубликовать выводится уведомление об ошибке
   const [isNotification, setIsNatification] = useState(false);
   const handleSubmit = () => setIsNatification(true);
 

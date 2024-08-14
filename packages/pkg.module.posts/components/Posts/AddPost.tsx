@@ -29,8 +29,7 @@ const mockData = [
 ] satisfies CustomElement[];
 
 export const AddPost = () => {
-  // Временно при нажатии на кнопку Сохранить вывожу уведомление об ошибке,
-  // чтобы наглядно видеть, как выглядит уведомление
+  // Временно при нажатии на кнопку Сохранить выводится уведомление об ошибке
   const [isNotification, setIsNatification] = useState(false);
   const handleSubmit = () => setIsNatification(true);
 
@@ -41,8 +40,6 @@ export const AddPost = () => {
           <span className="block text-xl-base font-semibold">4Д - БЖ</span>
           <span className="hidden sm:block text-gray-60">Кастырин И.И.</span>
         </div>
-        {/* Временно недостающие иконки заменены другими. Нужно будет добавить в кит иконки */}
-        {/* Разобраться, что делает каждый из пунктов меню при нажатии на него */}
         <nav className="flex flex-row">
           <div className="cursor-pointer">
             <Search size="l" className="p-2" />
@@ -57,8 +54,6 @@ export const AddPost = () => {
       </header>
       <main className="flex-1 py-6 sm:py-8">
         <div className="flex flex-col gap-4">
-          {/* <h1 className="text-h3 text-gray-30">Ввведите название</h1>
-          <p className="text-l-base text-gray-30">Нажмите Tab для выбора инструмента</p> */}
           <Editor initialValue={mockData} />
         </div>
       </main>
