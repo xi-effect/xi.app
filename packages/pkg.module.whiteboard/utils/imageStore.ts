@@ -42,7 +42,6 @@ export const myAssetStore: TLAssetStoreT = {
       }
 
       const url = `${WORKER_URL}${data.id}/`;
-      console.log(url);
       return url;
     } catch (error) {
       console.error('Upload error:', error);

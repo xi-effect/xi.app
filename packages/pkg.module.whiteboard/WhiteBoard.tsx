@@ -13,7 +13,6 @@ import { myAssetStore } from './utils/imageStore';
 export const WhiteBoard = () => (
   <Tldraw
     assets={myAssetStore}
-    acceptedImageMimeTypes={['image/jpeg']}
     onMount={(editor) => {
       editor.updateInstanceState({ isGridMode: true });
     }}
