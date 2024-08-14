@@ -34,7 +34,7 @@ const PostCard = ({
           <p className="text-s-base text-gray-60 pt-1">Черновик</p>
         }
       </div>
-      <p className="mt-4 line-clamp-1 text-base font-normal leading-[22px] text-gray-100 md:line-clamp-2">
+      <p className="mt-4 line-clamp-1 text-base font-normal leading-[22px] text-gray-80 md:line-clamp-2">
         {description}
       </p>
       <div className="mt-auto flex items-center">
