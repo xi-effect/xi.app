@@ -20,10 +20,19 @@ export default function VideoConferenceInCommunity({ params }: { params: { vid: 
   return (
     <div className="w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto">
       {token === null ? (
-        <>
-          <h1 className="text-3xl font-bold"> Видеоконференция </h1>
-          <h3 className="text-xl font-bold">{`id: ${params['[channel-id]']}`}</h3>
-        </>
+        <div className="h-full w-full flex flex-col bg-gray-0">
+          <div className="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+            <div className="flex justify-center">
+              <div
+                className="animate-spin inline-block size-6 border-[3px] border-current border-t-transparent text-brand-80 rounded-full"
+                role="status"
+                aria-label="loading"
+              >
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
       ) : (
         <VideoConference token={token} />
       )}

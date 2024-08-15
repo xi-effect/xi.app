@@ -1,47 +1,125 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button } from '@xipkg/button';
-import { LocalUserChoices } from '@livekit/components-core';
-import React, { useEffect } from 'react';
-import type { LocalAudioTrack, LocalVideoTrack } from 'livekit-client';
-import { facingModeFromLocalTrack, Track } from 'livekit-client';
+/* eslint-disable jsx-a11y/media-has-caption */
+import type {
+  CreateLocalTracksOptions,
+  LocalAudioTrack,
+  LocalTrack,
+  LocalVideoTrack,
+} from 'livekit-client';
 import {
-  useMediaDeviceSelect,
-  ParticipantPlaceholder,
-  TrackToggle,
-  usePersistentUserChoices,
-  usePreviewTracks,
-} from '@livekit/components-react';
+  createLocalTracks,
+  facingModeFromLocalTrack,
+  Track,
+  Mutex,
+} from 'livekit-client';
+import * as React from 'react';
+import { ParticipantPlaceholder, TrackToggle, usePersistentUserChoices } from '@livekit/components-react';
+import type { LocalUserChoices } from '@livekit/components-core';
+import { log, defaultUserChoices } from '@livekit/components-core';
+import { Button } from '@xipkg/button';
 import { Conference, Microphone } from '@xipkg/icons';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 import { MessageBeforeJoin } from './MessageBeforeJoin';
 
-export type PreJoinT = Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onError'> & {
+/**
+ * Props for the PreJoin component.
+ * @public
+ */
+export type PreJoinPropsT = Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit' | 'onError'> & {
+  connect?: boolean;
+  /** This function is called with the `LocalUserChoices` if validation is passed. */
+  onSubmit?: (values: LocalUserChoices) => void;
+  /**
+   * Provide your
+   * custom validation function.
+   * Only if validation is successful the user choices are past to the onSubmit callback.
+   */
   onValidate?: (values: LocalUserChoices) => boolean;
+  onError?: (error: Error) => void;
+  /** Prefill the input form with initial values. */
   defaults?: Partial<LocalUserChoices>;
-  defaultUserChoices?: any;
+  /** Display a debug window for your convenience. */
+  username?: string;
+  /**
+   * If true, user choices are persisted across sessions.
+   * @defaultValue true
+   * @alpha
+   */
   persistUserChoices?: boolean;
 };
 
-type PreJoinSectionT = {
-  connect: boolean;
-  setConnect: (arg: (prev: boolean) => boolean) => void;
-  setUserChoice: (arg: { audioEnabled: boolean; videoEnabled: boolean }) => void | undefined;
+/** @alpha */
+export const usePreviewTracks = (
+  options: CreateLocalTracksOptions,
+  onError?: (err: Error) => void,
+) => {
+  const [tracks, setTracks] = React.useState<LocalTrack[]>();
+
+  const trackLock = React.useMemo(() => new Mutex(), []);
+
+  React.useEffect(() => {
+    let needsCleanup = false;
+    let localTracks: Array<LocalTrack> = [];
+    trackLock.lock().then(async (unlock) => {
+      try {
+        if (options.audio || options.video) {
+          localTracks = await createLocalTracks(options);
+
+          if (needsCleanup) {
+            localTracks.forEach((tr) => tr.stop());
+          } else {
+            setTracks(localTracks);
+          }
+        }
+      } catch (e: unknown) {
+        if (onError && e instanceof Error) {
+          onError(e);
+        } else {
+          log.error(e);
+        }
+      } finally {
+        unlock();
+      }
+    });
+
+    return () => {
+      needsCleanup = true;
+      localTracks.forEach((track) => {
+        track.stop();
+      });
+    };
+  }, [JSON.stringify(options), onError, trackLock]);
+
+  return tracks;
 };
 
-export const PreJoinSection = ({
+/**
+ * The `PreJoin` prefab component is normally presented to the user before he enters a room.
+ * This component allows the user to check and select
+ * the preferred media device (camera und microphone).
+ * On submit the user decisions are returned,
+ * which can then be passed on to the `LiveKitRoom`
+ * so that the user enters the room with the correct media devices.
+ *
+ * @remarks
+ * This component is independent of the `LiveKitRoom` component and should not be nested within it.
+ * Because it only access the local media tracks this
+ * component is self contained and works without connection to the LiveKit server.
+ *
+ * @example
+ * ```tsx
+ * <PreJoin />
+ * ```
+ * @public
+ */
+export const PreJoin = ({
   defaults = {},
   onValidate,
+  onSubmit,
+  onError,
+  connect = false,
+  username = 'username',
   persistUserChoices = true,
-  defaultUserChoices,
-  setConnect,
-  connect,
-  setUserChoice,
-}: PreJoinSectionT & PreJoinT) => {
-  const dinamicControl = useMediaDeviceSelect({
-    kind: 'audiooutput',
-  });
-
+}: PreJoinPropsT) => {
   const [userChoices, setUserChoices] = React.useState(defaultUserChoices);
 
   const partialDefaults: Partial<LocalUserChoices> = {
@@ -58,13 +136,14 @@ export const PreJoinSection = ({
     saveAudioInputEnabled,
     saveVideoInputDeviceId,
     saveVideoInputEnabled,
-    saveUsername,
   } = usePersistentUserChoices({
     defaults: partialDefaults,
     preventSave: !persistUserChoices,
     preventLoad: !persistUserChoices,
   });
+
   const [permissionByBrowser, setPermissionByBrowser] = React.useState<boolean>(true);
+  // Initialize device settings
   const [audioEnabled, setAudioEnabled] = React.useState<boolean>(initialUserChoices.audioEnabled);
   const [videoEnabled, setVideoEnabled] = React.useState<boolean>(initialUserChoices.videoEnabled);
   const [audioDeviceId, setAudioDeviceId] = React.useState<string>(
@@ -73,12 +152,8 @@ export const PreJoinSection = ({
   const [videoDeviceId, setVideoDeviceId] = React.useState<string>(
     initialUserChoices.videoDeviceId,
   );
-  const [username, setUsername] = React.useState(initialUserChoices.username);
 
-  useEffect(() => {
-    setUserChoice({ audioEnabled, videoEnabled });
-  }, [audioEnabled, videoEnabled]);
-
+  // Save user choices to persistent storage.
   React.useEffect(() => {
     saveAudioInputEnabled(audioEnabled);
   }, [audioEnabled, saveAudioInputEnabled]);
@@ -91,13 +166,6 @@ export const PreJoinSection = ({
   React.useEffect(() => {
     saveVideoInputDeviceId(videoDeviceId);
   }, [videoDeviceId, saveVideoInputDeviceId]);
-  React.useEffect(() => {
-    saveUsername(username);
-  }, [username, saveUsername]);
-
-  const onError = () => {
-    setPermissionByBrowser(false);
-  };
 
   const tracks = usePreviewTracks(
     {
@@ -138,8 +206,6 @@ export const PreJoinSection = ({
     };
   }, [videoTrack]);
 
-  const [isValid, setIsValid] = React.useState<boolean>();
-
   const handleValidation = React.useCallback(
     (values: LocalUserChoices) => {
       if (typeof onValidate === 'function') {
@@ -159,10 +225,20 @@ export const PreJoinSection = ({
       audioDeviceId,
     };
     setUserChoices(newUserChoices);
-    setIsValid(handleValidation(newUserChoices as LocalUserChoices));
   }, [username, videoEnabled, handleValidation, audioEnabled, audioDeviceId, videoDeviceId]);
 
-  useEffect(() => {
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (handleValidation(userChoices)) {
+      if (typeof onSubmit === 'function') {
+        onSubmit(userChoices);
+      }
+    } else {
+      log.warn('Validation failed with: ', userChoices);
+    }
+  };
+
+  React.useEffect(() => {
     setPermissionByBrowser(true);
   }, [audioEnabled || videoEnabled]);
 
@@ -249,7 +325,7 @@ export const PreJoinSection = ({
                 />
                 <MediaDeviceMenu
                   disabled={!audioEnabled}
-                  initialSelection={dinamicControl.activeDeviceId || undefined}
+                  initialSelection={audioDeviceId || undefined}
                   warnDisable={!permissionByBrowser}
                   kind="audiooutput"
                   onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
@@ -257,7 +333,7 @@ export const PreJoinSection = ({
               </div>
             </div>
           </div>
-          <Button onClick={() => setConnect((prev) => !prev)} className="w-full">
+          <Button onClick={(event) => handleSubmit(event)} className="w-full">
             Присоединиться
           </Button>
         </div>
