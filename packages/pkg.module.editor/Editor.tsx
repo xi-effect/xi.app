@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 
+import { } from '@floating-ui/react';
+
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -9,12 +11,12 @@ import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'sla
 // import { useFloating, offset, autoUpdate, inline, shift, flip } from '@floating-ui/react';
 import { withHistory } from 'slate-history';
 
-import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 import { Move, Plus } from '@xipkg/icons';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { TooltipProvider } from '@xipkg/tooltip';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
@@ -114,6 +116,41 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     }
   };
 
+  const handleOnDragEnd = (event: DragEndEvent) => {
+    const overId = event.over?.id;
+    const overIndex = editor.children.findIndex((x) => x.id === overId);
+
+    if (overId !== draggingElementId && overIndex !== -1) {
+      Transforms.moveNodes(editor, {
+        at: [],
+        match: (node) => node.id === draggingElementId,
+        to: [overIndex],
+      });
+    }
+
+    setDraggingElementId(undefined);
+  };
+
+  const handleOnKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+      event.preventDefault();
+
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          if (isImageUrl(text)) {
+            const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
+            Transforms.insertNodes(editor, node, {
+              at: [editor.children.length],
+            });
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to paste image:', err);
+        });
+    }
+  };
+
   if (readOnly) {
     return (
       <Slate editor={editor} initialValue={initialValue ?? []}>
@@ -137,20 +174,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
               setDraggingElementId(`${event.active.id}`);
             }
           }}
-          onDragEnd={(event) => {
-            const overId = event.over?.id;
-            const overIndex = editor.children.findIndex((x) => x.id === overId);
-
-            if (overId !== draggingElementId && overIndex !== -1) {
-              Transforms.moveNodes(editor, {
-                at: [],
-                match: (node) => node.id === draggingElementId,
-                to: [overIndex],
-              });
-            }
-
-            setDraggingElementId(undefined);
-          }}
+          onDragEnd={handleOnDragEnd}
           onDragCancel={() => {
             setDraggingElementId(undefined);
           }}
@@ -160,25 +184,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             <InlineToolbar />
             <Editable
-              onKeyDown={(event) => {
-                if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
-                  event.preventDefault();
-
-                  navigator.clipboard
-                    .readText()
-                    .then((text) => {
-                      if (isImageUrl(text)) {
-                        const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
-                        Transforms.insertNodes(editor, node, {
-                          at: [editor.children.length],
-                        });
-                      }
-                    })
-                    .catch((err) => {
-                      console.error('Failed to paste image:', err);
-                    });
-                }
-              }}
+              onKeyDown={handleOnKeyDown}
               className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
               renderElement={renderElement}
               renderLeaf={(props) => <Leaf {...props} />}
@@ -212,26 +218,12 @@ const DragOverlayContent = ({ element }: any) => {
   return (
     <div className="group/node flex">
       <div className="flex absolute items-end transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:flex">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button className="hover:bg-whiteactive:bg-gray-5 rounded" aria-label="plus" type="button">
-              <Plus />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Клик для добавления снизу Alt-клик для добавления сверху</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-grabbing" aria-label="move" type="button">
-              <Move />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Перетащите для перемещения Клик для открытия меню</p>
-          </TooltipContent>
-        </Tooltip>
+        <button className="hover:bg-gray-5 active:bg-gray-0 rounded" aria-label="plus" type="button">
+          <Plus />
+        </button>
+        <button className="hover:bg-gray-5 active:bg-gray-0 rounded cursor-grabbing" aria-label="move" type="button">
+          <Move />
+        </button>
       </div>
       <Slate editor={editor} initialValue={value}>
         <Editable className="ml-14 w-full" readOnly renderElement={renderElement} />

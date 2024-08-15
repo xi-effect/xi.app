@@ -1,6 +1,8 @@
 import React, { ComponentProps, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Tooltip, TooltipContent, TooltipTrigger } from '@xipkg/tooltip';
 import { Close, Move, Plus } from '@xipkg/icons';
 import { useReadOnly } from 'slate-react';
 import { type CustomElement } from '../slate';
@@ -40,24 +42,54 @@ export const CellControls = ({
         isOpen={isOpenNewNode}
         setIsOpen={setIsOpenNewNode}
       >
-        <button className="hover:bg-gray-5 active:bg-gray-5 rounded" onClick={handleNewNode} type="button">
-          {isOpenNewNode ? <Close /> : <Plus />}
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              className="hover:bg-gray-5 active:bg-gray-5 rounded"
+              onClick={handleNewNode}
+              type="button"
+            >
+              {isOpenNewNode ? <Close /> : <Plus />}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            sideOffset={15}
+          >
+            <div>
+              <p><b>Клик</b> для добавления снизу</p>
+              <p><b>Alt-клик</b> для добавления сверху</p>
+            </div>
+          </TooltipContent>
+        </Tooltip>
       </AddNewNode>
       <ElementControlsModal
         element={element}
         isOpen={isOpenElementControls}
         setIsOpen={handleElementControls}
       >
-        <button
-          className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-pointer"
-          aria-label="move"
-          type="button"
-          {...moveProps}
-          onMouseUp={handleElementControls}
-        >
-          <Move />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-pointer"
+              aria-label="move"
+              type="button"
+              {...moveProps}
+              onMouseUp={handleElementControls}
+            >
+              <Move />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            sideOffset={15}
+          >
+            <div>
+              <p><b>Перетащите</b> для перемещения</p>
+              <p><b>Клик</b> для открытия меню</p>
+            </div>
+          </TooltipContent>
+        </Tooltip>
       </ElementControlsModal>
     </div>
   );
