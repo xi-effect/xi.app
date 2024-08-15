@@ -5,7 +5,10 @@
     "components/Header.tsx",
     "components/NavbarAction.tsx",
     "components/Navbar.tsx",
-    "components/ZoomMenu.tsx"
+    "components/ZoomMenu.tsx",
+    "utils/imageStore.ts",
+    "utils/customConfig.ts",
+    "utils/navBarElements.tsx"
   ],
   "exclude": ["dist", "build", "node_modules"]
 }
