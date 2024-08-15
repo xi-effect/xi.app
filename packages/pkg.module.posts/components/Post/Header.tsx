@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import {
   BreadcrumbsRoot,
   BreadcrumbItem,
@@ -13,10 +14,14 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@xipkg/button';
 import { DeletePostModal } from 'pkg.modal.delete-post';
-import { Edit, Trash } from '@xipkg/icons';
+import { Edit, Trash, Ul } from '@xipkg/icons';
 import { announcements } from '../Posts/mockData';
 
-export const Header = ({ editHandler } : any) => {
+type HeaderPropsT = {
+  editHandler : React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const Header = ({ editHandler } : HeaderPropsT) => {
   const params = useParams<{ 'community-id': string, 'channel-id': string, 'post-id': string }>();
 
   const communityMeta = useMainSt((state) => state.communityMeta);
@@ -57,13 +62,11 @@ export const Header = ({ editHandler } : any) => {
         </div>
         }
       </div>
-      <div className="flex items-center h-[16px] gap-1">
+      <div className="flex items-center h-[16px]">
         <span className="text-s-base">
           {currentPost.date}
         </span>
-        <svg className="fill-gray-100" width="3" height="4" viewBox="0 0 3 4" fill="none">
-          <circle cx="1.5" cy="2" r="1.5" />
-        </svg>
+        <Ul size="s" className="w-3 h-3" />
         <span className="text-s-base">
           {currentPost.author}
         </span>

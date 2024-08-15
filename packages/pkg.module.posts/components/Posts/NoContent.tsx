@@ -5,11 +5,13 @@ import { useMainSt } from 'pkg.stores';
 import { useGetUrlWithParams } from 'pkg.utils.client';
 
 const NoContent = () => {
-  const params = useParams<{ 'community-id': string, 'channel-id': string }>();
+  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+
   const getUrlWithParams = useGetUrlWithParams();
   const router = useRouter();
+  const params = useParams<{ 'community-id': string, 'channel-id': string }>();
+
   const handleRouteChange = () => router.push(getUrlWithParams(`/communities/${params['community-id']}/channels/${params['channel-id']}/posts/add-post`));
-  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">

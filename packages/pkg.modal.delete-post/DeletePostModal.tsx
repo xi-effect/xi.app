@@ -26,7 +26,7 @@ export const DeletePostModal = ({ children } : DeletePostModalPropsT) => (
         <ModalTitle className="text-center text-xl-base">Удалить объявление</ModalTitle>
       </ModalHeader>
       <Button className="w-full" variant="error" size="l">Удалить</Button>
-      <ModalCloseButton asChild className="static bg-transparent sm:bg-transparent h=[48px]">
+      <ModalCloseButton asChild className="static bg-transparent sm:bg-transparent h-[48px]">
         <Button className="w-full h-[48px] rounded-[12px]" variant="ghost" size="m">Отменить</Button>
       </ModalCloseButton>
     </ModalContent>

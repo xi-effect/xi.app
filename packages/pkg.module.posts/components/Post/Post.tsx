@@ -12,8 +12,8 @@ export const Post = () => {
   const currentPost = announcements?.filter((item) => item.id === Number(params['post-id']))[0];
   const [isReadOnly, setIsReadOnly] = useState(true);
   // Временно при нажатии на кнопку Опубликовать выводится уведомление об ошибке
-  const [isNotification, setIsNatification] = useState(false);
-  const handleSubmit = () => setIsNatification(true);
+  const [isNotification, setIsNotification] = useState(false);
+  const handleSubmit = () => setIsNotification(true);
 
   return (
     <section className="flex flex-col h-full">

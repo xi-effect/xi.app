@@ -30,8 +30,8 @@ const mockData = [
 
 export const AddPost = () => {
   // Временно при нажатии на кнопку Сохранить выводится уведомление об ошибке
-  const [isNotification, setIsNatification] = useState(false);
-  const handleSubmit = () => setIsNatification(true);
+  const [isNotification, setIsNotification] = useState(false);
+  const handleSubmit = () => setIsNotification(true);
 
   return (
     <div className="flex flex-col h-full">

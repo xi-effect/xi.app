@@ -25,7 +25,7 @@ export const Header = () => {
 
   const currentPosts = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
-  if (currentPosts === undefined) return null;
+  if (!currentPosts) return null;
 
   const handleRouteChange = () => router.push(getUrlWithParams(`/communities/${params['community-id']}/channels/${params['channel-id']}/posts/add-post`));
 
