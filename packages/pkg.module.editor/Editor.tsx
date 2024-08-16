@@ -16,7 +16,6 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 import { Move, Plus } from '@xipkg/icons';
-import { TooltipProvider } from '@xipkg/tooltip';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
@@ -165,40 +164,38 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
   }
 
   return (
-    <TooltipProvider>
-      <Slate editor={editor} initialValue={initialValue ?? []} onChange={handleChange}>
-        <DndContext
-          onDragStart={(event) => {
-            if (event.active) {
-              clearSelection();
-              setDraggingElementId(`${event.active.id}`);
-            }
-          }}
-          onDragEnd={handleOnDragEnd}
-          onDragCancel={() => {
-            setDraggingElementId(undefined);
-          }}
-          modifiers={[restrictToVerticalAxis]}
-          sensors={sensors}
-        >
-          <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <InlineToolbar />
-            <Editable
-              onKeyDown={handleOnKeyDown}
-              className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
-              renderElement={renderElement}
-              renderLeaf={(props) => <Leaf {...props} />}
-            />
-          </SortableContext>
-          {createPortal(
-            <DragOverlay>
-              {activeElement && <DragOverlayContent element={activeElement} />}
-            </DragOverlay>,
-            document.body,
-          )}
-        </DndContext>
-      </Slate>
-    </TooltipProvider>
+    <Slate editor={editor} initialValue={initialValue ?? []} onChange={handleChange}>
+      <DndContext
+        onDragStart={(event) => {
+          if (event.active) {
+            clearSelection();
+            setDraggingElementId(`${event.active.id}`);
+          }
+        }}
+        onDragEnd={handleOnDragEnd}
+        onDragCancel={() => {
+          setDraggingElementId(undefined);
+        }}
+        modifiers={[restrictToVerticalAxis]}
+        sensors={sensors}
+      >
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          <InlineToolbar />
+          <Editable
+            onKeyDown={handleOnKeyDown}
+            className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
+            renderElement={renderElement}
+            renderLeaf={(props) => <Leaf {...props} />}
+          />
+        </SortableContext>
+        {createPortal(
+          <DragOverlay>
+            {activeElement && <DragOverlayContent element={activeElement} />}
+          </DragOverlay>,
+          document.body,
+        )}
+      </DndContext>
+    </Slate>
   );
 };
 

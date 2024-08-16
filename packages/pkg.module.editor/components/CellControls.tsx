@@ -1,10 +1,10 @@
 import React, { ComponentProps, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Tooltip, TooltipContent, TooltipTrigger } from '@xipkg/tooltip';
+import { FloatingDelayGroup } from '@floating-ui/react';
 import { Close, Move, Plus } from '@xipkg/icons';
 import { useReadOnly } from 'slate-react';
+import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
 import { type CustomElement } from '../slate';
 import { AddNewNode } from './AddNewNode';
 import { ElementControlsModal } from './ElementControlsModal';
@@ -37,60 +37,61 @@ export const CellControls = ({
 
   return (
     <div className={`${isOpenNewNode || isOpenElementControls ? 'opacity-100' : ''} absolute flex items-end opacity-0 transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:opacity-100 group-visited/node:opacity-100`}>
-      <AddNewNode
-        element={element}
-        isOpen={isOpenNewNode}
-        setIsOpen={setIsOpenNewNode}
-      >
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className="hover:bg-gray-5 active:bg-gray-5 rounded"
-              onClick={handleNewNode}
-              type="button"
+      <FloatingDelayGroup delay={{ open: 500, close: 0 }}>
+        <Tooltip
+          placement="bottom"
+        >
+          <TooltipTrigger>
+            <AddNewNode
+              element={element}
+              isOpen={isOpenNewNode}
+              setIsOpen={setIsOpenNewNode}
             >
-              {isOpenNewNode ? <Close /> : <Plus />}
-            </button>
+              <button
+                className="hover:bg-gray-5 active:bg-gray-5 rounded"
+                onClick={handleNewNode}
+                type="button"
+              >
+                {isOpenNewNode ? <Close /> : <Plus />}
+              </button>
+            </AddNewNode>
           </TooltipTrigger>
-          <TooltipContent
-            side="bottom"
-            sideOffset={15}
-          >
+          <TooltipContent>
             <div>
               <p><b>Клик</b> для добавления снизу</p>
               <p><b>Alt-клик</b> для добавления сверху</p>
             </div>
           </TooltipContent>
         </Tooltip>
-      </AddNewNode>
-      <ElementControlsModal
-        element={element}
-        isOpen={isOpenElementControls}
-        setIsOpen={handleElementControls}
-      >
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-pointer"
-              aria-label="move"
-              type="button"
-              {...moveProps}
-              onMouseUp={handleElementControls}
+
+        <Tooltip
+          placement="bottom"
+        >
+          <TooltipTrigger>
+            <ElementControlsModal
+              element={element}
+              isOpen={isOpenElementControls}
+              setIsOpen={handleElementControls}
             >
-              <Move />
-            </button>
+              <button
+                className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-pointer"
+                aria-label="move"
+                type="button"
+                {...moveProps}
+                onMouseUp={handleElementControls}
+              >
+                <Move />
+              </button>
+            </ElementControlsModal>
           </TooltipTrigger>
-          <TooltipContent
-            side="bottom"
-            sideOffset={15}
-          >
+          <TooltipContent>
             <div>
               <p><b>Перетащите</b> для перемещения</p>
               <p><b>Клик</b> для открытия меню</p>
             </div>
           </TooltipContent>
         </Tooltip>
-      </ElementControlsModal>
+      </FloatingDelayGroup>
     </div>
   );
 };

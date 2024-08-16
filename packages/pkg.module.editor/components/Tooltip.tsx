@@ -11,12 +11,15 @@ import {
     useRole,
     useInteractions,
     FloatingPortal,
+    FloatingArrow,
     useDelayGroup,
     useDelayGroupContext,
     useMergeRefs,
     useTransitionStyles,
+    arrow,
 } from '@floating-ui/react';
 import type { Placement } from '@floating-ui/react';
+import { useRef } from 'react';
 
 interface TooltipOptions {
     initialOpen?: boolean;
@@ -31,6 +34,8 @@ export function useTooltip({
     open: controlledOpen,
     onOpenChange: setControlledOpen,
 }: TooltipOptions = {}) {
+    const arrowRef = useRef(null);
+
     const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
 
     const open = controlledOpen ?? uncontrolledOpen;
@@ -43,7 +48,14 @@ export function useTooltip({
         open,
         onOpenChange: setOpen,
         whileElementsMounted: autoUpdate,
-        middleware: [offset(5), flip(), shift()],
+        middleware: [
+            offset(10),
+            flip(),
+            shift(),
+            arrow({
+                element: arrowRef,
+            }),
+        ],
     });
 
     const { context } = data;
@@ -65,10 +77,11 @@ export function useTooltip({
         () => ({
             open,
             setOpen,
+            arrowRef,
             ...interactions,
             ...data,
         }),
-        [open, setOpen, interactions, data],
+        [open, setOpen, arrowRef, interactions, data],
     );
 }
 
@@ -108,7 +121,6 @@ export const TooltipTrigger = React.forwardRef<
     const childrenRef = (children as any).ref;
     const ref = useMergeRefs([state.refs.setReference, propRef, childrenRef]);
 
-    // `asChild` allows the user to pass any element as the anchor
     if (asChild && React.isValidElement(children)) {
         return React.cloneElement(
             children,
@@ -125,7 +137,6 @@ export const TooltipTrigger = React.forwardRef<
       // eslint-disable-next-line react/button-has-type
       <button
         ref={ref}
-            // The user can style the trigger based on the state
         data-state={state.open ? 'open' : 'closed'}
         {...state.getReferenceProps(props)}
       >
@@ -152,8 +163,6 @@ export const TooltipContent = React.forwardRef<
         duration: isInstantPhase
             ? {
                 open: instantDuration,
-                // `id` is this component's `id`
-                // `currentId` is the current group's `id`
                 close: currentId === state.context.floatingId ? duration : instantDuration,
             }
             : duration,
@@ -168,15 +177,22 @@ export const TooltipContent = React.forwardRef<
       <FloatingPortal>
         <div
           ref={ref}
-          className="bg-gray-0 overflow-hidden rounded-md px-3 py-1.5 text-sm text-gray-100 font-semibold shadow-[rgba(100,100,111,0.3)_0px_7px_29px_0px]"
+          className="bg-gray-0 rounded-md px-3 py-1.5 text-sm text-gray-100 font-semibold shadow-[rgba(100,100,111,0.3)_0px_7px_29px_0px]"
           style={{
                     ...state.floatingStyles,
-                    // eslint-disable-next-line react/prop-types
-                    ...props.style,
                     ...styles,
                 }}
           {...state.getFloatingProps(props)}
-        />
+        >
+          {props.children}
+          <FloatingArrow
+            tipRadius={5}
+            ref={state.arrowRef}
+            context={state.context}
+            width={12}
+            className="fill-gray-0"
+          />
+        </div>
       </FloatingPortal>
     );
 });
