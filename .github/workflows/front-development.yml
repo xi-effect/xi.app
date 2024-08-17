@@ -46,4 +46,5 @@ jobs:
     with:
       tag: front-${{ needs.namer.outputs.tag }}
       base-tag: front-${{ needs.namer.outputs.base_tag }}
+      context: .
     secrets: inherit

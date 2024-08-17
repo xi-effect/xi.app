@@ -13,6 +13,8 @@ WORKDIR /app
 # Copy all files
 COPY . .
 
+RUN ls -al apps/xi.front && stop_it
+
 # Prune everything but xi.front
 RUN turbo prune --scope=${APP_NAME} --docker
 
