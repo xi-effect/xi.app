@@ -1,7 +1,8 @@
-import { track, useEditor } from 'tldraw';
+import { DefaultColorStyle, StyleProp, track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { NavbarAction } from './NavbarAction';
-import { MenuPopupContent } from './MenuPopupContent';
+import { StickerPopupContent } from './StickerPopupContent';
+import { PenPopupContent } from './PenPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
 import { useInsertMedia } from '../utils/useInsertMedia';
 import { useState } from 'react';
@@ -39,13 +40,24 @@ export const Navbar = track(() => {
                           type="button"
                           className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                           data-isactive={isActive}
-                          onClick={() => hanleTool(item.action)}
+                          onClick={() => {
+                            editor.setStyleForNextShapes(
+                              DefaultColorStyle as unknown as StyleProp<string>,
+                              'black',
+                            );
+                            hanleTool(item.action);
+                          }}
                         >
                           {item.icon ? item.icon : item.title}
                         </button>
                       </TooltipTrigger>
                       <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
-                        <MenuPopupContent item={item} setIsTooltipOpen={setIsTooltipOpen} />
+                        {editor.getCurrentToolId() == 'sticker' && (
+                          <StickerPopupContent item={item} setIsTooltipOpen={setIsTooltipOpen} />
+                        )}
+                        {editor.getCurrentToolId() === 'draw' ? (
+                          <PenPopupContent item={item} setIsTooltipOpen={setIsTooltipOpen} />
+                        ) : null}
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

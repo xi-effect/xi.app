@@ -1,19 +1,32 @@
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import { ReactNode } from 'react';
-import { MenuPopupItemT } from '../components/MenuPopupContent';
+import { StickerPopupItemT } from '../components/StickerPopupContent';
+import { PenPopupItemT } from '../components/PenPopupContent';
 
 export type NavbarElementT = {
   action: string;
   title: string;
   icon: ReactNode | null;
   hasAToolTip?: boolean;
-  menuPopupContent?: MenuPopupItemT[];
+  menuPopupContent?: StickerPopupItemT[] | PenPopupItemT[];
 };
 
 export const navBarElements: NavbarElementT[] = [
   { action: 'select', title: 'Select', icon: <Cursor /> },
   { action: 'hand', title: 'Hand', icon: <Hand /> },
-  { action: 'draw', title: 'Draw', icon: <Pen /> },
+  {
+    action: 'draw',
+    title: 'Draw',
+    icon: <Pen />,
+    hasAToolTip: true,
+    menuPopupContent: [
+      {
+        icon: <Pen className="fill-brand-100" />,
+        action: 'set-style',
+        color: 'blue',
+      },
+    ],
+  },
   {
     action: 'sticker',
     title: 'Sticker',

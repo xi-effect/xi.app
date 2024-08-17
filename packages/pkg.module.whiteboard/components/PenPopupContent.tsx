@@ -2,23 +2,24 @@ import React from 'react';
 import { DefaultColorStyle, StyleProp, useEditor } from 'tldraw';
 import { NavbarElementT } from '../utils/navBarElements';
 
-type MenuPopupContentT = {
+type PenPopupContentT = {
   item: NavbarElementT;
   setIsTooltipOpen: (arg: boolean) => void;
 };
 
-export type MenuPopupItemT = {
+export type PenPopupItemT = {
   icon: React.ReactNode | null;
   action: string;
   color: string;
 };
 
-export const MenuPopupContent = ({ item, setIsTooltipOpen }: MenuPopupContentT) => {
+export const PenPopupContent = ({ item, setIsTooltipOpen }: PenPopupContentT) => {
   const editor = useEditor();
+  console.log(item);
 
   return (
     <div className="flex gap-2">
-      {item.menuPopupContent?.map((item: MenuPopupItemT) => (
+      {item.menuPopupContent?.map((item: PenPopupItemT) => (
         <button
           type="button"
           className="bg-gray-0 pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
