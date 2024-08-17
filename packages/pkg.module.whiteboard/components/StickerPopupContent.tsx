@@ -21,7 +21,7 @@ export const StickerPopupContent = ({ item }: StickerPopupContentT) => {
       {item.menuPopupContent?.map((item: StickerPopupItemT) => (
         <button
           type="button"
-          className="bg-gray-0 pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
+          className="bg-gray-0 flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
           onClick={() => {
             editor.setStyleForNextShapes(
               DefaultColorStyle as unknown as StyleProp<string>,

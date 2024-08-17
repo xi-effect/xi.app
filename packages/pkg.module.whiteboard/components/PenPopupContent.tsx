@@ -18,12 +18,12 @@ export const PenPopupContent = ({ item }: PenPopupContentT) => {
   return (
     <TooltipProvider>
       <Tooltip open={isTooltipOpen}>
-        <div className="flex gap-2">
+        <div className="pointer-events-auto flex gap-2">
           <TooltipTrigger>
             {item.menuPopupContent?.map((item: PenPopupItemT) => (
               <button
                 type="button"
-                className="bg-gray-0 pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
+                className="bg-gray-0 flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
                 onClick={() => setIsTooltipOpen(true)}
               >
                 <div className="text-s-base fill-red-100">

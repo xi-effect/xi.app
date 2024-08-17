@@ -35,30 +35,32 @@ export const Navbar = track(() => {
                 return (
                   <TooltipProvider key={item.action}>
                     <Tooltip open={isActive && item?.hasAToolTip && isTooltipOpen}>
-                      <TooltipTrigger className="rounded-lg">
-                        <button
-                          type="button"
-                          className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
-                          data-isactive={isActive}
-                          onClick={() => {
-                            editor.setStyleForNextShapes(
-                              DefaultColorStyle as unknown as StyleProp<string>,
-                              'black',
-                            );
-                            hanleTool(item.action);
-                          }}
-                        >
-                          {item.icon ? item.icon : item.title}
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
-                        {editor.getCurrentToolId() == 'sticker' && (
-                          <StickerPopupContent item={item} />
-                        )}
-                        {editor.getCurrentToolId() === 'draw' ? (
-                          <PenPopupContent item={item} />
-                        ) : null}
-                      </TooltipContent>
+                      <div className="pointer-events-auto">
+                        <TooltipTrigger className="rounded-lg">
+                          <button
+                            type="button"
+                            className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
+                            data-isactive={isActive}
+                            onClick={() => {
+                              editor.setStyleForNextShapes(
+                                DefaultColorStyle as unknown as StyleProp<string>,
+                                'black',
+                              );
+                              hanleTool(item.action);
+                            }}
+                          >
+                            {item.icon ? item.icon : item.title}
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
+                          {editor.getCurrentToolId() == 'sticker' && (
+                            <StickerPopupContent item={item} />
+                          )}
+                          {editor.getCurrentToolId() === 'draw' ? (
+                            <PenPopupContent item={item} />
+                          ) : null}
+                        </TooltipContent>
+                      </div>
                     </Tooltip>
                   </TooltipProvider>
                 );
