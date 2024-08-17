@@ -53,10 +53,10 @@ export const Navbar = track(() => {
                       </TooltipTrigger>
                       <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
                         {editor.getCurrentToolId() == 'sticker' && (
-                          <StickerPopupContent item={item} setIsTooltipOpen={setIsTooltipOpen} />
+                          <StickerPopupContent item={item} />
                         )}
                         {editor.getCurrentToolId() === 'draw' ? (
-                          <PenPopupContent item={item} setIsTooltipOpen={setIsTooltipOpen} />
+                          <PenPopupContent item={item} />
                         ) : null}
                       </TooltipContent>
                     </Tooltip>

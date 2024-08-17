@@ -21,8 +21,8 @@ export const navBarElements: NavbarElementT[] = [
     hasAToolTip: true,
     menuPopupContent: [
       {
-        icon: <Pen className="fill-brand-100" />,
-        action: 'set-style',
+        icon: <Pen className="fill-unset" />,
+        action: 'open-style',
         color: 'blue',
       },
     ],
