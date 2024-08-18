@@ -60,7 +60,9 @@ export default function CommunitiesLoading() {
               });
             }
 
-            if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+            if (community && community.id) {
+              router.push(getUrlWithParams(`/communities/${community.id}/home`));
+            }
           },
         );
       });
@@ -79,7 +81,9 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          if (community && community.id) {
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          }
         },
       );
     }
@@ -87,7 +91,8 @@ export default function CommunitiesLoading() {
 
   useEffect(() => {
     if (isLogin && socket?.connected === true) {
-      socket.emit('retrieve-any-community',
+      socket.emit(
+        'retrieve-any-community',
         (stats: number, { community, participant }: { community: any; participant: any }) => {
           if (stats === 200) {
             updateCommunityMeta({
@@ -98,7 +103,9 @@ export default function CommunitiesLoading() {
             });
           }
 
-          if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          if (community && community.id) {
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          }
         },
       );
     }

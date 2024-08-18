@@ -5,12 +5,7 @@ import type {
   LocalTrack,
   LocalVideoTrack,
 } from 'livekit-client';
-import {
-  createLocalTracks,
-  facingModeFromLocalTrack,
-  Track,
-  Mutex,
-} from 'livekit-client';
+import { createLocalTracks, facingModeFromLocalTrack, Track, Mutex } from 'livekit-client';
 import * as React from 'react';
 import { ParticipantPlaceholder, usePersistentUserChoices } from '@livekit/components-react';
 import type { LocalUserChoices } from '@livekit/components-core';
@@ -265,7 +260,7 @@ export const PreJoin = ({
             )}
           </div>
           <div className="absolute bottom-5 left-5">
-            <div className="flex gap-1 rounded-[24px] bg-gray-100 p-0.5 w-[96px]">
+            <div className="flex w-[96px] gap-1 rounded-[24px] bg-gray-100 p-0.5">
               <DevicesBar
                 microTrack={audioTrack}
                 microEnabled={audioEnabled}

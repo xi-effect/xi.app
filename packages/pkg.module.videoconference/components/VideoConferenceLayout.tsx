@@ -19,13 +19,12 @@ import { useSize } from '../utility/useSize';
 import { ParticipantTile } from './ParticipantTile';
 import { SliderVideoConference } from './SliderVideoConference';
 
-export type PaginationControlPropsT
-  = Pick<
-    ReturnType<typeof usePagination>,
-    'totalPageCount' | 'nextPage' | 'prevPage' | 'currentPage'
-  > & {
-    pagesContainer?: React.RefObject<HTMLElement>;
-  };
+export type PaginationControlPropsT = Pick<
+  ReturnType<typeof usePagination>,
+  'totalPageCount' | 'nextPage' | 'prevPage' | 'currentPage'
+> & {
+  pagesContainer?: React.RefObject<HTMLElement>;
+};
 export interface PaginationIndicatorProps {
   totalPageCount: number;
   currentPage: number;
@@ -164,7 +163,7 @@ export const PaginationControl = ({
 };
 
 export const PaginationPage = ({ totalPageCount, currentPage }: PaginationControlPropsT) => (
-  <span className="flex items-center justify-center text-gray-0">{`${currentPage} of ${totalPageCount}`}</span>
+  <span className="text-gray-0 flex items-center justify-center">{`${currentPage} of ${totalPageCount}`}</span>
 );
 
 export const PaginationIndicator = ({ totalPageCount, currentPage }: PaginationIndicatorProps) => {
@@ -178,8 +177,9 @@ export const PaginationIndicator = ({ totalPageCount, currentPage }: PaginationI
   return <div className="lk-pagination-indicator">{bubbles}</div>;
 };
 
-export const FocusLayoutContainer = ({ children }: FocusLayoutContainerProps) =>
-  <div>{children}</div>;
+export const FocusLayoutContainer = ({ children }: FocusLayoutContainerProps) => (
+  <div>{children}</div>
+);
 
 export const GridLayout = ({ tracks, ...props }: GridLayoutProps) => {
   const isOneItem = useEmptyItemContainerOfUser(tracks.length);

@@ -28,7 +28,7 @@ export const SortableElement = ({
   return (
     <div {...attributes}>
       <div
-        className="group/node z-0 flex w-full relative"
+        className="group/node relative z-0 flex w-full"
         {...sortable.attributes}
         role="none"
         ref={sortable.setNodeRef}
@@ -41,10 +41,7 @@ export const SortableElement = ({
           opacity: sortable.isDragging ? 0 : 1,
         }}
       >
-        <CellControls
-          moveProps={sortable.listeners}
-          element={element}
-        />
+        <CellControls moveProps={sortable.listeners} element={element} />
         <div className="ml-14 w-full">{renderElement({ element, children })}</div>
       </div>
     </div>

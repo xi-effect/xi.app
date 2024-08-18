@@ -71,13 +71,13 @@ export const Tasks = () => {
   const [selectStatus, setSelectStatus] = useState<SelectStatusT>(selectStatuses.ALL);
 
   const handleSelect = (status: SelectStatusT) => {
-      setSelectStatus(status);
-      if (status === selectStatuses.ALL) {
-        setFilteredTasks(tasksMock);
-      } else {
-        setFilteredTasks(tasksMock.filter((task) => task.status === status));
-      }
-    };
+    setSelectStatus(status);
+    if (status === selectStatuses.ALL) {
+      setFilteredTasks(tasksMock);
+    } else {
+      setFilteredTasks(tasksMock.filter((task) => task.status === status));
+    }
+  };
 
   return (
     <>

@@ -40,10 +40,7 @@ export const Secure = () => {
               <ChevronRight className="fill-gray-80 ml-auto" />
             </button>
           </ChangePasswordModal>
-          <ChangeEmailModal
-            open={isChangeEmailModalOpen}
-            onOpenChange={setIsChangeEmailModalOpen}
-          >
+          <ChangeEmailModal open={isChangeEmailModalOpen} onOpenChange={setIsChangeEmailModalOpen}>
             <button
               type="button"
               className="hover:bg-gray-5 flex h-[66px] flex-row items-center gap-4 rounded-xl bg-transparent p-3"

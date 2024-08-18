@@ -10,8 +10,8 @@ export type TaskT = {
   grade?: GradeT;
 };
 
-export type StatusT = typeof statuses[keyof typeof statuses];
+export type StatusT = (typeof statuses)[keyof typeof statuses];
 
-export type SelectStatusT = typeof selectStatuses[keyof typeof selectStatuses];
+export type SelectStatusT = (typeof selectStatuses)[keyof typeof selectStatuses];
 
-export type GradeT = typeof grades[keyof typeof grades];
+export type GradeT = (typeof grades)[keyof typeof grades];
