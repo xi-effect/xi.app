@@ -12,13 +12,13 @@ import {
   Mutex,
 } from 'livekit-client';
 import * as React from 'react';
-import { ParticipantPlaceholder, TrackToggle, usePersistentUserChoices } from '@livekit/components-react';
+import { ParticipantPlaceholder, usePersistentUserChoices } from '@livekit/components-react';
 import type { LocalUserChoices } from '@livekit/components-core';
 import { log, defaultUserChoices } from '@livekit/components-core';
 import { Button } from '@xipkg/button';
-import { Conference, Microphone } from '@xipkg/icons';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 import { MessageBeforeJoin } from './MessageBeforeJoin';
+import { DevicesBar } from './DevicesBar';
 
 /**
  * Props for the PreJoin component.
@@ -265,33 +265,25 @@ export const PreJoin = ({
             )}
           </div>
           <div className="absolute bottom-5 left-5">
-            <div className="flex gap-1 rounded-[24px] bg-gray-100 p-1">
-              <div
-                className={`border-2 ${audioEnabled && audioTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
-              >
-                <TrackToggle
-                  className="bg-transparent text-gray-0"
-                  initialState={audioEnabled}
-                  showIcon={false}
-                  source={Track.Source.Microphone}
-                  onChange={(enabled) => permissionByBrowser && setAudioEnabled(enabled)}
-                >
-                  <Microphone width={25} className="fill-red-0" />
-                </TrackToggle>
-              </div>
-              <div
-                className={`border-2 ${videoEnabled && videoTrack ? 'border-green-60' : 'border-red-60'} ml-0.5 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] bg-gray-100`}
-              >
-                <TrackToggle
-                  showIcon={false}
-                  className="bg-transparent text-gray-0"
-                  initialState={videoEnabled}
-                  source={Track.Source.Camera}
-                  onChange={(enabled) => permissionByBrowser && setVideoEnabled(enabled)}
-                >
-                  <Conference width={214} className="fill-red-0" />
-                </TrackToggle>
-              </div>
+            <div className="flex gap-1 rounded-[24px] bg-gray-100 p-0.5 w-[96px]">
+              <DevicesBar
+                microTrack={audioTrack}
+                microEnabled={audioEnabled}
+                microTrackToggle={{
+                  initialState: audioEnabled,
+                  showIcon: false,
+                  source: Track.Source.Microphone,
+                  onChange: (enabled) => permissionByBrowser && setAudioEnabled(enabled),
+                }}
+                videoTrack={videoTrack}
+                videoEnabled={videoEnabled}
+                videoTrackToggle={{
+                  initialState: videoEnabled,
+                  showIcon: false,
+                  source: Track.Source.Camera,
+                  onChange: (enabled) => permissionByBrowser && setVideoEnabled(enabled),
+                }}
+              />
             </div>
           </div>
         </div>
