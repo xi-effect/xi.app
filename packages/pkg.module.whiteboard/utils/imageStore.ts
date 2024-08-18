@@ -22,7 +22,7 @@ export type TLAssetStoreT = {
 };
 
 const WORKER_URL =
-  process.env.NEXT_PUBLIC_SERVER_URL_BACKEND + '/api/protected/storage-service/files/';
+  `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/`;
 const UPLOAD_URL = '/api/protected/storage-service/files/attachments/';
 
 export const myAssetStore: TLAssetStoreT = {
