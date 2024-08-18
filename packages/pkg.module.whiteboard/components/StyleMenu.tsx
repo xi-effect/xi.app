@@ -1,4 +1,6 @@
 import React from 'react';
+import './styleMenu.css';
+
 import {
   CommonStylePickerSet,
   DefaultColorThemePalette,
@@ -21,11 +23,11 @@ export const StyleMenu = () => {
     <div className="w-full">
       <div className="p-6">
         <div className="flex flex-col gap-8">
-          <Slider defaultValue={[0]} max={100} step={1} />
-          <Slider defaultValue={[0]} max={100} step={1} />
+          <Slider defaultValue={[1]} max={6} step={1} minStepsBetweenThumbs={1} />
+          <Slider defaultValue={[100]} max={100} step={1} />
         </div>
       </div>
-      <div className="border-gray-10 border-t"></div>
+      <div className="border-gray-10 border-t px-6 py-2"></div>
       <CommonStylePickerSet theme={theme} styles={styles} />
     </div>
   );

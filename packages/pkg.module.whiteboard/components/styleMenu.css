@@ -1,0 +1,8 @@
+.tlui-icon {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.tlui-buttons__grid {
+  grid-template-columns: repeat(5, auto) !important;
+}
