@@ -47,10 +47,14 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             if (pathnameArr.includes('channels') && community.id) {
               const betweenChannels = pathname.split('channels');
 
-              return router.push(getUrlWithParams(`/communities/${community.id}/channels${betweenChannels[1]}`));
+              return router.push(
+                getUrlWithParams(`/communities/${community.id}/channels${betweenChannels[1]}`),
+              );
             }
 
-            if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+            if (community && community.id) {
+              router.push(getUrlWithParams(`/communities/${community.id}/home`));
+            }
 
             return null;
           },
@@ -74,7 +78,9 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             });
           }
 
-          if (community && community.id) router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          if (community && community.id) {
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          }
 
           return null;
         },

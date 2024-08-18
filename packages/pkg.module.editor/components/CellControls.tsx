@@ -34,13 +34,15 @@ export const CellControls = ({
   if (!element || isReadOnly) return null;
 
   return (
-    <div className={`${isOpenNewNode || isOpenElementControls ? 'opacity-100' : ''} absolute flex items-end opacity-0 transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:opacity-100 group-visited/node:opacity-100`}>
-      <AddNewNode
-        element={element}
-        isOpen={isOpenNewNode}
-        setIsOpen={setIsOpenNewNode}
-      >
-        <button className="hover:bg-gray-5 active:bg-gray-5 rounded" onClick={handleNewNode} type="button">
+    <div
+      className={`${isOpenNewNode || isOpenElementControls ? 'opacity-100' : ''} absolute flex h-[25px] w-[48px] items-end gap-2 opacity-0 transition *:flex *:size-5 *:items-center *:justify-center *:bg-transparent group-visited/node:opacity-100 group-hover/node:opacity-100`}
+    >
+      <AddNewNode element={element} isOpen={isOpenNewNode} setIsOpen={setIsOpenNewNode}>
+        <button
+          className="hover:bg-gray-5 active:bg-gray-5 rounded"
+          onClick={handleNewNode}
+          type="button"
+        >
           {isOpenNewNode ? <Close /> : <Plus />}
         </button>
       </AddNewNode>
@@ -50,7 +52,7 @@ export const CellControls = ({
         setIsOpen={handleElementControls}
       >
         <button
-          className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-pointer"
+          className="hover:bg-gray-5 active:bg-gray-5 cursor-pointer rounded"
           aria-label="move"
           type="button"
           {...moveProps}

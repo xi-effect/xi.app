@@ -13,7 +13,7 @@ import { createDefaultNode } from '../utils/createDefaultNode';
 import { type CustomElement } from '../slate';
 
 type AddNewNodePropsT = {
-  children: ReactNode
+  children: ReactNode;
   element: CustomElement;
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -38,15 +38,11 @@ export const AddNewNode = ({ children, element, isOpen, setIsOpen }: AddNewNodeP
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        {children}
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start" alignOffset={-12}>
-        {(
-          Object.entries(rootElements)
-        ).map(([type, opt]) => (
+        {Object.entries(rootElements).map(([type, opt]) => (
           <DropdownMenuItem
-            className="gap-2 hover:bg-gray-5 rounded"
+            className="hover:bg-gray-5 gap-2 rounded"
             key={type}
             onSelect={() => handleDropdownSelect(type)}
           >

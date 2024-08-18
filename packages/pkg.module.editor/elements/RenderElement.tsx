@@ -98,19 +98,11 @@ export const RenderElement = ({ element, attributes, children }: CustomRenderEle
         </ImageBlock>
       );
     case 'fileBlock':
-      return (
-        <FileBlock element={element} />
-      );
+      return <FileBlock element={element} />;
     case 'videoBlock':
-      return (
-        <VideoBlock element={element} />
-      );
+      return <VideoBlock element={element} />;
     case 'divider':
-      return (
-        <Divider attributes={attributes}>
-          {children}
-        </Divider>
-      );
+      return <Divider attributes={attributes}>{children}</Divider>;
     case 'image':
       return (
         <Image element={element} attributes={attributes}>

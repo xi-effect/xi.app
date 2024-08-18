@@ -25,7 +25,7 @@ export const Carousel = ({
           type="button"
           disabled={handleCheckDisabled('prev')}
           onClick={handlePrev}
-          className="disabled:fill-gray-80 z-10 bg-transparent fill-gray-0 p-0 text-center hover:opacity-100 disabled:cursor-not-allowed"
+          className="disabled:fill-gray-80 fill-gray-0 z-10 bg-transparent p-0 text-center hover:opacity-100 disabled:cursor-not-allowed"
         >
           <div className="flex items-center justify-center rounded-full bg-gray-100 p-2">
             {orientation === 'horizontal' ? (
@@ -40,7 +40,7 @@ export const Carousel = ({
           type="button"
           disabled={handleCheckDisabled('next')}
           onClick={handleNext}
-          className="disabled:fill-gray-80 z-10 bg-transparent fill-gray-0 p-0 text-center hover:opacity-100 disabled:cursor-not-allowed"
+          className="disabled:fill-gray-80 fill-gray-0 z-10 bg-transparent p-0 text-center hover:opacity-100 disabled:cursor-not-allowed"
         >
           <div className="flex items-center justify-center rounded-full bg-gray-100 p-2">
             {orientation === 'horizontal' ? (

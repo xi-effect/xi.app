@@ -4,7 +4,7 @@ import { Clock } from '@xipkg/icons';
 import { statuses } from '../../consts';
 import { StatusT, GradeT } from '../../types';
 
-const gradeTextStyle: {[key in GradeT]: string} = {
+const gradeTextStyle: { [key in GradeT]: string } = {
   5: 'text-green-80',
   4: 'text-yellow-60',
   3: 'text-orange-80',
@@ -12,14 +12,14 @@ const gradeTextStyle: {[key in GradeT]: string} = {
   1: 'text-red-80',
 };
 
-const statusText: {[key in StatusT]: string} = {
+const statusText: { [key in StatusT]: string } = {
   appointed: 'Назначено',
   overdue: 'Просрочено',
   checking: 'На проверке',
   assessed: 'Оценено',
 };
 
-const statusTextStyle: {[key in StatusT]: string} = {
+const statusTextStyle: { [key in StatusT]: string } = {
   appointed: 'bg-orange-0 text-orange-80',
   overdue: 'bg-red-0 text-red-80',
   checking: 'bg-brand-0 text-brand-80',
@@ -35,15 +35,8 @@ type TaskCardPropsT = {
   grade?: GradeT;
 };
 
-const TaskCard = ({
-  name,
-  creationDate,
-  closingDate,
-  author,
-  status,
-  grade,
-}: TaskCardPropsT) => (
-  <div className="border border-gray-30 hover:bg-gray-5 flex grow overflow-hidden rounded-lg hover:cursor-pointer">
+const TaskCard = ({ name, creationDate, closingDate, author, status, grade }: TaskCardPropsT) => (
+  <div className="border-gray-30 hover:bg-gray-5 flex grow overflow-hidden rounded-lg border hover:cursor-pointer">
     {status !== statuses.ASSESSED && status !== statuses.CHECKING && (
       <>
         {isToday(closingDate) && (
@@ -94,13 +87,7 @@ const TaskCard = ({
     )}
     {status === statuses.ASSESSED && (
       <div className="flex w-[100px] flex-col items-center justify-center">
-        <span
-          className={`text-4xl font-semibold
-              ${grade && gradeTextStyle[grade]}
-            `}
-        >
-          {grade}
-        </span>
+        <span className={`text-4xl font-semibold ${grade && gradeTextStyle[grade]} `}>{grade}</span>
       </div>
     )}
     {status === statuses.CHECKING && (
@@ -111,9 +98,7 @@ const TaskCard = ({
     <div className="flex flex-col gap-2 p-4">
       <div className="flex flex-col items-start gap-2">
         <span
-          className={`flex-grow-1 rounded px-2 py-1 text-xs font-medium 
-              ${statusTextStyle[status]}
-            `}
+          className={`flex-grow-1 rounded px-2 py-1 text-xs font-medium ${statusTextStyle[status]} `}
         >
           {statusText[status]}
         </span>

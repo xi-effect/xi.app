@@ -12,7 +12,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 export const Header = () => {
-  const params = useParams<{ 'community-id': string, 'channel-id': string }>();
+  const params = useParams<{ 'community-id': string; 'channel-id': string }>();
 
   const communityMeta = useMainSt((state) => state.communityMeta);
   const channels = useMainSt((state) => state.channels);
@@ -27,11 +27,21 @@ export const Header = () => {
         <BreadcrumbsRoot size="s">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/home`}>{communityMeta.name ?? 'Моё пространство'}</Link></BreadcrumbLink>
+              <BreadcrumbLink asChild>
+                <Link href={`/communities/${params['community-id']}/home`}>
+                  {communityMeta.name ?? 'Моё пространство'}
+                </Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/channels/${params['channel-id']}/tasks`}>{currentTasks[0]?.name}</Link></BreadcrumbLink>
+              <BreadcrumbLink asChild>
+                <Link
+                  href={`/communities/${params['community-id']}/channels/${params['channel-id']}/tasks`}
+                >
+                  {currentTasks[0]?.name}
+                </Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -40,21 +50,17 @@ export const Header = () => {
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
-      <div className="flex items-center h-[40px]">
-        <h1 className="text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5">
+      <div className="flex h-[40px] items-center">
+        <h1 className="text-xl-base sm:text-h6 lg:text-h5 font-semibold sm:inline-block">
           Задания
         </h1>
       </div>
-      <div className="flex items-center h-[16px] gap-1">
-        <span className="text-xs-base">
-          4 мая 2024
-        </span>
+      <div className="flex h-[16px] items-center gap-1">
+        <span className="text-xs-base">4 мая 2024</span>
         <svg className="fill-gray-100" width="3" height="4" viewBox="0 0 3 4" fill="none">
           <circle cx="1.5" cy="2" r="1.5" />
         </svg>
-        <span className="text-xs-base">
-          Иванова А.Г.
-        </span>
+        <span className="text-xs-base">Иванова А.Г.</span>
       </div>
     </div>
   );

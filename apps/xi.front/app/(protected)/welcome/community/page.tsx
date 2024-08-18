@@ -86,9 +86,11 @@ export default function WelcomeCommunity() {
       if (status === 204) {
         updateUser({ onboardingStage: 'community-invite' });
         if (searchParams.has('iid') && searchParams.has('community')) {
-          router.push(getUrlWithParams(
-            `/welcome/community-invite?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
-          ));
+          router.push(
+            getUrlWithParams(
+              `/welcome/community-invite?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
+            ),
+          );
         } else {
           router.push(getUrlWithParams('/welcome/community-invite'));
         }
@@ -112,9 +114,11 @@ export default function WelcomeCommunity() {
     if (status === 204) {
       updateUser({ onboardingStage: 'created' });
       if (searchParams.has('iid') && searchParams.has('community')) {
-        router.push(getUrlWithParams(
-          `/welcome/user-info?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
-        ));
+        router.push(
+          getUrlWithParams(
+            `/welcome/user-info?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
+          ),
+        );
       } else {
         router.push(getUrlWithParams('/welcome/user-info'));
       }

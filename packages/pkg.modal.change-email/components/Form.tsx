@@ -70,7 +70,7 @@ const FormBlock = ({ onEmailChange, setStage, onOpenChange }: FormBlockPropsT) =
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-3 px-5 pt-5 pb-3">
+        <div className="flex flex-col gap-3 px-5 pb-3 pt-5">
           {timer && (
             <Timer
               durationSecs={10 * 60}

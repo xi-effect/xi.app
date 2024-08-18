@@ -134,9 +134,11 @@ export default function WelcomeUserInfo() {
       updateUser({ onboardingStage: 'community-choice' });
 
       if (searchParams.has('iid') && searchParams.has('community')) {
-        router.push(getUrlWithParams(
-          `/welcome/community?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
-        ));
+        router.push(
+          getUrlWithParams(
+            `/welcome/community?iid=${searchParams.get('iid')}&community=${searchParams.get('community')}`,
+          ),
+        );
       } else {
         router.push(getUrlWithParams('/welcome/community'));
       }
