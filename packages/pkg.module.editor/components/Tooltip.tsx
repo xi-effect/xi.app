@@ -139,6 +139,7 @@ export const TooltipTrigger = React.forwardRef<
         ref={ref}
         data-state={state.open ? 'open' : 'closed'}
         {...state.getReferenceProps(props)}
+        style={{ background: 'transparent' }}
       >
         {children}
       </button>

@@ -49,7 +49,7 @@ export const CellControls = ({
               setIsOpen={setIsOpenNewNode}
             >
               <Button
-                className="hover:bg-gray-5 active:bg-gray-5 group h-6 w-6 rounded p-0"
+                className="hover:bg-gray-5 active:bg-gray-5 group h-5 w-5 rounded p-0"
                 variant="ghost"
                 onClick={handleNewNode}
               >
@@ -75,7 +75,7 @@ export const CellControls = ({
               setIsOpen={handleElementControls}
             >
               <Button
-                className="hover:bg-gray-5 active:bg-gray-5 group h-6 w-6 rounded p-0"
+                className="hover:bg-gray-5 active:bg-gray-5 group h-5 w-5 rounded p-0"
                 aria-label="move"
                 variant="ghost"
                 {...moveProps}
