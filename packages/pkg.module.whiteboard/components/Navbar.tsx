@@ -26,7 +26,7 @@ export const Navbar = track(() => {
       <div className="absolute bottom-3 left-0 right-0 z-30 flex w-full items-center justify-center">
         <div className="z-30 flex gap-7">
           <div className="border-gray-10 bg-gray-0 z-30 rounded-xl border p-2">
-            <NavbarAction />
+            {/* <NavbarAction /> */}
           </div>
           <div className="border-gray-10 bg-gray-0 flex gap-10 rounded-xl border">
             <div className="flex gap-2 p-1">
