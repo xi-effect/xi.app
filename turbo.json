@@ -5,10 +5,7 @@
     "NEXT_PUBLIC_SERVER_URL_BACKEND",
     "NEXT_PUBLIC_SERVER_URL_AUTH",
     "NEXT_PUBLIC_SERVER_URL_LIVE",
-    "NEXT_PUBLIC_ENABLE_X_TESTING",
-    "NEXT_RUNTIME",
-    "CI",
-    "NEXT_PUBLIC_SENTRY_DSN"
+    "NEXT_PUBLIC_ENABLE_X_TESTING"
   ],
   "globalDependencies": ["**/.env.*local"],
   "tasks": {
