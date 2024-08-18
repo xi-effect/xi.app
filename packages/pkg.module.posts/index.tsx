@@ -1,2 +1,2 @@
-export { Posts } from './components/Posts';
+export { Posts, AddPost } from './components/Posts';
 export { Post } from './components/Post';

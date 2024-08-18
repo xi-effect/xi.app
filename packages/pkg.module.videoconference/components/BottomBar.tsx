@@ -79,13 +79,13 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
         <div className="flex flex-row gap-4">
           <div className="flex gap-1">
             <div>
-              <TrackToggle source={Track.Source.Microphone} onChange={microphoneOnChange}>
+              <TrackToggle className="bg-transparent p-0" source={Track.Source.Microphone} onChange={microphoneOnChange}>
                 {showText && 'Microphone'}
               </TrackToggle>
             </div>
             {visibleControls.camera && (
               <div>
-                <TrackToggle source={Track.Source.Camera} onChange={cameraOnChange}>
+                <TrackToggle className="bg-transparent p-0" source={Track.Source.Camera} onChange={cameraOnChange}>
                   {showText && 'Camera'}
                 </TrackToggle>
               </div>
@@ -94,6 +94,7 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
           <div>
             {visibleControls.screenShare && browserSupportsScreenSharing && (
               <TrackToggle
+                className="bg-transparent p-0"
                 source={Track.Source.ScreenShare}
                 captureOptions={{ audio: true, selfBrowserSurface: 'include' }}
                 onChange={onScreenShareChange}

@@ -110,7 +110,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
 
         // Создаем корень для рендеринга компонента
         const root = createRoot(customCloseButton);
-        root.render(<Close className="h-[16px] w-[16px]" />);
+        root.render(<Close size="s" className="fill-gray-60" />);
 
         defaultCloseButton.replaceWith(customCloseButton);
         customCloseButton.addEventListener('click', () => {
