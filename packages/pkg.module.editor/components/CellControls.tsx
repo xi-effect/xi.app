@@ -10,11 +10,11 @@ import { type CustomElement } from '../slate';
 import { AddNewNode } from './AddNewNode';
 import { ElementControlsModal } from './ElementControlsModal';
 
-type PortalProps = {
+type PortalPropsT = {
   children: ReactNode;
 };
 
-export const Portal = ({ children }: PortalProps) =>
+export const Portal = ({ children }: PortalPropsT) =>
   typeof document === 'object' ? ReactDOM.createPortal(children, document.body) : null;
 
 export const CellControls = ({
