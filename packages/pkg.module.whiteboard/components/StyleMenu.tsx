@@ -20,7 +20,7 @@ export const StyleMenu = () => {
   const theme = getDefaultColorTheme({ isDarkMode: isDarkMode });
 
   return (
-    <div className="w-full">
+    <div className="border-gray-10 bg-gray-0 w-full">
       <div className="p-6">
         <div className="flex flex-col gap-8">
           <Slider defaultValue={[1]} max={6} step={1} minStepsBetweenThumbs={1} />
