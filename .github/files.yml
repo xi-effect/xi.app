@@ -19,6 +19,7 @@ app_common_files: &app_common_files # тригерят оба билда (и д�
   - *config_files
   - 'packages/**'
   - 'Dockerfile'
+  - '.dockerignore'
   - 'turbo.json'
 
 xi_front_files: # запускает билд (и депой в main-ветке) для xi.front

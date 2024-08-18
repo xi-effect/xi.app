@@ -14,11 +14,12 @@ export type TrackToggleProps<T extends ToggleSource> = Omit<React.ButtonHTMLAttr
 
 export const TrackToggle = <T extends ToggleSource>({
   showIcon = true,
+  className,
   ...props
 }: TrackToggleProps<T>) => {
   const { buttonProps, enabled } = useTrackToggle(props);
   return (
-    <button type="button" {...buttonProps} className="bg-transparent p-0">
+    <button type="button" {...buttonProps} className={className}>
       {(showIcon ?? true) && getSourceIcon(props.source, enabled)}
       {props.children}
     </button>

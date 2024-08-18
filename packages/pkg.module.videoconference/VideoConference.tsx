@@ -2,10 +2,10 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Room } from 'livekit-client';
 import { ActiveRoom } from './components/ActiveRoom';
-import { PreJoinSection } from './components/PreJoinSection';
+import { PreJoin } from './components/PreJoinSection';
 
 export const serverUrl = 'wss://livekit.xieffect.ru';
 
@@ -29,6 +29,17 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
     setIsStarted(connect);
   }, [isConnected || connect]);
 
+  const preJoinDefaults = React.useMemo(() => ({
+    username: '',
+    videoEnabled: true,
+    audioEnabled: true,
+  }), []);
+
+  const onSubmit = (userChoices: LocalUserChoiceT) => {
+    setUserChoice(userChoices);
+    setConnect(true);
+  };
+
   return (
     <div>
       {isStarted ? (
@@ -42,7 +53,11 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
           />
         </div>
       ) : (
-        <PreJoinSection connect={connect} setConnect={setConnect} setUserChoice={setUserChoice} />
+        <PreJoin
+          defaults={preJoinDefaults}
+          connect={connect}
+          onSubmit={onSubmit}
+        />
       )}
     </div>
   );
