@@ -11,13 +11,16 @@ export const Code = ({ element, children, attributes }: CodePropsT) => {
     element.children.length === 1;
 
   return (
-    <div className="border-gray-10 block w-full rounded-lg border p-4 text-sm" {...attributes}>
+    <pre
+      className="border-gray-10 block w-full whitespace-pre-wrap break-words rounded-lg border p-4 font-mono text-sm"
+      {...attributes}
+    >
       {isEmpty && (
         <span className="text-gray-30 pointer-events-none absolute font-medium">
           Введите фрагмент кода
         </span>
       )}
-      {children}
-    </div>
+      <code>{children}</code>
+    </pre>
   );
 };

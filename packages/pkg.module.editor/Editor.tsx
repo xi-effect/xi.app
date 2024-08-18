@@ -17,14 +17,13 @@ import { Move, Plus } from '@xipkg/icons';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
-import {
-  type MediaElement,
-} from './slate';
+import { type MediaElement } from './slate';
 
 import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
 import { SortableElement, InlineToolbar, Leaf } from './components';
 import { wrapLink } from './components/InlineToolbar';
+import { useDecorateCode } from './hooks/useDecorateCode';
 
 const withInlines = (editor: Editor) => {
   const { insertData, insertText, isInline } = editor;
@@ -76,6 +75,8 @@ type EditorPropsT = {
 export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorPropsT) => {
   const editor = useEditor();
 
+  const decorateCode = useDecorateCode();
+
   const [draggingElementId, setDraggingElementId] = useState<string>();
   const activeElement = editor.children.find((x) => x.id === draggingElementId);
 
@@ -103,9 +104,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     },
   });
 
-  const sensors = useSensors(
-    pointSensor,
-  );
+  const sensors = useSensors(pointSensor);
 
   const handleChange = (value: Descendant[]) => {
     if (onChange) {
@@ -161,7 +160,6 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
             onKeyDown={(event) => {
               if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
                 event.preventDefault();
-
                 navigator.clipboard
                   .readText()
                   .then((text) => {
@@ -180,6 +178,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
             className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
             renderElement={renderElement}
             renderLeaf={(props) => <Leaf {...props} />}
+            decorate={decorateCode}
           />
         </SortableContext>
         {createPortal(
@@ -203,16 +202,26 @@ const DragOverlayContent = ({ element }: any) => {
     return () => document.body.classList.remove('dragging');
   }, []);
 
-  const renderElement = useCallback((props: RenderElementProps) =>
-    (<RenderElement {...props} />), []);
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <RenderElement {...props} />,
+    [],
+  );
 
   return (
     <div className="group/node flex">
-      <div className="flex absolute items-end transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:flex">
-        <button className="hover:bg-gray-5 active:bg-gray-5 rounded" aria-label="plus" type="button">
+      <div className="absolute flex h-[25px] w-[48px] items-end gap-2 transition *:flex *:size-5 *:items-center *:justify-center *:bg-transparent group-hover/node:flex">
+        <button
+          className="hover:bg-gray-5 active:bg-gray-5 rounded"
+          aria-label="plus"
+          type="button"
+        >
           <Plus />
         </button>
-        <button className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-grabbing" aria-label="move" type="button">
+        <button
+          className="hover:bg-gray-5 active:bg-gray-5 cursor-grabbing rounded"
+          aria-label="move"
+          type="button"
+        >
           <Move />
         </button>
       </div>
