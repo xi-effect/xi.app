@@ -180,6 +180,8 @@ export const TooltipContent = React.forwardRef<
           className="bg-gray-0 rounded-md px-3 py-1.5 text-sm text-gray-100 font-semibold shadow-[rgba(100,100,111,0.3)_0px_7px_29px_0px]"
           style={{
                     ...state.floatingStyles,
+                    // eslint-disable-next-line react/prop-types
+                    ...props.style,
                     ...styles,
                 }}
           {...state.getFloatingProps(props)}

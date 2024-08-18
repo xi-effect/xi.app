@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { FloatingDelayGroup } from '@floating-ui/react';
 import { Close, Move, Plus } from '@xipkg/icons';
 import { useReadOnly } from 'slate-react';
+import { Button } from '@xipkg/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
 import { type CustomElement } from '../slate';
 import { AddNewNode } from './AddNewNode';
@@ -37,7 +38,7 @@ export const CellControls = ({
 
   return (
     <div className={`${isOpenNewNode || isOpenElementControls ? 'opacity-100' : ''} absolute flex items-end opacity-0 transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:opacity-100 group-visited/node:opacity-100`}>
-      <FloatingDelayGroup delay={{ open: 500, close: 0 }}>
+      <FloatingDelayGroup delay={{ open: 1500, close: 0 }}>
         <Tooltip
           placement="bottom"
         >
@@ -47,13 +48,13 @@ export const CellControls = ({
               isOpen={isOpenNewNode}
               setIsOpen={setIsOpenNewNode}
             >
-              <button
-                className="hover:bg-gray-5 active:bg-gray-5 rounded"
+              <Button
+                className="hover:bg-gray-5 active:bg-gray-5 group h-6 w-6 rounded p-0"
+                variant="ghost"
                 onClick={handleNewNode}
-                type="button"
               >
                 {isOpenNewNode ? <Close /> : <Plus />}
-              </button>
+              </Button>
             </AddNewNode>
           </TooltipTrigger>
           <TooltipContent>
@@ -73,15 +74,15 @@ export const CellControls = ({
               isOpen={isOpenElementControls}
               setIsOpen={handleElementControls}
             >
-              <button
-                className="hover:bg-gray-5 active:bg-gray-5 rounded cursor-pointer"
+              <Button
+                className="hover:bg-gray-5 active:bg-gray-5 group h-6 w-6 rounded p-0"
                 aria-label="move"
-                type="button"
+                variant="ghost"
                 {...moveProps}
                 onMouseUp={handleElementControls}
               >
                 <Move />
-              </button>
+              </Button>
             </ElementControlsModal>
           </TooltipTrigger>
           <TooltipContent>

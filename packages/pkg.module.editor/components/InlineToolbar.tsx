@@ -192,7 +192,7 @@ export const InlineToolbar = () => {
             {...getFloatingProps()}
             className="px-2 box-border bg-gray-0 border-gray-10 flex flex-row items-center justify-center gap-1 rounded-lg border drop-shadow-md h-[40px]"
           >
-            <FloatingDelayGroup delay={{ open: 500, close: 0 }}>
+            <FloatingDelayGroup delay={{ open: 1500, close: 0 }}>
               <Tooltip
                 placement="bottom"
               >
