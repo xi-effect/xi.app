@@ -43,6 +43,6 @@
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"
   },
-  "description": "form for signin",
+  "description": "editor",
   "author": "xi.effect"
 }
