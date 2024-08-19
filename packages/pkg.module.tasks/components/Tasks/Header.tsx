@@ -28,7 +28,7 @@ const selectItems = [
 ];
 
 export const Header = ({ onSelect, selectValue }: HeaderPropsT) => {
-  const params = useParams<{ 'community-id': string, 'channel-id': string }>();
+  const params = useParams<{ 'community-id': string; 'channel-id': string }>();
 
   const communityMeta = useMainSt((state) => state.communityMeta);
   const channels = useMainSt((state) => state.channels);
@@ -45,7 +45,11 @@ export const Header = ({ onSelect, selectValue }: HeaderPropsT) => {
         <BreadcrumbsRoot size="s">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink asChild><Link href={`/communities/${params['community-id']}/home`}>{communityMeta.name ?? 'Моё пространство'}</Link></BreadcrumbLink>
+              <BreadcrumbLink asChild>
+                <Link href={`/communities/${params['community-id']}/home`}>
+                  {communityMeta.name ?? 'Моё пространство'}
+                </Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -54,8 +58,8 @@ export const Header = ({ onSelect, selectValue }: HeaderPropsT) => {
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
-      <div className="flex items-center h-[40px]">
-        <h1 className="text-xl-base font-semibold sm:inline-block sm:text-h6 lg:text-h5 mr-auto">
+      <div className="flex h-[40px] items-center">
+        <h1 className="text-xl-base sm:text-h6 lg:text-h5 mr-auto font-semibold sm:inline-block">
           {currentTasks[0]?.name}
         </h1>
         <Select value={selectValue} onValueChange={onSelect}>
@@ -66,7 +70,9 @@ export const Header = ({ onSelect, selectValue }: HeaderPropsT) => {
           </SelectTrigger>
           <SelectContent className="w-72">
             {selectItems.map((item, index) => (
-              <SelectItem value={item.value} key={index}>{item.text}</SelectItem>
+              <SelectItem value={item.value} key={index}>
+                {item.text}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>

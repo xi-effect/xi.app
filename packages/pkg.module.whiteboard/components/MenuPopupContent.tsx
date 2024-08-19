@@ -1,6 +1,6 @@
 import React from 'react';
 import { DefaultColorStyle, StyleProp, useEditor } from 'tldraw';
-import { NavbarElementT } from '../navBarElements';
+import { NavbarElementT } from '../utils/navBarElements';
 
 type MenuPopupContentT = {
   item: NavbarElementT;

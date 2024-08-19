@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: string };
 
-type CustomElement = {
+export type CustomElement = {
   children: Array<CustomText | CustomElement>;
   id: string;
   type: CustomElementType;
