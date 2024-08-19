@@ -6,10 +6,10 @@ import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client';
 import { TrackToggle, TrackToggleProps } from '../utility/TrackToggle';
 
 type DevicesBarPropsT = {
-  microTrack: LocalAudioTrack;
+  microTrack: LocalAudioTrack | undefined;
   microEnabled: boolean;
   microTrackToggle: TrackToggleProps<Track.Source.Microphone>;
-  videoTrack: LocalVideoTrack;
+  videoTrack: LocalVideoTrack | undefined;
   videoEnabled: boolean;
   videoTrackToggle: TrackToggleProps<Track.Source.Camera>;
 };

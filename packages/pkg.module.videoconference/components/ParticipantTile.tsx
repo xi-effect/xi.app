@@ -104,6 +104,7 @@ export const ParticipantTile = ({
     htmlProps,
     disableSpeakingIndicator,
     onParticipantClick,
+    trackRef: trackReference,
   });
   const isEncrypted = useIsEncrypted(p);
   const layoutContext = useMaybeLayoutContext();
