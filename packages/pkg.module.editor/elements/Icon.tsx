@@ -5,9 +5,7 @@ type IconPropsT = CustomRenderElementProps;
 
 export const Icon = ({ element, children, attributes }: IconPropsT) => (
   <div className="flex flex-row gap-2" {...attributes}>
-    <div>
-      {element.icon}
-    </div>
+    <div>{element.icon}</div>
     {children}
   </div>
 );

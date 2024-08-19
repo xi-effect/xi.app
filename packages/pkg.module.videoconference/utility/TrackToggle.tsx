@@ -4,7 +4,10 @@ import { useTrackToggle } from '@livekit/components-react';
 import { getSourceIcon } from './getSourceIcon';
 
 /** @public */
-export type TrackToggleProps<T extends ToggleSource> = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
+export type TrackToggleProps<T extends ToggleSource> = Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'onChange'
+> & {
   source: T;
   showIcon?: boolean;
   initialState?: boolean;

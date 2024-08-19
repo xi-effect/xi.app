@@ -32,10 +32,7 @@ type TrackRefContextIfNeededPropsT = {
   children?: React.ReactNode;
 };
 
-const TrackRefContextIfNeeded = ({
-  trackRef,
-  children,
-}: TrackRefContextIfNeededPropsT) => {
+const TrackRefContextIfNeeded = ({ trackRef, children }: TrackRefContextIfNeededPropsT) => {
   const hasContext = !!useMaybeTrackRefContext();
   return trackRef && !hasContext ? (
     <TrackRefContext.Provider value={trackRef}>{children}</TrackRefContext.Provider>
@@ -60,9 +57,9 @@ export const TrackMutedIndicator = ({
 
   return (
     <div data-lk-muted={isMuted}>
-      {props.children ?? isMuted ? (
+      {(props.children ?? isMuted) ? (
         <div className="relative w-[12px]">
-          <MicrophoneOff className="absolute h-[16px] w-[16px] fill-gray-0" />
+          <MicrophoneOff className="fill-gray-0 absolute h-[16px] w-[16px]" />
           <RedLine className="fill-red-80 absolute h-[16px] w-[16px]" />
         </div>
       ) : null}
@@ -75,8 +72,11 @@ type FocusToggleDisablePropsT = {
 };
 
 type ParticipantTilePropsT = ParticipantTileProps &
-  FocusToggleDisablePropsT &
-  { participant?: Participant, source?: Track.Source, publication?: any };
+  FocusToggleDisablePropsT & {
+    participant?: Participant;
+    source?: Track.Source;
+    publication?: any;
+  };
 
 export const ParticipantTile = ({
   trackRef,
@@ -104,6 +104,7 @@ export const ParticipantTile = ({
     htmlProps,
     disableSpeakingIndicator,
     onParticipantClick,
+    trackRef: trackReference,
   });
   const isEncrypted = useIsEncrypted(p);
   const layoutContext = useMaybeLayoutContext();
@@ -138,9 +139,9 @@ export const ParticipantTile = ({
             {children ?? (
               <div className="h-full">
                 {isTrackReference(trackReference) &&
-                  (trackReference.publication?.kind === 'video' ||
-                    trackReference.source === Track.Source.Camera ||
-                    trackReference.source === Track.Source.ScreenShare) ? (
+                (trackReference.publication?.kind === 'video' ||
+                  trackReference.source === Track.Source.Camera ||
+                  trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
                     className="rounded-[8px]"
                     style={{

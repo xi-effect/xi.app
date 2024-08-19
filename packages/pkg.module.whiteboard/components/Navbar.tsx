@@ -1,10 +1,10 @@
 import { track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { useState } from 'react';
 import { NavbarAction } from './NavbarAction';
 import { MenuPopupContent } from './MenuPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
 import { useInsertMedia } from '../utils/useInsertMedia';
-import { useState } from 'react';
 
 export const Navbar = track(() => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);

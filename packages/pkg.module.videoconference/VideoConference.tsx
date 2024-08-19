@@ -29,11 +29,14 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
     setIsStarted(connect);
   }, [isConnected || connect]);
 
-  const preJoinDefaults = React.useMemo(() => ({
-    username: '',
-    videoEnabled: true,
-    audioEnabled: true,
-  }), []);
+  const preJoinDefaults = React.useMemo(
+    () => ({
+      username: '',
+      videoEnabled: true,
+      audioEnabled: true,
+    }),
+    [],
+  );
 
   const onSubmit = (userChoices: LocalUserChoiceT) => {
     setUserChoice(userChoices);
@@ -53,11 +56,7 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
           />
         </div>
       ) : (
-        <PreJoin
-          defaults={preJoinDefaults}
-          connect={connect}
-          onSubmit={onSubmit}
-        />
+        <PreJoin defaults={preJoinDefaults} connect={connect} onSubmit={onSubmit} />
       )}
     </div>
   );

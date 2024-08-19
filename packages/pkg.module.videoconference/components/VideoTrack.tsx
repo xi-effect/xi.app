@@ -16,9 +16,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ParticipantTile } from './ParticipantTile';
 import { CarouselContainer, GridLayout, FocusLayoutContainer } from './VideoConferenceLayout';
 
-export const VideoConference = ({
-  ...props
-}: VideoConferenceProps) => {
+export const VideoConference = ({ ...props }: VideoConferenceProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();

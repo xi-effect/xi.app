@@ -12,7 +12,7 @@ import { type CustomElement } from '../slate';
 import { assignIdRecursively } from '../plugins/withNodeId';
 
 type ElementControlsModalPropsT = {
-  children: ReactNode
+  children: ReactNode;
   element: CustomElement;
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -81,17 +81,11 @@ export const ElementControlsModal = ({
           <ArrowBottom className="mr-2 h-4 w-4" />
           <span className="text-sm">Ниже</span>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="hover:bg-gray-5 rounded"
-          onSelect={handleDuplicate}
-        >
+        <DropdownMenuItem className="hover:bg-gray-5 rounded" onSelect={handleDuplicate}>
           <Copy className="mr-2 h-4 w-4" />
           <span className="text-sm">Дублировать</span>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="hover:bg-gray-5 rounded"
-          onSelect={handleDelete}
-        >
+        <DropdownMenuItem className="hover:bg-gray-5 rounded" onSelect={handleDelete}>
           <Trash className="mr-2 h-4 w-4" />
           <span className="text-sm">Удалить</span>
         </DropdownMenuItem>
