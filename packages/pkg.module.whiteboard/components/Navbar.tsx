@@ -1,16 +1,22 @@
-import { DefaultColorStyle, StyleProp, track, useEditor } from 'tldraw';
+import { DefaultColorStyle, DefaultSizeStyle, StyleProp, track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { NavbarAction } from './NavbarAction';
 import { StickerPopupContent } from './StickerPopupContent';
-import { PenPopupContent } from './PenPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
 import { useInsertMedia } from '../utils/useInsertMedia';
 import { useState } from 'react';
+import { StylePopupContent } from './StylePopupContent';
 
 export const Navbar = track(() => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const editor = useEditor();
   const insertMedia = useInsertMedia();
+
+  const resetStyles = () => {
+    editor.setStyleForNextShapes(DefaultColorStyle as unknown as StyleProp<string>, 'black');
+    editor.setOpacityForNextShapes(1);
+    editor.setStyleForNextShapes(DefaultSizeStyle as unknown as StyleProp<string>, 'm');
+  };
 
   const hanleTool = (action: string) => {
     if (action !== 'asset') {
@@ -42,10 +48,7 @@ export const Navbar = track(() => {
                             className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                             data-isactive={isActive}
                             onClick={() => {
-                              editor.setStyleForNextShapes(
-                                DefaultColorStyle as unknown as StyleProp<string>,
-                                'black',
-                              );
+                              resetStyles();
                               hanleTool(item.action);
                             }}
                           >
@@ -57,7 +60,7 @@ export const Navbar = track(() => {
                             <StickerPopupContent item={item} />
                           )}
                           {editor.getCurrentToolId() === 'draw' ? (
-                            <PenPopupContent item={item} />
+                            <StylePopupContent item={item} />
                           ) : null}
                         </TooltipContent>
                       </div>

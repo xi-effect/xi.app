@@ -1,7 +1,7 @@
 import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import { ReactNode } from 'react';
 import { StickerPopupItemT } from '../components/StickerPopupContent';
-import { PenPopupItemT } from '../components/PenPopupContent';
+import { PenPopupItemT } from '../components/StylePopupContent';
 
 export type NavbarElementT = {
   action: string;

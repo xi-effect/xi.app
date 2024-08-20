@@ -3,17 +3,17 @@ import { NavbarElementT } from '../utils/navBarElements';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { StyleMenu } from './StyleMenu';
 
-type PenPopupContentT = {
+type StylePopupContentT = {
   item: NavbarElementT;
 };
 
-export type PenPopupItemT = {
+export type StylePopupItemT = {
   icon: React.ReactNode | null;
   action: string;
   color: string;
 };
 
-export const PenPopupContent = ({ item }: PenPopupContentT) => {
+export const StylePopupContent = ({ item }: StylePopupContentT) => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
 
   return (
@@ -21,13 +21,13 @@ export const PenPopupContent = ({ item }: PenPopupContentT) => {
       <Tooltip open={isTooltipOpen}>
         <div className="pointer-events-auto flex gap-2">
           <TooltipTrigger>
-            {item.menuPopupContent?.map((item: PenPopupItemT) => (
+            {item.menuPopupContent?.map((item: StylePopupItemT) => (
               <button
                 type="button"
                 className="bg-gray-0 flex h-[32px] w-[32px] items-center justify-center"
                 onClick={() => setIsTooltipOpen(true)}
               >
-                <div className="text-s-base fill-red-100">
+                <div className={`text-s-base fill-black-100`}>
                   {item.icon ? item.icon : item.action}
                 </div>
               </button>
