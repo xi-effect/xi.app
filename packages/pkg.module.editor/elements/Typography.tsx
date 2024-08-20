@@ -22,11 +22,7 @@ export const Typography = ({ element, children, attributes }: TypographyPropsT) 
   const className = typoVariants[element.type];
 
   return (
-    <div
-      className={className}
-      style={{ color: elementColor }}
-      {...attributes}
-    >
+    <div className={className} style={{ color: elementColor }} {...attributes}>
       {children}
     </div>
   );

@@ -51,9 +51,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${markerHand.variable} text-[16px]`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${markerHand.variable} text-[16px]`}
+    >
       <body className="overflow-hidden bg-gray-0">
-        {process.env.NODE_ENV === 'production' &&
+        {process.env.NODE_ENV === 'production' && (
           <>
             <Script id="metrika-counter" strategy="afterInteractive">
               {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -80,7 +84,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               src="https://analytics.xieffect.ru/umami.js"
             />
           </>
-        }
+        )}
         <Providers>
           <div className="flex flex-row w-full min-h-screen">{children}</div>
         </Providers>

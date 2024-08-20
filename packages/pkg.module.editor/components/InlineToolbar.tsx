@@ -94,8 +94,11 @@ export const InlineToolbar = () => {
 
   useEffect(() => {
     const handleMouseUp = (event: MouseEvent) => {
-      if (event && event?.target &&
-        refs.floating.current?.contains(event?.target as Element | null)) {
+      if (
+        event &&
+        event?.target &&
+        refs.floating.current?.contains(event?.target as Element | null)
+      ) {
         return;
       }
 
@@ -124,8 +127,11 @@ export const InlineToolbar = () => {
     const handleMouseDown = (event: MouseEvent) => {
       console.log('handleMouseDown', event);
 
-      if (event && event?.target &&
-        refs.floating.current?.contains(event.target as Element | null)) {
+      if (
+        event &&
+        event?.target &&
+        refs.floating.current?.contains(event.target as Element | null)
+      ) {
         return;
       }
 
@@ -145,10 +151,18 @@ export const InlineToolbar = () => {
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
-    const isBold = (isMac && event.metaKey && event.key === 'b') || (!isMac && event.ctrlKey && event.key === 'b');
-    const isItalic = (isMac && event.metaKey && event.key === 'i') || (!isMac && event.ctrlKey && event.key === 'i');
-    const isUnderline = (isMac && event.metaKey && event.key === 'u') || (!isMac && event.ctrlKey && event.key === 'u');
-    const isStroke = (isMac && event.metaKey && event.key === 's') || (!isMac && event.ctrlKey && event.key === 's');
+    const isBold =
+      (isMac && event.metaKey && event.key === 'b') ||
+      (!isMac && event.ctrlKey && event.key === 'b');
+    const isItalic =
+      (isMac && event.metaKey && event.key === 'i') ||
+      (!isMac && event.ctrlKey && event.key === 'i');
+    const isUnderline =
+      (isMac && event.metaKey && event.key === 'u') ||
+      (!isMac && event.ctrlKey && event.key === 'u');
+    const isStroke =
+      (isMac && event.metaKey && event.key === 's') ||
+      (!isMac && event.ctrlKey && event.key === 's');
 
     const selection = window.getSelection();
     if (typeof selection?.rangeCount === 'number') {
@@ -161,7 +175,10 @@ export const InlineToolbar = () => {
 
   useEffect(() => {
     const handleDocumentKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 's' && (/Mac|iPod|iPhone|iPad/.test(navigator.platform) ? event.metaKey : event.ctrlKey)) {
+      if (
+        event.key === 's' &&
+        (/Mac|iPod|iPhone|iPad/.test(navigator.platform) ? event.metaKey : event.ctrlKey)
+      ) {
         event.preventDefault(); // Prevent default save action
       }
 
@@ -181,7 +198,7 @@ export const InlineToolbar = () => {
 
   return (
     <>
-      {isOpen &&
+      {isOpen && (
         <FloatingFocusManager context={context}>
           <div
             ref={refs.setFloating}
@@ -190,7 +207,7 @@ export const InlineToolbar = () => {
               zIndex: 1000,
             }}
             {...getFloatingProps()}
-            className="px-2 box-border bg-gray-0 border-gray-10 flex flex-row items-center justify-center gap-1 rounded-lg border drop-shadow-md h-[40px]"
+            className="bg-gray-0 border-gray-10 box-border flex h-[40px] flex-row items-center justify-center gap-1 rounded-lg border px-2 drop-shadow-md"
           >
             <FloatingDelayGroup delay={{ open: 1500, close: 0 }}>
               <Tooltip
@@ -257,7 +274,7 @@ export const InlineToolbar = () => {
                   </div>
                 </TooltipContent>
               </Tooltip>
-              {/* <FormatButton
+            {/* <FormatButton
               onClick={handleLinkClick}
               format="link"
               icon={<Link className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
@@ -265,7 +282,7 @@ export const InlineToolbar = () => {
             </FloatingDelayGroup>
           </div>
         </FloatingFocusManager>
-      }
+      )}
     </>
   );
 };

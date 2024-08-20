@@ -8,6 +8,7 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@tldraw/editor": "2.4.4",
     "@xipkg/button": "2.0.0",
     "@xipkg/dropdown": "^2.1.0",
     "@xipkg/icons": "1.0.2",
@@ -17,7 +18,8 @@
     "pkg.utils.client": "*",
     "react": "^18.2.0",
     "sonner": "^1.5.0",
-    "tldraw": "^2.4.4"
+    "tldraw": "^2.4.4",
+    "pkg.utils": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

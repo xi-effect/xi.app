@@ -15,9 +15,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
-import {
-  type MediaElement,
-} from './slate';
+import { type MediaElement } from './slate';
 
 import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
@@ -102,9 +100,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     },
   });
 
-  const sensors = useSensors(
-    pointSensor,
-  );
+  const sensors = useSensors(pointSensor);
 
   const handleChange = (value: Descendant[]) => {
     if (onChange) {

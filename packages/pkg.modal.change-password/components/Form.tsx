@@ -91,7 +91,7 @@ const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-3 px-5 pt-5 pb-3">
+        <div className="flex flex-col gap-3 px-5 pb-3 pt-5">
           <FormField
             control={control}
             name="currentPassword"
@@ -183,7 +183,7 @@ const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
             )}
           />
         </div>
-        <div className="p-6 flex justify-start gap-4 px-5 py-5 border-gray-20 border-t">
+        <div className="border-gray-20 flex justify-start gap-4 border-t p-6 px-5 py-5">
           <Button type="submit">Изменить</Button>
           <Button onClick={() => onOpenChange(false)} variant="secondary">
             Отменить

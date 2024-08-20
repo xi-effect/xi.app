@@ -32,31 +32,54 @@ export const WelcomeModal = ({ ...props }: WelcomeModalPropsT) => {
 
   return (
     <Modal {...props} onOpenChange={onClose}>
-      <ModalContent className="max-w-[calc(100vw-16px)] xs:max-w-[440px] sm:max-w-[500px] md:max-w-[800px]" onOpenAutoFocus={(e) => e.preventDefault()}>
-        <div className="flex flex-row items-center w-full md:h-[400px] max-h-[calc(100dvh-16px)] rounded-2xl overflow-auto md:overflow-hidden">
-          <div className="hidden md:flex flex-col pl-6 pr-4">
-            <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
-            <Image className="rounded-full" height={160} width={160} src="/assets/welcome/welcome-modal-image.webp" alt="Девушка проходит тур по сервису" />
-            <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
+      <ModalContent
+        className="xs:max-w-[440px] max-w-[calc(100vw-16px)] sm:max-w-[500px] md:max-w-[800px]"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
+        <div className="flex max-h-[calc(100dvh-16px)] w-full flex-row items-center overflow-auto rounded-2xl md:h-[400px] md:overflow-hidden">
+          <div className="hidden flex-col pl-6 pr-4 md:flex">
+            <div className="bg-gray-10 h-[160px] w-[160px] rounded-full" />
+            <Image
+              className="rounded-full"
+              height={160}
+              width={160}
+              src="/assets/welcome/welcome-modal-image.webp"
+              alt="Девушка проходит тур по сервису"
+            />
+            <div className="bg-gray-10 h-[160px] w-[160px] rounded-full" />
           </div>
-          <div className="flex flex-col flex-1 w-full h-full">
+          <div className="flex h-full w-full flex-1 flex-col">
             <ModalHeader className="md:border-b-0">
-              <ModalTitle className="max-w-[230px] sm:max-w-fit">Добро пожаловать в xi.effect!</ModalTitle>
+              <ModalTitle className="max-w-[230px] sm:max-w-fit">
+                Добро пожаловать в xi.effect!
+              </ModalTitle>
             </ModalHeader>
-            <div className="p-6 text-l-base">
-              <p className="block mb-2 md:mb-0">Наш сервис создан для того, чтобы обучение стало удобным, доступным и комфортным.</p>
-              <p className="block mb-2 md:mb-0">Начните путь к новым вершинам вместе с нашей командой.</p>
+            <div className="text-l-base p-6">
+              <p className="mb-2 block md:mb-0">
+                Наш сервис создан для того, чтобы обучение стало удобным, доступным и комфортным.
+              </p>
+              <p className="mb-2 block md:mb-0">
+                Начните путь к новым вершинам вместе с нашей командой.
+              </p>
               <p className="block">Для начала предлагаем пройти тур по сервису.</p>
             </div>
-            <div className="md:hidden w-full min-h-[160px] flex flex-row justify-center items-center overflow-hidden mt-10 mb-[58px]">
-              <div className="flex flex-row justify-center min-w-[480px]">
-                <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
-                <Image className="rounded-full" height={160} width={160} src="/assets/welcome/welcome-modal-image.webp" alt="Девушка проходит тур по сервису" />
-                <div className="rounded-full h-[160px] w-[160px] bg-gray-10" />
+            <div className="mb-[58px] mt-10 flex min-h-[160px] w-full flex-row items-center justify-center overflow-hidden md:hidden">
+              <div className="flex min-w-[480px] flex-row justify-center">
+                <div className="bg-gray-10 h-[160px] w-[160px] rounded-full" />
+                <Image
+                  className="rounded-full"
+                  height={160}
+                  width={160}
+                  src="/assets/welcome/welcome-modal-image.webp"
+                  alt="Девушка проходит тур по сервису"
+                />
+                <div className="bg-gray-10 h-[160px] w-[160px] rounded-full" />
               </div>
             </div>
-            <ModalFooter className="flex flex-1 flex-row justify-end items-end gap-4 p-6 md:border-t-0">
-              <Button className="w-[142px]" variant="ghost" onClick={onClose}>Пропустить</Button>
+            <ModalFooter className="flex flex-1 flex-row items-end justify-end gap-4 p-6 md:border-t-0">
+              <Button className="w-[142px]" variant="ghost" onClick={onClose}>
+                Пропустить
+              </Button>
               <Button className="w-[106px]">Начать</Button>
             </ModalFooter>
           </div>

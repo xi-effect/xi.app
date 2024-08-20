@@ -9,9 +9,14 @@ const NoContent = () => {
 
   const getUrlWithParams = useGetUrlWithParams();
   const router = useRouter();
-  const params = useParams<{ 'community-id': string, 'channel-id': string }>();
+  const params = useParams<{ 'community-id': string; 'channel-id': string }>();
 
-  const handleRouteChange = () => router.push(getUrlWithParams(`/communities/${params['community-id']}/channels/${params['channel-id']}/posts/add-post`));
+  const handleRouteChange = () =>
+    router.push(
+      getUrlWithParams(
+        `/communities/${params['community-id']}/channels/${params['channel-id']}/posts/add-post`,
+      ),
+    );
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
@@ -21,12 +26,12 @@ const NoContent = () => {
       <h2 className="mt-4 text-[28px] font-semibold leading-[36px] sm:text-4xl sm:leading-[44px]">
         Объявлений пока нет
       </h2>
-      {isOwner &&
-        <Button size="l" className="w-[168px] pl-3 pr-6 mt-8" onClick={handleRouteChange}>
+      {isOwner && (
+        <Button size="l" className="mt-8 w-[168px] pl-3 pr-6" onClick={handleRouteChange}>
           <Plus size="l" className="fill-gray-0 mr-[16px]" />
           Создать
         </Button>
-      }
+      )}
     </div>
   );
 };

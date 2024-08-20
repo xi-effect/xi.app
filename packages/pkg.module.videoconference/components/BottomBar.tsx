@@ -4,14 +4,16 @@ import React from 'react';
 import {
   ControlBarProps,
   useDisconnectButton,
+  useLocalParticipant,
   useLocalParticipantPermissions,
   usePersistentUserChoices,
 } from '@livekit/components-react';
 import { Chat, Endcall, Group, Hand } from '@xipkg/icons';
-import { Track } from 'livekit-client';
+import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client';
 import { supportsScreenSharing } from '@livekit/components-core';
 import { TrackToggle } from '../utility/TrackToggle';
 import { ActionButton } from './ActionButton';
+import { DevicesBar } from './DevicesBar';
 
 const DisconnectButton = () => {
   const { buttonProps } = useDisconnectButton({});
@@ -73,23 +75,56 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     [setIsScreenShareEnabled],
   );
 
+  const {
+    isMicrophoneEnabled,
+    isCameraEnabled,
+    microphoneTrack,
+    cameraTrack,
+  } = useLocalParticipant();
+
+  console.log('microphoneTrack, cameraTrack', microphoneTrack, cameraTrack);
+
   return (
     <div className="w-full">
       <div className="flex w-full flex-row justify-between p-4">
         <div className="flex flex-row gap-4">
           <div className="flex gap-1">
-            <div>
-              <TrackToggle className="bg-transparent p-0" source={Track.Source.Microphone} onChange={microphoneOnChange}>
+            {/* <div>
+              <TrackToggle
+                className="bg-transparent p-0"
+                source={Track.Source.Microphone}
+                onChange={microphoneOnChange}
+              >
                 {showText && 'Microphone'}
               </TrackToggle>
             </div>
             {visibleControls.camera && (
               <div>
-                <TrackToggle className="bg-transparent p-0" source={Track.Source.Camera} onChange={cameraOnChange}>
+                <TrackToggle
+                  className="bg-transparent p-0"
+                  source={Track.Source.Camera}
+                  onChange={cameraOnChange}
+                >
                   {showText && 'Camera'}
                 </TrackToggle>
               </div>
-            )}
+            )} */}
+            <DevicesBar
+              microTrack={microphoneTrack?.track as LocalAudioTrack}
+              microEnabled={isMicrophoneEnabled}
+              microTrackToggle={{
+                showIcon: false,
+                source: Track.Source.Microphone,
+                onChange: microphoneOnChange,
+              }}
+              videoTrack={cameraTrack?.track as unknown as LocalVideoTrack}
+              videoEnabled={isCameraEnabled}
+              videoTrackToggle={{
+                showIcon: false,
+                source: Track.Source.Camera,
+                onChange: cameraOnChange,
+              }}
+            />
           </div>
           <div>
             {visibleControls.screenShare && browserSupportsScreenSharing && (

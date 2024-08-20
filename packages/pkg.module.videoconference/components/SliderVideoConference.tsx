@@ -12,12 +12,13 @@ const cloneSingleChild = (
   children: React.ReactNode | React.ReactNode[],
   props?: Record<string, any>,
   key?: any,
-) => React.Children.map(children, (child) => {
-  if (React.isValidElement(child) && React.Children.only(children)) {
-    return React.cloneElement(child, { ...props, key });
-  }
-  return child;
-});
+) =>
+  React.Children.map(children, (child) => {
+    if (React.isValidElement(child) && React.Children.only(children)) {
+      return React.cloneElement(child, { ...props, key });
+    }
+    return child;
+  });
 
 export const SliderVideoConference = ({
   tracks,
@@ -65,7 +66,7 @@ export const SliderVideoConference = ({
             key={getTrackReferenceId(trackReference)}
           >
             <div key={index} className="text-center">
-              <div className="mx-auto h-full w-full text-xl text-gray-0">
+              <div className="text-gray-0 mx-auto h-full w-full text-xl">
                 {cloneSingleChild(props.children)}
               </div>
             </div>
