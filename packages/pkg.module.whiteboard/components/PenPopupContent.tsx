@@ -24,7 +24,7 @@ export const PenPopupContent = ({ item }: PenPopupContentT) => {
             {item.menuPopupContent?.map((item: PenPopupItemT) => (
               <button
                 type="button"
-                className="bg-gray-0 flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
+                className="bg-gray-0 flex h-[32px] w-[32px] items-center justify-center"
                 onClick={() => setIsTooltipOpen(true)}
               >
                 <div className="text-s-base fill-red-100">
