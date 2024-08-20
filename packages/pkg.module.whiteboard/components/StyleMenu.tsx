@@ -1,9 +1,7 @@
-import React from 'react';
 import './styleMenu.css';
 
 import {
   CommonStylePickerSet,
-  DefaultColorThemePalette,
   getDefaultColorTheme,
   useEditor,
   useIsDarkMode,
@@ -27,7 +25,7 @@ export const StyleMenu = () => {
           <Slider defaultValue={[100]} max={100} step={1} />
         </div>
       </div>
-      <div className="border-gray-10 border-t px-6 py-2"></div>
+      <div className="border-gray-10 border-t pb-4"></div>
       <CommonStylePickerSet theme={theme} styles={styles} />
     </div>
   );

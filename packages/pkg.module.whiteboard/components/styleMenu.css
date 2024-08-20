@@ -1,8 +1,44 @@
 .tlui-icon {
+  padding: 2px;
   width: 36px !important;
   height: 36px !important;
 }
 
+.tlui-style-panel__section__common {
+  padding: 4px;
+}
+
 .tlui-buttons__grid {
+  gap: 2px;
+  align-items: center;
+  margin-bottom: 2px;
+  justify-content: space-around !important;
   grid-template-columns: repeat(5, auto) !important;
+}
+
+.tlui-button {
+  padding: 0 !important;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tlui-button[data-state='hinted'] {
+  border: 1% solid black;
+  border-radius: 50%;
+}
+
+.tlui-button[data-state='hinted']::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid black;
+  border-radius: 50%;
+  pointer-events: none; /* Prevent the circle from interfering with button actions */
 }

@@ -33,7 +33,7 @@ export const PenPopupContent = ({ item }: PenPopupContentT) => {
               </button>
             ))}
           </TooltipTrigger>
-          <TooltipContent align="start" className="mb-1 flex h-56 w-72 rounded-xl p-0 shadow-none">
+          <TooltipContent align="start" className="mb-1 flex h-60 w-72 rounded-xl p-0 shadow-none">
             <StyleMenu />
           </TooltipContent>
         </div>
