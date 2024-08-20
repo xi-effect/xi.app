@@ -21,12 +21,12 @@ import {
 import type { Placement } from '@floating-ui/react';
 import { useRef } from 'react';
 
-interface TooltipOptions {
+type TooltipOptions = {
     initialOpen?: boolean;
     placement?: Placement;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
-}
+};
 
 export function useTooltip({
     initialOpen = false,
@@ -111,7 +111,6 @@ export function Tooltip({
     );
 }
 
-// eslint-disable-next-line react/display-name
 export const TooltipTrigger = React.forwardRef<
     HTMLElement,
     React.HTMLProps<HTMLElement> & { asChild?: boolean }
@@ -134,9 +133,9 @@ export const TooltipTrigger = React.forwardRef<
     }
 
     return (
-      // eslint-disable-next-line react/button-has-type
       <button
         ref={ref}
+        type="button"
         data-state={state.open ? 'open' : 'closed'}
         {...state.getReferenceProps(props)}
         style={{ background: 'transparent' }}
@@ -146,7 +145,8 @@ export const TooltipTrigger = React.forwardRef<
     );
 });
 
-// eslint-disable-next-line react/display-name
+TooltipTrigger.displayName = 'TooltipTrigger';
+
 export const TooltipContent = React.forwardRef<
     HTMLDivElement,
     React.HTMLProps<HTMLDivElement>
@@ -199,3 +199,5 @@ export const TooltipContent = React.forwardRef<
       </FloatingPortal>
     );
 });
+
+TooltipContent.displayName = 'TooltipContent';
