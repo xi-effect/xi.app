@@ -27,4 +27,18 @@ Sentry.init({
       blockAllMedia: true,
     }),
   ],
+
+  beforeSend(event) {
+    const ignoreHosts = ['localhost', 'vercel.app'];
+
+    if (
+      ignoreHosts.some(
+        (host) => event && event.request && event.request.url && event.request?.url.includes(host),
+      )
+    ) {
+      return null;
+    }
+
+    return event;
+  },
 });
