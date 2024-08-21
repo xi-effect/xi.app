@@ -1,7 +1,6 @@
 import React from 'react';
 import { DefaultColorStyle, StyleProp, useEditor } from 'tldraw';
 import { NavbarElementT } from '../utils/navBarElements';
-import { Tooltip, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 
 type StickerPopupContentT = {
   item: NavbarElementT;
@@ -21,7 +20,7 @@ export const StickerPopupContent = ({ item }: StickerPopupContentT) => {
       {item.menuPopupContent?.map((item: StickerPopupItemT) => (
         <button
           type="button"
-          className="bg-gray-0 flex h-[32px] w-[32px] items-center justify-center rounded-[8px]"
+          className="bg-gray-0 rounded-2 flex h-8 w-8 items-center justify-center"
           onClick={() => {
             editor.setStyleForNextShapes(
               DefaultColorStyle as unknown as StyleProp<string>,

@@ -1,5 +1,4 @@
 import './styleMenu.css';
-
 import {
   CommonStylePickerSet,
   DefaultSizeStyle,
@@ -10,6 +9,8 @@ import {
 } from 'tldraw';
 import { Slider } from '@xipkg/slider';
 
+const sizes = ['s', 'm', 'l', 'xl'] as const;
+
 export const StyleMenu = () => {
   const editor = useEditor();
   const isDarkMode = useIsDarkMode();
@@ -17,8 +18,6 @@ export const StyleMenu = () => {
 
   if (!styles) return null;
   const theme = getDefaultColorTheme({ isDarkMode: isDarkMode });
-
-  const sizes = ['s', 'm', 'l', 'xl'] as const;
 
   const handleSize = (value: number[]) => {
     const size = sizes[value[0] - 1];

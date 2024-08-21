@@ -1,14 +1,14 @@
+import React from 'react';
 import { DefaultColorStyle, DefaultSizeStyle, StyleProp, track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { NavbarAction } from './NavbarAction';
 import { StickerPopupContent } from './StickerPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
 import { useInsertMedia } from '../utils/useInsertMedia';
-import { useState } from 'react';
 import { StylePopupContent } from './StylePopupContent';
 
 export const Navbar = track(() => {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const editor = useEditor();
   const insertMedia = useInsertMedia();
 
@@ -45,7 +45,7 @@ export const Navbar = track(() => {
                         <TooltipTrigger className="rounded-lg">
                           <button
                             type="button"
-                            className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
+                            className={`pointer-events-auto flex h-8 w-8 items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                             data-isactive={isActive}
                             onClick={() => {
                               resetStyles();
@@ -59,9 +59,9 @@ export const Navbar = track(() => {
                           {editor.getCurrentToolId() == 'sticker' && (
                             <StickerPopupContent item={item} />
                           )}
-                          {editor.getCurrentToolId() === 'draw' ? (
+                          {editor.getCurrentToolId() === 'draw' && (
                             <StylePopupContent item={item} />
-                          ) : null}
+                          )}
                         </TooltipContent>
                       </div>
                     </Tooltip>
