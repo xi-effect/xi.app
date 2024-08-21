@@ -8,7 +8,14 @@ import { createEditor, Transforms, Editor, Descendant } from 'slate';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
 import { withHistory } from 'slate-history';
 
-import { DndContext, DragEndEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
@@ -183,7 +190,6 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     if (event.key === 'Tab') {
       codeEditorInsertText(editor, event, '  ');
     }
-
   };
 
   if (readOnly) {
