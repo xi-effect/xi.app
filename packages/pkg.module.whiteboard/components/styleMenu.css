@@ -16,7 +16,7 @@
   grid-template-columns: repeat(5, auto) !important;
 }
 
-.tlui-button {
+.tlui-button__icon {
   padding: 0 !important;
   position: relative;
   width: 36px;
