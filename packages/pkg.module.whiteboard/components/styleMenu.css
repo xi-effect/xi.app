@@ -27,7 +27,7 @@
 }
 
 .tlui-button[data-state='hinted'] {
-  border: 1% solid black;
+  border: 1% solid var(--xi-gray-100);
   border-radius: 50%;
 }
 
@@ -38,7 +38,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border: 2px solid black;
+  border: 2px solid var(--xi-gray-100);
   border-radius: 50%;
-  pointer-events: none; /* Prevent the circle from interfering with button actions */
+  pointer-events: none;
 }
