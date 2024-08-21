@@ -32,7 +32,10 @@ export const StylePopupContent = ({ item }: StylePopupContentT) => {
               </button>
             ))}
           </TooltipTrigger>
-          <TooltipContent align="start" className="mb-1 flex h-60 w-72 rounded-xl p-0 shadow-none">
+          <TooltipContent
+            align="start"
+            className="border-gray-10 bg-gray-0 mb-1 flex h-60 w-72 rounded-xl border p-0 shadow-none"
+          >
             <StyleMenu />
           </TooltipContent>
         </div>
