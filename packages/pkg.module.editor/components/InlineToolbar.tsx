@@ -16,6 +16,8 @@ import {
   FloatingFocusManager,
   flip,
 } from '@floating-ui/react';
+import { FloatingDelayGroup } from '@floating-ui/react';
+import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
 import { makeNodeId } from '../plugins/withNodeId';
 import { type CustomElement } from '../slate';
 
@@ -92,11 +94,8 @@ export const InlineToolbar = () => {
 
   useEffect(() => {
     const handleMouseUp = (event: MouseEvent) => {
-      if (
-        event &&
-        event?.target &&
-        refs.floating.current?.contains(event?.target as Element | null)
-      ) {
+      if (event && event?.target &&
+        refs.floating.current?.contains(event?.target as Element | null)) {
         return;
       }
 
@@ -125,11 +124,8 @@ export const InlineToolbar = () => {
     const handleMouseDown = (event: MouseEvent) => {
       console.log('handleMouseDown', event);
 
-      if (
-        event &&
-        event?.target &&
-        refs.floating.current?.contains(event.target as Element | null)
-      ) {
+      if (event && event?.target &&
+        refs.floating.current?.contains(event.target as Element | null)) {
         return;
       }
 
@@ -149,18 +145,10 @@ export const InlineToolbar = () => {
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
-    const isBold =
-      (isMac && event.metaKey && event.key === 'b') ||
-      (!isMac && event.ctrlKey && event.key === 'b');
-    const isItalic =
-      (isMac && event.metaKey && event.key === 'i') ||
-      (!isMac && event.ctrlKey && event.key === 'i');
-    const isUnderline =
-      (isMac && event.metaKey && event.key === 'u') ||
-      (!isMac && event.ctrlKey && event.key === 'u');
-    const isStroke =
-      (isMac && event.metaKey && event.key === 's') ||
-      (!isMac && event.ctrlKey && event.key === 's');
+    const isBold = (isMac && event.metaKey && event.key === 'b') || (!isMac && event.ctrlKey && event.key === 'b');
+    const isItalic = (isMac && event.metaKey && event.key === 'i') || (!isMac && event.ctrlKey && event.key === 'i');
+    const isUnderline = (isMac && event.metaKey && event.key === 'u') || (!isMac && event.ctrlKey && event.key === 'u');
+    const isStroke = (isMac && event.metaKey && event.key === 's') || (!isMac && event.ctrlKey && event.key === 's');
 
     const selection = window.getSelection();
     if (typeof selection?.rangeCount === 'number') {
@@ -173,10 +161,7 @@ export const InlineToolbar = () => {
 
   useEffect(() => {
     const handleDocumentKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === 's' &&
-        (/Mac|iPod|iPhone|iPad/.test(navigator.platform) ? event.metaKey : event.ctrlKey)
-      ) {
+      if (event.key === 's' && (/Mac|iPod|iPhone|iPad/.test(navigator.platform) ? event.metaKey : event.ctrlKey)) {
         event.preventDefault(); // Prevent default save action
       }
 
@@ -196,7 +181,7 @@ export const InlineToolbar = () => {
 
   return (
     <>
-      {isOpen && (
+      {isOpen &&
         <FloatingFocusManager context={context}>
           <div
             ref={refs.setFloating}
@@ -205,32 +190,82 @@ export const InlineToolbar = () => {
               zIndex: 1000,
             }}
             {...getFloatingProps()}
-            className="bg-gray-0 border-gray-10 box-border flex h-[40px] flex-row items-center justify-center gap-1 rounded-lg border px-2 drop-shadow-md"
+            className="px-2 box-border bg-gray-0 border-gray-10 flex flex-row items-center justify-center gap-1 rounded-lg border drop-shadow-md h-[40px]"
           >
-            <FormatButton
-              format="bold"
-              icon={<Bold className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-            />
-            <FormatButton
-              format="italic"
-              icon={<Italic className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-            />
-            <FormatButton
-              format="underlined"
-              icon={<Underline className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-            />
-            <FormatButton
-              format="stroke"
-              icon={<Stroke className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-            />
-            {/* <FormatButton
+            <FloatingDelayGroup delay={{ open: 1500, close: 0 }}>
+              <Tooltip
+                placement="bottom"
+              >
+                <TooltipTrigger>
+                  <FormatButton
+                    format="bold"
+                    icon={<Bold className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div>
+                    <p><b>Bold</b></p>
+                    <p>Ctrl+B</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip
+                placement="bottom"
+              >
+                <TooltipTrigger>
+                  <FormatButton
+                    format="italic"
+                    icon={<Italic className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div>
+                    <p><i>Italicize</i></p>
+                    <p>Ctrl+I</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip
+                placement="bottom"
+              >
+                <TooltipTrigger>
+                  <FormatButton
+                    format="underlined"
+                    icon={<Underline className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div>
+                    <p><u>Underline</u></p>
+                    <p>Ctrl+U</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip
+                placement="bottom"
+              >
+                <TooltipTrigger>
+                  <FormatButton
+                    format="stroke"
+                    icon={<Stroke className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div>
+                    <p><s>Strike-through</s></p>
+                    <p>Ctrl+S</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+              {/* <FormatButton
               onClick={handleLinkClick}
               format="link"
               icon={<Link className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
             /> */}
+            </FloatingDelayGroup>
           </div>
         </FloatingFocusManager>
-      )}
+      }
     </>
   );
 };

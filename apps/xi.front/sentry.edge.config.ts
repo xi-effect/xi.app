@@ -16,4 +16,17 @@ Sentry.init({
   // Setting this option to true will print useful information
   // to the console while you're setting up Sentry.
   debug: false,
+  beforeSend(event) {
+    const ignoreHosts = ['localhost', 'vercel.app'];
+
+    if (
+      ignoreHosts.some(
+        (host) => event && event.request && event.request.url && event.request?.url.includes(host),
+      )
+    ) {
+      return null;
+    }
+
+    return event;
+  },
 });
