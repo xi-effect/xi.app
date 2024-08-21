@@ -24,6 +24,7 @@ import createNode from './utils/createNode';
 import { SortableElement, InlineToolbar, Leaf } from './components';
 import { wrapLink } from './components/InlineToolbar';
 import { useDecorateCode } from './hooks/useDecorateCode';
+import { codeEditorInsertText } from './utils/codeEditorInsertText';
 
 const withInlines = (editor: Editor) => {
   const { insertData, insertText, isInline } = editor;
@@ -112,6 +113,60 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     }
   };
 
+  const handlePaste = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      event.preventDefault();
+
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          if (text) {
+            const { selection } = editor;
+
+            if (selection) {
+              const [parentNode] = Editor.parent(editor, selection);
+
+              if (parentNode && parentNode.type === 'code') {
+                Transforms.insertText(editor, text);
+              }
+            }
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to paste code:', err);
+        });
+    },
+    [editor],
+  );
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, editor: Editor) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+      handlePaste(event);
+      event.preventDefault();
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          if (isImageUrl(text)) {
+            const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
+            Transforms.insertNodes(editor, node, {
+              at: [editor.children.length],
+            });
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to paste image:', err);
+        });
+    }
+
+    if (event.key === 'Enter') {
+      codeEditorInsertText(editor, event, '\n');
+    }
+
+    if (event.key === 'Tab') {
+      codeEditorInsertText(editor, event, '  ');
+    }
+  };
+
   if (readOnly) {
     return (
       <Slate editor={editor} initialValue={initialValue ?? []}>
@@ -157,24 +212,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           <InlineToolbar />
           <Editable
-            onKeyDown={(event) => {
-              if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
-                event.preventDefault();
-                navigator.clipboard
-                  .readText()
-                  .then((text) => {
-                    if (isImageUrl(text)) {
-                      const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
-                      Transforms.insertNodes(editor, node, {
-                        at: [editor.children.length],
-                      });
-                    }
-                  })
-                  .catch((err) => {
-                    console.error('Failed to paste image:', err);
-                  });
-              }
-            }}
+            onKeyDown={(event) => handleKeyDown(event, editor)}
             className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
             renderElement={renderElement}
             renderLeaf={(props) => <Leaf {...props} />}

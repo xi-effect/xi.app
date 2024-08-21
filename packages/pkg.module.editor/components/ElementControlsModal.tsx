@@ -5,18 +5,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
-import { ArrowBottom, ArrowUp, Code, Copy, Trash } from '@xipkg/icons';
+import { ArrowBottom, ArrowUp, Copy, Trash } from '@xipkg/icons';
 import { type CustomElement } from '../slate';
 import { assignIdRecursively } from '../plugins/withNodeId';
-import { LanguageKey } from '../plugins/types';
-import { LANGUAGES } from '../const/codeEditorLanguages';
-import { useCodeLanguage } from '../hooks/useCodeLanguage';
 
 type ElementControlsModalPropsT = {
   children: ReactNode;
@@ -32,7 +25,6 @@ export const ElementControlsModal = ({
   setIsOpen,
 }: ElementControlsModalPropsT) => {
   const editor = useSlate();
-  const { setLanguage } = useCodeLanguage();
 
   const currentElIndex = editor.children.findIndex((item) => item.id === element.id);
 
@@ -68,36 +60,11 @@ export const ElementControlsModal = ({
     });
   };
 
-  const handleChangeLanguage = (language: LanguageKey) => {
-    setLanguage(element, language);
-  };
-
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       {children}
       <DropdownMenuTrigger />
       <DropdownMenuContent side="left" align="center" sideOffset={32}>
-        {element.type === 'code' && (
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="hover:bg-gray-5 rounded px-2.5">
-              <Code className="mr-2 h-4 w-4" />
-              <span className="text-sm">Язык</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                {Object.entries(LANGUAGES).map(([key, label]) => (
-                  <DropdownMenuItem
-                    key={key}
-                    className="hover:bg-gray-5 rounded"
-                    onSelect={() => handleChangeLanguage(key)}
-                  >
-                    <span className="text-sm">{label}</span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-        )}
         <DropdownMenuItem
           disabled={currentElIndex === 0}
           className="hover:bg-gray-5 rounded"

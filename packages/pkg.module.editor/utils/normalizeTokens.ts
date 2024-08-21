@@ -11,20 +11,18 @@ type Token = {
   empty?: boolean;
 };
 
-const newlineRe = /\r\n|\r|\n/;
-
-const normalizeEmptyLines = (line: Token[]) => {
-  if (line.length === 0) {
-    line.push({
-      types: ['plain'],
-      content: '\n',
-      empty: true,
-    });
-  } else if (line.length === 1 && line[0].content === '') {
-    line[0].content = '\n';
-    line[0].empty = true;
-  }
-};
+// const normalizeEmptyLines = (line: Token[]) => {
+//   if (line.length === 0) {
+//     line.push({
+//       types: ['plain'],
+//       content: '\n',
+//       empty: true,
+//     });
+//   } else if (line.length === 1 && line[0].content === '') {
+//     line[0].content = '\n';
+//     line[0].empty = true;
+//   }
+// };
 
 const appendTypes = (types: string[], add: string[] | string): string[] => {
   const typesSize = types.length;
@@ -43,7 +41,7 @@ export const normalizeTokens = (tokens: Array<PrismToken | string>): Token[][] =
 
   let i = 0;
   let stackIndex = 0;
-  let currentLine: { types: string[]; content: string }[] = [];
+  const currentLine: { types: string[]; content: string }[] = [];
 
   const acc = [currentLine];
 
@@ -55,7 +53,6 @@ export const normalizeTokens = (tokens: Array<PrismToken | string>): Token[][] =
       const tokenArr = tokenArrStack[stackIndex];
       const token = tokenArr[i];
 
-      // Determine content and append type to types if necessary
       if (typeof token === 'string') {
         types = stackIndex > 0 ? types : ['plain'];
         content = token;
@@ -64,11 +61,9 @@ export const normalizeTokens = (tokens: Array<PrismToken | string>): Token[][] =
         if (token.alias) {
           types = appendTypes(types, token.alias);
         }
-
         content = token.content;
       }
 
-      // If token.content is an array, increase the stack depth and repeat this while-loop
       if (typeof content !== 'string') {
         stackIndex++;
         typeArrStack.push(types);
@@ -78,21 +73,9 @@ export const normalizeTokens = (tokens: Array<PrismToken | string>): Token[][] =
         continue;
       }
 
-      // Split by newlines
-      const splitByNewlines = content.split(newlineRe);
-      const newlineCount = splitByNewlines.length;
-
-      currentLine.push({ types, content: splitByNewlines[0] });
-
-      // Create a new line for each string on a new line
-      for (let i = 1; i < newlineCount; i++) {
-        normalizeEmptyLines(currentLine);
-        acc.push((currentLine = []));
-        currentLine.push({ types, content: splitByNewlines[i] });
-      }
+      currentLine.push({ types, content });
     }
 
-    // Decreate the stack depth
     stackIndex--;
     typeArrStack.pop();
     tokenArrStack.pop();
@@ -100,6 +83,5 @@ export const normalizeTokens = (tokens: Array<PrismToken | string>): Token[][] =
     tokenArrSizeStack.pop();
   }
 
-  normalizeEmptyLines(currentLine);
   return acc;
 };

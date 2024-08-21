@@ -20,6 +20,7 @@
     "@xipkg/icons": "1.1.0",
     "@xipkg/input": "1.0.0",
     "@xipkg/popover": "^2.0.0",
+    "@xipkg/select": "^1.0.0",
     "nanoid": "5.0.6",
     "next": "^14.2.3",
     "pkg.popover.add-file": "*",

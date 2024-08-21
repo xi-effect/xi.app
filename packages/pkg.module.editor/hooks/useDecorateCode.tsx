@@ -13,6 +13,26 @@ import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-php';
 import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-csharp';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-rust';
+import 'prismjs/components/prism-kotlin';
+import 'prismjs/components/prism-swift';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-yaml';
+import 'prismjs/components/prism-docker';
+import 'prismjs/components/prism-powershell';
+import 'prismjs/components/prism-perl';
+import 'prismjs/components/prism-lua';
+import 'prismjs/components/prism-r';
+import 'prismjs/components/prism-objectivec';
+import 'prismjs/components/prism-sass';
+import 'prismjs/components/prism-scss';
+
 import { NodeEntry, Node, Range } from 'slate';
 import { normalizeTokens } from '../utils/normalizeTokens';
 import { CodeElement } from '../slate';
@@ -26,28 +46,23 @@ export const useDecorateCode = () =>
       const editorCode = node.children.map((line) => Node.string(line)).join('\n');
 
       const language = Prism.languages[node.language || DEFAULT_LANGUAGE || ''];
-
       const codeTokens = Prism.tokenize(editorCode, language);
       const normalizedTokens = normalizeTokens(codeTokens);
 
       for (let index = 0; index < normalizedTokens.length; index++) {
         const tokens = normalizedTokens[index];
-
         let start = 0;
         for (const token of tokens) {
           const { length } = token.content;
-          if (!length) {
-            continue;
-          }
-
           const end = start + length;
 
-          const path = [...blockPath, index, 0];
-          ranges.push({
-            anchor: { path, offset: start },
-            focus: { path, offset: end },
-            token: token.types.join(' '),
-          });
+          if (typeof token !== 'string') {
+            ranges.push({
+              anchor: { path: blockPath, offset: start },
+              focus: { path: blockPath, offset: end },
+              token: token.types.join(' '),
+            });
+          }
 
           start = end;
         }
