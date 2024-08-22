@@ -5,11 +5,11 @@ import { useMainSt } from 'pkg.stores';
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const VideoConference = dynamic(() =>
-  import('pkg.module.videoconference').then((mod) => mod.VideoConference),
+const Call = dynamic(() =>
+  import('pkg.module.call').then((mod) => mod.Call),
 );
 
-export default function VideoConferenceInCommunity({ params }: { params: { vid: string } }) {
+export default function CallInCommunity({ params }: { params: { vid: string } }) {
   const getToken = useMainSt((state) => state.getToken);
   const token = useMainSt((state) => state.token);
 
@@ -34,7 +34,7 @@ export default function VideoConferenceInCommunity({ params }: { params: { vid: 
           </div>
         </div>
       ) : (
-        <VideoConference token={token} />
+        <Call token={token} />
       )}
     </div>
   );

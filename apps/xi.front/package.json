@@ -46,7 +46,7 @@
     "pkg.module.posts": "*",
     "pkg.module.tasks": "*",
     "pkg.module.tasks-admin": "*",
-    "pkg.module.videoconference": "*",
+    "pkg.module.call": "*",
     "pkg.module.whiteboard": "*",
     "pkg.navigation": "*",
     "pkg.navigation.layout": "*",

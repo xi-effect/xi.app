@@ -3,7 +3,7 @@ import { HTMLAttributes } from 'react';
 import { ConnectionQuality } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
-import { serverUrl, LocalUserChoiceT } from '../VideoConference';
+import { serverUrl, LocalUserChoiceT } from '../Call';
 import { ISettingsRoom } from '../types/types';
 import { VideoConference } from './VideoTrack';
 

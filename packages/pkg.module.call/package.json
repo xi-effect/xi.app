@@ -1,5 +1,5 @@
 {
-  "name": "pkg.module.videoconference",
+  "name": "pkg.module.call",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -35,6 +35,6 @@
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"
   },
-  "description": "videoconference",
+  "description": "calls for app",
   "author": "xi.effect"
 }
