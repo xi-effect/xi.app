@@ -3,7 +3,7 @@ import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 import { ReactNode } from 'react';
 
-export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: string };
+export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: string; type: string };
 
 export type CustomElement = {
   children: Array<CustomText | CustomElement>;
@@ -76,7 +76,7 @@ export type DividerElement = {
 export type CodeElement = {
   id: string;
   type: 'code';
-  language: string;
+  language?: string;
   children: CustomText[];
 };
 

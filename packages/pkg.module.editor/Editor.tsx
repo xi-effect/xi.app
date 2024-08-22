@@ -135,7 +135,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
             if (selection) {
               const [parentNode] = Editor.parent(editor, selection);
 
-              if (parentNode && parentNode.type === 'code') {
+              if (parentNode && parentNode?.type === 'code') {
                 Transforms.insertText(editor, text);
               }
             }
