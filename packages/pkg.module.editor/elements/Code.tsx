@@ -43,7 +43,7 @@ export const Code = ({ element, children, attributes }: CodePropsT) => {
         >
           <SelectValue />
         </SelectTrigger>
-        <SelectContent className="max-h-96 overflow-y-auto">
+        <SelectContent className="max-h-60 overflow-y-auto">
           {Object.entries(LANGUAGES).map(([key, value]) => (
             <SelectItem key={key} value={key}>
               {value}
