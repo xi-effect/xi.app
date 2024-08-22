@@ -19,7 +19,8 @@
     "react": "^18.2.0",
     "sonner": "^1.5.0",
     "tldraw": "^2.4.4",
-    "pkg.utils": "*"
+    "pkg.utils": "*",
+    "pkg.stores": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

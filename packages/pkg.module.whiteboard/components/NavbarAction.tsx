@@ -1,7 +1,7 @@
 import { useCanRedo, useCanUndo, useEditor } from 'tldraw';
 import { Undo, Redo } from '@xipkg/icons';
 
-export function NavbarAction() {
+export const NavbarAction = () => {
   const editor = useEditor();
   const canRedo = useCanRedo();
   const canUndo = useCanUndo();
@@ -26,4 +26,4 @@ export function NavbarAction() {
       </button>
     </div>
   );
-}
+};
