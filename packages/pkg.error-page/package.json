@@ -8,7 +8,7 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@xipkg/icons": "^0.10.3",
+    "@xipkg/icons": "^1.1.1",
     "@xipkg/link": "^0.3.0",
     "next": "^14.2.3",
     "react": "^18.2.0"
