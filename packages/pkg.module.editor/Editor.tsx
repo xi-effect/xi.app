@@ -199,6 +199,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
           readOnly
           className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
           renderElement={renderElement}
+          decorate={decorateCode}
           renderLeaf={(props) => <Leaf {...props} />}
         />
       </Slate>

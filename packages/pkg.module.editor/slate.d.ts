@@ -13,6 +13,7 @@ export type CustomElement = {
   fileName?: string;
   size?: number;
   icon?: ReactNode;
+  language?: string;
 };
 
 export type ParagraphElement = {

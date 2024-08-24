@@ -32,11 +32,14 @@ export const Code = ({ element, children, attributes }: CodePropsT) => {
   return (
     <div
       className={
-        'text-s-base border-gray-10 text-sm" relative block w-full whitespace-pre-wrap break-words rounded-lg border p-4'
+        'text-s-base border-gray-10 text-sm" bg-gray-0 relative block w-full whitespace-pre-wrap break-words rounded-lg border p-4'
       }
       {...attributes}
     >
-      <Select defaultValue={DEFAULT_LANGUAGE} onValueChange={handleChangeLanguage}>
+      <Select
+        defaultValue={element.language || DEFAULT_LANGUAGE}
+        onValueChange={handleChangeLanguage}
+      >
         <SelectTrigger
           contentEditable={false}
           className="text-xs-base mb-2 h-auto w-auto gap-1 border-none p-0"

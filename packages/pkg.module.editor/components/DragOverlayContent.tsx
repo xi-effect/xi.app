@@ -4,10 +4,13 @@ import { Move, Plus } from '@xipkg/icons';
 import { Descendant } from 'slate';
 import { useEditor } from '../Editor';
 import { RenderElement } from '../elements/RenderElement';
+import { useDecorateCode } from '../hooks/useDecorateCode';
+import { Leaf } from './Leaf';
 
 const DragOverlayContent = ({ element }: { element: Descendant }) => {
   const editor = useEditor();
   const [value] = useState([JSON.parse(JSON.stringify(element))]); // clone
+  const decorateCode = useDecorateCode();
 
   useEffect(() => {
     document.body.classList.add('dragging');
@@ -39,7 +42,13 @@ const DragOverlayContent = ({ element }: { element: Descendant }) => {
         </button>
       </div>
       <Slate editor={editor} initialValue={value}>
-        <Editable className="ml-14 w-full" readOnly renderElement={renderElement} />
+        <Editable
+          className="ml-14 w-full"
+          readOnly
+          renderElement={renderElement}
+          renderLeaf={(props) => <Leaf {...props} />}
+          decorate={decorateCode}
+        />
       </Slate>
     </div>
   );
