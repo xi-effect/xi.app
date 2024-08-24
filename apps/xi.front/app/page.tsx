@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import { permanentRedirect } from 'next/navigation';
 
 export default function Main() {
-  return redirect('/signin');
+  return permanentRedirect('/signin');
 }
