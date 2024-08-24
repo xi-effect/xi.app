@@ -11,7 +11,9 @@ export const Navbar = track(() => {
   const editor = useEditor();
   const insertMedia = useInsertMedia();
 
-  const hanleTool = (action: string) => {
+  const handleTool = (action: string) => {
+    console.log('action', action);
+
     if (action !== 'asset') {
       setIsTooltipOpen(true);
       editor.setCurrentTool(action);
@@ -34,12 +36,12 @@ export const Navbar = track(() => {
                 return (
                   <TooltipProvider key={item.action}>
                     <Tooltip open={isActive && item?.hasAToolTip && isTooltipOpen}>
-                      <TooltipTrigger className="rounded-lg">
+                      <TooltipTrigger asChild className="rounded-lg">
                         <button
                           type="button"
                           className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                           data-isactive={isActive}
-                          onClick={() => hanleTool(item.action)}
+                          onClick={() => handleTool(item.action)}
                         >
                           {item.icon ? item.icon : item.title}
                         </button>

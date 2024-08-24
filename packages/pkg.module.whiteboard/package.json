@@ -11,7 +11,7 @@
     "@tldraw/editor": "2.4.4",
     "@xipkg/button": "2.0.0",
     "@xipkg/dropdown": "^2.1.0",
-    "@xipkg/icons": "1.0.2",
+    "@xipkg/icons": "1.1.1",
     "@xipkg/tooltip": "0.1.0",
     "next": "^14.2.3",
     "pkg.logo": "*",
@@ -19,7 +19,8 @@
     "react": "^18.2.0",
     "sonner": "^1.5.0",
     "tldraw": "^2.4.4",
-    "pkg.utils": "*"
+    "pkg.utils": "*",
+    "pkg.stores": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

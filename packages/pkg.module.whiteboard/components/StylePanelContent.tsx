@@ -14,7 +14,7 @@ import {
   useIsDarkMode,
 } from 'tldraw';
 
-export function StylePanelContent({ styles }: TLUiStylePanelContentProps) {
+export const StylePanelContent = ({ styles }: TLUiStylePanelContentProps) => {
   const isDarkMode = useIsDarkMode();
 
   if (!styles) return null;
@@ -45,4 +45,4 @@ export function StylePanelContent({ styles }: TLUiStylePanelContentProps) {
       )}
     </>
   );
-}
+};

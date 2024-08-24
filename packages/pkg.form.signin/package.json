@@ -10,7 +10,7 @@
   "dependencies": {
     "@xipkg/button": "1.3.0",
     "@xipkg/form": "^2.0.0",
-    "@xipkg/icons": "0.8.4",
+    "@xipkg/icons": "1.1.1",
     "@xipkg/input": "0.1.1",
     "@xipkg/link": "0.2.0",
     "@xipkg/utils": "1.0.1",

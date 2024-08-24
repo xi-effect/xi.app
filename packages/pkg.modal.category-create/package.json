@@ -11,7 +11,7 @@
     "@xipkg/button": "^1.2.0",
     "@xipkg/checkbox": "^2.0.0",
     "@xipkg/form": "^2.0.0",
-    "@xipkg/icons": "^0.8.6",
+    "@xipkg/icons": "^1.1.1",
     "@xipkg/input": "^0.1.1",
     "@xipkg/modal": "^2.1.0",
     "@xipkg/toggle": "^0.1.0",
