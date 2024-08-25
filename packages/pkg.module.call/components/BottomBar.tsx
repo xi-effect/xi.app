@@ -24,7 +24,7 @@ const DisconnectButton = () => {
       {...buttonProps}
       className="bg-red-80 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] hover:bg-red-100"
     >
-      <Endcall className="fill-gray-0" />
+      <Endcall className="fill-gray-100" />
     </button>
   );
 };
@@ -82,33 +82,11 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     cameraTrack,
   } = useLocalParticipant();
 
-  console.log('microphoneTrack, cameraTrack', microphoneTrack, cameraTrack);
-
   return (
     <div className="w-full">
       <div className="flex w-full flex-row justify-between p-4">
         <div className="flex flex-row gap-4">
-          <div className="flex gap-1">
-            {/* <div>
-              <TrackToggle
-                className="bg-transparent p-0"
-                source={Track.Source.Microphone}
-                onChange={microphoneOnChange}
-              >
-                {showText && 'Microphone'}
-              </TrackToggle>
-            </div>
-            {visibleControls.camera && (
-              <div>
-                <TrackToggle
-                  className="bg-transparent p-0"
-                  source={Track.Source.Camera}
-                  onChange={cameraOnChange}
-                >
-                  {showText && 'Camera'}
-                </TrackToggle>
-              </div>
-            )} */}
+          <div className="flex justify-center items-center w-[96px] gap-1 bg-gray-0 rounded-[24px]">
             <DevicesBar
               microTrack={microphoneTrack?.track as LocalAudioTrack}
               microEnabled={isMicrophoneEnabled}
@@ -140,10 +118,10 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
           </div>
         </div>
 
-        <div className="flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] bg-gray-100 p-1">
-          <ActionButton icon={<Group className="fill-red-0" />} withBorder={false} />
-          <ActionButton icon={<Chat className="fill-red-0" />} withBorder={false} />
-          <ActionButton icon={<Hand className="fill-red-0" />} withBorder={false} />
+        <div className="flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] bg-gray-0 p-1">
+          <ActionButton icon={<Group className="fill-gray-100" />} withBorder={false} />
+          <ActionButton icon={<Chat className="fill-gray-100" />} withBorder={false} />
+          <ActionButton icon={<Hand className="fill-gray-100" />} withBorder={false} />
         </div>
         <DisconnectButton />
       </div>

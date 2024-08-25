@@ -241,7 +241,7 @@ export const PreJoin = ({
     <div className="mt-4">
       <h2 className="mb-8 font-sans text-[32px] font-medium">Присоединиться к конференции</h2>
       <div className="mr-8 grid grid-cols-2 gap-2">
-        <div className="relative flex aspect-video h-full w-full items-center justify-center overflow-hidden rounded-[16px] bg-gray-100">
+        <div data-theme="dark" className="relative flex aspect-video h-full w-full items-center justify-center overflow-hidden rounded-[16px] bg-gray-10">
           <div className="relative">
             {videoTrack && videoEnabled && (
               <div className="aspect-video h-full w-full [transform:rotateY(180deg)]">
@@ -254,13 +254,13 @@ export const PreJoin = ({
               </div>
             )}
             {(!videoTrack || !videoEnabled) && (
-              <div className="flex items-center justify-center rounded-[16px] bg-gray-100">
+              <div className="flex items-center justify-center rounded-[16px] bg-gray-10">
                 <ParticipantPlaceholder />
               </div>
             )}
           </div>
           <div className="absolute bottom-5 left-5">
-            <div className="flex w-[96px] gap-1 rounded-[24px] bg-gray-100 p-0.5">
+            <div className="flex w-[96px] gap-1 rounded-[24px] bg-gray-0 p-0.5">
               <DevicesBar
                 microTrack={audioTrack}
                 microEnabled={audioEnabled}

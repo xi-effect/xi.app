@@ -40,45 +40,45 @@ export const UpBar = () => {
 
   const getViewIcon = () => {
     if (carouselType === 'horizontal') {
-      return <Speaker className="fill-gray-0" />;
+      return <Speaker className="fill-gray-100" />;
     }
     if (carouselType === 'vertical') {
-      return <SpeakerHorizontal className="fill-gray-0" />;
+      return <SpeakerHorizontal className="fill-gray-100" />;
     }
-    return <Grid className="fill-gray-0" />;
+    return <Grid className="fill-gray-100" />;
   };
 
   return (
     <div className="flex w-full flex-row items-end p-4">
-      <span className="text-gray-0 text-2xl font-semibold">B1.2</span>
-      <span className="text-gray-40 ml-2">Upper-intermediate</span>
+      <span className="text-gray-100 text-2xl font-semibold">B1.2</span>
+      <span className="text-gray-70 ml-2">Upper-intermediate</span>
 
       <button
         onClick={toggleLayout}
         type="button"
-        className="ml-auto flex h-10 w-[95px] flex-row items-center justify-center gap-2 rounded-[20px] bg-gray-100"
+        className="ml-auto flex h-10 w-[95px] flex-row items-center justify-center gap-2 rounded-[20px] bg-gray-0"
       >
         {getViewIcon()}
-        <span className="text-gray-0">Вид</span>
+        <span className="text-gray-100">Вид</span>
       </button>
       <button
         onClick={toggleFullScreen}
         type="button"
-        className="ml-2 hidden h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100 md:flex"
+        className="ml-2 hidden h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-0 md:flex"
       >
-        {isFullScreen ? <Minimize className="fill-gray-0" /> : <Maximize className="fill-gray-0" />}
+        {isFullScreen ? <Minimize className="fill-gray-100" /> : <Maximize className="fill-gray-100" />}
       </button>
       <button
         type="button"
-        className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
+        className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-0"
       >
-        <External className="fill-gray-0" />
+        <External className="fill-gray-100" />
       </button>
       <button
         type="button"
-        className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-100"
+        className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-0"
       >
-        <Settings className="fill-gray-0" />
+        <Settings className="fill-gray-100" />
       </button>
     </div>
   );

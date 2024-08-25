@@ -46,7 +46,7 @@ export const Call = ({ token }: CallPropsT) => {
   return (
     <div>
       {isStarted ? (
-        <div id="videoConferenceContainer" className="bg-gray-100">
+        <div id="videoConferenceContainer" className="bg-gray-5" data-theme="dark">
           <ActiveRoom
             userChoice={userChoice}
             room={room}

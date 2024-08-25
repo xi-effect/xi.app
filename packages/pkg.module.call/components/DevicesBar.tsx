@@ -28,7 +28,7 @@ export const DevicesBar = ({
   return (
     <>
       <motion.div
-        className="flex size-[44px] flex-row items-center justify-center rounded-[24px] bg-gray-100"
+        className="flex size-[44px] flex-row items-center justify-center rounded-[24px] bg-gray-0"
         style={{
           background:
             microEnabled && microTrack
@@ -44,21 +44,21 @@ export const DevicesBar = ({
         transition={{ duration: 0.5 }}
       >
         <TrackToggle
-          className="text-gray-0 flex size-[40px] items-center justify-center rounded-[20px] bg-gray-100 p-0"
+          className="text-gray-0 flex size-[40px] items-center justify-center rounded-[20px] bg-gray-0 p-0"
           {...microTrackToggle}
         >
-          <Microphone width={25} className="fill-red-0" />
+          <Microphone width={25} className="fill-gray-100" />
         </TrackToggle>
       </motion.div>
       <div
-        className="flex size-[44px] flex-row items-center justify-center rounded-[24px] border-2 bg-gray-100"
+        className="flex size-[44px] flex-row items-center justify-center rounded-[24px] border-2 bg-gray-0"
         style={{
           borderColor: videoEnabled && videoTrack ? 'var(--xi-green-60)' : 'var(--xi-red-60)',
           transition: 'border-color 0.3s ease',
         }}
       >
         <TrackToggle className="text-gray-0 bg-transparent" {...videoTrackToggle}>
-          <Conference width={214} className="fill-red-0" />
+          <Conference width={214} className="fill-gray-100" />
         </TrackToggle>
       </div>
     </>
