@@ -8,7 +8,7 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@xipkg/breadcrumbs": "^1.0.1",
+    "@xipkg/breadcrumbs": "1.0.1",
     "@xipkg/button": "^2.0.0",
     "@xipkg/icons": "1.1.1",
     "@xipkg/input": "0.1.1",
