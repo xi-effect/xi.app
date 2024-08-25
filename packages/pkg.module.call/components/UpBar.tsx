@@ -12,10 +12,17 @@ import {
   Maximize,
   Minimize,
 } from '@xipkg/icons';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useFullScreen } from 'pkg.utils.client';
+import { useMainSt } from 'pkg.stores';
 
 export const UpBar = () => {
+  const params = useParams<{ 'community-id': string; 'channel-id': string }>();
+
+  const channels = useMainSt((state) => state.channels);
+  const categories = useMainSt((state) => state.categories);
+  const currentCall = channels?.filter((item) => Number(params['channel-id']) === item.id);
+
   const router = useRouter();
   const pathname = usePathname();
   const [carouselType, setCarouselType] = React.useState<string>('grid');
@@ -48,10 +55,17 @@ export const UpBar = () => {
     return <Grid className="fill-gray-100" />;
   };
 
+  if (!currentCall) return null;
+
+  const currentCallsCategory =
+    typeof currentCall[0].categoryId === 'number'
+      ? categories?.filter((item) => currentCall[0].categoryId === item.id)
+      : null;
+
   return (
     <div className="flex w-full flex-row items-end p-4">
-      <span className="text-gray-100 text-2xl font-semibold">B1.2</span>
-      <span className="text-gray-70 ml-2">Upper-intermediate</span>
+      <span className="text-gray-100 text-2xl font-semibold">{currentCall[0].name}</span>
+      {currentCallsCategory && <span className="text-gray-70 ml-2">{currentCallsCategory[0].name}</span>}
 
       <button
         onClick={toggleLayout}
