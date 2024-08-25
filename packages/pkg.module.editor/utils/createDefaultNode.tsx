@@ -1,3 +1,4 @@
+import { defaultLanguage } from '../const/codeEditorLanguages';
 import node from './createNode';
 // import { type CustomElementType } from '../slate';
 
@@ -36,9 +37,9 @@ export const createDefaultNode = (type: string, url?: string, fileName?: string,
     case 'videoBlock':
       // @ts-ignore
       return node({ type: 'videoBlock', url: url ?? '', children: [{ text: '' }] });
-
     case 'code':
-      return node({ type: 'code' });
+      // @ts-ignore
+      return node({ type: 'code', language: defaultLanguage });
 
     default:
       // @ts-ignore

@@ -37,17 +37,13 @@ export const CellControls = ({
   if (!element || isReadOnly) return null;
 
   return (
-    <div className={`${isOpenNewNode || isOpenElementControls ? 'opacity-100' : ''} absolute flex items-end opacity-0 transition *:size-5 *:flex *:items-center *:justify-center *:bg-transparent gap-2 h-[25px] w-[48px] group-hover/node:opacity-100 group-visited/node:opacity-100`}>
+    <div
+      className={`${isOpenNewNode || isOpenElementControls ? 'opacity-100' : ''} absolute flex h-[25px] w-[48px] items-end gap-2 opacity-0 transition *:flex *:size-5 *:items-center *:justify-center *:bg-transparent group-visited/node:opacity-100 group-hover/node:opacity-100`}
+    >
       <FloatingDelayGroup delay={{ open: 1500, close: 0 }}>
-        <Tooltip
-          placement="bottom"
-        >
+        <Tooltip placement="bottom">
           <TooltipTrigger>
-            <AddNewNode
-              element={element}
-              isOpen={isOpenNewNode}
-              setIsOpen={setIsOpenNewNode}
-            >
+            <AddNewNode element={element} isOpen={isOpenNewNode} setIsOpen={setIsOpenNewNode}>
               <Button
                 className="hover:bg-gray-5 active:bg-gray-5 group h-5 w-5 rounded p-0"
                 variant="ghost"
@@ -59,15 +55,17 @@ export const CellControls = ({
           </TooltipTrigger>
           <TooltipContent>
             <div>
-              <p><b>Клик</b> для добавления снизу</p>
-              <p><b>Alt-клик</b> для добавления сверху</p>
+              <p>
+                <b>Клик</b> для добавления снизу
+              </p>
+              <p>
+                <b>Alt-клик</b> для добавления сверху
+              </p>
             </div>
           </TooltipContent>
         </Tooltip>
 
-        <Tooltip
-          placement="bottom"
-        >
+        <Tooltip placement="bottom">
           <TooltipTrigger>
             <ElementControlsModal
               element={element}
@@ -87,8 +85,12 @@ export const CellControls = ({
           </TooltipTrigger>
           <TooltipContent>
             <div>
-              <p><b>Перетащите</b> для перемещения</p>
-              <p><b>Клик</b> для открытия меню</p>
+              <p>
+                <b>Перетащите</b> для перемещения
+              </p>
+              <p>
+                <b>Клик</b> для открытия меню
+              </p>
             </div>
           </TooltipContent>
         </Tooltip>

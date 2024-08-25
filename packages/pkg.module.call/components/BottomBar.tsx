@@ -75,12 +75,8 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     [setIsScreenShareEnabled],
   );
 
-  const {
-    isMicrophoneEnabled,
-    isCameraEnabled,
-    microphoneTrack,
-    cameraTrack,
-  } = useLocalParticipant();
+  const { isMicrophoneEnabled, isCameraEnabled, microphoneTrack, cameraTrack } =
+    useLocalParticipant();
 
   return (
     <div className="w-full">

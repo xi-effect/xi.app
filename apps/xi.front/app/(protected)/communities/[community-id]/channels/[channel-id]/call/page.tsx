@@ -5,9 +5,7 @@ import { useMainSt } from 'pkg.stores';
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const Call = dynamic(() =>
-  import('pkg.module.call').then((mod) => mod.Call),
-);
+const Call = dynamic(() => import('pkg.module.call').then((mod) => mod.Call));
 
 export default function CallInCommunity({ params }: { params: { vid: string } }) {
   const getToken = useMainSt((state) => state.getToken);
