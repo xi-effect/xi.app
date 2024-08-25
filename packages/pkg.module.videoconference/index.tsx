@@ -1,1 +1,0 @@
-export { VideoConference } from './VideoConference';
