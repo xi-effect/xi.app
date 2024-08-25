@@ -1,11 +1,11 @@
 import { ReactEditor, useSlate } from 'slate-react';
 import { Node, Transforms } from 'slate';
 import { useState } from 'react';
-import { DEFAULT_LANGUAGE } from '../const/codeEditorLanguages';
+import { defaultLanguage } from '../const/codeEditorLanguages';
 
 export const useCodeLanguage = () => {
   const editor = useSlate();
-  const [currentLang, setCurrentLang] = useState(DEFAULT_LANGUAGE);
+  const [currentLang, setCurrentLang] = useState(defaultLanguage);
 
   const updateLanguage = (element: Node, newLanguage: string) => {
     setCurrentLang(newLanguage);

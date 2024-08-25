@@ -1,4 +1,4 @@
-export const LANGUAGES: Record<string, string> = {
+export const languages: Record<string, string> = {
   javascript: 'JavaScript',
   typescript: 'TypeScript',
   python: 'Python',
@@ -30,4 +30,4 @@ export const LANGUAGES: Record<string, string> = {
   r: 'R',
 };
 
-export const DEFAULT_LANGUAGE = 'javascript';
+export const defaultLanguage = 'javascript';

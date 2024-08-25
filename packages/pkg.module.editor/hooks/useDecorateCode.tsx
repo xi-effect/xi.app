@@ -1,5 +1,3 @@
-/* eslint-disable no-continue */
-/* eslint-disable no-plusplus */
 import Prism from 'prismjs';
 import { useCallback } from 'react';
 import 'prismjs/themes/prism.css';
@@ -36,7 +34,7 @@ import 'prismjs/components/prism-scss';
 import { NodeEntry, Node, Range } from 'slate';
 import { normalizeTokens } from '../utils/normalizeTokens';
 import { CodeElement } from '../slate';
-import { DEFAULT_LANGUAGE } from '../const/codeEditorLanguages';
+import { defaultLanguage } from '../const/codeEditorLanguages';
 
 export const useDecorateCode = () =>
   useCallback(([node, blockPath]: NodeEntry<CodeElement>) => {
@@ -45,11 +43,11 @@ export const useDecorateCode = () =>
     if (node.type === 'code' && node.children && node.children.length > 0) {
       const editorCode = node.children.map((line) => Node.string(line)).join('\n');
 
-      const language = Prism.languages[node.language || DEFAULT_LANGUAGE || ''];
+      const language = Prism.languages[node.language || defaultLanguage || ''];
       const codeTokens = Prism.tokenize(editorCode, language);
       const normalizedTokens = normalizeTokens(codeTokens);
 
-      for (let index = 0; index < normalizedTokens.length; index++) {
+      for (let index = 0; index < normalizedTokens.length; index += 1) {
         const tokens = normalizedTokens[index];
         let start = 0;
         for (const token of tokens) {

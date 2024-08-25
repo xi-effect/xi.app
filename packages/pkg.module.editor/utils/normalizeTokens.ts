@@ -1,28 +1,11 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-cond-assign */
-/* eslint-disable no-continue */
-/* eslint-disable no-plusplus */
 import Prism from 'prismjs';
 
-type PrismToken = Prism.Token;
-type Token = {
+type PrismTokenT = Prism.Token;
+type TokenT = {
   types: string[];
   content: string;
   empty?: boolean;
 };
-
-// const normalizeEmptyLines = (line: Token[]) => {
-//   if (line.length === 0) {
-//     line.push({
-//       types: ['plain'],
-//       content: '\n',
-//       empty: true,
-//     });
-//   } else if (line.length === 1 && line[0].content === '') {
-//     line[0].content = '\n';
-//     line[0].empty = true;
-//   }
-// };
 
 const appendTypes = (types: string[], add: string[] | string): string[] => {
   const typesSize = types.length;
@@ -33,54 +16,58 @@ const appendTypes = (types: string[], add: string[] | string): string[] => {
   return types.concat(add);
 };
 
-export const normalizeTokens = (tokens: Array<PrismToken | string>): Token[][] => {
+export const normalizeTokens = (tokens: Array<PrismTokenT | string>): TokenT[][] => {
   const typeArrStack: string[][] = [[]];
-  const tokenArrStack = [tokens];
-  const tokenArrIndexStack = [0];
-  const tokenArrSizeStack = [tokens.length];
+  const tokenArrStack: Array<(PrismTokenT | string)[]> = [tokens];
+  const tokenArrIndexStack: number[] = [0];
+  const tokenArrSizeStack: number[] = [tokens.length];
 
-  let i = 0;
   let stackIndex = 0;
-  const currentLine: { types: string[]; content: string }[] = [];
+  const acc: TokenT[][] = [[]];
 
-  const acc = [currentLine];
+  while (stackIndex >= 0) {
+    const currentLine: TokenT[] = acc[acc.length - 1];
+    const tokenArr = tokenArrStack[stackIndex];
+    const types = typeArrStack[stackIndex];
 
-  while (stackIndex > -1) {
-    while ((i = tokenArrIndexStack[stackIndex]++) < tokenArrSizeStack[stackIndex]) {
+    for (let i = tokenArrIndexStack[stackIndex]; i < tokenArrSizeStack[stackIndex]; i += 1) {
+      tokenArrIndexStack[stackIndex] = i + 1;
+
       let content;
-      let types = typeArrStack[stackIndex];
+      let currentTypes = types;
 
-      const tokenArr = tokenArrStack[stackIndex];
       const token = tokenArr[i];
 
       if (typeof token === 'string') {
-        types = stackIndex > 0 ? types : ['plain'];
+        currentTypes = stackIndex > 0 ? currentTypes : ['plain'];
         content = token;
       } else {
-        types = appendTypes(types, token.type);
+        currentTypes = appendTypes(currentTypes, token.type);
         if (token.alias) {
-          types = appendTypes(types, token.alias);
+          currentTypes = appendTypes(currentTypes, token.alias);
         }
         content = token.content;
       }
 
       if (typeof content !== 'string') {
-        stackIndex++;
-        typeArrStack.push(types);
-        tokenArrStack.push(content);
+        stackIndex += 1;
+        typeArrStack.push(currentTypes);
+        tokenArrStack.push(content as Array<PrismTokenT | string>);
         tokenArrIndexStack.push(0);
         tokenArrSizeStack.push(content.length);
-        continue;
+        break;
       }
 
-      currentLine.push({ types, content });
+      currentLine.push({ types: currentTypes, content });
     }
 
-    stackIndex--;
-    typeArrStack.pop();
-    tokenArrStack.pop();
-    tokenArrIndexStack.pop();
-    tokenArrSizeStack.pop();
+    if (tokenArrIndexStack[stackIndex] >= tokenArrSizeStack[stackIndex]) {
+      stackIndex -= 1;
+      typeArrStack.pop();
+      tokenArrStack.pop();
+      tokenArrIndexStack.pop();
+      tokenArrSizeStack.pop();
+    }
   }
 
   return acc;
