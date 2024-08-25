@@ -35,7 +35,10 @@ const FormCreateBlock = () => {
       name: '',
     },
   });
-  const { control, formState: { errors } } = form;
+  const {
+    control,
+    formState: { errors },
+  } = form;
 
   const socket = useMainSt((state) => state.socket);
 
