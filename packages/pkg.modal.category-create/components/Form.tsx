@@ -32,10 +32,11 @@ const FormSchema = z.object({
 type FormSchemaT = z.infer<typeof FormSchema>;
 
 // Варианты каналов, которые можно добавить
-const channelsOptions = ['Объявления', 'Задания', 'Видеоконференция', 'Чат'];
+const channelsOptions = ['Объявления', 'Доска', 'Видеоконференция'];
 
 const channelDict: { [key in string]: string } = {
   Объявления: 'posts',
+  Доска: 'board',
   Задания: 'tasks',
   Видеоконференция: 'call',
   Чат: 'chat',
@@ -192,29 +193,6 @@ export const Form = ({ onOpenChange }: FormT) => {
               </FormItem>
             )}
           />
-          {/* <div className="bg-gray-5 flex items-center justify-between gap-8 rounded-md p-4">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-100">Приватная категория</h2>
-              <p className="text-gray-80 mt-2 text-base font-normal">
-                Контент в данной категории будет доступен только выбранным классам и ролям
-              </p>
-            </div>
-            <FormField
-              control={form.control}
-              name="isPrivate"
-              render={() => (
-                <FormItem>
-                  <FormControl>
-                    <Toggle
-                      size="l"
-                      checked={form.getValues('isPrivate')}
-                      onCheckedChange={(isChecked) => form.setValue('isPrivate', isChecked)}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div> */}
         </div>
         <M.ModalFooter>
           {isButtonActive ? (
