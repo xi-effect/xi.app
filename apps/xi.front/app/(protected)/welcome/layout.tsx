@@ -17,7 +17,11 @@ const WelcomeLayout = ({ children }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (onboardingStage !== 'completed' && onboardingStage !== null && welcomePagesPathsDict[onboardingStage] !== pathname) {
+    if (
+      onboardingStage !== 'completed' &&
+      onboardingStage !== null &&
+      welcomePagesPathsDict[onboardingStage] !== pathname
+    ) {
       redirect(welcomePagesPathsDict[onboardingStage]);
     }
   }, []);

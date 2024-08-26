@@ -1,6 +1,7 @@
 import React from 'react';
 import { DefaultColorStyle, DefaultSizeStyle, StyleProp, track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { useState } from 'react';
 import { NavbarAction } from './NavbarAction';
 import { StickerPopupContent } from './StickerPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';

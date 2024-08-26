@@ -20,7 +20,7 @@ const PostCard = ({
   id = 456456,
   isDraft = false,
 }: PostCardProps) => {
-  const params = useParams<{ 'community-id': string, 'channel-id': string, }>();
+  const params = useParams<{ 'community-id': string; 'channel-id': string }>();
   const communityId = useMainSt((state) => state.communityMeta.id);
 
   return (
@@ -29,12 +29,12 @@ const PostCard = ({
       className="border-gray-80 hover:bg-gray-5 group flex h-56 cursor-pointer flex-col rounded-2xl border p-6"
     >
       <div className="flex flex-row gap-1">
-        <h2 className="line-clamp-1 text-xl font-semibold leading-[28px] md:line-clamp-2">{title}</h2>
-        {isDraft &&
-          <p className="text-s-base text-gray-60 pt-1">Черновик</p>
-        }
+        <h2 className="line-clamp-1 text-xl font-semibold leading-[28px] md:line-clamp-2">
+          {title}
+        </h2>
+        {isDraft && <p className="text-s-base text-gray-60 pt-1">Черновик</p>}
       </div>
-      <p className="mt-4 line-clamp-1 text-base font-normal leading-[22px] text-gray-80 md:line-clamp-2">
+      <p className="text-gray-80 mt-4 line-clamp-1 text-base font-normal leading-[22px] md:line-clamp-2">
         {description}
       </p>
       <div className="mt-auto flex items-center">
