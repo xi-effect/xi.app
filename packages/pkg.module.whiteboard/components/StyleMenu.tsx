@@ -38,7 +38,7 @@ export const StyleMenu = () => {
   return (
     <div className="border-gray-10 bg-gray-0 w-full">
       <div className="p-6">
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between gap-4">
             <div className="w-full">
               <Slider
