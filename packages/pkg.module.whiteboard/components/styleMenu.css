@@ -7,6 +7,9 @@
 .tlui-style-panel__section__common {
   padding: 4px;
 }
+.tlui-buttons__grid .tlui-button {
+  margin: 0px !important;
+}
 
 .tlui-buttons__grid {
   gap: 2px;
