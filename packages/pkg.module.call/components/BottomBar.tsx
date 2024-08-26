@@ -82,7 +82,7 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
     <div className="w-full">
       <div className="flex w-full flex-row justify-between p-4">
         <div className="flex flex-row gap-4">
-          <div className="flex justify-center items-center w-[96px] gap-1 bg-gray-0 rounded-[24px]">
+          <div className="bg-gray-0 flex w-[96px] items-center justify-center gap-1 rounded-[24px]">
             <DevicesBar
               microTrack={microphoneTrack?.track as LocalAudioTrack}
               microEnabled={isMicrophoneEnabled}
@@ -114,7 +114,7 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
           </div>
         </div>
 
-        <div className="flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] bg-gray-0 p-1">
+        <div className="bg-gray-0 flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] p-1">
           <ActionButton icon={<Group className="fill-gray-100" />} withBorder={false} />
           <ActionButton icon={<Chat className="fill-gray-100" />} withBorder={false} />
           <ActionButton icon={<Hand className="fill-gray-100" />} withBorder={false} />
