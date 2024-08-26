@@ -38,7 +38,7 @@ export const StyleMenu = () => {
   return (
     <div className="border-gray-10 bg-gray-0 w-full">
       <div className="p-6">
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col justify-center gap-6">
           <div className="flex items-center justify-between gap-4">
             <div className="w-full">
               <Slider
@@ -70,7 +70,7 @@ export const StyleMenu = () => {
           </div>
         </div>
       </div>
-      <div className="border-gray-10 border-t"></div>
+      <div className="border-gray-10 border-t pb-1"></div>
       <div className="px-4 py-2">
         <CommonStylePickerSet theme={theme} styles={styles} />
       </div>
