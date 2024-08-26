@@ -32,7 +32,7 @@ export const StyleMenu = () => {
   const handleOpacity = (value: number[]) => {
     const opacity = value[0] / 100;
     editor.setOpacityForNextShapes(opacity);
-    setCurrentOpacity(opacity);
+    setCurrentOpacity(value[0]);
   };
 
   return (
