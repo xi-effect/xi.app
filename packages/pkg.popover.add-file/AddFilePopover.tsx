@@ -9,7 +9,8 @@ import { Transforms } from 'slate';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-
+import { post } from 'pkg.utils';
+import Resizer from 'react-image-file-resizer';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import { FileUploader } from '@xipkg/fileuploader';
@@ -75,36 +76,89 @@ export const AddFilePopover = ({
 
   const { control, handleSubmit } = form;
 
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  // тут используется для преобразования изображения в webp
+  const resizeFile = (file: File, type: 'blob' | 'base64') =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        1920,
+        1920,
+        'WEBP',
+        100,
+        0,
+        (url) => {
+          resolve(url);
+        },
+        type,
+      );
+    });
+
+  const onSubmit = async (inputData: z.infer<typeof FormSchema>) => {
     let newNode;
     let fileName;
     let fileSize;
 
     switch (type) {
       case 'image':
-        newNode = createDefaultNode('imageBlock', data.fileLink);
+        try {
+          const response = await fetch(inputData.fileLink);
+          if (!response.ok) {
+            toast('Ошибка соединия при загрузке изображения');
+          }
+
+          const blob = await response.blob();
+          const imageFile = new File([blob], `${fileName}.webp`);
+          const webpImage = (await resizeFile(imageFile, 'blob')) as Blob;
+
+          fileName = await getFileNameFromURL(inputData.fileLink);
+          const formData = new FormData();
+          formData.append('image', webpImage, `${fileName}.webp`);
+
+          type responseT = {
+            data: {
+              creator_user_id: number,
+              id: string,
+              kind: string,
+              name: string,
+            },
+            status: number
+          };
+
+          const { data } : responseT = await post({
+            service: 'backend',
+            path: '/api/protected/storage-service/files/images/',
+            body: formData,
+            config: {
+              headers: {},
+            },
+          });
+          newNode = createDefaultNode('imageBlock', data.id);
+        } catch (error) {
+          console.error('Upload error:', error);
+          throw error;
+        }
         break;
       case 'file':
         try {
-          const response = await fetch(data.fileLink);
+          const response = await fetch(inputData.fileLink);
           if (!response.ok) {
             toast('Ошибка соединия при загрузке файла');
           }
           const blob = await response.blob();
-          fileName = getFileNameFromURL(data.fileLink);
+          fileName = getFileNameFromURL(inputData.fileLink);
           fileSize = blob.size;
-          newNode = createDefaultNode('fileBlock', data.fileLink, fileName, fileSize);
+          newNode = createDefaultNode('fileBlock', inputData.fileLink, fileName, fileSize);
         } catch (error) {
           toast('Не удалось загрузить файл, попробуйте другой');
           return;
         }
         break;
       case 'video':
-        if (!getVideoEmbedUrl(data.fileLink)) {
+        if (!getVideoEmbedUrl(inputData.fileLink)) {
           toast('Не удалось распознать ссылку на видео'); // когда появится блок с закладкой, можно превращать ссылку в него, если не удалось распознать видео
           return;
         }
-        newNode = createDefaultNode('videoBlock', data.fileLink);
+        newNode = createDefaultNode('videoBlock', inputData.fileLink);
 
         break;
       default:

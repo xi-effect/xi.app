@@ -15,8 +15,8 @@ import {
   shift,
   FloatingFocusManager,
   flip,
+  FloatingDelayGroup,
 } from '@floating-ui/react';
-import { FloatingDelayGroup } from '@floating-ui/react';
 import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
 import { makeNodeId } from '../plugins/withNodeId';
 import { type CustomElement } from '../slate';
@@ -125,8 +125,6 @@ export const InlineToolbar = () => {
     };
 
     const handleMouseDown = (event: MouseEvent) => {
-      console.log('handleMouseDown', event);
-
       if (
         event &&
         event?.target &&
