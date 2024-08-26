@@ -135,6 +135,10 @@ export const Channel = ({ channel, className, setSlideIndex, onOpenEditModal }: 
       },
       (status: number) => {
         if (status === 204) {
+          if (activeChannel) {
+            router.replace(`/communities/${communityId}/home`);
+          }
+
           toast('Канал успешно удален');
           deleteChannel(channel.id);
         } else {
