@@ -21,7 +21,9 @@ export const StyleMenu = () => {
   const [currentOpacity, setCurrentOpacity] = useState<number>(100);
 
   if (!styles) return null;
-  const theme = getDefaultColorTheme({ isDarkMode: isDarkMode });
+  const theme = getDefaultColorTheme({
+    isDarkMode: isDarkMode,
+  });
 
   const handleSize = (value: number[]) => {
     const size = sizes[value[0] - 1];

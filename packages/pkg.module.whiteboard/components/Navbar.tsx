@@ -1,7 +1,6 @@
 import React from 'react';
 import { DefaultColorStyle, DefaultSizeStyle, StyleProp, track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
-import { useState } from 'react';
 import { NavbarAction } from './NavbarAction';
 import { StickerPopupContent } from './StickerPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
@@ -57,7 +56,7 @@ export const Navbar = track(() => {
                           </button>
                         </TooltipTrigger>
                         <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
-                          {editor.getCurrentToolId() == 'sticker' && (
+                          {editor.getCurrentToolId() === 'sticker' && (
                             <StickerPopupContent item={item} />
                           )}
                           {editor.getCurrentToolId() === 'draw' && (

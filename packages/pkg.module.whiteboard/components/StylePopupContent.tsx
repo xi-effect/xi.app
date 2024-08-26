@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavbarElementT } from '../utils/navBarElements';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { NavbarElementT } from '../utils/navBarElements';
 import { StyleMenu } from './StyleMenu';
 
 export type StylePopupItemT = {
@@ -26,7 +26,7 @@ export const StylePopupContent = ({ item }: StylePopupContentT) => {
                 className="bg-gray-0 flex h-8 w-8 items-center justify-center"
                 onClick={() => setIsTooltipOpen(true)}
               >
-                <div className={`text-s-base fill-gray-100`}>
+                <div className="text-s-base fill-gray-100">
                   {item.icon ? item.icon : item.action}
                 </div>
               </button>
