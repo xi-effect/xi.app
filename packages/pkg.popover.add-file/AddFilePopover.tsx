@@ -116,15 +116,15 @@ export const AddFilePopover = ({
 
           type responseT = {
             data: {
-              creator_user_id: number,
-              id: string,
-              kind: string,
-              name: string,
-            },
-            status: number
+              creator_user_id: number;
+              id: string;
+              kind: string;
+              name: string;
+            };
+            status: number;
           };
 
-          const { data } : responseT = await post({
+          const { data }: responseT = await post({
             service: 'backend',
             path: '/api/protected/storage-service/files/images/',
             body: formData,
