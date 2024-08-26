@@ -22,7 +22,7 @@ export const StyleMenu = () => {
 
   if (!styles) return null;
   const theme = getDefaultColorTheme({
-    isDarkMode: isDarkMode,
+    isDarkMode,
   });
 
   const handleSize = (value: number[]) => {
@@ -72,7 +72,7 @@ export const StyleMenu = () => {
           </div>
         </div>
       </div>
-      <div className="border-gray-10 border-t pb-1"></div>
+      <div className="border-gray-10 border-t pb-1" />
       <div className="px-4 py-2">
         <CommonStylePickerSet theme={theme} styles={styles} />
       </div>
