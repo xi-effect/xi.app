@@ -64,13 +64,15 @@ export const UpBar = () => {
 
   return (
     <div className="flex w-full flex-row items-end p-4">
-      <span className="text-gray-100 text-2xl font-semibold">{currentCall[0].name}</span>
-      {currentCallsCategory && <span className="text-gray-70 ml-2">{currentCallsCategory[0].name}</span>}
+      <span className="text-2xl font-semibold text-gray-100">{currentCall[0].name}</span>
+      {currentCallsCategory && (
+        <span className="text-gray-70 ml-2">{currentCallsCategory[0].name}</span>
+      )}
 
       <button
         onClick={toggleLayout}
         type="button"
-        className="ml-auto flex h-10 w-[95px] flex-row items-center justify-center gap-2 rounded-[20px] bg-gray-0"
+        className="bg-gray-0 ml-auto flex h-10 w-[95px] flex-row items-center justify-center gap-2 rounded-[20px]"
       >
         {getViewIcon()}
         <span className="text-gray-100">Вид</span>
@@ -78,19 +80,23 @@ export const UpBar = () => {
       <button
         onClick={toggleFullScreen}
         type="button"
-        className="ml-2 hidden h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-0 md:flex"
+        className="bg-gray-0 ml-2 hidden h-10 w-10 flex-row items-center justify-center rounded-[20px] md:flex"
       >
-        {isFullScreen ? <Minimize className="fill-gray-100" /> : <Maximize className="fill-gray-100" />}
+        {isFullScreen ? (
+          <Minimize className="fill-gray-100" />
+        ) : (
+          <Maximize className="fill-gray-100" />
+        )}
       </button>
       <button
         type="button"
-        className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-0"
+        className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
       >
         <External className="fill-gray-100" />
       </button>
       <button
         type="button"
-        className="ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px] bg-gray-0"
+        className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
       >
         <Settings className="fill-gray-100" />
       </button>

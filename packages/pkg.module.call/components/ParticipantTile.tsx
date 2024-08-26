@@ -59,7 +59,7 @@ export const TrackMutedIndicator = ({
     <div data-lk-muted={isMuted}>
       {(props.children ?? isMuted) ? (
         <div className="relative w-[12px]">
-          <MicrophoneOff className="fill-gray-100 absolute h-[16px] w-[16px]" />
+          <MicrophoneOff className="absolute h-[16px] w-[16px] fill-gray-100" />
           <RedLine className="fill-red-80 absolute h-[16px] w-[16px]" />
         </div>
       ) : null}
@@ -177,7 +177,7 @@ export const ParticipantTile = ({
                 <div className="lk-participant-metadata p-1">
                   <div>
                     {trackReference.source === Track.Source.Camera ? (
-                      <div className="flex h-[24px] w-full gap-[6px] rounded-[4px] bg-gray-10 px-[6px] py-[4px]">
+                      <div className="bg-gray-10 flex h-[24px] w-full gap-[6px] rounded-[4px] px-[6px] py-[4px]">
                         {isEncrypted && <LockLockedIcon />}
                         <TrackMutedIndicator
                           trackRef={{
@@ -190,7 +190,7 @@ export const ParticipantTile = ({
                         <ParticipantName className="text-[12px] text-gray-100" />
                       </div>
                     ) : (
-                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-10 px-[8px] py-[4px]">
+                      <div className="bg-gray-10 flex items-center gap-[6px] rounded-[4px] px-[8px] py-[4px]">
                         <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
                         <ParticipantName>&apos;s screen</ParticipantName>
                       </div>

@@ -4,8 +4,8 @@
 body .tl-container {
   --layer-canvas: 1;
   --layer-panels: 3;
-    --layer-menus: 4;
-    --layer-overlays: 5;
-    --layer-toasts: 6;
-    --layer-cursor: 7;
+  --layer-menus: 4;
+  --layer-overlays: 5;
+  --layer-toasts: 6;
+  --layer-cursor: 7;
 }
