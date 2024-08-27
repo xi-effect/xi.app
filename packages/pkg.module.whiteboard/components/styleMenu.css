@@ -14,7 +14,7 @@
 .tlui-buttons__grid {
   gap: 2px;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   justify-content: space-around !important;
   grid-template-columns: repeat(5, auto) !important;
 }
