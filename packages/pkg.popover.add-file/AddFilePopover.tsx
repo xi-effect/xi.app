@@ -93,6 +93,72 @@ export const AddFilePopover = ({
       );
     });
 
+  // загрузка изображения на сервер
+  const getImageResponse = async (imageFile : File) => {
+    const webpImage = (await resizeFile(imageFile, 'blob')) as Blob;
+
+    // fileName = await getFileNameFromURL(inputData.fileLink);
+    const formData = new FormData();
+    formData.append('image', webpImage);
+
+    type responseT = {
+      data: {
+        creator_user_id: number;
+        id: string;
+        kind: string;
+        name: string;
+      };
+      status: number;
+    };
+
+    const { data, status }: responseT = await post({
+      service: 'backend',
+      path: '/api/protected/storage-service/files/images/',
+      body: formData,
+      config: {
+        headers: {},
+      },
+    });
+    console.log(data, status);
+    return { data, status };
+  };
+
+  // Загрузка вложения
+  const handleFileUpload = async (uploadedFile : File) => {
+    let newNode;
+    // let fileName;
+    // let fileSize;
+
+    switch (type) {
+      case 'image':
+        // eslint-disable-next-line no-useless-catch
+        try {
+          const { data, status } = await (getImageResponse(uploadedFile));
+          console.log(data);
+          console.log(status);
+          newNode = createDefaultNode('imageBlock', data.id);
+        } catch (error) {
+            // toast('Не удалось загрузить изображение, попробуйте другое');
+            throw error;
+        }
+        break;
+        case 'file':
+          console.log(uploadedFile);
+          break;
+        case 'video':
+          console.log(uploadedFile);
+          break;
+      default:
+        throw new Error('Unknown type');
+    }
+
+    // @ts-ignore
+    Transforms.insertNodes(editor, newNode);
+    handleFileAttached();
+    setOpen(false);
+  };
+
+  // Загрузка по ссылке
   const onSubmit = async (inputData: z.infer<typeof FormSchema>) => {
     let newNode;
     let fileName;
@@ -107,33 +173,14 @@ export const AddFilePopover = ({
           }
 
           const blob = await response.blob();
+          fileName = getFileNameFromURL(inputData.fileLink);
+          fileSize = blob.size;
           const imageFile = new File([blob], `${fileName}.webp`);
-          const webpImage = (await resizeFile(imageFile, 'blob')) as Blob;
 
-          fileName = await getFileNameFromURL(inputData.fileLink);
-          const formData = new FormData();
-          formData.append('image', webpImage, `${fileName}.webp`);
-
-          type responseT = {
-            data: {
-              creator_user_id: number;
-              id: string;
-              kind: string;
-              name: string;
-            };
-            status: number;
-          };
-
-          const { data }: responseT = await post({
-            service: 'backend',
-            path: '/api/protected/storage-service/files/images/',
-            body: formData,
-            config: {
-              headers: {},
-            },
-          });
-          newNode = createDefaultNode('imageBlock', data.id);
+          const { data } = await (getImageResponse(imageFile));
+          newNode = createDefaultNode('imageBlock', data.id, fileName, fileSize);
         } catch (error) {
+          toast('Не удалось загрузить изображение, попробуйте другое');
           console.error('Upload error:', error);
           throw error;
         }
@@ -192,7 +239,7 @@ export const AddFilePopover = ({
       </div>
       {stage === 'load' ? (
         <div className="min-w-96 max-[900px]:min-w-full">
-          <FileUploader onChange={(files) => console.log(files)} />
+          <FileUploader onChange={(files) => handleFileUpload(files[0])} />
         </div>
       ) : (
         <Form {...form}>
