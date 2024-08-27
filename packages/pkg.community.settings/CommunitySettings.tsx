@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { SnackbarProvider } from 'notistack';
-import { Menu } from './components/Menu';
+import { Menu } from './components/Menu/Menu';
 import { Content } from './Content';
 import { useInterfaceStore } from './interfaceStore';
 import { ConfirmSave } from './ConfirmSave';
