@@ -20,9 +20,11 @@
     "@xipkg/icons": "1.1.0",
     "@xipkg/input": "1.0.0",
     "@xipkg/popover": "^2.0.0",
+    "@xipkg/select": "^1.0.0",
     "nanoid": "5.0.6",
     "next": "^14.2.3",
     "pkg.popover.add-file": "*",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
     "slate": "0.102.0",
@@ -33,6 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
+    "@types/prismjs": "^1.26.4",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@xipkg/eslint": "1.4.0",
@@ -41,6 +44,6 @@
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"
   },
-  "description": "form for signin",
+  "description": "editor",
   "author": "xi.effect"
 }

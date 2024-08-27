@@ -59,7 +59,7 @@ export const TrackMutedIndicator = ({
     <div data-lk-muted={isMuted}>
       {(props.children ?? isMuted) ? (
         <div className="relative w-[12px]">
-          <MicrophoneOff className="fill-gray-0 absolute h-[16px] w-[16px]" />
+          <MicrophoneOff className="fill-gray-100 absolute h-[16px] w-[16px]" />
           <RedLine className="fill-red-80 absolute h-[16px] w-[16px]" />
         </div>
       ) : null}
@@ -104,6 +104,7 @@ export const ParticipantTile = ({
     htmlProps,
     disableSpeakingIndicator,
     onParticipantClick,
+    trackRef: trackReference,
   });
   const isEncrypted = useIsEncrypted(p);
   const layoutContext = useMaybeLayoutContext();
@@ -142,13 +143,14 @@ export const ParticipantTile = ({
                   trackReference.source === Track.Source.Camera ||
                   trackReference.source === Track.Source.ScreenShare) ? (
                   <VideoTrack
-                    className="rounded-[8px]"
+                    className="rounded-lg"
                     style={{
                       ...(trackReference.source === Track.Source.Camera && {
                         transform: 'rotateY(180deg)',
                       }),
                       boxSizing: 'border-box',
-                      background: 'black',
+                      background: 'var(--xi-bg-gray-10)',
+                      backgroundColor: 'var(--xi-bg-gray-10)',
                     }}
                     trackRef={trackReference}
                     onSubscriptionStatusChanged={handleSubscribe}
@@ -164,37 +166,37 @@ export const ParticipantTile = ({
                 )}
                 <div
                   style={{
-                    background: 'black',
                     borderRadius: '8px',
                     height: '100%',
+                    backgroundColor: 'var(--xi-bg-gray-10)',
                   }}
                   className="lk-participant-placeholder flex justify-center"
                 >
                   <ParticipantPlaceholder />
                 </div>
                 <div className="lk-participant-metadata p-1">
-                  <div className="bg-transperent">
+                  <div>
                     {trackReference.source === Track.Source.Camera ? (
-                      <div className="flex h-[24px] w-full gap-[6px] rounded-[4px] bg-gray-100 px-[6px] py-[4px]">
-                        {isEncrypted && <LockLockedIcon style={{ background: 'transperent' }} />}
+                      <div className="flex h-[24px] w-full gap-[6px] rounded-[4px] bg-gray-10 px-[6px] py-[4px]">
+                        {isEncrypted && <LockLockedIcon />}
                         <TrackMutedIndicator
                           trackRef={{
                             participant: trackReference.participant,
                             source: Track.Source.Microphone,
                           }}
                           show="muted"
-                          style={{ marginRight: '0.45rem', background: 'transperent' }}
+                          style={{ marginRight: '0.45rem', background: 'transparent' }}
                         />
-                        <ParticipantName className="text-[12px]" />
+                        <ParticipantName className="text-[12px] text-gray-100" />
                       </div>
                     ) : (
-                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-100 px-[8px] py-[4px]">
+                      <div className="flex items-center gap-[6px] rounded-[4px] bg-gray-10 px-[8px] py-[4px]">
                         <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
                         <ParticipantName>&apos;s screen</ParticipantName>
                       </div>
                     )}
                   </div>
-                  <ConnectionQualityIndicator className="bg-transperent" />
+                  <ConnectionQualityIndicator />
                 </div>
               </div>
             )}

@@ -6,7 +6,8 @@
     "NEXT_PUBLIC_SERVER_URL_AUTH",
     "NEXT_PUBLIC_SERVER_URL_LIVE",
     "NEXT_PUBLIC_ENABLE_X_TESTING",
-    "NEXT_RUNTIME"
+    "NEXT_RUNTIME",
+    "CI"
   ],
   "globalDependencies": ["**/.env.*local"],
   "tasks": {

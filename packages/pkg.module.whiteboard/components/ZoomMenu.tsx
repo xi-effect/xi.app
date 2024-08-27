@@ -3,7 +3,7 @@ import 'tldraw/tldraw.css';
 import { Plus, Minus } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 
-export function ZoomMenu() {
+export const ZoomMenu = () => {
   const editor = useEditor();
 
   const handleZoomIn = () =>
@@ -41,4 +41,4 @@ export function ZoomMenu() {
       </div>
     </div>
   );
-}
+};

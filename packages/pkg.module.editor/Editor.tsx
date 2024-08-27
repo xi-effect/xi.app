@@ -1,19 +1,24 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { createEditor, Transforms, Editor, Descendant } from 'slate';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
-// import { useFloating, offset, autoUpdate, inline, shift, flip } from '@floating-ui/react';
 import { withHistory } from 'slate-history';
 
-import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
-import { Move, Plus } from '@xipkg/icons';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
@@ -23,6 +28,17 @@ import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
 import { SortableElement, InlineToolbar, Leaf } from './components';
 import { wrapLink } from './components/InlineToolbar';
+
+import { useDecorateCode } from './hooks/useDecorateCode';
+import { codeEditorInsertText } from './utils/codeEditorInsertText';
+
+import DragOverlayContent from './components/DragOverlayContent';
+
+type EditorPropsT = {
+  initialValue?: Descendant[];
+  onChange?: (value: Descendant[]) => void;
+  readOnly?: boolean;
+};
 
 const withInlines = (editor: Editor) => {
   const { insertData, insertText, isInline } = editor;
@@ -65,16 +81,13 @@ export const useEditor = () =>
     return editor;
   }, []);
 
-type EditorPropsT = {
-  initialValue?: Descendant[];
-  onChange?: (value: Descendant[]) => void;
-  readOnly?: boolean;
-};
-
 export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorPropsT) => {
   const editor = useEditor();
 
-  const [draggingElementId, setDraggingElementId] = useState<string>();
+  const decorateCode = useDecorateCode();
+
+  const [draggingElementId, setDraggingElementId] = useState<string>('');
+
   const activeElement = editor.children.find((x) => x.id === draggingElementId);
 
   const clearSelection = () => {
@@ -109,6 +122,76 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     }
   };
 
+  const handleCodePaste = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      event.preventDefault();
+
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          if (text) {
+            const { selection } = editor;
+
+            if (selection) {
+              const [parentNode] = Editor.parent(editor, selection);
+
+              if (parentNode && parentNode?.type === 'code') {
+                Transforms.insertText(editor, text);
+              }
+            }
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to paste code:', err);
+        });
+    },
+    [editor],
+  );
+
+  const handleOnDragEnd = (event: DragEndEvent) => {
+    const overId = event.over?.id;
+    const overIndex = editor.children.findIndex((x) => x.id === overId);
+
+    if (overId !== draggingElementId && overIndex !== -1) {
+      Transforms.moveNodes(editor, {
+        at: [],
+        match: (node) => node.id === draggingElementId,
+        to: [overIndex],
+      });
+    }
+
+    setDraggingElementId('');
+  };
+
+  const handleOnKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+      handleCodePaste(event);
+      event.preventDefault();
+
+      navigator.clipboard
+        .readText()
+        .then((text) => {
+          if (isImageUrl(text)) {
+            const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
+            Transforms.insertNodes(editor, node, {
+              at: [editor.children.length],
+            });
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to paste image:', err);
+        });
+    }
+
+    if (event.key === 'Enter') {
+      codeEditorInsertText(editor, event, '\n');
+    }
+
+    if (event.key === 'Tab') {
+      codeEditorInsertText(editor, event, '  ');
+    }
+  };
+
   if (readOnly) {
     return (
       <Slate editor={editor} initialValue={initialValue ?? []}>
@@ -116,6 +199,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
           readOnly
           className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
           renderElement={renderElement}
+          decorate={decorateCode}
           renderLeaf={(props) => <Leaf {...props} />}
         />
       </Slate>
@@ -131,22 +215,9 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
             setDraggingElementId(`${event.active.id}`);
           }
         }}
-        onDragEnd={(event) => {
-          const overId = event.over?.id;
-          const overIndex = editor.children.findIndex((x) => x.id === overId);
-
-          if (overId !== draggingElementId && overIndex !== -1) {
-            Transforms.moveNodes(editor, {
-              at: [],
-              match: (node) => node.id === draggingElementId,
-              to: [overIndex],
-            });
-          }
-
-          setDraggingElementId(undefined);
-        }}
+        onDragEnd={handleOnDragEnd}
         onDragCancel={() => {
-          setDraggingElementId(undefined);
+          setDraggingElementId('');
         }}
         modifiers={[restrictToVerticalAxis]}
         sensors={sensors}
@@ -154,28 +225,11 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           <InlineToolbar />
           <Editable
-            onKeyDown={(event) => {
-              if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
-                event.preventDefault();
-
-                navigator.clipboard
-                  .readText()
-                  .then((text) => {
-                    if (isImageUrl(text)) {
-                      const node = createNode({ type: 'imageBlock', url: text } as MediaElement);
-                      Transforms.insertNodes(editor, node, {
-                        at: [editor.children.length],
-                      });
-                    }
-                  })
-                  .catch((err) => {
-                    console.error('Failed to paste image:', err);
-                  });
-              }
-            }}
+            onKeyDown={handleOnKeyDown}
             className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
             renderElement={renderElement}
             renderLeaf={(props) => <Leaf {...props} />}
+            decorate={decorateCode}
           />
         </SortableContext>
         {createPortal(
@@ -186,45 +240,5 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
         )}
       </DndContext>
     </Slate>
-  );
-};
-
-const DragOverlayContent = ({ element }: any) => {
-  const editor = useEditor();
-  const [value] = useState([JSON.parse(JSON.stringify(element))]); // clone
-
-  useEffect(() => {
-    document.body.classList.add('dragging');
-
-    return () => document.body.classList.remove('dragging');
-  }, []);
-
-  const renderElement = useCallback(
-    (props: RenderElementProps) => <RenderElement {...props} />,
-    [],
-  );
-
-  return (
-    <div className="group/node flex">
-      <div className="absolute flex h-[25px] w-[48px] items-end gap-2 transition *:flex *:size-5 *:items-center *:justify-center *:bg-transparent group-hover/node:flex">
-        <button
-          className="hover:bg-gray-5 active:bg-gray-5 rounded"
-          aria-label="plus"
-          type="button"
-        >
-          <Plus />
-        </button>
-        <button
-          className="hover:bg-gray-5 active:bg-gray-5 cursor-grabbing rounded"
-          aria-label="move"
-          type="button"
-        >
-          <Move />
-        </button>
-      </div>
-      <Slate editor={editor} initialValue={value}>
-        <Editable className="ml-14 w-full" readOnly renderElement={renderElement} />
-      </Slate>
-    </div>
   );
 };
