@@ -35,7 +35,7 @@ export const ActiveRoom = ({
       <div className="flex min-h-screen flex-col justify-between gap-3">
         <UpBar />
         <div className="px-4">
-          <div className="text-gray-100 h-full w-full text-center">
+          <div className="h-full w-full text-center text-gray-100">
             {isConnected && <VideoConference />}
           </div>
         </div>
