@@ -81,10 +81,10 @@ export const AddFilePopover = ({
     new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
-        1920,
-        1920,
+        1570,
+        1570,
         'WEBP',
-        100,
+        70,
         0,
         (url) => {
           resolve(url);
@@ -94,9 +94,8 @@ export const AddFilePopover = ({
     });
 
   // загрузка изображения на сервер
-  const getImageResponse = async (imageFile : File) => {
+  const getImageResponse = async (imageFile: File) => {
     const webpImage = (await resizeFile(imageFile, 'blob')) as Blob;
-
     // fileName = await getFileNameFromURL(inputData.fileLink);
     const formData = new FormData();
     formData.append('image', webpImage);
@@ -119,35 +118,29 @@ export const AddFilePopover = ({
         headers: {},
       },
     });
-    console.log(data, status);
     return { data, status };
   };
 
   // Загрузка вложения
-  const handleFileUpload = async (uploadedFile : File) => {
+  const handleFileUpload = async (uploadedFile: File) => {
     let newNode;
-    // let fileName;
-    // let fileSize;
 
     switch (type) {
       case 'image':
-        // eslint-disable-next-line no-useless-catch
         try {
-          const { data, status } = await (getImageResponse(uploadedFile));
-          console.log(data);
-          console.log(status);
+          const { data } = await getImageResponse(uploadedFile);
           newNode = createDefaultNode('imageBlock', data.id);
         } catch (error) {
-            // toast('Не удалось загрузить изображение, попробуйте другое');
-            throw error;
+          toast('Не удалось загрузить изображение, попробуйте другое');
+          throw error;
         }
         break;
-        case 'file':
-          console.log(uploadedFile);
-          break;
-        case 'video':
-          console.log(uploadedFile);
-          break;
+      case 'file':
+        console.log(uploadedFile);
+        break;
+      case 'video':
+        console.log(uploadedFile);
+        break;
       default:
         throw new Error('Unknown type');
     }
@@ -177,7 +170,7 @@ export const AddFilePopover = ({
           fileSize = blob.size;
           const imageFile = new File([blob], `${fileName}.webp`);
 
-          const { data } = await (getImageResponse(imageFile));
+          const { data } = await getImageResponse(imageFile);
           newNode = createDefaultNode('imageBlock', data.id, fileName, fileSize);
         } catch (error) {
           toast('Не удалось загрузить изображение, попробуйте другое');
