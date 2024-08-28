@@ -1,6 +1,5 @@
-import './styleMenu.css';
+import { useState } from 'react';
 import {
-  CommonStylePickerSet,
   DefaultSizeStyle,
   getDefaultColorTheme,
   useEditor,
@@ -8,7 +7,7 @@ import {
   useRelevantStyles,
 } from 'tldraw';
 import { Slider } from '@xipkg/slider';
-import { useState } from 'react';
+import { ColorGrid } from './ColorSet';
 
 const sizes = ['s', 'm', 'l', 'xl'] as const;
 
@@ -74,7 +73,7 @@ export const StyleMenu = () => {
       </div>
       <div className="border-gray-10 border-t pb-1" />
       <div className="px-4 py-2">
-        <CommonStylePickerSet theme={theme} styles={styles} />
+        <ColorGrid />
       </div>
     </div>
   );

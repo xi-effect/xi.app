@@ -34,7 +34,7 @@ export const StylePopupContent = ({ item }: StylePopupContentT) => {
           </TooltipTrigger>
           <TooltipContent
             align="start"
-            className="border-gray-10 bg-gray-0 mb-1 flex h-[17rem] w-72 rounded-xl border p-0 shadow-none"
+            className="border-gray-10 bg-gray-0 mb-1 flex h-64 w-72 rounded-xl border p-0 shadow-none"
           >
             <StyleMenu />
           </TooltipContent>
