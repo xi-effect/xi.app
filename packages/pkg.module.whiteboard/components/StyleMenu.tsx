@@ -71,8 +71,8 @@ export const StyleMenu = () => {
           </div>
         </div>
       </div>
-      <div className="border-gray-10 border-t pb-1" />
-      <div className="px-4 py-2">
+      <div className="border-gray-10 border-t" />
+      <div className="p-4">
         <ColorGrid />
       </div>
     </div>
