@@ -57,7 +57,7 @@ export const Navbar = track(() => {
                         </TooltipTrigger>
                         <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
                           {editor.getCurrentToolId() === 'sticker' && (
-                            <StickerPopupContent item={item} />
+                            <StickerPopupContent menuPopupContent={item?.menuPopupContent || []} />
                           )}
                           {editor.getCurrentToolId() === 'draw' && (
                             <StylePopupContent menuPopupContent={item?.menuPopupContent || []} />

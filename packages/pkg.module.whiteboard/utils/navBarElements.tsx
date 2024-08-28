@@ -1,14 +1,18 @@
-import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 import { ReactNode } from 'react';
-import { StickerPopupItemT } from '../components/StickerPopupContent';
-import { StylePopupItemT } from '../components/StylePopupContent';
+import { Arrow, Cursor, Eraser, Figures, Hand, Image, Pen, Sticker, TText } from '@xipkg/icons';
 
 export type NavbarElementT = {
   action: string;
   title: string;
   icon: ReactNode | null;
   hasAToolTip?: boolean;
-  menuPopupContent?: StickerPopupItemT[] | StylePopupItemT[];
+  menuPopupContent?: PopupItemT[];
+};
+
+export type PopupItemT = {
+  icon: React.ReactNode | null;
+  action: string;
+  color: string;
 };
 
 export const navBarElements: NavbarElementT[] = [
