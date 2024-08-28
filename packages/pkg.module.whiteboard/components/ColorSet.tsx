@@ -21,6 +21,7 @@ const ColorCircle = ({ colorClass, isSelected, handleClick }: ColorCircleT) => (
           handleClick();
         }
       }}
+      aria-label={`Select ${colorClass}`}
       role="button"
       tabIndex={0}
       className={`h-8 w-8 cursor-pointer rounded-full ${colorClass}`}
