@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { colorOptions } from '../utils/customConfig';
 import { DefaultColorStyle, useEditor } from 'tldraw';
+import { colorOptions } from '../utils/customConfig';
 
 type ColorOptionT = (typeof colorOptions)[number]['name'];
 
@@ -16,8 +16,15 @@ const ColorCircle = ({ colorClass, isSelected, handleClick }: ColorCircleT) => (
   >
     <div
       onClick={() => handleClick()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className={`h-8 w-8 cursor-pointer rounded-full ${colorClass}`}
-    ></div>
+    />
   </div>
 );
 
