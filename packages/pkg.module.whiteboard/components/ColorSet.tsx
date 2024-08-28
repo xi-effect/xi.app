@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useEditor } from '@tldraw/editor';
-import { DefaultColorStyle } from '@tldraw/tlschema';
 import { colorOptions } from '../utils/customConfig';
+import { DefaultColorStyle, useEditor } from 'tldraw';
+
 type ColorOptionT = (typeof colorOptions)[number]['name'];
 
 type ColorCircleT = {
@@ -10,18 +10,16 @@ type ColorCircleT = {
   handleClick: () => void;
 };
 
-const ColorCircle = ({ colorClass, isSelected, handleClick }: ColorCircleT) => {
-  return (
+const ColorCircle = ({ colorClass, isSelected, handleClick }: ColorCircleT) => (
+  <div
+    className={`m-auto rounded-full p-0.5 ${isSelected ? 'border-2 border-black' : 'border-2 border-transparent'}`}
+  >
     <div
-      className={`m-auto rounded-full p-0.5 ${isSelected ? 'border-2 border-black' : 'border-2 border-transparent'}`}
-    >
-      <div
-        onClick={handleClick}
-        className={`h-8 w-8 cursor-pointer rounded-full ${colorClass}`}
-      ></div>
-    </div>
-  );
-};
+      onClick={() => handleClick()}
+      className={`h-8 w-8 cursor-pointer rounded-full ${colorClass}`}
+    ></div>
+  </div>
+);
 
 export const ColorGrid = () => {
   const [selectedColor, setSelectedColor] = useState<ColorOptionT>('black');

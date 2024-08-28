@@ -10,7 +10,7 @@ export type NavbarElementT = {
 };
 
 export type PopupItemT = {
-  icon: React.ReactNode | null;
+  icon: ReactNode | null;
   action: string;
   color: string;
 };
