@@ -21,7 +21,7 @@ export const DeleteCommunity = () => {
         if (status === 204) {
           setIsDeleteModalOpen(false);
           toast('Сообщество успешно удалено');
-          router.push('/');
+          router.push('/communities/');
           router.refresh();
         } else {
           setIsDeleteModalOpen(false);
