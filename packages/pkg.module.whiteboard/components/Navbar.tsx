@@ -60,7 +60,7 @@ export const Navbar = track(() => {
                             <StickerPopupContent item={item} />
                           )}
                           {editor.getCurrentToolId() === 'draw' && (
-                            <StylePopupContent item={item} />
+                            <StylePopupContent menuPopupContent={item?.menuPopupContent || []} />
                           )}
                         </TooltipContent>
                       </div>

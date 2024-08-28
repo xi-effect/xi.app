@@ -1,11 +1,5 @@
 import { useState } from 'react';
-import {
-  DefaultSizeStyle,
-  getDefaultColorTheme,
-  useEditor,
-  useIsDarkMode,
-  useRelevantStyles,
-} from 'tldraw';
+import { DefaultSizeStyle, useEditor } from 'tldraw';
 import { Slider } from '@xipkg/slider';
 import { ColorGrid } from './ColorSet';
 
@@ -13,16 +7,8 @@ const sizes = ['s', 'm', 'l', 'xl'] as const;
 
 export const StyleMenu = () => {
   const editor = useEditor();
-  const isDarkMode = useIsDarkMode();
-  const styles = useRelevantStyles();
-
   const [currentSize, setCurrentSize] = useState<string>('m');
   const [currentOpacity, setCurrentOpacity] = useState<number>(100);
-
-  if (!styles) return null;
-  const theme = getDefaultColorTheme({
-    isDarkMode,
-  });
 
   const handleSize = (value: number[]) => {
     const size = sizes[value[0] - 1];

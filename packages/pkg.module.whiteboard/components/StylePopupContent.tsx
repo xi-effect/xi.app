@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
-import { NavbarElementT } from '../utils/navBarElements';
 import { StyleMenu } from './StyleMenu';
 
 export type StylePopupItemT = {
@@ -10,17 +9,17 @@ export type StylePopupItemT = {
 };
 
 type StylePopupContentT = {
-  item: NavbarElementT;
+  menuPopupContent: StylePopupItemT[];
 };
 
-export const StylePopupContent = ({ item }: StylePopupContentT) => {
+export const StylePopupContent = ({ menuPopupContent }: StylePopupContentT) => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   return (
     <TooltipProvider>
       <Tooltip open={isTooltipOpen}>
         <div className="pointer-events-auto flex gap-2">
           <TooltipTrigger>
-            {item.menuPopupContent?.map((item: StylePopupItemT) => (
+            {menuPopupContent?.map((item: StylePopupItemT) => (
               <button
                 type="button"
                 className="bg-gray-0 flex h-8 w-8 items-center justify-center"
