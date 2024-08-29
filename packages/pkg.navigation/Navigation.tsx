@@ -3,10 +3,11 @@
 'use client';
 
 import React, { ReactNode, useState, useEffect } from 'react';
-import { useSessionStorage } from 'pkg.utils.client';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useGetUrlWithParams, useSessionStorage } from 'pkg.utils.client';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { WelcomeModal } from 'pkg.modal.welcome';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 import { nanoid } from 'nanoid';
 import { BottomBar, Menu } from './components';
 
@@ -61,6 +62,8 @@ type DeletedCategoryT = {
 
 export const Navigation = ({ children }: NavigationPropT) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
@@ -186,6 +189,18 @@ export const Navigation = ({ children }: NavigationPropT) => {
         socket.off('delete-category', handleDeleteCategory);
       };
     }
+  }, []);
+
+  useEffect(() => {
+    const handleDeleteCommunity = () => {
+      router.push(getUrlWithParams('/communities'));
+      toast('Сообщество было удалено');
+    };
+    socket?.on('delete-community', handleDeleteCommunity);
+
+    return () => {
+      socket?.off('delete-community', handleDeleteCommunity);
+    };
   }, []);
 
   // Чтение параметров из url и открытие модального окна, если есть параметр welcome-modal=true
