@@ -12,17 +12,12 @@ type ColorCircleT = {
 
 const ColorCircle = ({ colorClass, isSelected, handleClick }: ColorCircleT) => (
   <div
-    className={`m-auto rounded-full p-0.5 ${isSelected ? 'border-2 border-black' : 'border-2 border-transparent'}`}
+    className={`m-auto rounded-full p-0.5 ${isSelected ? 'border-grey-100 border-2' : 'border-2 border-transparent'}`}
   >
-    <div
+    <button
       onClick={() => handleClick()}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          handleClick();
-        }
-      }}
+      type="button"
       aria-label={`Select ${colorClass}`}
-      role="button"
       tabIndex={0}
       className={`h-8 w-8 cursor-pointer rounded-full ${colorClass}`}
     />
