@@ -6,7 +6,6 @@ import './index.css';
 import { ZoomMenu } from './components/ZoomMenu';
 import { Header } from './components/Header';
 import { hiddenComponents } from './utils/customConfig';
-import { StylePanel } from './components/StylePanel';
 import { StickerTool } from './components/CustomTools';
 import { myAssetStore } from './utils/imageStore';
 
@@ -22,7 +21,6 @@ export const WhiteBoard = () => (
     <Header />
     <Navbar />
     <ZoomMenu />
-    <StylePanel />
     <DefaultContextMenu />
   </Tldraw>
 );
