@@ -148,7 +148,24 @@ const CommunityLink = ({
               }
               if (status === 404) {
                 toast('Сообщества не существует');
-                router.push(getUrlWithParams('/communities'));
+                socket.emit(
+                  'retrieve-any-community',
+                  (status: number, { community, participant }: RetrieveCommunityT) => {
+                    if (status === 200) {
+                      updateCommunityMeta({
+                        id: community.id,
+                        isOwner: participant.is_owner,
+                        name: community.name,
+                        description: community.description,
+                      });
+
+                      if (community) {
+                        router.replace(getUrlWithParams(`/communities/${community.id}/home`));
+                        router.refresh();
+                      }
+                    }
+                  },
+                );
               }
             },
           );

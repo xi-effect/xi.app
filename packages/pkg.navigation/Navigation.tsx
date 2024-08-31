@@ -60,9 +60,21 @@ type DeletedCategoryT = {
   category_id: number;
 };
 
+type RetrieveAnyCommunityT = {
+  community: {
+    id: number;
+    name: string;
+    description: null;
+  };
+  participant: {
+    is_owner: boolean;
+  };
+};
+
 export const Navigation = ({ children }: NavigationPropT) => {
   const pathname = usePathname();
   const router = useRouter();
+
   const getUrlWithParams = useGetUrlWithParams();
 
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
@@ -76,6 +88,8 @@ export const Navigation = ({ children }: NavigationPropT) => {
 
   const deleteChannel = useMainSt((state) => state.deleteChannel);
   const deleteCategory = useMainSt((state) => state.deleteCategory);
+
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   useEffect(() => {
     // Инициализация сокета только один раз
@@ -193,8 +207,25 @@ export const Navigation = ({ children }: NavigationPropT) => {
 
   useEffect(() => {
     const handleDeleteCommunity = () => {
-      router.push(getUrlWithParams('/communities'));
       toast('Сообщество было удалено');
+      socket.emit(
+        'retrieve-any-community',
+        (status: number, { community, participant }: RetrieveAnyCommunityT) => {
+          if (status === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+
+            if (community) {
+              router.replace(getUrlWithParams(`/communities/${community.id}/home`));
+              router.refresh();
+            }
+          }
+        },
+      );
     };
     socket?.on('delete-community', handleDeleteCommunity);
 
