@@ -2,13 +2,18 @@ import { useState } from 'react';
 import { Button } from '@xipkg/button';
 import { useMainSt } from 'pkg.stores';
 import { useRouter } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { toast } from 'sonner';
 import { DeleteCommunityModal } from './DeleteCommunityModal';
+import { RetrieveAnyCommunityT } from './types';
 
 export const DeleteCommunity = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const socket = useMainSt((state) => state.socket);
   const communityId = useMainSt((state) => state.communityMeta.id);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+  const getUrlWithParams = useGetUrlWithParams();
+
   const router = useRouter();
 
   const handleDeleteCommunity = () => {
@@ -21,8 +26,24 @@ export const DeleteCommunity = () => {
         if (status === 204) {
           setIsDeleteModalOpen(false);
           toast('Сообщество успешно удалено');
-          router.push('/communities/');
-          router.refresh();
+          socket.emit(
+            'retrieve-any-community',
+            (status: number, { community, participant }: RetrieveAnyCommunityT) => {
+              if (status === 200) {
+                updateCommunityMeta({
+                  id: community.id,
+                  isOwner: participant.is_owner,
+                  name: community.name,
+                  description: community.description,
+                });
+
+                if (community && community.id) {
+                  router.replace(getUrlWithParams(`/communities/${community.id}/home`));
+                  router.refresh();
+                }
+              }
+            },
+          );
         } else {
           setIsDeleteModalOpen(false);
           toast('Не удалось удалить сообщество');

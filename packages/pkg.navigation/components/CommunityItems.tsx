@@ -393,7 +393,11 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         }`}
       >
         <div
-          onClick={() => currentCommunityId !== null ? router.push(`/communities/${currentCommunityId}/home`) : null}
+          onClick={() =>
+            currentCommunityId !== null
+              ? router.push(`/communities/${currentCommunityId}/home`)
+              : null
+          }
           className={`${pathname.includes('/home') ? 'text-brand-80 bg-brand-0 hover:text-brand-100' : 'text-gray-90 hover:bg-gray-5'} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in ${currentCommunityId === null ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
         >
           <div className="flex items-center">

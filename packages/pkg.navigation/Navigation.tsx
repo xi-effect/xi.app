@@ -3,10 +3,11 @@
 'use client';
 
 import React, { ReactNode, useState, useEffect } from 'react';
-import { useSessionStorage } from 'pkg.utils.client';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useGetUrlWithParams, useSessionStorage } from 'pkg.utils.client';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { WelcomeModal } from 'pkg.modal.welcome';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 import { nanoid } from 'nanoid';
 import { BottomBar, Menu } from './components';
 
@@ -59,8 +60,22 @@ type DeletedCategoryT = {
   category_id: number;
 };
 
+type RetrieveAnyCommunityT = {
+  community: {
+    id: number;
+    name: string;
+    description: null;
+  };
+  participant: {
+    is_owner: boolean;
+  };
+};
+
 export const Navigation = ({ children }: NavigationPropT) => {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const getUrlWithParams = useGetUrlWithParams();
 
   const [slideIndex, setSlideIndex] = useSessionStorage('slide-index-menu', 1);
   const socket = useMainSt((state) => state.socket);
@@ -73,6 +88,8 @@ export const Navigation = ({ children }: NavigationPropT) => {
 
   const deleteChannel = useMainSt((state) => state.deleteChannel);
   const deleteCategory = useMainSt((state) => state.deleteCategory);
+
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   useEffect(() => {
     // Инициализация сокета только один раз
@@ -186,6 +203,35 @@ export const Navigation = ({ children }: NavigationPropT) => {
         socket.off('delete-category', handleDeleteCategory);
       };
     }
+  }, []);
+
+  useEffect(() => {
+    const handleDeleteCommunity = () => {
+      toast('Сообщество было удалено');
+      socket.emit(
+        'retrieve-any-community',
+        (status: number, { community, participant }: RetrieveAnyCommunityT) => {
+          if (status === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+
+            if (community) {
+              router.replace(getUrlWithParams(`/communities/${community.id}/home`));
+              router.refresh();
+            }
+          }
+        },
+      );
+    };
+    socket?.on('delete-community', handleDeleteCommunity);
+
+    return () => {
+      socket?.off('delete-community', handleDeleteCommunity);
+    };
   }, []);
 
   // Чтение параметров из url и открытие модального окна, если есть параметр welcome-modal=true
