@@ -34,6 +34,19 @@ export const hiddenComponents: Required<TLUiComponents | any> = {
   TopPanel: null,
 };
 
+export const colorOptions = [
+  { name: 'black', class: 'bg-gray-100' },
+  { name: 'blue', class: 'bg-brand-80' },
+  { name: 'red', class: 'bg-red-80' },
+  { name: 'green', class: 'bg-green-80' },
+  { name: 'orange', class: 'bg-orange-80' },
+  { name: 'yellow', class: 'bg-yellow-100' },
+  { name: 'violet', class: 'bg-violet-100' },
+  { name: 'light-violet', class: 'bg-pink-100' },
+  { name: 'light-blue', class: 'bg-cyan-100' },
+  { name: 'grey', class: 'bg-gray-60' },
+] as const;
+
 /*
 This example shows how you can replace tldraw's default keyboard shortcuts with your own,
 or add a shortcut for an action that doesn't have one. An example of how to add shortcuts

@@ -19,9 +19,13 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
-  name: z.string({
-    required_error: 'Обязательное поле',
-  }),
+  name: z
+    .string({
+      required_error: 'Обязательное поле',
+    })
+    .min(1, {
+      message: 'Обязательное поле',
+    }),
 });
 
 const FormCreateBlock = () => {
@@ -31,7 +35,10 @@ const FormCreateBlock = () => {
       name: '',
     },
   });
-  const { control } = form;
+  const {
+    control,
+    formState: { errors },
+  } = form;
 
   const socket = useMainSt((state) => state.socket);
 
@@ -61,11 +68,11 @@ const FormCreateBlock = () => {
         <FormField
           control={control}
           name="name"
-          render={({ field, fieldState: { error } }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Название</FormLabel>
               <FormControl className="mt-2">
-                <Input {...field} error={!!error} autoComplete="off" type="text" />
+                <Input error={!!errors?.name} autoComplete="off" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

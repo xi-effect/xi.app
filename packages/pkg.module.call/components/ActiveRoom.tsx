@@ -3,7 +3,7 @@ import { HTMLAttributes } from 'react';
 import { ConnectionQuality } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
-import { serverUrl, LocalUserChoiceT } from '../VideoConference';
+import { serverUrl, LocalUserChoiceT } from '../Call';
 import { ISettingsRoom } from '../types/types';
 import { VideoConference } from './VideoTrack';
 
@@ -35,7 +35,7 @@ export const ActiveRoom = ({
       <div className="flex min-h-screen flex-col justify-between gap-3">
         <UpBar />
         <div className="px-4">
-          <div className="text-gray-5 h-full w-full text-center">
+          <div className="h-full w-full text-center text-gray-100">
             {isConnected && <VideoConference />}
           </div>
         </div>

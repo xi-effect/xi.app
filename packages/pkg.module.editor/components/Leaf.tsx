@@ -1,14 +1,7 @@
 import React from 'react';
+import { RenderLeafProps } from 'slate-react';
 
-export const Leaf = ({
-  attributes,
-  children,
-  leaf,
-}: {
-  attributes: any;
-  children: React.ReactNode;
-  leaf: any;
-}) => {
+export const Leaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   let modifiedChildren = children;
 
   if (leaf.bold) {
@@ -25,6 +18,14 @@ export const Leaf = ({
 
   if (leaf.stroke) {
     modifiedChildren = <s>{modifiedChildren}</s>;
+  }
+
+  if (children.props.parent.type && children.props.parent.type === 'code') {
+    return (
+      <span {...attributes} className={`token ${leaf.token}`}>
+        {modifiedChildren}
+      </span>
+    );
   }
 
   return <span {...attributes}>{modifiedChildren}</span>;

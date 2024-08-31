@@ -11,7 +11,7 @@ import {
   // File,
   // Photo,
   // Video,
-  // Code,
+  Code,
 } from '@xipkg/icons';
 import { ComponentType } from 'react';
 import { type CustomElementType } from '../slate';
@@ -70,8 +70,8 @@ export default {
   //   label: 'Видео',
   //   icon: Video,
   // },
-  // code: {
-  //   label: 'Код',
-  //   icon: Code,
-  // },
+  code: {
+    label: 'Код',
+    icon: Code,
+  },
 } as const satisfies Partial<Record<CustomElementType, EditorRootElementOptions>>;

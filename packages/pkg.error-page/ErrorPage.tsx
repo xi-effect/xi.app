@@ -20,6 +20,7 @@ export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT)
         height={24}
         className="block xl:h-[32px] xl:w-[269px] dark:hidden"
         src="/assets/brand/navigationlogo-default-light.svg"
+        priority
         alt="logo"
       />
       <Image
@@ -27,6 +28,7 @@ export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT)
         height={24}
         className="hidden xl:h-[32px] xl:w-[269px] dark:block"
         src="/assets/brand/navigationlogo-default-dark.svg"
+        priority
         alt="logo"
       />
     </div>

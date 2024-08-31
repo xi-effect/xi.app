@@ -9,7 +9,7 @@ import { PreJoin } from './components/PreJoinSection';
 
 export const serverUrl = 'wss://livekit.xieffect.ru';
 
-type VideoConferenceT = {
+type CallPropsT = {
   token: string;
 };
 
@@ -18,7 +18,7 @@ export type LocalUserChoiceT = {
   videoEnabled: boolean;
 };
 
-export const VideoConference = ({ token }: VideoConferenceT) => {
+export const Call = ({ token }: CallPropsT) => {
   const [userChoice, setUserChoice] = useState<LocalUserChoiceT | undefined>(undefined);
   const [room] = useState(new Room());
   const [connect, setConnect] = useState(false);
@@ -46,7 +46,7 @@ export const VideoConference = ({ token }: VideoConferenceT) => {
   return (
     <div>
       {isStarted ? (
-        <div id="videoConferenceContainer" className="bg-gray-100">
+        <div id="videoConferenceContainer" className="bg-gray-5" data-theme="dark">
           <ActiveRoom
             userChoice={userChoice}
             room={room}

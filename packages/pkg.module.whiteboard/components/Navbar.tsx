@@ -1,15 +1,22 @@
-import { track, useEditor } from 'tldraw';
+import React from 'react';
+import { DefaultColorStyle, DefaultSizeStyle, StyleProp, track, useEditor } from 'tldraw';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
-import { useState } from 'react';
 import { NavbarAction } from './NavbarAction';
-import { MenuPopupContent } from './MenuPopupContent';
+import { StickerPopupContent } from './StickerPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
 import { useInsertMedia } from '../utils/useInsertMedia';
+import { StylePopupContent } from './StylePopupContent';
 
 export const Navbar = track(() => {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const editor = useEditor();
   const insertMedia = useInsertMedia();
+
+  const resetStyles = () => {
+    editor.setStyleForNextShapes(DefaultColorStyle as unknown as StyleProp<string>, 'black');
+    editor.setOpacityForNextShapes(1);
+    editor.setStyleForNextShapes(DefaultSizeStyle as unknown as StyleProp<string>, 'm');
+  };
 
   const hanleTool = (action: string) => {
     if (action !== 'asset') {
@@ -34,19 +41,29 @@ export const Navbar = track(() => {
                 return (
                   <TooltipProvider key={item.action}>
                     <Tooltip open={isActive && item?.hasAToolTip && isTooltipOpen}>
-                      <TooltipTrigger className="rounded-lg">
-                        <button
-                          type="button"
-                          className={`pointer-events-auto flex h-[32px] w-[32px] items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
-                          data-isactive={isActive}
-                          onClick={() => hanleTool(item.action)}
-                        >
-                          {item.icon ? item.icon : item.title}
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
-                        <MenuPopupContent item={item} setIsTooltipOpen={setIsTooltipOpen} />
-                      </TooltipContent>
+                      <div className="pointer-events-auto">
+                        <TooltipTrigger className="rounded-lg">
+                          <button
+                            type="button"
+                            className={`pointer-events-auto flex h-8 w-8 items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
+                            data-isactive={isActive}
+                            onClick={() => {
+                              resetStyles();
+                              hanleTool(item.action);
+                            }}
+                          >
+                            {item.icon ? item.icon : item.title}
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
+                          {editor.getCurrentToolId() === 'sticker' && (
+                            <StickerPopupContent menuPopupContent={item?.menuPopupContent || []} />
+                          )}
+                          {editor.getCurrentToolId() === 'draw' && (
+                            <StylePopupContent menuPopupContent={item?.menuPopupContent || []} />
+                          )}
+                        </TooltipContent>
+                      </div>
                     </Tooltip>
                   </TooltipProvider>
                 );

@@ -1,9 +1,9 @@
-import { BaseEditor } from 'slate';
+import { BaseEditor, BaseRange } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 import { ReactNode } from 'react';
 
-export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: string };
+export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { id: string; type: string };
 
 export type CustomElement = {
   children: Array<CustomText | CustomElement>;
@@ -13,6 +13,7 @@ export type CustomElement = {
   fileName?: string;
   size?: number;
   icon?: ReactNode;
+  language?: string;
 };
 
 export type ParagraphElement = {
@@ -76,6 +77,8 @@ export type DividerElement = {
 export type CodeElement = {
   id: string;
   type: 'code';
+  language?: string;
+  children: CustomText[];
 };
 
 export type TipElement = {
@@ -132,6 +135,7 @@ export type CustomText = {
   stroke?: true;
   color?: string;
   bg?: string;
+  token?: string;
 };
 
 declare module 'slate' {
@@ -139,5 +143,8 @@ declare module 'slate' {
     Editor: CustomEditor;
     Element: CustomElement;
     Text: CustomText;
+    Range: BaseRange & {
+      [key: string]: unknown;
+    };
   }
 }

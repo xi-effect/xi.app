@@ -55,7 +55,7 @@ const Header = () => {
         <p className="mt-4 h-[32px] w-[256px] rounded-[8px] font-normal max-xs:mt-2 max-xs:text-sm animate-pulse bg-gray-10 text-gray-80 text-[16px] leading-[22px] xl:text-2xl" />
       ) : (
         <p className="mt-4 font-normal max-xs:mt-2 max-xs:text-sm text-gray-80 text-[16px] leading-[22px] xl:text-2xl">
-          Ваша роль: {isOwner ? 'администратор' : 'ученик' || '[РОЛЬ ПОЛЬЗОВАТЕЛЯ]'}
+          Ваша роль: {isOwner ? 'администратор' : 'ученик'}
         </p>
       )}
     </header>

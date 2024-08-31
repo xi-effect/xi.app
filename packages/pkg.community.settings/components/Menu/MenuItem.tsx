@@ -1,32 +1,9 @@
 import { useMedia } from 'pkg.utils.client';
 import React from 'react';
-import { useInterfaceStore } from '../interfaceStore';
+import { useInterfaceStore } from '../../interfaceStore';
+import { ItemPropsT } from './types';
 
-type ItemT = {
-  name: string;
-};
-
-const options: ItemT[] = [
-  {
-    name: 'Обзор',
-  },
-  // {
-  //   name: 'Роли',
-  // },
-  {
-    name: 'Участники',
-  },
-  {
-    name: 'Приглашения',
-  },
-];
-
-type ItemPropsT = {
-  index: number;
-  item: ItemT;
-};
-
-const Item = ({ index, item }: ItemPropsT) => {
+export const MenuItem = ({ index, item }: ItemPropsT) => {
   const isMobile = useMedia('(max-width: 719px)');
   const page = useInterfaceStore((state) => state.page);
   const setIsMenu = useInterfaceStore((state) => state.setIsMenu);
@@ -59,24 +36,10 @@ const Item = ({ index, item }: ItemPropsT) => {
         isActive
           ? 'bg-brand-0 text-brand-80'
           : 'text-gray-90 hover:bg-brand-0 hover:text-brand-80 bg-transparent'
-      } group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
+      } group flex h-[40px] w-full flex-row items-center rounded-lg px-2 py-2.5 transition-colors ease-in hover:cursor-pointer`}
       key={index.toString()}
     >
       <span className="pl-2 text-[14px] font-normal">{item.name}</span>
     </button>
   );
 };
-
-export const Menu = () => (
-  <div className="flex w-full flex-col gap-1 sm:w-[220px]">
-    {options.map((item, index) => (
-      <Item item={item} index={index} key={index} />
-    ))}
-    <button
-      type="button"
-      className="text-gray-60 hover:bg-red-0 group mt-10 flex h-auto w-full flex-row items-center rounded-lg bg-transparent p-2 transition-colors ease-in hover:cursor-pointer hover:text-red-100"
-    >
-      <span className="pl-2 text-[14px] font-normal">Удалить сообщество</span>
-    </button>
-  </div>
-);

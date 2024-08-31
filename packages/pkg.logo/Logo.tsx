@@ -16,6 +16,7 @@ export const Logo = ({ logoVariant, logoSize, ...rest }: LogoT) => {
     <Image
       alt="xieffect logo"
       src={`/assets/brand/${logoVariant}logo-${logoSize}-${resolvedTheme}.svg`}
+      priority
       {...rest}
     />
   );
