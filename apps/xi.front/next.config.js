@@ -38,7 +38,7 @@ const nextConfig = {
     'pkg.form.signup',
     'pkg.form.reset-password',
     'pkg.module.call',
-    'pkg.module.whiteboard',
+    'pkg.module.board',
     'pkg.module.editor',
     'pkg.avatar.editor',
     'pkg.logo',

@@ -47,7 +47,7 @@
     "pkg.module.tasks": "*",
     "pkg.module.tasks-admin": "*",
     "pkg.module.call": "*",
-    "pkg.module.whiteboard": "*",
+    "pkg.module.board": "*",
     "pkg.navigation": "*",
     "pkg.navigation.layout": "*",
     "pkg.router.url": "*",

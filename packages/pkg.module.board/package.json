@@ -1,5 +1,5 @@
 {
-  "name": "pkg.module.whiteboard",
+  "name": "pkg.module.board",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",

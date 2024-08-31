@@ -9,7 +9,7 @@ import { hiddenComponents } from './utils/customConfig';
 import { StickerTool } from './components/CustomTools';
 import { myAssetStore } from './utils/imageStore';
 
-export const WhiteBoard = () => (
+export const Board = () => (
   <Tldraw
     assets={myAssetStore}
     onMount={(editor) => {
