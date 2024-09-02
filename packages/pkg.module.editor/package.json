@@ -31,7 +31,9 @@
     "slate-history": "0.100.0",
     "slate-react": "0.102.0",
     "yjs": "^13.6.18",
-    "zustand": "4.5.4"
+    "zustand": "4.5.4",
+    "@hocuspocus/provider": "2.13.5",
+    "randomcolor": "0.6.2"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

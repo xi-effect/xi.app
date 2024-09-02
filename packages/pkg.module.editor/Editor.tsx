@@ -19,6 +19,9 @@ import {
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import * as Y from 'yjs';
+import { withCursors, withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
 import { isUrl, isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import normalizeQuoteNode from './plugins/normalizeQuoteNode';
@@ -66,23 +69,67 @@ const withInlines = (editor: Editor) => {
   return editor;
 };
 
-export const useEditor = () =>
-  useMemo(() => {
-    const editor = withInlines(withNodeId(withHistory(withReact(createEditor()))));
-
-    const { normalizeNode, isVoid } = editor;
-
-    editor.isVoid = (el) => el.type === 'divider' || isVoid(el);
-
-    editor.normalizeNode = (node, opt) => {
-      normalizeQuoteNode(editor, node, opt);
-      normalizeNode(node, opt);
-    };
-    return editor;
-  }, []);
-
 export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorPropsT) => {
-  const editor = useEditor();
+  const [connected, setConnected] = useState(false);
+  console.log('connected', connected);
+
+  const provider = useMemo(
+    () =>
+      new HocuspocusProvider({
+        url: 'wss://hocus.xieffect.ru',
+        name: 'slate-yjs-demo',
+        onConnect: () => setConnected(true),
+        onDisconnect: () => setConnected(false),
+        connect: false,
+        broadcast: false,
+        forceSyncInterval: 20000,
+      }),
+    [],
+  );
+
+  const editor = useMemo(() => {
+    const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
+
+    const e = withNodeId(
+      withReact(
+        withCursors(
+          withYHistory(withYjs(createEditor(), sharedType, { autoConnect: false })),
+          provider.awareness,
+          {
+            data: randomCursorData(),
+          },
+        ),
+      ),
+    );
+
+    const { normalizeNode } = e;
+    e.normalizeNode = (entry: [any]) => {
+      const [node] = entry;
+      if (!Editor.isEditor(node) || node.children.length > 0) {
+        return normalizeNode(entry);
+      }
+
+      Transforms.insertNodes(
+        editor,
+        {
+          type: 'paragraph',
+          children: [{ text: '' }],
+        },
+        { at: [0] },
+      );
+    };
+
+    return e;
+  }, [provider.awareness, provider.document]);
+
+  React.useEffect(() => {
+    provider.connect();
+    return () => provider.disconnect();
+  }, [provider]);
+  React.useEffect(() => {
+    YjsEditor.connect(editor);
+    return () => YjsEditor.disconnect(editor);
+  }, [editor]);
 
   const decorateCode = useDecorateCode();
 
