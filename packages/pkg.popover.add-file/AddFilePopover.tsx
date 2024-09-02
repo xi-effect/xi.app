@@ -78,8 +78,8 @@ export const AddFilePopover = ({
   const { control, handleSubmit } = form;
 
   // тут используется для преобразования изображения в webp
-  const resizeFile = (file: File | Blob) => {
-    const testPromise: Promise<File> = new Promise((resolve) => {
+  const resizeFile = (file: File | Blob) =>
+    new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
         1570,
@@ -93,8 +93,6 @@ export const AddFilePopover = ({
         'file',
       );
     });
-    return testPromise;
-  };
 
   // сжать изображения, если размер больше ~ 1мб
   const getCompressedFile = async (file: File) => {
@@ -104,7 +102,8 @@ export const AddFilePopover = ({
 
   // загрузка изображения на сервер
   const getImageResponse = async (imageFile: File) => {
-    let webpImage = await resizeFile(imageFile);
+    // @ts-ignore
+    let webpImage: File = await resizeFile(imageFile);
     if (webpImage.size > 1024 * 1024) {
       webpImage = await getCompressedFile(webpImage);
     }
