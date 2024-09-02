@@ -20,10 +20,11 @@
     "@xipkg/input": "^1.0.0",
     "@xipkg/modal": "2.1.0",
     "@xipkg/scrollarea": "0.1.0",
-    "@xipkg/tooltip": "^0.1.0",
     "@xipkg/toggle": "1.0.0",
+    "@xipkg/tooltip": "^0.1.0",
     "@xipkg/userprofile": "3.1.0",
     "driver.js": "^1.3.1",
+    "framer-motion": "^11.3.31",
     "nanoid": "5.0.7",
     "next": "^14.2.3",
     "pkg.community.channel-create": "*",
@@ -43,7 +44,8 @@
     "react-dom": "18.2.0",
     "react-swipeable-views-react-18-fix": "^0.14.1",
     "socket.io-client": "4.7.5",
-    "sonner": "1.4.41"
+    "sonner": "1.4.41",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

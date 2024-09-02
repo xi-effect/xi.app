@@ -7,8 +7,7 @@ import { useMedia } from 'pkg.utils.client';
 import { ItemContextMenu } from './ItemContextMenu';
 import { ChannelT, CategoryT } from './types';
 import { Channel } from './Channel';
-import { EditChannelModal } from './EditChannelModal';
-import { EditCategoryModal } from './EditCategoryModal';
+import { EditCategoryModal, EditChannelModal } from './EditModal';
 
 type CategoryContainerT = {
   category: CategoryT;
