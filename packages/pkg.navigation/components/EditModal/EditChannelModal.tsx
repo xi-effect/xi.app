@@ -5,7 +5,7 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
-import { ChannelT } from './types';
+import { ChannelT } from '../types';
 
 export type EditChannelModalPropsT = {
   isOpen: boolean;
