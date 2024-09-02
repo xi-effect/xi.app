@@ -28,12 +28,13 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
 
-    if (typeof params['community-id'] !== 'string') {
+    if (socket?.connected === false && typeof params['community-id'] !== 'string') {
       // Если мы не знаем id текущего сообщества, мы получаем любое и редиректим туда пользователя
       socket?.on('connect', () => {
         socket.emit(
           'retrieve-any-community',
           (stats: number, { community, participant }: { community: any; participant: any }) => {
+            console.log('11', community, participant);
             if (stats === 200) {
               updateCommunityMeta({
                 id: community.id,
@@ -90,7 +91,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
     }
 
     // Если мы уже знаем из url id сообщества, то нам нужно запросить данные по нему
-    if (typeof params['community-id'] === 'string') {
+    if (socket?.connected === false && typeof params['community-id'] === 'string') {
       socket?.on('connect', () => {
         socket.emit(
           'retrieve-community',

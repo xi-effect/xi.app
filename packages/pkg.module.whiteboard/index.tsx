@@ -1,1 +1,0 @@
-export { WhiteBoard } from './WhiteBoard';

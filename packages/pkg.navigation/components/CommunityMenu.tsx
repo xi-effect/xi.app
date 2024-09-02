@@ -34,6 +34,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import { toast } from 'sonner';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 import { RetrieveCommunityT } from './types';
 
 type CommunityTemplateT = {
@@ -113,7 +114,10 @@ const CommunityLink = ({
   const socket = useMainSt((state) => state.socket);
   const currentCommunityId = useMainSt((state) => state.communityMeta.id);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
+
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
+
   const communityTitleRef = useRef<HTMLDivElement>(null);
   const [isTooltipActive, setIsTooltipActive] = React.useState(false);
 
@@ -123,15 +127,15 @@ const CommunityLink = ({
       {
         community_id: currentCommunityId,
       },
-      (data: any) => {
+      (data: number) => {
         if (data === 204) {
           socket?.emit(
             'retrieve-community',
             {
               community_id: community.id,
             },
-            (stats: number, { community, participant }: { community: any; participant: any }) => {
-              if (stats === 200) {
+            (status: number, { community, participant }: RetrieveCommunityT) => {
+              if (status === 200) {
                 updateCommunityMeta({
                   id: community.id,
                   isOwner: participant.is_owner,
@@ -139,8 +143,29 @@ const CommunityLink = ({
                   description: community.description,
                 });
 
-                router.push(`/communities/${community.id}/home`);
+                router.push(getUrlWithParams(`/communities/${community.id}/home`));
                 if (handleClose) handleClose();
+              }
+              if (status === 404) {
+                toast('Сообщества не существует');
+                socket.emit(
+                  'retrieve-any-community',
+                  (status: number, { community, participant }: RetrieveCommunityT) => {
+                    if (status === 200) {
+                      updateCommunityMeta({
+                        id: community.id,
+                        isOwner: participant.is_owner,
+                        name: community.name,
+                        description: community.description,
+                      });
+
+                      if (community) {
+                        router.replace(getUrlWithParams(`/communities/${community.id}/home`));
+                        router.refresh();
+                      }
+                    }
+                  },
+                );
               }
             },
           );

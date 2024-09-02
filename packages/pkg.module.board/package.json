@@ -1,5 +1,5 @@
 {
-  "name": "pkg.module.whiteboard",
+  "name": "pkg.module.board",
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
@@ -13,6 +13,7 @@
     "@xipkg/dropdown": "^2.1.0",
     "@xipkg/icons": "1.1.1",
     "@xipkg/tooltip": "0.1.0",
+    "@xipkg/slider": "1.0.0",
     "next": "^14.2.3",
     "pkg.logo": "*",
     "pkg.utils.client": "*",
