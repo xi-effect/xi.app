@@ -26,9 +26,9 @@ import { Home, Plus } from '@xipkg/icons';
 import { DropdownMenuSeparator } from '@xipkg/dropdown';
 import { CategoryCreate } from 'pkg.modal.category-create';
 import { toast } from 'sonner';
-import { CategoryContainer } from './CategoryContainer';
-import { ChannelT, CategoryT } from './types';
-import { Channel } from './Channel';
+import { CategoryContainer } from '../CategoryContainer';
+import { ChannelT, CategoryT } from '../types';
+import { Channel } from '../Channel';
 import { CommunityItemsSkeleton } from './CommunityItemsSkeleton';
 
 type CommunityItemsPropsT = {

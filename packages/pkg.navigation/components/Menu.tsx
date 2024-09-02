@@ -14,8 +14,7 @@ import 'driver.js/dist/driver.css';
 import '../utils/driver.css';
 import { useMainSt } from 'pkg.stores';
 import { createRoot } from 'react-dom/client';
-import { CommunityMenu } from './CommunityMenu';
-import { CommunityItems } from './CommunityItems';
+import { CommunityItems, CommunityMenu } from './Community';
 
 type MenuT = {
   setSlideIndex: (value: number) => void;
