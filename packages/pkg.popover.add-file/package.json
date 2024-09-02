@@ -13,6 +13,7 @@
     "@xipkg/fileuploader": "^1.2.0",
     "@xipkg/form": "^2",
     "@xipkg/input": "0.1.1",
+    "browser-image-compression": "^2.0.2",
     "pkg.utils": "*",
     "react": "^18.2.0",
     "react-image-file-resizer": "^0.4.8",

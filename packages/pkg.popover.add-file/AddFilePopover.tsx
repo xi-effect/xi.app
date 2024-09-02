@@ -8,6 +8,7 @@ import { Transforms } from 'slate';
 
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import imageCompression from 'browser-image-compression';
 import { toast } from 'sonner';
 import { post } from 'pkg.utils';
 import Resizer from 'react-image-file-resizer';
@@ -77,26 +78,36 @@ export const AddFilePopover = ({
   const { control, handleSubmit } = form;
 
   // тут используется для преобразования изображения в webp
-  const resizeFile = (file: File, type: 'blob' | 'base64') =>
-    new Promise((resolve) => {
+  const resizeFile = (file: File | Blob) => {
+    const testPromise: Promise<File> = new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
         1570,
         1570,
         'WEBP',
-        70,
+        90,
         0,
-        (url) => {
-          resolve(url);
+        (result) => {
+          resolve(result);
         },
-        type,
+        'file',
       );
     });
+    return testPromise;
+  };
+
+  // сжать изображения, если размер больше ~ 1мб
+  const getCompressedFile = async (file: File) => {
+    const compressedFile = await imageCompression(file, { maxSizeMB: 1 });
+    return compressedFile;
+  };
 
   // загрузка изображения на сервер
   const getImageResponse = async (imageFile: File) => {
-    const webpImage = (await resizeFile(imageFile, 'blob')) as Blob;
-    // fileName = await getFileNameFromURL(inputData.fileLink);
+    let webpImage = await resizeFile(imageFile);
+    if (webpImage.size > 1024 * 1024) {
+      webpImage = await getCompressedFile(webpImage);
+    }
     const formData = new FormData();
     formData.append('image', webpImage);
 
@@ -169,7 +180,7 @@ export const AddFilePopover = ({
           fileName = getFileNameFromURL(inputData.fileLink);
           fileSize = blob.size;
           const imageFile = new File([blob], `${fileName}.webp`);
-
+          getImageResponse(imageFile);
           const { data } = await getImageResponse(imageFile);
           newNode = createDefaultNode('imageBlock', data.id, fileName, fileSize);
         } catch (error) {
