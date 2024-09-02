@@ -1,5 +1,5 @@
-import React from 'react';
 import { Toggle } from '@xipkg/toggle';
+import React from 'react';
 
 interface PrivateCategoryToggleProps {
   checked: boolean;

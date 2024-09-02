@@ -13,9 +13,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
-import { RetrieveCommunityT } from '../types';
 import { useCommunityStore } from '../../store/communityStore';
 import { CommunityTemplateT } from '../../type';
+import { RetrieveCommunityT } from '../types';
 
 export const DropdownMenuBasic = () => {
   const [isOpen, setIsOpen] = useState(false);
