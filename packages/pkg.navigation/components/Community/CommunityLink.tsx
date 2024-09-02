@@ -12,9 +12,9 @@ import { AvatarPreview } from '../AvatarPreview';
 import { CommunityTemplateT } from '../../type';
 
 export const CommunityLink = ({
-                         community,
-                         handleClose,
-                       }: {
+  community,
+  handleClose,
+}: {
   community: CommunityTemplateT;
   handleClose: () => void;
 }) => {

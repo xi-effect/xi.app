@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type CommunityStateT ={
+type CommunityStateT = {
   isOpenCommunitySettings: boolean;
   isInviteCommunityModalOpen: boolean;
   isAddCommunityModalOpen: boolean;

@@ -12,8 +12,12 @@ type DropdownHeaderPropsT = {
   id: number | null;
 };
 
-export const DropdownHeader = ({ setIsOpen, inDropdown = false, name, id }
-                                 : DropdownHeaderPropsT) => {
+export const DropdownHeader = ({
+  setIsOpen,
+  inDropdown = false,
+  name,
+  id,
+}: DropdownHeaderPropsT) => {
   const params = useParams<{ 'community-id': string }>();
   const isNotCommunityId = typeof params['community-id'] !== 'string';
 
@@ -33,9 +37,7 @@ export const DropdownHeader = ({ setIsOpen, inDropdown = false, name, id }
         <AvatarPreview communityId={id} />
       )}
       {!name || isNotCommunityId ? (
-        <div
-          className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold"
-        />
+        <div className="bg-gray-10 ml-2 h-4 w-[156px] animate-pulse self-center rounded-[2px] text-[16px] font-semibold" />
       ) : (
         <div className="ml-2 self-center truncate text-[16px] font-semibold">{name}</div>
       )}

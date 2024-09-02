@@ -11,23 +11,11 @@ import { ScrollArea } from '@xipkg/scrollarea';
 import { useMainSt } from 'pkg.stores';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { motion, AnimatePresence } from 'framer-motion';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
 import { RetrieveCommunityT } from '../types';
 import { useCommunityStore } from '../../store/communityStore';
 import { CommunityTemplateT } from '../../type';
-
-const dropdownVariants = {
-  open: {
-    y: 0,
-    transition: { duration: 0.3, ease: 'easeInOut' },
-  },
-  closed: {
-    y: -10,
-    transition: { duration: 0.5, ease: 'easeInOut' },
-  },
-};
 
 export const DropdownMenuBasic = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -107,123 +95,106 @@ export const DropdownMenuBasic = () => {
     <DropdownMenu open={isOpen}>
       <>
         <DropdownMenuTrigger asChild>
-          <motion.div
-            initial={{ scale: 1 }}
-            animate={{ scale: isOpen ? 1.05 : 1 }}
-            transition={{ duration: 0.3 }}
-          >
+          <div>
             <DropdownHeader
               setIsOpen={setIsOpen}
               name={currentCommunity.name}
               id={currentCommunity.id}
             />
-          </motion.div>
+          </div>
         </DropdownMenuTrigger>
-        <AnimatePresence>
-          {isOpen && (
-            <DropdownMenuContent
-              onInteractOutside={handleClose}
-              className="relative right-[1px] top-[-58px] w-[calc(100vw-22px)] sm:w-[312px]"
-            >
-              <motion.div
-                initial="closed"
-                animate="open"
-                exit="closed"
-                variants={dropdownVariants}
-                className="bg-gray-5 rounded-lg"
-              >
-                <DropdownHeader
-                  setIsOpen={setIsOpen}
-                  inDropdown
-                  name={currentCommunity.name}
-                  id={currentCommunity.id}
-                />
-                {isOwner && (
-                  <>
-                    <DropdownMenuItem
-                      className="group sm:w-[302px]"
-                      onClick={() => {
-                        setIsInviteCommunityModalOpen(!isInviteCommunityModalOpen);
-                        handleClose();
-                      }}
-                    >
-                      <span>Пригласить людей</span>
-                      <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setIsOpenCommunitySettings(true);
-                        handleClose();
-                      }}
-                      className="group sm:w-[302px]"
-                    >
-                      <span>Настройки сообщества</span>
-                      <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="group sm:w-[302px]"
-                      onClick={() => {
-                        setIsCommunityChannelCreateOpen(!isCommunityChannelCreateOpen);
-                        handleClose();
-                      }}
-                    >
-                      <span>Создать канал</span>
-                      <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="group sm:w-[302px]"
-                      onClick={() => {
-                        setIsCategoryCreateOpen(!isCategoryCreateOpen);
-                        handleClose();
-                      }}
-                    >
-                      <span>Создать категорию</span>
-                      <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                  </>
-                )}
-                <DropdownMenuItem
-                  onClick={handleLeaveCommunity}
-                  className="group sm:w-[302px]"
-                  error
-                >
-                  <span>Покинуть сообщество</span>
-                  <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
-                </DropdownMenuItem>
-              </motion.div>
-              {otherCommunities && otherCommunities.length <= 7 && (
-                <div className="mt-2">
-                  {otherCommunities.map((community, index) => (
-                    <CommunityLink key={index} community={community} handleClose={handleClose} />
-                  ))}
-                </div>
-              )}
-              {otherCommunities && otherCommunities.length > 7 && (
-                <ScrollArea className="h-[300px] [&>div>div[style]]:!block">
-                  <div className="mt-2">
-                    {otherCommunities.map((community, index) => (
-                      <CommunityLink key={index} community={community} handleClose={handleClose} />
-                    ))}
-                  </div>
-                </ScrollArea>
-              )}
-              <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-                className="group text-gray-50 sm:w-[302px]"
-                onClick={() => {
-                  setIsAddCommunityModalOpen(true);
-                  handleClose();
-                }}
-              >
-                <span>Присоединиться к сообществу</span>
-                <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
+        <DropdownMenuContent
+          onInteractOutside={handleClose}
+          className="relative right-[1px] top-[-58px] w-[calc(100vw-22px)] sm:w-[312px]"
+        >
+          <div className="bg-gray-5 rounded-lg">
+            <DropdownHeader
+              setIsOpen={setIsOpen}
+              inDropdown
+              name={currentCommunity.name}
+              id={currentCommunity.id}
+            />
+            {isOwner && (
+              <>
+                <DropdownMenuItem
+                  className="group sm:w-[302px]"
+                  onClick={() => {
+                    setIsInviteCommunityModalOpen(!isInviteCommunityModalOpen);
+                    handleClose();
+                  }}
+                >
+                  <span>Пригласить людей</span>
+                  <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setIsOpenCommunitySettings(true);
+                    handleClose();
+                  }}
+                  className="group sm:w-[302px]"
+                >
+                  <span>Настройки сообщества</span>
+                  <Settings size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="group sm:w-[302px]"
+                  onClick={() => {
+                    setIsCommunityChannelCreateOpen(!isCommunityChannelCreateOpen);
+                    handleClose();
+                  }}
+                >
+                  <span>Создать канал</span>
+                  <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="group sm:w-[302px]"
+                  onClick={() => {
+                    setIsCategoryCreateOpen(!isCategoryCreateOpen);
+                    handleClose();
+                  }}
+                >
+                  <span>Создать категорию</span>
+                  <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuItem onClick={handleLeaveCommunity} className="group sm:w-[302px]" error>
+              <span>Покинуть сообщество</span>
+              <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
+            </DropdownMenuItem>
+          </div>
+          {otherCommunities && otherCommunities.length <= 7 && (
+            <div className="mt-2">
+              {otherCommunities.map((community, index) => (
+                <CommunityLink key={index} community={community} handleClose={handleClose} />
+              ))}
+            </div>
           )}
-        </AnimatePresence>
+          {otherCommunities && otherCommunities.length > 7 && (
+            <ScrollArea className="h-[300px] [&>div>div[style]]:!block">
+              <div className="mt-2">
+                {otherCommunities.map((community, index) => (
+                  <CommunityLink key={index} community={community} handleClose={handleClose} />
+                ))}
+              </div>
+            </ScrollArea>
+          )}
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            className="group text-gray-50 sm:w-[302px]"
+            onClick={() => {
+              setIsAddCommunityModalOpen(true);
+              handleClose();
+            }}
+          >
+            <span>Присоединиться к сообществу</span>
+            <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />
+          </DropdownMenuItem>
+        </DropdownMenuContent>
       </>
     </DropdownMenu>
   );
