@@ -1,15 +1,11 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
-/* eslint-disable import/no-extraneous-dependencies */
-
-// @ts-nocheck
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { createEditor, Transforms, Editor, Descendant } from 'slate';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
-// import { withHistory } from 'slate-history';
 
 import {
   DndContext,
@@ -25,18 +21,20 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import * as Y from 'yjs';
 import { withCursors, withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
-import { isImageUrl } from './utils/isUrl'; // isUrl
+import { isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
+import { withNormalize } from './plugins/withNormalize';
 // import normalizeQuoteNode from './plugins/normalizeQuoteNode';
 import { type MediaElement } from './slate';
 
 import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
 import { SortableElement, InlineToolbar, Leaf } from './components';
-// import { wrapLink } from './components/InlineToolbar';
 
 import { useDecorateCode } from './hooks/useDecorateCode';
 import { codeEditorInsertText } from './utils/codeEditorInsertText';
+
+import { randomCursorData } from './utils/randomCursorData';
 
 import DragOverlayContent from './components/DragOverlayContent';
 
@@ -45,32 +43,6 @@ type EditorPropsT = {
   onChange?: (value: Descendant[]) => void;
   readOnly?: boolean;
 };
-
-// const withInlines = (editor: Editor) => {
-//   const { insertData, insertText, isInline } = editor;
-
-//   editor.isInline = (element) => ['link'].includes(element.type) || isInline(element);
-
-//   editor.insertText = (text: string) => {
-//     if (text && isUrl(text)) {
-//       wrapLink(editor, text);
-//     } else {
-//       insertText(text);
-//     }
-//   };
-
-//   editor.insertData = (data: DataTransfer) => {
-//     const text = data.getData('text/plain');
-
-//     if (text && isUrl(text)) {
-//       wrapLink(editor, text);
-//     } else {
-//       insertData(data);
-//     }
-//   };
-
-//   return editor;
-// };
 
 export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorPropsT) => {
   const [connected, setConnected] = useState(false);
@@ -93,34 +65,18 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
   const editor = useMemo(() => {
     const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
 
-    const e = withNodeId(
+    const e = withNormalize(withNodeId(
       withReact(
         withCursors(
           withYHistory(withYjs(createEditor(), sharedType, { autoConnect: false })),
+          // @ts-ignore
           provider.awareness,
-          // {
-          //   data: randomCursorData(),
-          // },
+          {
+            data: randomCursorData(),
+          },
         ),
       ),
-    );
-
-    const { normalizeNode } = e;
-    e.normalizeNode = (entry: [any]) => {
-      const [node] = entry;
-      if (!Editor.isEditor(node) || node.children.length > 0) {
-        return normalizeNode(entry);
-      }
-
-      Transforms.insertNodes(
-        editor,
-        {
-          type: 'paragraph',
-          children: [{ text: '' }],
-        },
-        { at: [0] },
-      );
-    };
+    ));
 
     return e;
   }, [provider.awareness, provider.document]);

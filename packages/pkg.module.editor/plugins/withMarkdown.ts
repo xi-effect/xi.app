@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
 /**
@@ -6,7 +5,8 @@
  * nothing to do with slate-yjs itself
  */
 
-import { Editor, Element, Point, Range, Text, Transforms } from 'slate';
+import { Descendant, Editor, Element, Point, Range, Text, Transforms } from 'slate';
+import { CustomElement } from '../slate';
 
 function escapeRegExp(s: string) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -49,7 +49,7 @@ function createSetInlineApply(type: Element['type']) {
     if (rangeRef.current) {
       Transforms.insertNodes(
         editor,
-        { text: ' ' },
+        { text: ' ' } as Descendant,
         {
           match: Text.isText,
           at: Range.end(rangeRef.current),
@@ -62,7 +62,7 @@ function createSetInlineApply(type: Element['type']) {
     if (targetRange) {
       Transforms.wrapNodes(
         editor,
-        { type, children: [] },
+        { type, children: [] } as unknown as CustomElement,
         {
           at: targetRange,
           split: true,
@@ -76,7 +76,7 @@ function createSetMarkApply(key: Exclude<keyof Text, 'text'>) {
   return (editor: Editor, range: Range) => {
     Transforms.insertNodes(
       editor,
-      { text: ' ' },
+      { text: ' ' } as Descendant,
       {
         match: Text.isText,
         at: Range.end(range),
@@ -96,15 +96,15 @@ function createSetMarkApply(key: Exclude<keyof Text, 'text'>) {
 }
 
 const SHORTCUTS = [
-  { trigger: blockRegex('#'), apply: createSetBlockApply('heading-one') },
-  { trigger: blockRegex('##'), apply: createSetBlockApply('heading-two') },
-  { trigger: blockRegex('>'), apply: createSetBlockApply('block-quote') },
-  { trigger: inlineRegex('`'), apply: createSetInlineApply('inline-code') },
+  { trigger: blockRegex('#'), apply: createSetBlockApply('heading1') },
+  { trigger: blockRegex('##'), apply: createSetBlockApply('heading2') },
+  { trigger: blockRegex('>'), apply: createSetBlockApply('quote') },
+  { trigger: inlineRegex('`'), apply: createSetInlineApply('code') },
   { trigger: inlineRegex('**'), apply: createSetMarkApply('bold') },
   { trigger: inlineRegex('__'), apply: createSetMarkApply('bold') },
   { trigger: inlineRegex('*'), apply: createSetMarkApply('italic') },
   { trigger: inlineRegex('_'), apply: createSetMarkApply('italic') },
-  { trigger: inlineRegex('~~'), apply: createSetMarkApply('strike') },
+  { trigger: inlineRegex('~~'), apply: createSetMarkApply('stroke') },
 ];
 
 function before(editor: Editor, at: Point, stringOffset: number): Point | undefined {
@@ -246,7 +246,7 @@ export function withMarkdown(editor: Editor) {
     }
   };
 
-  editor.isInline = (n) => (Element.isElement(n) && n.type === 'inline-code') || isInline(n);
+  editor.isInline = (n) => (Element.isElement(n) && n.type === 'code') || isInline(n);
 
   return editor;
 }
