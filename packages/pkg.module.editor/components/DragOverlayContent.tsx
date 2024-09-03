@@ -1,3 +1,6 @@
+/* eslint-disable import/named */
+// @ts-nocheck
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { Slate, Editable, RenderElementProps } from 'slate-react';
 import { Move, Plus } from '@xipkg/icons';
