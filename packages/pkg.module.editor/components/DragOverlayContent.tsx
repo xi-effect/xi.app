@@ -48,6 +48,7 @@ const DragOverlayContent = ({ element }: { element: Descendant }) => {
           readOnly
           renderElement={renderElement}
           renderLeaf={(props) => <Leaf {...props} />}
+          // @ts-ignore
           decorate={decorateCode}
         />
       </Slate>
