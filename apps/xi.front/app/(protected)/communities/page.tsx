@@ -1,7 +1,6 @@
 'use client';
 
-import { redirect, useRouter } from 'next/navigation';
-import { useGetUrlWithParams } from 'pkg.utils.client';
+import { redirect } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -9,12 +8,6 @@ import { toast } from 'sonner';
 export default function CommunitiesLoading() {
   const isLogin = useMainSt((state) => state.isLogin);
   const initSocket = useMainSt((state) => state.initSocket);
-  const socket = useMainSt((state) => state.socket);
-  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
-  const communityMeta = useMainSt((state) => state.communityMeta);
-  const onboardingStage = useMainSt((state) => state.user.onboardingStage);
-  const router = useRouter();
-  const getUrlWithParams = useGetUrlWithParams();
 
   // Тоже костыль
   useEffect(() => {
@@ -44,72 +37,6 @@ export default function CommunitiesLoading() {
       redirect('/signin');
     }
   }, [isLogin]);
-
-  useEffect(() => {
-    if (onboardingStage === 'completed') {
-      socket?.on('connect', () => {
-        socket.emit(
-          'retrieve-any-community',
-          (stats: number, { community, participant }: { community: any; participant: any }) => {
-            if (stats === 200) {
-              updateCommunityMeta({
-                id: community.id,
-                isOwner: participant.is_owner,
-                name: community.name,
-                description: community.description,
-              });
-            }
-
-            if (community && community.id) {
-              router.push(getUrlWithParams(`/communities/${community.id}/home`));
-            }
-          },
-        );
-      });
-    }
-
-    if (socket?.connected === true && communityMeta.id === null) {
-      socket.emit(
-        'retrieve-any-community',
-        (stats: number, { community, participant }: { community: any; participant: any }) => {
-          if (stats === 200) {
-            updateCommunityMeta({
-              id: community.id,
-              isOwner: participant.is_owner,
-              name: community.name,
-              description: community.description,
-            });
-          }
-
-          if (community && community.id) {
-            router.push(getUrlWithParams(`/communities/${community.id}/home`));
-          }
-        },
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isLogin && socket?.connected === true) {
-      socket.emit(
-        'retrieve-any-community',
-        (stats: number, { community, participant }: { community: any; participant: any }) => {
-          if (stats === 200) {
-            updateCommunityMeta({
-              id: community.id,
-              isOwner: participant.is_owner,
-              name: community.name,
-              description: community.description,
-            });
-          }
-
-          if (community && community.id) {
-            router.push(getUrlWithParams(`/communities/${community.id}/home`));
-          }
-        },
-      );
-    }
-  }, [isLogin, socket?.connected]);
 
   return (
     <>

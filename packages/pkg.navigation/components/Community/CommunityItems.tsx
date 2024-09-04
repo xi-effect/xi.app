@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-param-reassign */
 
 'use client';
 
@@ -23,13 +22,13 @@ import { createPortal } from 'react-dom';
 import { useMainSt } from 'pkg.stores';
 import { nanoid } from 'nanoid';
 import { ScrollArea } from '@xipkg/scrollarea';
-import { Calendar, Home, Plus } from '@xipkg/icons';
+import { Home, Plus } from '@xipkg/icons';
 import { DropdownMenuSeparator } from '@xipkg/dropdown';
 import { CategoryCreate } from 'pkg.modal.category-create';
 import { toast } from 'sonner';
-import { CategoryContainer } from './CategoryContainer';
-import { ChannelT, CategoryT } from './types';
-import { Channel } from './Channel';
+import { CategoryContainer } from '../CategoryContainer';
+import { ChannelT, CategoryT } from '../types';
+import { Channel } from '../Channel';
 import { CommunityItemsSkeleton } from './CommunityItemsSkeleton';
 
 type CommunityItemsPropsT = {
@@ -394,20 +393,18 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
         }`}
       >
         <div
-          onClick={() => router.push(`/communities/${currentCommunityId}/home`)}
-          className={`${pathname.includes('/home') ? 'text-brand-80 bg-brand-0 hover:text-brand-100' : 'text-gray-90 hover:bg-gray-5'} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
+          onClick={() =>
+            currentCommunityId !== null
+              ? router.push(`/communities/${currentCommunityId}/home`)
+              : null
+          }
+          className={`${pathname.includes('/home') ? 'text-brand-80 bg-brand-0 hover:text-brand-100' : 'text-gray-90 hover:bg-gray-5'} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in ${currentCommunityId === null ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
         >
           <div className="flex items-center">
             <Home
               className={`${pathname.includes('/home') ? 'fill-brand-80 group-hover:fill-brand-100' : 'fill-gray-90 hover:bg-gray-5'}`}
             />
             <span className="pl-2 text-[14px] font-normal">Главная</span>
-          </div>
-        </div>
-        <div className="text-gray-30 hover:bg-gray-5 group flex h-[40px] w-full cursor-not-allowed flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:text-gray-50">
-          <div className="flex cursor-not-allowed items-center">
-            <Calendar className="fill-gray-30 group-hover:fill-gray-50" />
-            <span className="pl-2 text-[14px] font-normal">Расписание</span>
           </div>
         </div>
         <ItemsList

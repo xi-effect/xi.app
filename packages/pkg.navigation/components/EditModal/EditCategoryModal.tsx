@@ -4,21 +4,8 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
+import { EditCategoryFormT, EditCategoryModalPropsT } from '../../types';
 // import { PrivateCategoryToggle } from './PrivateCategoryToggle';
-import { CategoryT } from './types';
-
-export type EditCategoryModalPropsT = {
-  isOpen: boolean;
-  onOpenChange: (value: React.SetStateAction<boolean>) => void;
-  onConfirm: (value: CategoryT) => void; // & { privateCategory: boolean }
-  category: CategoryT;
-};
-
-type EditCategoryFormT = {
-  name: string;
-  description: string;
-  // privateCategory: boolean;
-};
 
 export const EditCategoryModal = ({
   isOpen,

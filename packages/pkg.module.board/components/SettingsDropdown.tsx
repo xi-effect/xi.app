@@ -1,5 +1,4 @@
 /* eslint-disable consistent-return */
-import React from 'react';
 import { MoreVert, File } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { toast } from 'sonner';
