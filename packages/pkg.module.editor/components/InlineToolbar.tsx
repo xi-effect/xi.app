@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useEffect, useState, KeyboardEvent } from 'react';
 
-import { Editor, Range, Transforms, Element as SlateElement } from 'slate';
+import { Editor } from 'slate';
 import { useSlate } from 'slate-react';
 import { Bold, Italic, Underline, Stroke } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
@@ -15,11 +15,9 @@ import {
   shift,
   FloatingFocusManager,
   flip,
+  FloatingDelayGroup,
 } from '@floating-ui/react';
-import { FloatingDelayGroup } from '@floating-ui/react';
 import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
-import { makeNodeId } from '../plugins/withNodeId';
-import { type CustomElement } from '../slate';
 
 const toggleFormat = (editor: Editor, format: string) => {
   const isActive = isFormatActive(editor, format);
@@ -37,42 +35,6 @@ const isFormatActive = (editor: Editor, format: string) => {
     mode: 'all',
   });
   return !!match;
-};
-
-export const wrapLink = (editor: Editor, url: string) => {
-  if (isLinkActive(editor)) {
-    unwrapLink(editor);
-  }
-
-  const { selection } = editor;
-  const isCollapsed = selection && Range.isCollapsed(selection);
-  const link: CustomElement = {
-    type: 'link',
-    url,
-    children: [{ text: '', id: makeNodeId() }],
-    id: makeNodeId(),
-  };
-
-  if (isCollapsed) {
-    Transforms.insertNodes(editor, link);
-  } else {
-    Transforms.wrapNodes(editor, link, { split: true });
-    Transforms.collapse(editor, { edge: 'end' });
-  }
-};
-
-export const unwrapLink = (editor: Editor) => {
-  Transforms.unwrapNodes(editor, {
-    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
-  });
-};
-
-const isLinkActive = (editor: Editor) => {
-  const [link] = Editor.nodes(editor, {
-    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
-  });
-
-  return !!link;
 };
 
 export const InlineToolbar = () => {
@@ -125,8 +87,6 @@ export const InlineToolbar = () => {
     };
 
     const handleMouseDown = (event: MouseEvent) => {
-      console.log('handleMouseDown', event);
-
       if (
         event &&
         event?.target &&

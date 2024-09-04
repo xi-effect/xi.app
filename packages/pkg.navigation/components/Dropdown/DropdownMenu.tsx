@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
-import { CommunityTemplateT } from '../../type';
+import { CommunityTemplateT } from '../../types';
 import { RetrieveCommunityT } from '../types';
 
 export const DropdownMenuBasic = () => {
