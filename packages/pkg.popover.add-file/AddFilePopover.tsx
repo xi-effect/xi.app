@@ -1,4 +1,4 @@
-/* eslint-disable no-irregular-whitespace */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 'use client';
 
@@ -76,6 +76,10 @@ export const AddFilePopover = ({
   });
 
   const { control, handleSubmit } = form;
+
+  const handleInputChange = (files: FileList | null) => {
+    if (files && files.length) handleFileUpload(files[0]);
+  };
 
   // тут используется для преобразования изображения в webp
   const resizeFile = (file: File | Blob) =>
@@ -225,13 +229,27 @@ export const AddFilePopover = ({
   return (
     <div className="">
       <div className="mb-4 flex">
-        <Button
-          onClick={() => setStage('load')}
-          variant={stage === 'load' ? 'default' : 'ghost'}
-          size="s"
-        >
-          Загрузить
-        </Button>
+        <div>
+          <label
+            htmlFor="uploadImageInput"
+            onClick={() => setStage('load')}
+            onKeyUp={() => setStage('load')}
+            className={`border-box inline-flex h-8 cursor-pointer items-center justify-center whitespace-nowrap rounded-md border px-3 pb-[2px] text-sm font-medium ${
+              stage === 'load'
+                ? 'bg-brand-80 hover:bg-brand-100 active:bg-brand-100 focus:bg-brand-100 text-gray-0 dark:text-gray-100'
+                : 'bg-gray-0 hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5 border-0 text-gray-100'
+            }`}
+          >
+            Загрузить
+            <input
+              id="uploadImageInput"
+              accept="image/*"
+              onChange={(e) => handleInputChange(e.target.files)}
+              className="sr-only"
+              type="file"
+            />
+          </label>
+        </div>
         <Button
           onClick={() => setStage('link')}
           variant={stage === 'link' ? 'default' : 'ghost'}

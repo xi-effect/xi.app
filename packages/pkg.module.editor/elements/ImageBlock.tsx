@@ -16,7 +16,7 @@ export const ImageBlock = ({ element, children, attributes }: ImageBlockPropsT) 
       <Image
         alt={(element.children[0] as CustomText).text || 'Подпись изображения'}
         src={`${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/${element.url}/`}
-        className="border-gray-10 h-auto w-auto rounded-lg border"
+        className="border-gray-10 mx-auto h-auto max-h-[70dvh] w-auto rounded-lg border"
         width={400}
         height={225}
         {...attributes}
