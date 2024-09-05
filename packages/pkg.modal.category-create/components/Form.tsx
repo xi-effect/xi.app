@@ -32,10 +32,11 @@ const FormSchema = z.object({
 type FormSchemaT = z.infer<typeof FormSchema>;
 
 // Варианты каналов, которые можно добавить
-const channelsOptions = ['Объявления', 'Задания', 'Видеоконференция', 'Чат'];
+const channelsOptions = ['Объявления', 'Доска', 'Видеоконференция'];
 
 const channelDict: { [key in string]: string } = {
   Объявления: 'posts',
+  Доска: 'board',
   Задания: 'tasks',
   Видеоконференция: 'call',
   Чат: 'chat',
@@ -59,7 +60,6 @@ type NewChannelsT = DataAnswerT & {
 
 export const Form = ({ onOpenChange }: FormT) => {
   const [isButtonActive, setIsButtonActive] = React.useState(true);
-  const newChannels: NewChannelsT[] = [];
 
   const socket = useMainSt((state) => state.socket);
   const communityId = useMainSt((state) => state.communityMeta.id);
@@ -94,43 +94,51 @@ export const Form = ({ onOpenChange }: FormT) => {
     form.setValue('channels', updatedChannels);
   };
 
-  const createChannels = async (channelsFromForm: string[], categoryId: number): Promise<void> => {
-    for (const item of channelsFromForm) {
-      // eslint-disable-next-line no-await-in-loop
-      await new Promise<void>((resolve, reject) => {
-        socket?.emit(
-          'create-channel',
-          {
-            community_id: communityId,
-            category_id: categoryId,
-            data: {
-              kind: channelDict[item],
-              name: item,
-              description: null,
-            },
-          },
-          (status: number, dataAnswer: DataAnswerT) => {
-            console.log(channels);
-            if (status === 201) {
-              newChannels.push({
-                id: dataAnswer.id,
-                name: dataAnswer.name,
-                description: dataAnswer.description,
-                uid: nanoid(),
-                categoryId,
-                kind: dataAnswer.kind,
-              });
-              resolve();
-            } else {
-              reject(new Error('Ошибка при создании канала'));
-            }
-          },
-        );
-      });
+  // Рекурсивная функция для последовательного создания каналов
+  const createChannels = (
+    channelsFromForm: string[],
+    categoryId: number,
+    index: number,
+    newChannels: NewChannelsT[],
+  ) => {
+    if (index >= channelsFromForm.length) {
+      updatedChannels([
+        ...(channels || []),
+        ...newChannels,
+      ]);
+      return;
     }
+
+    const item = channelsFromForm[index];
+
+    socket?.emit(
+      'create-channel',
+      {
+        community_id: communityId,
+        category_id: categoryId,
+        data: {
+          kind: channelDict[item],
+          name: item,
+          description: null,
+        },
+      },
+      (status: number, dataAnswer: DataAnswerT) => {
+        if (status === 201) {
+          newChannels.push({
+            id: dataAnswer.id,
+            name: dataAnswer.name,
+            description: dataAnswer.description,
+            uid: nanoid(),
+            categoryId,
+            kind: dataAnswer.kind,
+          });
+        }
+        createChannels(channelsFromForm, categoryId, index + 1, newChannels);
+      },
+    );
   };
 
-  const onSubmit = async (values: FormSchemaT) => {
+  const onSubmit = (values: FormSchemaT) => {
     setIsButtonActive(false);
 
     socket?.emit(
@@ -142,18 +150,13 @@ export const Form = ({ onOpenChange }: FormT) => {
           description: values.subtitle,
         },
       },
-      async (status: number, data: { id: number; name: string; description: string | null }) => {
+      (status: number, data: { id: number; name: string; description: string | null }) => {
         if (status === 201) {
           toast('Категория успешно создана');
 
           if (values.channels.length !== 0) {
-            await createChannels(values.channels, data.id);
+            createChannels(values.channels, data.id, 0, []);
           }
-
-          updatedChannels([
-            ...(channels || []),
-            ...newChannels,
-          ]);
 
           updateCategories([
             ...(categories || []),
@@ -219,29 +222,6 @@ export const Form = ({ onOpenChange }: FormT) => {
               </FormItem>
             )}
           />
-          {/* <div className="bg-gray-5 flex items-center justify-between gap-8 rounded-md p-4">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-100">Приватная категория</h2>
-              <p className="text-gray-80 mt-2 text-base font-normal">
-                Контент в данной категории будет доступен только выбранным классам и ролям
-              </p>
-            </div>
-            <FormField
-              control={form.control}
-              name="isPrivate"
-              render={() => (
-                <FormItem>
-                  <FormControl>
-                    <Toggle
-                      size="l"
-                      checked={form.getValues('isPrivate')}
-                      onCheckedChange={(isChecked) => form.setValue('isPrivate', isChecked)}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div> */}
         </div>
         <M.ModalFooter>
           {isButtonActive ? (
