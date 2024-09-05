@@ -8,16 +8,14 @@ import { Transforms } from 'slate';
 
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import imageCompression from 'browser-image-compression';
 import { toast } from 'sonner';
 import { post } from 'pkg.utils';
-import Resizer from 'react-image-file-resizer';
 import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import { FileUploader } from '@xipkg/fileuploader';
 import { Form, FormControl, FormField, FormItem, FormMessage, useForm } from '@xipkg/form';
-
 import { type CustomEditor } from 'pkg.module.editor/slate';
+import { resizeFile, getCompressedFile } from './utils';
 
 export type StageType = 'load' | 'link';
 
@@ -79,29 +77,6 @@ export const AddFilePopover = ({
 
   const handleInputChange = (files: FileList | null) => {
     if (files && files.length) handleFileUpload(files[0]);
-  };
-
-  // тут используется для преобразования изображения в webp
-  const resizeFile = (file: File | Blob) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        1570,
-        1570,
-        'WEBP',
-        90,
-        0,
-        (result) => {
-          resolve(result);
-        },
-        'file',
-      );
-    });
-
-  // сжать изображения, если размер больше ~ 1мб
-  const getCompressedFile = async (file: File) => {
-    const compressedFile = await imageCompression(file, { maxSizeMB: 1 });
-    return compressedFile;
   };
 
   // загрузка изображения на сервер
@@ -179,12 +154,16 @@ export const AddFilePopover = ({
             toast('Ошибка соединия при загрузке изображения');
           }
 
+          // получаем изображение, его название и размер
           const blob = await response.blob();
           fileName = getFileNameFromURL(inputData.fileLink);
           fileSize = blob.size;
+
+          // преобразуем в File, готовим к отправке на сервер и получаем ответ с id картинки
           const imageFile = new File([blob], `${fileName}.webp`);
-          getImageResponse(imageFile);
           const { data } = await getImageResponse(imageFile);
+
+          // создаем новый DOM-объект, используя полученный с сервера id
           newNode = createDefaultNode('imageBlock', data.id, fileName, fileSize);
         } catch (error) {
           toast('Не удалось загрузить изображение, попробуйте другое');
