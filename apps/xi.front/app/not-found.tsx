@@ -21,7 +21,7 @@ export default function Error404() {
           onClick={() => router.back()}
         >
           назад
-        </button>{' '}
+        </button>
         или&nbsp;
         <Link theme="brand" size="l" href="/">
           на главную
