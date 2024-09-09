@@ -3,9 +3,6 @@
 'use client';
 
 import React, { useState } from 'react';
-
-import { Transforms } from 'slate';
-
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -22,7 +19,7 @@ export type StageType = 'load' | 'link';
 type AddFilePopoverT = {
   createDefaultNode: (type: string, url?: string, fileName?: string, size?: number) => any;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleFileAttached: () => void;
+  handleFileAttached: (newNode?: CustomEditor | undefined) => void;
   type: 'image' | 'file' | 'video';
   editor: CustomEditor;
 };
@@ -60,7 +57,6 @@ export const AddFilePopover = ({
   setOpen,
   handleFileAttached,
   type,
-  editor,
 }: AddFilePopoverT) => {
   const FormSchema = z.object({
     fileLink: z.string().url('Введите корректную ссылку').min(1, 'Ссылка обязательна'),
@@ -135,8 +131,7 @@ export const AddFilePopover = ({
     }
 
     // @ts-ignore
-    Transforms.insertNodes(editor, newNode);
-    handleFileAttached();
+    handleFileAttached(newNode);
     setOpen(false);
   };
 
@@ -198,8 +193,7 @@ export const AddFilePopover = ({
         throw new Error('Unknown type');
     }
     // @ts-ignore
-    Transforms.insertNodes(editor, newNode);
-    handleFileAttached();
+    handleFileAttached(newNode);
     setOpen(false);
   };
 

@@ -8,6 +8,7 @@ import { AddFilePopover } from 'pkg.popover.add-file';
 import { Photo } from '@xipkg/icons';
 import { type CustomRenderElementProps } from './RenderElement';
 import { createDefaultNode } from '../utils/createDefaultNode';
+import { CustomEditor } from '../slate';
 
 type ImagePropsT = CustomRenderElementProps;
 
@@ -17,10 +18,11 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
   const [fileAttached, setFileAttached] = useState(false);
   const editor = useSlate();
 
-  const handleFileAttached = () => {
+  const handleFileAttached = (newNode?: CustomEditor | undefined) => {
     setFileAttached(true);
     const path = ReactEditor.findPath(editor, element);
     Transforms.removeNodes(editor, { at: path });
+    if (newNode) Transforms.insertNodes(editor, newNode, { at: path });
   };
 
   return (
