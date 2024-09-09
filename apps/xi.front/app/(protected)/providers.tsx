@@ -107,9 +107,8 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             community_id: params['community-id'],
           },
           (stats: number, { community, participant }: { community: any; participant: any }) => {
-            console.log(stats);
             if (stats === 403) {
-              setErrorCode(403);
+              return setErrorCode(403);
             }
             if (stats === 200) {
               updateCommunityMeta({
@@ -119,6 +118,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
                 description: community.description,
               });
             }
+            return null;
           },
         );
       });
@@ -187,9 +187,9 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             className="decoration-brand-20 hover:decoration-brand-100 text-brand-80 hover:text-brand-100 underline underline-offset-4 bg-transparent"
             onClick={() => router.back()}
           >
-            назад&nbsp;
+            назад
           </button>
-          или&nbsp;
+          &nbsp;или&nbsp;
           <Link theme="brand" size="l" href="/" target="_blank">
             на главную
           </Link>
