@@ -10,8 +10,7 @@ import { Logo } from 'pkg.logo';
 import { UserProfile } from '@xipkg/userprofile';
 import { useMainSt } from 'pkg.stores';
 import { useParams } from 'next/navigation';
-import { CommunityItems } from './CommunityItems';
-import { CommunityMenu } from './CommunityMenu';
+import { CommunityItems, CommunityMenu } from './Community';
 
 type BottomBarT = {
   slideIndex: number;

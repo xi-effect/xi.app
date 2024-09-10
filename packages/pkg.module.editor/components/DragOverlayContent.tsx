@@ -1,14 +1,15 @@
+/* eslint-disable import/named */
+
 import React, { useCallback, useEffect, useState } from 'react';
-import { Slate, Editable, RenderElementProps } from 'slate-react';
+import { Slate, Editable, RenderElementProps, useSlate } from 'slate-react';
 import { Move, Plus } from '@xipkg/icons';
 import { Descendant } from 'slate';
-import { useEditor } from '../Editor';
 import { RenderElement } from '../elements/RenderElement';
 import { useDecorateCode } from '../hooks/useDecorateCode';
 import { Leaf } from './Leaf';
 
 const DragOverlayContent = ({ element }: { element: Descendant }) => {
-  const editor = useEditor();
+  const editor = useSlate();
   const [value] = useState([JSON.parse(JSON.stringify(element))]); // clone
   const decorateCode = useDecorateCode();
 
@@ -47,6 +48,7 @@ const DragOverlayContent = ({ element }: { element: Descendant }) => {
           readOnly
           renderElement={renderElement}
           renderLeaf={(props) => <Leaf {...props} />}
+          // @ts-ignore
           decorate={decorateCode}
         />
       </Slate>

@@ -46,6 +46,18 @@ type FormT = {
   onOpenChange: () => void;
 };
 
+type DataAnswerT = {
+  id: number,
+  name: string,
+  description: string | null,
+  kind: string,
+};
+
+type NewChannelsT = DataAnswerT & {
+  uid: string,
+  categoryId: number,
+};
+
 export const Form = ({ onOpenChange }: FormT) => {
   const [isButtonActive, setIsButtonActive] = React.useState(true);
 
@@ -82,6 +94,50 @@ export const Form = ({ onOpenChange }: FormT) => {
     form.setValue('channels', updatedChannels);
   };
 
+  // Рекурсивная функция для последовательного создания каналов
+  const createChannels = (
+    channelsFromForm: string[],
+    categoryId: number,
+    index: number,
+    newChannels: NewChannelsT[],
+  ) => {
+    if (index >= channelsFromForm.length) {
+      updatedChannels([
+        ...(channels || []),
+        ...newChannels,
+      ]);
+      return;
+    }
+
+    const item = channelsFromForm[index];
+
+    socket?.emit(
+      'create-channel',
+      {
+        community_id: communityId,
+        category_id: categoryId,
+        data: {
+          kind: channelDict[item],
+          name: item,
+          description: null,
+        },
+      },
+      (status: number, dataAnswer: DataAnswerT) => {
+        if (status === 201) {
+          newChannels.push({
+            id: dataAnswer.id,
+            name: dataAnswer.name,
+            description: dataAnswer.description,
+            uid: nanoid(),
+            categoryId,
+            kind: dataAnswer.kind,
+          });
+        }
+        createChannels(channelsFromForm, categoryId, index + 1, newChannels);
+      },
+    );
+  };
+
   const onSubmit = (values: FormSchemaT) => {
     setIsButtonActive(false);
 
@@ -99,34 +155,7 @@ export const Form = ({ onOpenChange }: FormT) => {
           toast('Категория успешно создана');
 
           if (values.channels.length !== 0) {
-            values.channels.forEach((item) => {
-              socket?.emit(
-                'create-channel',
-                {
-                  community_id: communityId,
-                  category_id: data.id,
-                  data: {
-                    kind: channelDict[item],
-                    name: item,
-                    description: null,
-                  },
-                },
-                (status: number, dataAnswer: any) => {
-                  // TODO Каналы не создаются больше одного, надо пофиксить, мб рекурсией
-                  updatedChannels([
-                    ...(channels || []),
-                    {
-                      id: dataAnswer.id,
-                      name: dataAnswer.name,
-                      description: dataAnswer.description,
-                      uid: nanoid(),
-                      categoryId: data.id,
-                      kind: dataAnswer.kind,
-                    },
-                  ]);
-                },
-              );
-            });
+            createChannels(values.channels, data.id, 0, []);
           }
 
           updateCategories([
