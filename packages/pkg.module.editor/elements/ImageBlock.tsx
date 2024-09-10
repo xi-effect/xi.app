@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { useSortable } from '@dnd-kit/sortable';
 import { type CustomRenderElementProps } from './RenderElement';
 import { CustomText } from '../slate';
 
@@ -11,8 +12,16 @@ export const ImageBlock = ({ element, children, attributes }: ImageBlockPropsT) 
     (element.children[0] as CustomText).text === '' &&
     element.children.length === 1;
 
+  const sortable = useSortable({
+    id: element.id,
+    transition: {
+      duration: 350,
+      easing: 'ease',
+    },
+  });
+
   return (
-    <figure>
+    <figure {...sortable.listeners}>
       <Image
         alt={(element.children[0] as CustomText).text || 'Подпись изображения'}
         src={`${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/${element.url}/`}
