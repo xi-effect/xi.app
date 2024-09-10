@@ -23,10 +23,11 @@ export const ImageBlock = ({ element, children, attributes }: ImageBlockPropsT) 
   // Размер изображения в зависимости от ширины исходника.
   // Подумать, как связать с max-h, либо убрать вообще
   // const [imageWidth, setImageWidth] = useState('');
+  // const srcLink = `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/${element.url}/`;
   // useEffect(() => {
   //   const screenHeight = window.screen.availHeight;
   //   const img = new Image();
-  //   img.src = `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/${element.url}/`;
+  //   img.src = srcLink;
   //   img.onload = () => {
   //   if (img.width > 200 && img.height < (screenHeight * 0.7)) {
   //     setImageWidth('w-full');
@@ -41,7 +42,7 @@ export const ImageBlock = ({ element, children, attributes }: ImageBlockPropsT) 
       <Image
         alt={(element.children[0] as CustomText).text || 'Подпись изображения'}
         src={`${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/${element.url}/`}
-        className="border-gray-10 mx-auto h-auto max-h-[70dvh] w-auto rounded-lg border cursor-pointer"
+        className="border-gray-10 mx-auto h-auto max-h-[70dvh] w-auto cursor-pointer rounded-lg border"
         width={400}
         height={225}
         {...attributes}

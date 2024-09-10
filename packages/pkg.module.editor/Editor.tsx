@@ -65,18 +65,20 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
   const editor = useMemo(() => {
     const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
 
-    const e = withNormalize(withNodeId(
-      withReact(
-        withCursors(
-          withYHistory(withYjs(createEditor(), sharedType, { autoConnect: false })),
-          // @ts-ignore
-          provider.awareness,
-          {
-            data: randomCursorData(),
-          },
+    const e = withNormalize(
+      withNodeId(
+        withReact(
+          withCursors(
+            withYHistory(withYjs(createEditor(), sharedType, { autoConnect: false })),
+            // @ts-ignore
+            provider.awareness,
+            {
+              data: randomCursorData(),
+            },
+          ),
         ),
       ),
-    ));
+    );
 
     return e;
   }, [provider.awareness, provider.document]);
