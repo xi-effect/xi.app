@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useState } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@xipkg/popover';
-
+import { useSortable } from '@dnd-kit/sortable';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Transforms } from 'slate';
 import { AddFilePopover } from 'pkg.popover.add-file';
@@ -17,6 +17,14 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
 
   const [fileAttached, setFileAttached] = useState(false);
   const editor = useSlate();
+
+  const sortable = useSortable({
+    id: element.id,
+    transition: {
+      duration: 350,
+      easing: 'ease',
+    },
+  });
 
   const handleFileAttached = (newNode?: CustomEditor | undefined) => {
     setFileAttached(true);
@@ -37,6 +45,7 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
               role="button"
               tabIndex={0}
               {...attributes}
+              {...sortable.listeners}
             >
               <Photo className="fill-brand-80 h-10 w-9" />
               <p className="text-gray-80 ml-2 text-sm" contentEditable={false}>
