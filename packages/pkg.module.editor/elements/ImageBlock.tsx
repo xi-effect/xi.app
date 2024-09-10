@@ -23,7 +23,8 @@ export const ImageBlock = ({ element, children, attributes }: ImageBlockPropsT) 
   // Размер изображения в зависимости от ширины исходника.
   // Подумать, как связать с max-h, либо убрать вообще
   // const [imageWidth, setImageWidth] = useState('');
-  // const srcLink = `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/${element.url}/`;
+  // const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL_BACKEND;
+  // const srcLink = `${serverUrl}/api/protected/storage-service/files/${element.url}/`;
   // useEffect(() => {
   //   const screenHeight = window.screen.availHeight;
   //   const img = new Image();
