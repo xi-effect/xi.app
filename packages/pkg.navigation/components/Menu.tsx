@@ -156,7 +156,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
               />
             </div>
           </ModalTrigger>
-          <ModalContent variant="full" className="p-4 lg:p-6">
+          <ModalContent variant="full" className="h-[100dvh] min-h-[100dvh] p-8 lg:p-7">
             <UserSettings />
           </ModalContent>
         </Modal>

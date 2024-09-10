@@ -246,7 +246,7 @@ export const Navigation = ({ children }: NavigationPropT) => {
   return (
     <>
       <div className="relative hidden flex-row md:flex">
-        <div className="fixed flex h-screen min-h-screen min-w-[350px] flex-col p-6">
+        <div className="fixed flex h-[100dvh] min-h-[100dvh] min-w-[350px] flex-col p-6">
           <Menu setSlideIndex={setSlideIndex} />
         </div>
         <div className="ml-[350px] h-full w-[calc(100vw-350px)] overflow-auto">{children}</div>

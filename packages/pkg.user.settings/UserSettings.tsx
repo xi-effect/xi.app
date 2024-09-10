@@ -24,7 +24,7 @@ export const UserSettings = () => {
   const [activeQuery, setActiveQuery] = React.useState<string>(category || 'home');
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full justify-center bd">
       <div className="flex h-[100dvh] min-h-[100dvh] w-full max-w-[1132px] flex-col">
         <Header
           activeItem={activeContent}
@@ -32,7 +32,7 @@ export const UserSettings = () => {
           setShowContent={setShowContent}
           handleClose={handleClose}
         />
-        <div className="mt-4 flex h-full flex-row">
+        <div className="mt-4 flex h-[100dvh] flex-row">
           {isMobile ? (
             <div className="flex-1">
               {showContent ? (
