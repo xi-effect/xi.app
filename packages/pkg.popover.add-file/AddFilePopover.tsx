@@ -85,7 +85,10 @@ export const AddFilePopover = ({
     const formData = new FormData();
     formData.append('image', webpImage);
 
-    type responseT = {
+    const {
+      data,
+      status,
+    }: {
       data: {
         creator_user_id: number;
         id: string;
@@ -93,9 +96,7 @@ export const AddFilePopover = ({
         name: string;
       };
       status: number;
-    };
-
-    const { data, status }: responseT = await post({
+    } = await post({
       service: 'backend',
       path: '/api/protected/storage-service/files/images/',
       body: formData,
