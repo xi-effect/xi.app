@@ -24,38 +24,36 @@ export const UserSettings = () => {
   const [activeQuery, setActiveQuery] = React.useState<string>(category || 'home');
 
   return (
-    <div className="flex w-full justify-center">
-      <div className="flex h-[100dvh] min-h-[100dvh] w-full max-w-[1132px] flex-col">
-        <Header
-          activeItem={activeContent}
-          showContent={showContent}
-          setShowContent={setShowContent}
-          handleClose={handleClose}
-        />
-        <div className="mt-4 flex h-[100dvh] flex-row">
-          {isMobile ? (
-            <div className="flex-1">
-              {showContent ? (
-                <Content activeQuery={activeQuery} />
-              ) : (
-                <Menu
-                  setActiveQuery={setActiveQuery}
-                  setActiveContent={setActiveContent}
-                  setShowContent={setShowContent}
-                />
-              )}
-            </div>
-          ) : (
-            <>
+    <div className="flex h-[100dvh] min-h-[100dvh] w-full max-w-[1132px] flex-col">
+      <Header
+        activeItem={activeContent}
+        showContent={showContent}
+        setShowContent={setShowContent}
+        handleClose={handleClose}
+      />
+      <div className="mt-4 flex h-[100dvh] flex-row">
+        {isMobile ? (
+          <div className="flex-1">
+            {showContent ? (
+              <Content activeQuery={activeQuery} />
+            ) : (
               <Menu
                 setActiveQuery={setActiveQuery}
                 setActiveContent={setActiveContent}
                 setShowContent={setShowContent}
               />
-              <Content activeQuery={activeQuery} />
-            </>
-          )}
-        </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <Menu
+              setActiveQuery={setActiveQuery}
+              setActiveContent={setActiveContent}
+              setShowContent={setShowContent}
+            />
+            <Content activeQuery={activeQuery} />
+          </>
+        )}
       </div>
     </div>
   );

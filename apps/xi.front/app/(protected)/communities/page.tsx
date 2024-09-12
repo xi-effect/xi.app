@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ArrowLeft, Close } from '@xipkg/icons';
+import { Close } from '@xipkg/icons';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Account, Exit, Home, Key, Palette } from '@xipkg/icons';
 
@@ -41,10 +41,10 @@ const Item = ({ index, item }: ItemPropsT) => {
 
   // eslint-disable-next-line no-undef
   const iconsDict: React.ReactNode[] = [
-    <Home className={getIconClassName('home')} />,
-    <Account className={getIconClassName('personalInfo')} />,
-    <Palette className={getIconClassName('personalisation')} />,
-    <Key className={getIconClassName('security')} />,
+    <Home className={getIconClassName()} />,
+    <Account className={getIconClassName()} />,
+    <Palette className={getIconClassName()} />,
+    <Key className={getIconClassName()} />,
     // <SoundTwo className={getIconClassName(4)} />,
   ];
 
@@ -63,7 +63,7 @@ const Item = ({ index, item }: ItemPropsT) => {
 const CommunityTestPage = () => (
   <div className="w-[100vw] h-[100dvh] min-h-[100dvh] p-4 lg:p-6 fixed left-[50%] top-[50%] z-50 grid translate-x-[-50%] translate-y-[-50%] bg-gray-0 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
     <div className="flex w-full justify-center">
-      <div className="flex h-[100dvh] min-h-[100dvh] w-full max-w-[1132px] flex-col">
+      <div className="flex h-[100vh] min-h-[100vh] w-full max-w-[1132px] flex-col">
         <div className="relative flex h-[40px] w-full items-center justify-start sm:mt-4">
           <div
             className="fixed z-50 right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 sm:bg-transparent xl:right-[-56px] xl:top-0"

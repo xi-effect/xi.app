@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ArrowLeft, Close } from '@xipkg/icons';
+import { Close } from '@xipkg/icons';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Account, Exit, Home, Key, Palette } from '@xipkg/icons';
 
@@ -41,10 +41,10 @@ const Item = ({ index, item }: ItemPropsT) => {
 
   // eslint-disable-next-line no-undef
   const iconsDict: React.ReactNode[] = [
-    <Home className={getIconClassName('home')} />,
-    <Account className={getIconClassName('personalInfo')} />,
-    <Palette className={getIconClassName('personalisation')} />,
-    <Key className={getIconClassName('security')} />,
+    <Home className={getIconClassName()} />,
+    <Account className={getIconClassName()} />,
+    <Palette className={getIconClassName()} />,
+    <Key className={getIconClassName()} />,
     // <SoundTwo className={getIconClassName(4)} />,
   ];
 
