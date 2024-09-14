@@ -1,12 +1,11 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
-/* eslint-disable import/no-extraneous-dependencies */
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { createEditor, Transforms, Editor, Descendant } from 'slate';
 import { Slate, withReact, Editable, ReactEditor, RenderElementProps } from 'slate-react';
-import { withHistory } from 'slate-history';
 
 import {
   DndContext,
@@ -19,18 +18,23 @@ import {
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
-import { isUrl, isImageUrl } from './utils/isUrl';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import * as Y from 'yjs';
+import { withCursors, withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
+import { isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
-import normalizeQuoteNode from './plugins/normalizeQuoteNode';
+import { withNormalize } from './plugins/withNormalize';
+// import normalizeQuoteNode from './plugins/normalizeQuoteNode';
 import { type MediaElement } from './slate';
 
 import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
 import { SortableElement, InlineToolbar, Leaf } from './components';
-import { wrapLink } from './components/InlineToolbar';
 
 import { useDecorateCode } from './hooks/useDecorateCode';
 import { codeEditorInsertText } from './utils/codeEditorInsertText';
+
+import { randomCursorData } from './utils/randomCursorData';
 
 import DragOverlayContent from './components/DragOverlayContent';
 
@@ -40,49 +44,53 @@ type EditorPropsT = {
   readOnly?: boolean;
 };
 
-const withInlines = (editor: Editor) => {
-  const { insertData, insertText, isInline } = editor;
-
-  editor.isInline = (element) => ['link'].includes(element.type) || isInline(element);
-
-  editor.insertText = (text: string) => {
-    if (text && isUrl(text)) {
-      wrapLink(editor, text);
-    } else {
-      insertText(text);
-    }
-  };
-
-  editor.insertData = (data: DataTransfer) => {
-    const text = data.getData('text/plain');
-
-    if (text && isUrl(text)) {
-      wrapLink(editor, text);
-    } else {
-      insertData(data);
-    }
-  };
-
-  return editor;
-};
-
-export const useEditor = () =>
-  useMemo(() => {
-    const editor = withInlines(withNodeId(withHistory(withReact(createEditor()))));
-
-    const { normalizeNode, isVoid } = editor;
-
-    editor.isVoid = (el) => el.type === 'divider' || isVoid(el);
-
-    editor.normalizeNode = (node, opt) => {
-      normalizeQuoteNode(editor, node, opt);
-      normalizeNode(node, opt);
-    };
-    return editor;
-  }, []);
-
 export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorPropsT) => {
-  const editor = useEditor();
+  const [connected, setConnected] = useState(false);
+  console.log('connected', connected);
+
+  const provider = useMemo(
+    () =>
+      new HocuspocusProvider({
+        url: 'wss://hocus.xieffect.ru',
+        name: 'slate-yjs-demo',
+        onConnect: () => setConnected(true),
+        onDisconnect: () => setConnected(false),
+        connect: false,
+        broadcast: false,
+        forceSyncInterval: 20000,
+      }),
+    [],
+  );
+
+  const editor = useMemo(() => {
+    const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
+
+    const e = withNormalize(
+      withNodeId(
+        withReact(
+          withCursors(
+            withYHistory(withYjs(createEditor(), sharedType, { autoConnect: false })),
+            // @ts-ignore
+            provider.awareness,
+            {
+              data: randomCursorData(),
+            },
+          ),
+        ),
+      ),
+    );
+
+    return e;
+  }, [provider.awareness, provider.document]);
+
+  React.useEffect(() => {
+    provider.connect();
+    return () => provider.disconnect();
+  }, [provider]);
+  React.useEffect(() => {
+    YjsEditor.connect(editor as unknown as YjsEditor);
+    return () => YjsEditor.disconnect(editor as unknown as YjsEditor);
+  }, [editor]);
 
   const decorateCode = useDecorateCode();
 
@@ -199,6 +207,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
           readOnly
           className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
           renderElement={renderElement}
+          // @ts-ignore
           decorate={decorateCode}
           renderLeaf={(props) => <Leaf {...props} />}
         />
@@ -229,6 +238,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
             className="flex flex-col gap-2 p-2 text-gray-100 focus-visible:outline-none focus-visible:[&_*]:outline-none"
             renderElement={renderElement}
             renderLeaf={(props) => <Leaf {...props} />}
+            // @ts-ignore
             decorate={decorateCode}
           />
         </SortableContext>
