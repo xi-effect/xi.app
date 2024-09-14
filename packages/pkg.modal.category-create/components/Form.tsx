@@ -47,15 +47,15 @@ type FormT = {
 };
 
 type DataAnswerT = {
-  id: number,
-  name: string,
-  description: string | null,
-  kind: string,
+  id: number;
+  name: string;
+  description: string | null;
+  kind: string;
 };
 
 type NewChannelsT = DataAnswerT & {
-  uid: string,
-  categoryId: number,
+  uid: string;
+  categoryId: number;
 };
 
 export const Form = ({ onOpenChange }: FormT) => {
@@ -102,10 +102,7 @@ export const Form = ({ onOpenChange }: FormT) => {
     newChannels: NewChannelsT[],
   ) => {
     if (index >= channelsFromForm.length) {
-      updatedChannels([
-        ...(channels || []),
-        ...newChannels,
-      ]);
+      updatedChannels([...(channels || []), ...newChannels]);
       return;
     }
 

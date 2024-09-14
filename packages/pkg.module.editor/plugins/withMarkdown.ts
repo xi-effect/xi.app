@@ -47,42 +47,30 @@ function createSetInlineApply(type: Element['type']) {
     });
 
     if (rangeRef.current) {
-      Transforms.insertNodes(
-        editor,
-        { text: ' ' } as Descendant,
-        {
-          match: Text.isText,
-          at: Range.end(rangeRef.current),
-          select: true,
-        },
-      );
+      Transforms.insertNodes(editor, { text: ' ' } as Descendant, {
+        match: Text.isText,
+        at: Range.end(rangeRef.current),
+        select: true,
+      });
     }
 
     const targetRange = rangeRef.unref();
     if (targetRange) {
-      Transforms.wrapNodes(
-        editor,
-        { type, children: [] } as unknown as CustomElement,
-        {
-          at: targetRange,
-          split: true,
-        },
-      );
+      Transforms.wrapNodes(editor, { type, children: [] } as unknown as CustomElement, {
+        at: targetRange,
+        split: true,
+      });
     }
   };
 }
 
 function createSetMarkApply(key: Exclude<keyof Text, 'text'>) {
   return (editor: Editor, range: Range) => {
-    Transforms.insertNodes(
-      editor,
-      { text: ' ' } as Descendant,
-      {
-        match: Text.isText,
-        at: Range.end(range),
-        select: true,
-      },
-    );
+    Transforms.insertNodes(editor, { text: ' ' } as Descendant, {
+      match: Text.isText,
+      at: Range.end(range),
+      select: true,
+    });
     Transforms.setNodes(
       editor,
       { [key]: true },
