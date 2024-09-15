@@ -5,8 +5,8 @@ import { redirect, useParams, usePathname, useRouter } from 'next/navigation';
 import { useGetUrlWithParams } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
 
-import { ErrorPage } from 'pkg.error-page';
-import { Link } from '@xipkg/link';
+import Error404 from 'app/not-found';
+import Forbidden403 from 'app/forbidden';
 import Load from '../load';
 
 type ProtectedProviderPropsT = {
@@ -41,9 +41,9 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
       socket?.on('connect', () => {
         socket.emit(
           'retrieve-any-community',
-          (stats: number, { community, participant }: { community: any; participant: any }) => {
+          (status: number, { community, participant }: { community: any; participant: any }) => {
             console.log('11', community, participant);
-            if (stats === 200) {
+            if (status === 200) {
               updateCommunityMeta({
                 id: community.id,
                 isOwner: participant.is_owner,
@@ -77,8 +77,8 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
     if (socket?.connected === true && communityMeta.id === null) {
       socket.emit(
         'retrieve-any-community',
-        (stats: number, { community, participant }: { community: any; participant: any }) => {
-          if (stats === 200) {
+        (status: number, { community, participant }: { community: any; participant: any }) => {
+          if (status === 200) {
             updateCommunityMeta({
               id: community.id,
               isOwner: participant.is_owner,
@@ -106,11 +106,14 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
           {
             community_id: params['community-id'],
           },
-          (stats: number, { community, participant }: { community: any; participant: any }) => {
-            if (stats === 403) {
+          (status: number, { community, participant }: { community: any; participant: any }) => {
+            if (status === 403) {
               return setErrorCode(403);
             }
-            if (stats === 200) {
+            if (status === 404) {
+              return setErrorCode(404);
+            }
+            if (status === 200) {
               updateCommunityMeta({
                 id: community.id,
                 isOwner: participant.is_owner,
@@ -130,8 +133,8 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
     if (socket?.connected === true && communityMeta.id === null) {
       socket.emit(
         'retrieve-any-community',
-        (stats: number, { community, participant }: { community: any; participant: any }) => {
-          if (stats === 200) {
+        (status: number, { community, participant }: { community: any; participant: any }) => {
+          if (status === 200) {
             updateCommunityMeta({
               id: community.id,
               isOwner: participant.is_owner,
@@ -174,29 +177,13 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   if (isLogin === null) return <Load />;
 
   if (errorCode === 403) {
-    return (
-      <ErrorPage
-        title="Доступ запрещён"
-        errorCode={403}
-        text="У вас нет прав на просмотр данной страницы"
-      >
-        <p className="text-gray-80 text-m-base">
-          Вернитесь&nbsp;
-          <button
-            type="button"
-            className="decoration-brand-20 hover:decoration-brand-100 text-brand-80 hover:text-brand-100 underline underline-offset-4 bg-transparent"
-            onClick={() => router.back()}
-          >
-            назад
-          </button>
-          &nbsp;или&nbsp;
-          <Link theme="brand" size="l" href="/" target="_blank">
-            на главную
-          </Link>
-        </p>
-      </ErrorPage>
-    );
+    return <Forbidden403 />;
   }
+
+  if (errorCode === 404) {
+    return <Error404 />;
+  }
+
   return children;
 };
 
