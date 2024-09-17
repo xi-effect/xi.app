@@ -50,6 +50,7 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
               handleFileAttached={handleFileAttached}
               type="image"
               editor={editor}
+              acceptedExtensions="image/*"
             />
           </PopoverContent>
         </Popover>

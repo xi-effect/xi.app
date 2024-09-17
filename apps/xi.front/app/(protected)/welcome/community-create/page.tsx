@@ -220,7 +220,7 @@ export default function WelcomeCommunityCreate() {
               />
               <FileUploader
                 onChange={handleInput}
-                accept=".webp, '.jpg', '.png"
+                accept="image/*"
                 withError={false}
                 withLargeError={false}
                 size="small"

@@ -183,7 +183,7 @@ export default function WelcomeUserInfo() {
               />
               <FileUploader
                 onChange={handleInput}
-                accept="webp', 'jpg', 'png"
+                accept="image/*"
                 withError={false}
                 withLargeError={false}
                 size="small"
