@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
 import { RetrieveCommunityT } from '../types';
 import { AvatarPreview } from '../AvatarPreview';
-import { CommunityTemplateT } from '../../types';
+import { CommunityTemplateT } from '../../type';
 
 export const CommunityLink = ({
   community,

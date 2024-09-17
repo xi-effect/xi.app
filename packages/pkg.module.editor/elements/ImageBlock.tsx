@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import React from 'react';
 import Image from 'next/image';
 import { useSortable } from '@dnd-kit/sortable';

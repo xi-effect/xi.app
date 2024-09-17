@@ -4,16 +4,16 @@ import { ErrorPage } from 'pkg.error-page';
 import { Link } from '@xipkg/link';
 import { useRouter } from 'next/navigation';
 
-export default function Error404() {
+export default function Forbidden403() {
   const router = useRouter();
 
   return (
     <ErrorPage
-      title="Страница не найдена"
-      text="В адресе есть ошибка или страница удалена"
-      errorCode={404}
+      title="Доступ запрещён"
+      errorCode={403}
+      text="У вас нет прав на просмотр данной страницы"
     >
-      <p>
+      <p className="text-gray-80 text-m-base">
         Вернитесь&nbsp;
         <button
           type="button"
@@ -23,7 +23,7 @@ export default function Error404() {
           назад
         </button>
         &nbsp;или&nbsp;
-        <Link theme="brand" size="l" href="/">
+        <Link theme="brand" size="l" href="/" target="_blank">
           на главную
         </Link>
       </p>

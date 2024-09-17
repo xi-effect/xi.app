@@ -1,9 +1,12 @@
 'use client';
 
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { redirect, useParams, usePathname, useRouter } from 'next/navigation';
 import { useGetUrlWithParams } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
+
+import Error404 from 'app/not-found';
+import Forbidden403 from 'app/forbidden';
 import Load from '../load';
 
 type ProtectedProviderPropsT = {
@@ -11,6 +14,8 @@ type ProtectedProviderPropsT = {
 };
 
 const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
+  const [errorCode, setErrorCode] = useState<number | null>(null);
+
   const params = useParams<{ 'community-id': string }>();
 
   const socket = useMainSt((state) => state.socket);
@@ -28,14 +33,17 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
 
+    // Если 403 ошибка, не перенапрвляем сразу на страницу доступного сообщества
+    if (errorCode !== null) return;
+
     if (socket?.connected === false && typeof params['community-id'] !== 'string') {
       // Если мы не знаем id текущего сообщества, мы получаем любое и редиректим туда пользователя
       socket?.on('connect', () => {
         socket.emit(
           'retrieve-any-community',
-          (stats: number, { community, participant }: { community: any; participant: any }) => {
+          (status: number, { community, participant }: { community: any; participant: any }) => {
             console.log('11', community, participant);
-            if (stats === 200) {
+            if (status === 200) {
               updateCommunityMeta({
                 id: community.id,
                 isOwner: participant.is_owner,
@@ -69,8 +77,8 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
     if (socket?.connected === true && communityMeta.id === null) {
       socket.emit(
         'retrieve-any-community',
-        (stats: number, { community, participant }: { community: any; participant: any }) => {
-          if (stats === 200) {
+        (status: number, { community, participant }: { community: any; participant: any }) => {
+          if (status === 200) {
             updateCommunityMeta({
               id: community.id,
               isOwner: participant.is_owner,
@@ -98,8 +106,14 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
           {
             community_id: params['community-id'],
           },
-          (stats: number, { community, participant }: { community: any; participant: any }) => {
-            if (stats === 200) {
+          (status: number, { community, participant }: { community: any; participant: any }) => {
+            if (status === 403) {
+              return setErrorCode(403);
+            }
+            if (status === 404) {
+              return setErrorCode(404);
+            }
+            if (status === 200) {
               updateCommunityMeta({
                 id: community.id,
                 isOwner: participant.is_owner,
@@ -107,6 +121,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
                 description: community.description,
               });
             }
+            return null;
           },
         );
       });
@@ -118,8 +133,8 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
     if (socket?.connected === true && communityMeta.id === null) {
       socket.emit(
         'retrieve-any-community',
-        (stats: number, { community, participant }: { community: any; participant: any }) => {
-          if (stats === 200) {
+        (status: number, { community, participant }: { community: any; participant: any }) => {
+          if (status === 200) {
             updateCommunityMeta({
               id: community.id,
               isOwner: participant.is_owner,
@@ -160,6 +175,14 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   }, [isLogin]);
 
   if (isLogin === null) return <Load />;
+
+  if (errorCode === 403) {
+    return <Forbidden403 />;
+  }
+
+  if (errorCode === 404) {
+    return <Error404 />;
+  }
 
   return children;
 };

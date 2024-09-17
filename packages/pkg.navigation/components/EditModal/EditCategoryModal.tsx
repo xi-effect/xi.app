@@ -4,7 +4,7 @@ import { Button } from '@xipkg/button';
 import { Close } from '@xipkg/icons';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
-import { EditCategoryFormT, EditCategoryModalPropsT } from '../../types';
+import { EditCategoryFormT, EditCategoryModalPropsT } from '../../type';
 // import { PrivateCategoryToggle } from './PrivateCategoryToggle';
 
 export const EditCategoryModal = ({
