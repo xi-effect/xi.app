@@ -24,7 +24,7 @@ export const UserSettings = () => {
   const [activeQuery, setActiveQuery] = React.useState<string>(category || 'home');
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full items-center h-[100svh] justify-center">
       <div className="flex h-full min-h-full w-full max-w-[1132px] flex-col">
         <Header
           activeItem={activeContent}
