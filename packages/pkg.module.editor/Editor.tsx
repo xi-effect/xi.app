@@ -24,7 +24,6 @@ import { withCursors, withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
 import { isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import { withNormalize } from './plugins/withNormalize';
-// import normalizeQuoteNode from './plugins/normalizeQuoteNode';
 import { type MediaElement } from './slate';
 
 import { RenderElement } from './elements/RenderElement';
@@ -52,12 +51,19 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     () =>
       new HocuspocusProvider({
         url: 'wss://hocus.xieffect.ru',
-        name: 'slate-yjs-demo',
+        name: 'test/slate-yjs-demo',
         onConnect: () => setConnected(true),
         onDisconnect: () => setConnected(false),
         connect: false,
         broadcast: false,
         forceSyncInterval: 20000,
+        onAuthenticated: () => {},
+        onAuthenticationFailed: (data) => {
+          console.log('onAuthenticationFailed', data);
+          if (data.reason === 'permission-denied') {
+            console.error('hocuspocus: permission-denied');
+          }
+        },
       }),
     [],
   );
@@ -158,7 +164,8 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
 
   const handleOnDragEnd = (event: DragEndEvent) => {
     const overId = event.over?.id;
-    const overIndex = editor.children.findIndex((x) => x.id === overId);
+    const edChildren = editor.children;
+    const overIndex = edChildren.findIndex((x) => x.id === overId);
 
     if (overId !== draggingElementId && overIndex !== -1) {
       Transforms.moveNodes(editor, {
@@ -200,7 +207,9 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
     }
   };
 
-  if (readOnly) {
+  console.log('editor', editor);
+
+  if (provider.authorizedScope === 'readonly' || readOnly) {
     return (
       <Slate editor={editor} initialValue={initialValue ?? []}>
         <Editable

@@ -5,11 +5,15 @@
     "dev": "turbo run dev --concurrency 30",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "format-check": "prettier --check \"**/*.{ts,tsx,md}\""
+    "format-check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@turbo/gen": "2.0.5",
     "@xipkg/eslint": "1.4.0",
+    "husky": "^9.1.6",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "turbo": "2.0.5"
