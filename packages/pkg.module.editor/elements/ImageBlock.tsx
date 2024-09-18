@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useSortable } from '@dnd-kit/sortable';
 import { type CustomRenderElementProps } from './RenderElement';
 import { CustomText } from '../slate';
 
@@ -14,38 +13,12 @@ export const ImageBlock = ({ element, children, attributes }: ImageBlockPropsT) 
     (element.children[0] as CustomText).text === '' &&
     element.children.length === 1;
 
-  const sortable = useSortable({
-    id: element.id,
-    transition: {
-      duration: 350,
-      easing: 'ease',
-    },
-  });
-
-  // Размер изображения в зависимости от ширины исходника.
-  // Подумать, как связать с max-h, либо убрать вообще
-  // const [imageWidth, setImageWidth] = useState('');
-  // const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL_BACKEND;
-  // const srcLink = `${serverUrl}/api/protected/storage-service/files/${element.url}/`;
-  // useEffect(() => {
-  //   const screenHeight = window.screen.availHeight;
-  //   const img = new Image();
-  //   img.src = srcLink;
-  //   img.onload = () => {
-  //   if (img.width > 200 && img.height < (screenHeight * 0.7)) {
-  //     setImageWidth('w-full');
-  //   } else {
-  //     setImageWidth('w-auto');
-  //   }
-  //   };
-  // }, [imageWidth]);
-
   return (
-    <figure {...sortable.listeners}>
+    <figure>
       <Image
         alt={(element.children[0] as CustomText).text || 'Подпись изображения'}
         src={`${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/protected/storage-service/files/${element.url}/`}
-        className="border-gray-10 mx-auto h-auto max-h-[70dvh] w-auto cursor-pointer rounded-lg border"
+        className="border-gray-10 mx-auto h-auto max-h-[70dvh] w-auto rounded-lg border"
         width={400}
         height={225}
         {...attributes}
