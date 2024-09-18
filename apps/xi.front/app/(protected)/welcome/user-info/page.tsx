@@ -34,9 +34,14 @@ const readFile = (file: File) =>
   });
 
 const FormSchema = z.object({
-  displayName: z.string({
-    required_error: 'Обязательное поле',
-  }),
+  displayName: z
+    .string({
+      required_error: 'Обязательное поле',
+    })
+    .trim()
+    .min(2, {
+      message: 'Минимальная длина – 2 символа',
+    }),
 });
 
 type RequestBody = {
