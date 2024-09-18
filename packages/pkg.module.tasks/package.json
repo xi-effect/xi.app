@@ -12,7 +12,7 @@
     "@xipkg/button": "*",
     "@xipkg/dropdown": "*",
     "@xipkg/file": "^2.0.0",
-    "@xipkg/fileuploader": "^2.0.0",
+    "@xipkg/fileuploader": "3.0.0",
     "@xipkg/icons": "^1.1.1",
     "@xipkg/input": "^1.0.0",
     "@xipkg/modal": "^3.0.0",

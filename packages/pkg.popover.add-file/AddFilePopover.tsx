@@ -22,6 +22,7 @@ type AddFilePopoverT = {
   handleFileAttached: (newNode?: CustomEditor | undefined) => void;
   type: 'image' | 'file' | 'video';
   editor: CustomEditor;
+  acceptedExtensions?: string;
 };
 
 const getFileNameFromURL = (url: string) => {
@@ -57,6 +58,8 @@ export const AddFilePopover = ({
   setOpen,
   handleFileAttached,
   type,
+  editor,
+  acceptedExtensions = 'image/*, video/*, application/*',
 }: AddFilePopoverT) => {
   const FormSchema = z.object({
     fileLink: z.string().url('Введите корректную ссылку').min(1, 'Ссылка обязательна'),
@@ -234,7 +237,7 @@ export const AddFilePopover = ({
       </div>
       {stage === 'load' ? (
         <div className="min-w-96 max-[900px]:min-w-full">
-          <FileUploader onChange={(files) => handleFileUpload(files[0])} />
+          <FileUploader onChange={(files) => handleFileUpload(files[0])} accept={acceptedExtensions} />
         </div>
       ) : (
         <Form {...form}>
