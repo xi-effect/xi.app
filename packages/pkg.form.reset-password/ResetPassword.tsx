@@ -46,10 +46,15 @@ export const ResetPassword = () => {
       service: 'auth',
       path: '/api/password-reset/requests/',
       body: {
-        email: email.toLowerCase(),
+        email,
+      },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
     });
-    console.log('status', status);
+
     if (status === 202) {
       setEmailSent(true);
     } else if (status === 404) {
