@@ -23,12 +23,20 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const communityMeta = useMainSt((state) => state.communityMeta);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
+  const channels = useMainSt((state) => state.channels);
 
   const isLogin = useMainSt((state) => state.isLogin);
 
   const pathname = usePathname();
   const router = useRouter();
   const getUrlWithParams = useGetUrlWithParams();
+
+  useEffect(() => {
+    const channelIds = channels?.map(({ id }) => id);
+    if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
+      setErrorCode(403);
+    }
+  }, [params, channels]);
 
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
