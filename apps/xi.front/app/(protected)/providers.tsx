@@ -32,8 +32,8 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const getUrlWithParams = useGetUrlWithParams();
 
   useEffect(() => {
-    const channelId = Number(params['channel-id']);
-    if (channelId && !channels?.some(({ id }) => id === channelId)) {
+    const channelIds = channels?.map(({ id }) => id);
+    if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
       setErrorCode(403);
     }
   }, [params, channels]);
