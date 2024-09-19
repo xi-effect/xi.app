@@ -25,7 +25,7 @@ export const UserSettings = () => {
 
   return (
     <div className="flex w-full justify-center">
-      <div className="flex h-[100dvh] min-h-[100dvh] w-full max-w-[1132px] flex-col">
+      <div className="flex h-full min-h-full w-full max-w-[1132px] flex-col">
         <Header
           activeItem={activeContent}
           showContent={showContent}
