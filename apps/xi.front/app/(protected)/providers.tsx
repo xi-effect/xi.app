@@ -31,8 +31,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const router = useRouter();
   const getUrlWithParams = useGetUrlWithParams();
 
-  // console.log(communityMeta, Boolean(communityMeta.name));
-
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
 
