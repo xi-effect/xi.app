@@ -86,7 +86,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </>
         )}
         <Providers>
-          <div className="flex flex-row w-full min-h-screen">{children}</div>
+          <div className="flex flex-row w-full min-h-[100dvh]">{children}</div>
         </Providers>
       </body>
     </html>

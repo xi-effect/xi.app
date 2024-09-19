@@ -1,109 +1,95 @@
-'use client';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Close } from '@xipkg/icons';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Account, Exit, Home, Key, Palette } from '@xipkg/icons';
 
-import { redirect } from 'next/navigation';
-import { useMainSt } from 'pkg.stores';
-import { useEffect } from 'react';
-import { toast } from 'sonner';
+type ItemT = {
+  name: string;
+  query: string;
+};
 
-export default function CommunitiesLoading() {
-  const isLogin = useMainSt((state) => state.isLogin);
-  const initSocket = useMainSt((state) => state.initSocket);
+const options: ItemT[] = [
+  {
+    name: 'Главная',
+    query: 'home',
+  },
+  {
+    name: 'Личные данные',
+    query: 'personalInfo',
+  },
+  {
+    name: 'Персонализация',
+    query: 'personalisation',
+  },
+  {
+    name: 'Безопасность',
+    query: 'security',
+  },
+  // {
+  //   name: 'Звук и видео',
+  // },
+];
 
-  // Тоже костыль
-  useEffect(() => {
-    const toastTimerId = setTimeout(() => {
-      toast('Упс, проблемы с загрузкой');
-      initSocket();
-    }, 10000);
+type ItemPropsT = {
+  index: number;
+  item: ItemT;
+};
 
-    const redirectTimerId = setTimeout(() => {
-      redirect('/communities');
-    }, 11000);
+const Item = ({ index, item }: ItemPropsT) => {
+  const getIconClassName = () =>
+    'transition-colors ease-in fill-brand-80';
 
-    return () => {
-      clearTimeout(toastTimerId);
-      clearTimeout(redirectTimerId);
-    };
-  }, []);
-
-  // Если вдруг что-то пошло не так, ещё раз иницируем соединение сокета
-  // В initSocket есть предотвращение инициализации нескольких соединений
-  useEffect(() => {
-    initSocket();
-  }, []);
-
-  useEffect(() => {
-    if (isLogin === false) {
-      redirect('/signin');
-    }
-  }, [isLogin]);
+  // eslint-disable-next-line no-undef
+  const iconsDict: React.ReactNode[] = [
+    <Home className={getIconClassName()} />,
+    <Account className={getIconClassName()} />,
+    <Palette className={getIconClassName()} />,
+    <Key className={getIconClassName()} />,
+    // <SoundTwo className={getIconClassName(4)} />,
+  ];
 
   return (
-    <>
-      <div className="hidden md:flex">
-        <div className="p-8 w-[calc(100vw-350px)] overflow-auto h-full">
-          <div className="pb-8 max-w-[1570px]">
-            <div className="flex gap-4 sm:flex-col xl:flex-row">
-              <div className="bg-gray-10 h-[48px] w-full animate-pulse rounded-[4px]" />
-              <div className="flex gap-2 w-full">
-                <div className="bg-gray-10 h-[48px] w-[48px] animate-pulse rounded-full shrink-0" />
-                <div className="bg-gray-10 h-[48px] w-full animate-pulse rounded-[4px]" />
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="bg-gray-10 h-[32px] w-[400px] animate-pulse rounded-[4px]" />
-            </div>
-          </div>
-          <div className="grid py-8 max-xs:py-4 gap-12 max-w-[1570px] xl:grid-cols-3">
-            <div className="flex flex-col gap-2">
-              <div className="bg-gray-10 h-[240px] w-full animate-pulse rounded-2xl" />
-              <div className="bg-gray-10 h-[32px] w-full animate-pulse rounded-[4px]" />
-              <div className="bg-gray-10 h-[72px] w-full animate-pulse rounded-[4px]" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="bg-gray-10 h-[240px] w-full animate-pulse rounded-2xl" />
-              <div className="bg-gray-10 h-[32px] w-full animate-pulse rounded-[4px]" />
-              <div className="bg-gray-10 h-[72px] w-full animate-pulse rounded-[4px]" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="bg-gray-10 h-[240px] w-full animate-pulse rounded-2xl" />
-              <div className="bg-gray-10 h-[32px] w-full animate-pulse rounded-[4px]" />
-              <div className="bg-gray-10 h-[72px] w-full animate-pulse rounded-[4px]" />
-            </div>
-          </div>
-          <div className="py-8 max-xs:py-4 w-full max-w-[1570px]">
-            <div className="bg-gray-10 h-[248px] w-full animate-pulse rounded-2xl" />
-          </div>
-        </div>
-      </div>
-      <div className="relative flex md:hidden">
-        <div className="p-4 w-[100vw] overflow-auto h-full">
-          <div className="pb-8 max-w-[1570px]">
-            <div className="flex gap-4 sm:flex-col xl:flex-row">
-              <div className="bg-gray-10 h-[48px] w-full animate-pulse rounded-[4px]" />
-              <div className="flex gap-2 w-full">
-                <div className="bg-gray-10 h-[48px] w-[48px] animate-pulse rounded-full shrink-0" />
-                <div className="bg-gray-10 h-[48px] w-full animate-pulse rounded-[4px]" />
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="bg-gray-10 h-[32px] w-full animate-pulse rounded-[4px]" />
-            </div>
-          </div>
-          <div className="grid py-8 max-xs:py-4 gap-12 max-w-[1570px] xl:grid-cols-3">
-            <div className="flex flex-col gap-2">
-              <div className="bg-gray-10 h-[240px] w-full animate-pulse rounded-2xl" />
-              <div className="bg-gray-10 h-[32px] w-full animate-pulse rounded-[4px]" />
-              <div className="bg-gray-10 h-[72px] w-full animate-pulse rounded-[4px]" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="bg-gray-10 h-[240px] w-full animate-pulse rounded-2xl" />
-              <div className="bg-gray-10 h-[32px] w-full animate-pulse rounded-[4px]" />
-              <div className="bg-gray-10 h-[72px] w-full animate-pulse rounded-[4px]" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+    <button
+      type="button"
+      className="text-gray-90 hover:bg-brand-0 hover:text-brand-80 bg-transparent group flex h-[40px] w-full flex-row items-center rounded-lg p-2 transition-colors ease-in hover:cursor-pointer"
+      key={index.toString()}
+    >
+      {iconsDict[index]}
+      <span className="pl-2 text-[14px] font-normal">{item.name}</span>
+    </button>
   );
-}
+};
+
+const CommunityTestPage = () => (
+  <div className="w-[100vw] h-[100dvh] min-h-[100dvh] p-4 lg:p-6 fixed left-[50%] top-[50%] z-50 grid translate-x-[-50%] translate-y-[-50%] bg-gray-0 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
+    <div className="flex w-full justify-center">
+      <div className="flex h-[100vh] min-h-[100vh] w-full max-w-[1132px] flex-col">
+        <div className="relative flex h-[40px] w-full items-center justify-start sm:mt-4">
+          <div
+            className="fixed z-50 right-[16px] ml-auto flex h-10 w-10 bg-transparent p-2 sm:absolute sm:right-0 sm:top-0 sm:bg-transparent xl:right-[-56px] xl:top-0"
+          >
+            <Close />
+          </div>
+        </div>
+        <div className="mt-4 flex h-[100dvh] flex-row">
+          <div className="flex-1">
+            <div className="flex w-full flex-col gap-1 sm:w-[220px]">
+              {options.map((item, index) => (
+                <Item item={item} index={index} key={index} />
+              ))}
+              <button
+                type="button"
+                className="text-gray-60 hover:bg-red-0 group mt-10 flex h-[40px] w-full flex-row items-center rounded-lg bg-transparent p-2 transition-colors ease-in hover:cursor-pointer hover:text-red-100"
+              >
+                <Exit className="transition-colors ease-in group-hover:fill-red-100" />
+                <span className="pl-2 text-[14px] font-normal">Выйти</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export default CommunityTestPage;
