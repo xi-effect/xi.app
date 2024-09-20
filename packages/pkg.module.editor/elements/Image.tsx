@@ -30,7 +30,7 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <div
-              className="border-gray-10 flex w-full items-center rounded-lg border p-3"
+              className="border-gray-10 bg-bkgd-block flex w-full items-center rounded-lg border p-3"
               onClick={(prev) => setOpen(!prev)}
               onKeyDown={(e) => e.key === 'Enter' && setOpen(!open)}
               role="button"
