@@ -166,6 +166,7 @@ export const DropdownMenuBasic = () => {
               <Exit size="s" className="fill-red-40 group-hover:fill-red-80 ml-auto h-4 w-4" />
             </DropdownMenuItem>
           </div>
+
           {otherCommunities && otherCommunities.length <= 7 && (
             <div className="mt-2">
               {otherCommunities.map((community, index) => (
@@ -182,8 +183,8 @@ export const DropdownMenuBasic = () => {
               </div>
             </ScrollArea>
           )}
-          <DropdownMenuSeparator />
 
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             className="group text-gray-50 sm:w-[302px]"
             onClick={() => {
