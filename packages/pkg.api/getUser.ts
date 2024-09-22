@@ -8,6 +8,7 @@ export type ResponseBodyUserT = {
   onboarding_stage: UserT['onboardingStage'];
   theme: UserT['theme'];
   email: UserT['email'];
+  last_password_change: UserT['last_password_change'];
 };
 
 export const getUser = async () => {

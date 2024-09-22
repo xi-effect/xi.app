@@ -129,6 +129,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: '',
           theme: '',
           email: '',
+          last_password_change: '',
         },
       }));
 

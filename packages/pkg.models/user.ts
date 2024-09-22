@@ -13,4 +13,5 @@ export type UserT = {
     | 'completed'
     | 'final' // Значение только на фронтенде
     | null; // Статус прохождения welcome страниц (то, что после регистрации)
+  last_password_change: string;
 };

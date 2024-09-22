@@ -17,6 +17,7 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
     displayName: '', // Уникальное имя пользователя, отображается в интерфейсе как основное
     onboardingStage: null,
     theme: '',
+    last_password_change: '',
   },
   updateUser: (value) => set((state) => ({ user: { ...state.user, ...value } })),
   getUser: async () => {
@@ -34,6 +35,7 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          last_password_change: data.last_password_change,
         },
       }));
 
