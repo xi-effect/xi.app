@@ -201,6 +201,7 @@ export const AddFilePopover = ({
   };
 
   const [stage, setStage] = useState<StageType>('load');
+  const setStageToLoad = () => setStage('load');
 
   return (
     <div className="">
@@ -208,8 +209,8 @@ export const AddFilePopover = ({
         <div>
           <label
             htmlFor="uploadImageInput"
-            onClick={() => setStage('load')}
-            onKeyUp={() => setStage('load')}
+            onClick={setStageToLoad}
+            onKeyUp={setStageToLoad}
             className={`border-box inline-flex h-8 cursor-pointer items-center justify-center whitespace-nowrap rounded-md border px-3 pb-[2px] text-sm font-medium ${
               stage === 'load'
                 ? 'bg-brand-80 hover:bg-brand-100 active:bg-brand-100 focus:bg-brand-100 text-gray-0 dark:text-gray-100'
