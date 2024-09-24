@@ -37,9 +37,9 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
     // Если 403 ошибка, не перенапрвляем сразу на страницу доступного сообщества
     if (errorCode !== null) return;
 
-    if (!communityMeta.name && !pathname.includes('/empty')) {
+    if (communityMeta.id === null && !pathname.includes('/empty')) {
       toast('Вы не состоите ни в одном сообществе');
-      redirect('/empty');
+      router.replace(getUrlWithParams('/empty'));
     }
 
     if (socket?.connected === false && typeof params['community-id'] !== 'string') {
@@ -113,6 +113,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             community_id: params['community-id'],
           },
           (status: number, { community, participant }: { community: any; participant: any }) => {
+            console.log('14', community);
             if (status === 403) {
               return setErrorCode(403);
             }
@@ -158,6 +159,34 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
       socket?.connect();
     }
   }, [socket?.connected]);
+
+  useEffect(() => {
+    if (socket?.connected) {
+      socket.on('delete-community', (deletedCommunity) => {
+        if (deletedCommunity.community_id === communityMeta.id) {
+          updateCommunityMeta({
+            id: null,
+            isOwner: false,
+            name: '',
+            description: '',
+          });
+          toast('Сообщество удалено');
+          router.replace(getUrlWithParams('/communities'));
+          router.refresh();
+        }
+      });
+    }
+
+    if (socket?.connected) {
+      socket.on('kicked-from-community', (kickedCommunity) => {
+        if (kickedCommunity.community_id === communityMeta.id) {
+          toast(`Вы исключены из сообщества ${communityMeta.name}`);
+          router.replace(getUrlWithParams('/communities'));
+          router.refresh();
+        }
+      });
+    }
+  }, [socket?.connected, communityMeta.id]);
 
   useEffect(() => {
     if (pathname !== '/communities' || (pathname === '/communities' && isLogin === null)) {
