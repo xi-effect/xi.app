@@ -42,8 +42,6 @@ const FormSchema = z
 type FormSchemaT = z.infer<typeof FormSchema>;
 
 export const NewPassword = ({ token }: { token: string }) => {
-  console.log('token', token);
-
   const router = useRouter();
 
   const form = useForm<FormSchemaT>({
@@ -58,7 +56,7 @@ export const NewPassword = ({ token }: { token: string }) => {
 
   const onSubmit = async ({ password }: FormSchemaT) => {
     trigger();
-    const { status } = await post<{ token: string, new_password: string }, {}>({
+    const { status } = await post<{ token: string; new_password: string }, {}>({
       service: 'auth',
       path: '/api/password-reset/confirmations/',
       body: {
