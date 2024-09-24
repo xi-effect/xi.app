@@ -6,7 +6,7 @@ import { ChangePasswordModal } from 'pkg.modal.change-password';
 import { ChangeEmailModal } from 'pkg.modal.change-email';
 import { useMainSt } from 'pkg.stores';
 import { ConfirmEmail } from './ConfirmEmail';
-import { passwordLastChanged } from '../utils/passwordLastChanged';
+import { getRelativeTime } from '../utils/passwordLastChanged';
 
 export const Secure = () => {
   const user = useMainSt((state) => state.user);
@@ -36,7 +36,7 @@ export const Secure = () => {
               <Key size="l" className="fill-brand-80" />
               <div className="items-star flex flex-col">
                 <span className="w-fit font-semibold">Пароль</span>
-                <span className="text-xs font-normal">{`Обновлён ${passwordLastChanged(user.last_password_change)}`}</span>
+                <span className="text-xs font-normal">{`Обновлён ${getRelativeTime(user.lastPasswordChange)}`}</span>
               </div>
               <ChevronRight className="fill-gray-80 ml-auto" />
             </button>

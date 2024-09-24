@@ -33,7 +33,6 @@
     "pkg.utils": "*",
     "pkg.utils.client": "*",
     "react": "^18.2.0",
-    "relative-time-format": "^1.1.6",
     "sonner": "1.4.41",
     "zod": "3.22.4"
   },

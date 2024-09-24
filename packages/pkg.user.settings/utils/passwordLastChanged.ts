@@ -5,7 +5,7 @@ import 'dayjs/locale/ru';
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
 
-export const passwordLastChanged = (dateString: string): string => {
+export const getRelativeTime = (dateString: string): string => {
   const date = dayjs(dateString);
   return dayjs().to(date);
 };
