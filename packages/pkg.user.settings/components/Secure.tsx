@@ -6,7 +6,7 @@ import { ChangePasswordModal } from 'pkg.modal.change-password';
 import { ChangeEmailModal } from 'pkg.modal.change-email';
 import { useMainSt } from 'pkg.stores';
 import { ConfirmEmail } from './ConfirmEmail';
-import { getRelativeTime } from '../utils/passwordLastChanged';
+import { getRelativeTime } from '../utils/getRelativeTime';
 
 export const Secure = () => {
   const user = useMainSt((state) => state.user);
