@@ -31,7 +31,13 @@ const password = z
 
 const FormSchema = z
   .object({
-    password,
+    password: z
+      .string({
+        required_error: 'Обязательное поле',
+      })
+      .min(6, {
+        message: 'Минимальная длина пароля - 6 символов',
+      }),
     confirmPassword: password,
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -40,6 +46,11 @@ const FormSchema = z
   });
 
 type FormSchemaT = z.infer<typeof FormSchema>;
+
+type RequestBodyNewPassword = {
+  token: string
+  new_password: string
+};
 
 export const NewPassword = ({ token }: { token: string }) => {
   const router = useRouter();
@@ -56,7 +67,9 @@ export const NewPassword = ({ token }: { token: string }) => {
 
   const onSubmit = async ({ password }: FormSchemaT) => {
     trigger();
-    const { status } = await post<{ token: string; new_password: string }, {}>({
+    setIsButtonActive(false);
+
+    const { status } = await post<RequestBodyNewPassword, {}>({
       service: 'auth',
       path: '/api/password-reset/confirmations/',
       body: {
@@ -73,12 +86,12 @@ export const NewPassword = ({ token }: { token: string }) => {
     if (status === 204) {
       toast('Пароль успешно изменен');
       router.replace('/signin');
-    } else if (status === 401) {
-      toast('Неверная ссылка');
     } else {
-      toast('Произошла ошибка при валидации');
+      toast('Неверная ссылка');
     }
   };
+
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
 
   const [isPasswordShowFirst, setIsPasswordShowFirst] = React.useState(false);
   const [isPasswordShowSecond, setIsPasswordShowSecond] = React.useState(false);
@@ -164,9 +177,13 @@ export const NewPassword = ({ token }: { token: string }) => {
               Войти
             </Link>
           </div>
-          <Button variant="default" type="submit">
-            Сохранить
-          </Button>
+          {isButtonActive ? (
+            <Button variant="default" type="submit">
+              Сохранить
+            </Button>
+          ) : (
+            <Button variant="default-spinner" className="w-[214px]" disabled />
+          )}
         </div>
       </form>
     </Form>
