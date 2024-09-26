@@ -50,6 +50,7 @@ export const File = ({ element, children, attributes }: FilePropsT) => {
               handleFileAttached={handleFileAttached}
               type="file"
               editor={editor}
+              acceptedExtensions="application/*"
             />
           </PopoverContent>
         </Popover>

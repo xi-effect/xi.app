@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useState } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@xipkg/popover';
-
 import { ReactEditor, useSlate } from 'slate-react';
 import { Transforms } from 'slate';
 import { AddFilePopover } from 'pkg.popover.add-file';
 import { Photo } from '@xipkg/icons';
 import { type CustomRenderElementProps } from './RenderElement';
 import { createDefaultNode } from '../utils/createDefaultNode';
+import { CustomEditor } from '../slate';
 
 type ImagePropsT = CustomRenderElementProps;
 
@@ -17,10 +17,11 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
   const [fileAttached, setFileAttached] = useState(false);
   const editor = useSlate();
 
-  const handleFileAttached = () => {
+  const handleFileAttached = (newNode?: CustomEditor | undefined) => {
     setFileAttached(true);
     const path = ReactEditor.findPath(editor, element);
     Transforms.removeNodes(editor, { at: path });
+    if (newNode) Transforms.insertNodes(editor, newNode, { at: path });
   };
 
   return (
@@ -29,7 +30,7 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <div
-              className="border-gray-10 flex w-full cursor-pointer items-center rounded-lg border p-3"
+              className="border-gray-10 bg-bkgd-block flex w-full items-center rounded-lg border p-3"
               onClick={(prev) => setOpen(!prev)}
               onKeyDown={(e) => e.key === 'Enter' && setOpen(!open)}
               role="button"
@@ -50,6 +51,7 @@ export const Image = ({ element, children, attributes }: ImagePropsT) => {
               handleFileAttached={handleFileAttached}
               type="image"
               editor={editor}
+              acceptedExtensions="image/*"
             />
           </PopoverContent>
         </Popover>

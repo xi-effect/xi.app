@@ -182,7 +182,7 @@ export default function CommunityCreate({ setStage, setTab }: CommunityCreatePro
               withLoadingToServer={false}
               onBase64Return={handleBase64}
             />
-            <FileUploader size="small" onChange={handleFileInput} />
+            <FileUploader size="small" onChange={handleFileInput} accept="image/*" />
           </div>
         </div>
         <Form {...form}>
