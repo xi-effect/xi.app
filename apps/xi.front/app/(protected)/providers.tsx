@@ -16,6 +16,7 @@ type ProtectedProviderPropsT = {
 
 const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const [errorCode, setErrorCode] = useState<number | null>(null);
+  const [redirecting, setRedirecting] = useState<boolean>(false);
 
   const params = useParams<{ 'community-id': string }>();
 
@@ -36,6 +37,17 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
     // Если 403 ошибка, не перенапрвляем сразу на страницу доступного сообщества
     if (errorCode !== null) return;
+
+    if (
+      (communities === undefined || communities?.length === 0) &&
+      communityMeta.id === null &&
+      !pathname.includes('/empty')
+    ) {
+      toast('Вы не состоите ни в одном сообществе');
+      setRedirecting(true);
+      router.replace(getUrlWithParams('/empty'));
+      return;
+    }
 
     if (socket?.connected === false && typeof params['community-id'] !== 'string') {
       // Если мы не знаем id текущего сообщества, мы получаем любое и редиректим туда пользователя
@@ -98,16 +110,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
         },
       );
 
-      return;
-    }
-
-    if (
-      (communities === undefined || communities?.length === 0) &&
-      communityMeta.id === null &&
-      !pathname.includes('/empty')
-    ) {
-      toast('Вы не состоите ни в одном сообществе');
-      router.replace(getUrlWithParams('/empty'));
       return;
     }
 
@@ -216,6 +218,10 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   }, [isLogin]);
 
   if (isLogin === null) return <Load />;
+
+  if (redirecting) {
+    return children;
+  }
 
   if (errorCode === 403) {
     return <Forbidden403 />;
