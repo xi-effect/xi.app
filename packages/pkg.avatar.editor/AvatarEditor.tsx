@@ -143,8 +143,10 @@ export const AvatarEditorComponent = ({
         <ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />
         </ModalCloseButton>
-        <ModalHeader>
-          <ModalTitle>Изменение фотографии</ModalTitle>
+        <ModalHeader className="mb-6">
+          <ModalTitle className="xs:max-w-none max-w-[240px] leading-8">
+            Изменение фотографии
+          </ModalTitle>
         </ModalHeader>
         <div className="relative h-[300px] w-[calc(100%-48px)]">
           <Cropper
@@ -166,12 +168,13 @@ export const AvatarEditorComponent = ({
                 borderRadius: '8px',
                 left: '24px',
                 width: '100%',
+                height: '300px',
               },
             }}
             minZoom={MIN_ZOOM}
           />
         </div>
-        <div className="relative flex items-center justify-center px-6 pb-6 pt-4">
+        <div className="flex h-[60px] w-full items-center justify-center px-6 pb-6 pt-4">
           <button
             aria-label="Минус"
             type="button"
@@ -181,7 +184,7 @@ export const AvatarEditorComponent = ({
             <Minus size="m" />
           </button>
           <Slider
-            className="w-[250px]"
+            className="flex-1"
             value={[zoom]}
             max={MAX_ZOOM}
             step={ZOOM_STEP}
@@ -198,11 +201,17 @@ export const AvatarEditorComponent = ({
             <Plus size="m" />
           </button>
         </div>
-        <ModalFooter className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end sm:space-x-2">
-          <Button onClick={() => onOpenChange(false)} className="md:ml-auto" variant="secondary">
+        <ModalFooter className="flex flex-col gap-4 sm:flex-row sm:items-start">
+          <Button onClick={() => showCroppedImage()} className="w-full sm:w-[126px]">
+            Изменить
+          </Button>
+          <Button
+            onClick={() => onOpenChange(false)}
+            className="w-full sm:w-[126px]"
+            variant="secondary"
+          >
             Отменить
           </Button>
-          <Button onClick={() => showCroppedImage()}>Сохранить</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
