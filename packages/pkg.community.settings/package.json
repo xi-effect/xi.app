@@ -28,7 +28,6 @@
     "notistack": "3.0.1",
     "pkg.avatar.editor": "*",
     "pkg.modal.invite-community": "*",
-    "pkg.navigation": "*",
     "pkg.stores": "*",
     "pkg.utils": "*",
     "pkg.utils.client": "*",
