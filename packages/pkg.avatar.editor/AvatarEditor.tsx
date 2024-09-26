@@ -184,7 +184,7 @@ export const AvatarEditorComponent = ({
             <Minus size="m" />
           </button>
           <Slider
-            className="flex-1"
+            className="max-w-[250px] flex-1"
             value={[zoom]}
             max={MAX_ZOOM}
             step={ZOOM_STEP}
