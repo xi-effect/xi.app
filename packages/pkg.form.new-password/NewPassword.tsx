@@ -48,8 +48,8 @@ const FormSchema = z
 type FormSchemaT = z.infer<typeof FormSchema>;
 
 type RequestBodyNewPassword = {
-  token: string
-  new_password: string
+  token: string;
+  new_password: string;
 };
 
 export const NewPassword = ({ token }: { token: string }) => {
@@ -85,7 +85,7 @@ export const NewPassword = ({ token }: { token: string }) => {
 
     if (status === 204) {
       toast('Пароль успешно изменен');
-      router.replace('/signin');
+      router.push('/signin');
     } else {
       toast('Неверная ссылка');
     }
