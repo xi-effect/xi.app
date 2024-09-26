@@ -44,9 +44,11 @@ export const DropdownMenuBasic = () => {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const updateCategories = useMainSt((state) => state.updateCategories);
   const updateChannels = useMainSt((state) => state.updateChannels);
+  const updateCommunities = useMainSt((state) => state.updateCommunities);
 
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
+      updateCommunities(communities);
       const otherCommunities: CommunityTemplateT[] = communities.filter(
         (community) => community.id.toString() !== params['community-id'],
       );

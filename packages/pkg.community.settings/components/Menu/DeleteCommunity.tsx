@@ -4,6 +4,7 @@ import { useMainSt } from 'pkg.stores';
 import { useRouter } from 'next/navigation';
 import { useGetUrlWithParams } from 'pkg.utils.client';
 import { toast } from 'sonner';
+import { useCommunityStore } from 'pkg.navigation/store/communityStore';
 import { DeleteCommunityModal } from './DeleteCommunityModal';
 import { RetrieveAnyCommunityT } from './types';
 
@@ -13,6 +14,7 @@ export const DeleteCommunity = () => {
   const communityId = useMainSt((state) => state.communityMeta.id);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const getUrlWithParams = useGetUrlWithParams();
+  const { setIsOpenCommunitySettings } = useCommunityStore();
 
   const router = useRouter();
 
@@ -40,6 +42,7 @@ export const DeleteCommunity = () => {
 
                 if (community && community.id) {
                   router.replace(getUrlWithParams(`/communities/${community.id}/home`));
+                  setIsOpenCommunitySettings(false);
                   router.refresh();
                 }
               } else if (status === 404) {

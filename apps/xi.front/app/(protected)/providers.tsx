@@ -24,7 +24,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const communityMeta = useMainSt((state) => state.communityMeta);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
-
+  const communities = useMainSt((state) => state.communities);
   const isLogin = useMainSt((state) => state.isLogin);
 
   const pathname = usePathname();
@@ -36,11 +36,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
     // Если 403 ошибка, не перенапрвляем сразу на страницу доступного сообщества
     if (errorCode !== null) return;
-
-    if (communityMeta.id === null && !pathname.includes('/empty')) {
-      toast('Вы не состоите ни в одном сообществе');
-      router.replace(getUrlWithParams('/empty'));
-    }
 
     if (socket?.connected === false && typeof params['community-id'] !== 'string') {
       // Если мы не знаем id текущего сообщества, мы получаем любое и редиректим туда пользователя
@@ -91,6 +86,8 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
               name: community.name,
               description: community.description,
             });
+          } else if (status === 404) {
+            router.replace(getUrlWithParams('/empty'));
           }
 
           if (community && community.id) {
@@ -104,6 +101,16 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
       return;
     }
 
+    if (
+      (communities === undefined || communities?.length === 0) &&
+      communityMeta.id === null &&
+      !pathname.includes('/empty')
+    ) {
+      toast('Вы не состоите ни в одном сообществе');
+      router.replace(getUrlWithParams('/empty'));
+      return;
+    }
+
     // Если мы уже знаем из url id сообщества, то нам нужно запросить данные по нему
     if (socket?.connected === false && typeof params['community-id'] === 'string') {
       socket?.on('connect', () => {
@@ -113,7 +120,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             community_id: params['community-id'],
           },
           (status: number, { community, participant }: { community: any; participant: any }) => {
-            console.log('14', community);
             if (status === 403) {
               return setErrorCode(403);
             }
