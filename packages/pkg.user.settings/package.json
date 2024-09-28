@@ -21,6 +21,7 @@
     "@xipkg/select": "0.2.0",
     "@xipkg/userprofile": "2.3.0",
     "@xipkg/utils": "1.0.1",
+    "dayjs": "^1.11.13",
     "next": "^14.2.3",
     "next-themes": "^0.2.1",
     "pkg.avatar.editor": "*",

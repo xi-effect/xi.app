@@ -3,6 +3,7 @@
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { put } from 'pkg.utils';
+import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 import {
   Form,
@@ -35,6 +36,8 @@ type FormPropsT = {
 };
 
 const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
+  const updateUserInfo = useMainSt((state) => state.updateUser);
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -68,6 +71,7 @@ const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
     if (status === 200) {
       toast('Пароль успешно изменен');
       setStage('success');
+      updateUserInfo({ lastPasswordChange: responseData.last_password_change });
     } else if (responseData.detail === 'Wrong password') {
       toast('Неверный пароль');
     } else {

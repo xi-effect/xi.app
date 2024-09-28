@@ -68,6 +68,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          lastPasswordChange: data.last_password_change,
         },
       }));
       return 200;
@@ -97,6 +98,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          lastPasswordChange: data.last_password_change,
         },
       }));
       return 200;
@@ -129,6 +131,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: '',
           theme: '',
           email: '',
+          lastPasswordChange: '',
         },
       }));
 
