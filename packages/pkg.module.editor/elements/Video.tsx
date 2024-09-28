@@ -50,6 +50,7 @@ export const Video = ({ element, children, attributes }: VideoPropsT) => {
               handleFileAttached={handleFileAttached}
               type="video"
               editor={editor}
+              acceptedExtensions="video/*"
             />
           </PopoverContent>
         </Popover>

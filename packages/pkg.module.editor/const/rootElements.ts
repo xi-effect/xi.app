@@ -9,7 +9,7 @@ import {
   Text,
   Ul,
   // File,
-  // Photo,
+  Photo,
   // Video,
   Code,
 } from '@xipkg/icons';
@@ -58,10 +58,10 @@ export default {
     label: 'Разделитель',
     icon: Ul,
   },
-  // image: {
-  //   label: 'Изображение',
-  //   icon: Photo,
-  // },
+  image: {
+    label: 'Изображение',
+    icon: Photo,
+  },
   // file: {
   //   label: 'Файл',
   //   icon: File,
