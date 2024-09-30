@@ -26,7 +26,7 @@ export const AddCommunityModal = ({ open, onOpenChange }: AddCommunityModalT) =>
             <M.ModalHeader>
               <M.ModalTitle>Создание сообщества</M.ModalTitle>
             </M.ModalHeader>
-            <FormCreate />
+            <FormCreate onOpenChange={onOpenChange} />
             <div className="bg-gray-5 flex flex-col items-center rounded-b-[16px] p-8">
               <p className="text-xl font-semibold">У вас есть приглашение?</p>
               <Button

@@ -41,18 +41,26 @@ export const ResetPassword = () => {
   });
 
   const sendEmail = async ({ email }: z.infer<typeof FormSchema>) => {
-    const { data } = await post({
+    console.log('email', email);
+    const { status } = await post({
       service: 'auth',
-      path: '/password-reset/',
+      path: '/api/password-reset/requests/',
       body: {
-        email: email.toLowerCase(),
+        email,
+      },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
     });
-    // @ts-ignore
-    if (data && data.a) {
+
+    if (status === 202) {
       setEmailSent(true);
-    } else {
+    } else if (status === 404) {
       setError('email', { type: 'user', message: 'Не удалось найти аккаунт' });
+    } else {
+      setError('email', { type: 'user', message: 'Неизвестная ошибка' });
     }
   };
   const { setError } = form;

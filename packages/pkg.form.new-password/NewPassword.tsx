@@ -35,6 +35,7 @@ const FormSchema = z
     message: 'Пароли не совпадают',
     path: ['confirmPassword'],
   });
+
 type FormSchemaT = z.infer<typeof FormSchema>;
 
 export const NewPassword = () => {

@@ -38,7 +38,13 @@ export const FilesUploadModal = ({ isOpen, onConfirm, onOpenChange }: FilesUploa
           <M.ModalTitle>Загрузка файлов</M.ModalTitle>
         </M.ModalHeader>
         <div className="flex h-full flex-col gap-6 p-6">
-          <FileUploader onChange={handleFilesChange} multiple />
+          <FileUploader
+            onChange={handleFilesChange}
+            multiple
+            size="large"
+            accept=".jpg, .gif, .png, .pdf, .zip"
+            fileTypesHint={['JPG', 'GIF', 'PNG', 'PDF', 'ZIP']}
+          />
           {files.length > 0 && (
             <ul className="flex flex-col gap-4">
               {files.map((file) => (

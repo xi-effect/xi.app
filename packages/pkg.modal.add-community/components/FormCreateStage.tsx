@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useGetUrlWithParams } from 'pkg.utils.client';
 
 const FormSchema = z.object({
   name: z
@@ -28,7 +29,22 @@ const FormSchema = z.object({
     }),
 });
 
-const FormCreateBlock = () => {
+type AddCommunityModalT = {
+  onOpenChange: (value: boolean) => void;
+};
+
+type JoinResponseT = {
+  community: {
+    description: null;
+    id: number;
+    name: string;
+  };
+  participant: {
+    is_owner: boolean;
+  };
+};
+
+const FormCreateBlock = ({ onOpenChange }: AddCommunityModalT) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -41,8 +57,10 @@ const FormCreateBlock = () => {
   } = form;
 
   const socket = useMainSt((state) => state.socket);
+  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
 
   const router = useRouter();
+  const getUrlWithParams = useGetUrlWithParams();
 
   const onSubmit = ({ name }: z.infer<typeof FormSchema>) => {
     socket?.emit(
@@ -52,11 +70,29 @@ const FormCreateBlock = () => {
           name,
         },
       },
-      (status: number, data: any) => {
+      (status: number, { community, participant }: JoinResponseT) => {
         if (status === 200) {
-          router.push(`/communities/${data.community.id}/home`);
+          if (community.id) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
+            router.refresh();
+
+            toast('Сообщество успешно создано');
+          } else {
+            toast('Ошибка сервера');
+          }
         } else {
           toast('Ошибка при создании сообщества');
+        }
+
+        if (onOpenChange) {
+          onOpenChange(false);
         }
       },
     );
