@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,6 @@ import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
-import { CommunityTemplateT } from '../../type';
 import { RetrieveCommunityT } from '../types';
 
 export const DropdownMenuBasic = () => {
@@ -35,10 +34,9 @@ export const DropdownMenuBasic = () => {
 
   // Берем community-id из URL
   const params = useParams();
-  // Делим все сообщества пользователя на то, на странице которого мы сейчас
-  // и на остальные
+
   const currentCommunity = useMainSt((state) => state.communityMeta);
-  const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
+  const communities = useMainSt((state) => state.communities);
 
   const socket = useMainSt((state) => state.socket);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
@@ -49,12 +47,14 @@ export const DropdownMenuBasic = () => {
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
       updateCommunities(communities);
-      const otherCommunities: CommunityTemplateT[] = communities.filter(
-        (community) => community.id.toString() !== params['community-id'],
-      );
-      setOtherCommunities(otherCommunities);
     });
   }, [params]);
+
+  const otherCommunities = useMemo(
+    () =>
+      communities?.filter((community) => community.id?.toString() !== params['community-id']) ?? [],
+    [communities, params['community-id']],
+  );
 
   const router = useRouter();
 

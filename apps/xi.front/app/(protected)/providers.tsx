@@ -35,14 +35,10 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
 
-    // Если 403 ошибка, не перенапрвляем сразу на страницу доступного сообщества
+    // Если ошибка, не перенаправляем сразу на страницу доступного сообщества.
     if (errorCode !== null) return;
 
-    if (
-      (communities === undefined || communities?.length === 0) &&
-      communityMeta.id === null &&
-      !pathname.includes('/empty')
-    ) {
+    if (communities?.length === 0 && communityMeta.id === null && !pathname.includes('/empty')) {
       toast('Вы не состоите ни в одном сообществе');
       setRedirecting(true);
       router.replace(getUrlWithParams('/empty'));
@@ -55,7 +51,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
         socket.emit(
           'retrieve-any-community',
           (status: number, { community, participant }: { community: any; participant: any }) => {
-            console.log('11', community, participant);
             if (status === 200) {
               updateCommunityMeta({
                 id: community.id,
@@ -82,33 +77,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
           },
         );
       });
-
-      return;
-    }
-
-    // Если мы не знаем id текущего сообщества, но соединение сокета уже установлено
-    if (socket?.connected === true && communityMeta.id === null) {
-      socket.emit(
-        'retrieve-any-community',
-        (status: number, { community, participant }: { community: any; participant: any }) => {
-          if (status === 200) {
-            updateCommunityMeta({
-              id: community.id,
-              isOwner: participant.is_owner,
-              name: community.name,
-              description: community.description,
-            });
-          } else if (status === 404) {
-            router.replace(getUrlWithParams('/empty'));
-          }
-
-          if (community && community.id) {
-            router.push(getUrlWithParams(`/communities/${community.id}/home`));
-          }
-
-          return null;
-        },
-      );
 
       return;
     }
@@ -140,6 +108,33 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
           },
         );
       });
+
+      return;
+    }
+
+    // Если мы не знаем id текущего сообщества, но соединение сокета уже установлено
+    if (socket?.connected === true && communityMeta.id === null) {
+      socket.emit(
+        'retrieve-any-community',
+        (status: number, { community, participant }: { community: any; participant: any }) => {
+          if (status === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+          } else if (status === 404) {
+            router.replace(getUrlWithParams('/empty'));
+          }
+
+          if (community && community.id) {
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          }
+
+          return null;
+        },
+      );
 
       return;
     }
@@ -180,7 +175,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
           });
           toast('Сообщество удалено');
           router.replace(getUrlWithParams('/communities'));
-          router.refresh();
+          window.location.reload();
         }
       });
     }
@@ -190,7 +185,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
         if (kickedCommunity.community_id === communityMeta.id) {
           toast(`Вы исключены из сообщества ${communityMeta.name}`);
           router.replace(getUrlWithParams('/communities'));
-          router.refresh();
+          window.location.reload();
         }
       });
     }
@@ -219,15 +214,11 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   if (isLogin === null) return <Load />;
 
-  if (redirecting) {
-    return children;
-  }
-
-  if (errorCode === 403) {
+  if (!redirecting && errorCode === 403) {
     return <Forbidden403 />;
   }
 
-  if (errorCode === 404) {
+  if (!redirecting && errorCode === 404) {
     return <Error404 />;
   }
 
