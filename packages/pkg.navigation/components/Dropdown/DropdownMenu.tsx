@@ -9,6 +9,7 @@ import {
 import { CategoryAdd, ChannelAdd, Exit, PeopleInvite, Plus, Settings } from '@xipkg/icons';
 import { ScrollArea } from '@xipkg/scrollarea';
 import { useMainSt } from 'pkg.stores';
+import { shallow } from 'zustand/shallow';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
@@ -30,19 +31,31 @@ export const DropdownMenuBasic = () => {
     setIsOpenCommunitySettings,
   } = useCommunityStore();
 
-  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+  const {
+    communityMeta: currentCommunity,
+    communities,
+    socket,
+    updateCommunityMeta,
+    updateCategories,
+    updateChannels,
+    updateCommunities,
+  } = useMainSt(
+    (state) => ({
+      communityMeta: state.communityMeta,
+      communities: state.communities,
+      socket: state.socket,
+      updateCommunityMeta: state.updateCommunityMeta,
+      updateCategories: state.updateCategories,
+      updateChannels: state.updateChannels,
+      updateCommunities: state.updateCommunities,
+    }),
+    shallow,
+  );
+
+  const { isOwner } = currentCommunity;
 
   // Берем community-id из URL
   const params = useParams();
-
-  const currentCommunity = useMainSt((state) => state.communityMeta);
-  const communities = useMainSt((state) => state.communities);
-
-  const socket = useMainSt((state) => state.socket);
-  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
-  const updateCategories = useMainSt((state) => state.updateCategories);
-  const updateChannels = useMainSt((state) => state.updateChannels);
-  const updateCommunities = useMainSt((state) => state.updateCommunities);
 
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
