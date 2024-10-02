@@ -25,11 +25,12 @@ export const DeleteCommunity = () => {
       (status: number) => {
         if (status === 204) {
           setIsDeleteModalOpen(false);
-          toast('Сообщество успешно удалено');
           socket.emit(
             'retrieve-any-community',
             (status: number, { community, participant }: RetrieveAnyCommunityT) => {
               if (status === 200) {
+                toast('Сообщество успешно удалено');
+
                 updateCommunityMeta({
                   id: community.id,
                   isOwner: participant.is_owner,
@@ -41,6 +42,17 @@ export const DeleteCommunity = () => {
                   router.replace(getUrlWithParams(`/communities/${community.id}/home`));
                   router.refresh();
                 }
+              } else if (status === 404) {
+                toast('У вас больше нет сообществ');
+
+                updateCommunityMeta({
+                  id: null,
+                  isOwner: false,
+                  name: '',
+                  description: '',
+                });
+
+                router.replace(getUrlWithParams('/empty'));
               }
             },
           );
