@@ -1,6 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { post } from 'pkg.utils';
+import { toast } from 'sonner';
 import { Button } from '@xipkg/button';
 import {
   Form,
@@ -17,6 +19,7 @@ import { Link } from '@xipkg/link';
 import React from 'react';
 import * as z from 'zod';
 import { Logo } from 'pkg.logo';
+import { useRouter } from 'next/navigation';
 
 const password = z
   .string({
@@ -28,7 +31,13 @@ const password = z
 
 const FormSchema = z
   .object({
-    password,
+    password: z
+      .string({
+        required_error: 'Обязательное поле',
+      })
+      .min(6, {
+        message: 'Минимальная длина пароля - 6 символов',
+      }),
     confirmPassword: password,
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -38,7 +47,14 @@ const FormSchema = z
 
 type FormSchemaT = z.infer<typeof FormSchema>;
 
-export const NewPassword = () => {
+type RequestBodyNewPassword = {
+  token: string;
+  new_password: string;
+};
+
+export const NewPassword = ({ token }: { token: string }) => {
+  const router = useRouter();
+
   const form = useForm<FormSchemaT>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -49,9 +65,33 @@ export const NewPassword = () => {
 
   const { control, handleSubmit, trigger } = form;
 
-  const onSubmit = () => {
+  const onSubmit = async ({ password }: FormSchemaT) => {
     trigger();
+    setIsButtonActive(false);
+
+    const { status } = await post<RequestBodyNewPassword, {}>({
+      service: 'auth',
+      path: '/api/password-reset/confirmations/',
+      body: {
+        token,
+        new_password: password,
+      },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+
+    if (status === 204) {
+      toast('Пароль успешно изменен');
+      router.push('/signin');
+    } else {
+      toast('Неверная ссылка');
+    }
   };
+
+  const [isButtonActive, setIsButtonActive] = React.useState(true);
 
   const [isPasswordShowFirst, setIsPasswordShowFirst] = React.useState(false);
   const [isPasswordShowSecond, setIsPasswordShowSecond] = React.useState(false);
@@ -137,9 +177,13 @@ export const NewPassword = () => {
               Войти
             </Link>
           </div>
-          <Button variant="default" type="submit">
-            Сохранить
-          </Button>
+          {isButtonActive ? (
+            <Button variant="default" type="submit">
+              Сохранить
+            </Button>
+          ) : (
+            <Button variant="default-spinner" className="w-[214px]" disabled />
+          )}
         </div>
       </form>
     </Form>
