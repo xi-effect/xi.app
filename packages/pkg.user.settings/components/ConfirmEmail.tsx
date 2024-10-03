@@ -5,9 +5,7 @@ import { toast } from 'sonner';
 
 type ItemPropsT = {
   allowedConfirmationResend: string;
-  updateUser: (value: {
-    [key: string]: unknown;
-  }) => void
+  updateUser: (value: { [key: string]: unknown }) => void;
 };
 
 const formatTimeDifference = (allowedResendDate: Date, currentDate: Date): string => {
@@ -76,7 +74,13 @@ export const ConfirmEmail = ({ allowedConfirmationResend, updateUser }: ItemProp
         </span>
         <span className="mb-1 text-xs font-normal">Письмо не пришло?</span>
         {isTimeUp ? (
-          <Button variant="secondary-error" size="s" className="w-fit" onClick={resendConfirmation} disabled={!isButtonActive}>
+          <Button
+            variant="secondary-error"
+            size="s"
+            className="w-fit"
+            onClick={resendConfirmation}
+            disabled={!isButtonActive}
+          >
             Оправить повторно
           </Button>
         ) : (
