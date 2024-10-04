@@ -4,6 +4,7 @@ import { useMainSt } from 'pkg.stores';
 import React from 'react';
 import './index.css';
 import { useParams } from 'next/navigation';
+import { toast } from 'sonner';
 import { Board } from './Board';
 
 export const Provider = () => {
@@ -21,7 +22,11 @@ export const Provider = () => {
       },
       (status: number, { ydoc_id: YdocId }: { ydoc_id: string }) => {
         console.log('status', status);
-        setToken(YdocId);
+        if (status === 200) {
+          setToken(YdocId);
+        } else {
+          toast('Произошла ошибка при получении токена');
+        }
       },
     );
   }, []);
