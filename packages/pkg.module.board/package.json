@@ -8,7 +8,7 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@tldraw/editor": "2.4.4",
+    "@tldraw/editor": "3.2.0",
     "@xipkg/button": "2.0.0",
     "@xipkg/dropdown": "^2.1.0",
     "@xipkg/icons": "1.1.1",
@@ -19,9 +19,14 @@
     "pkg.utils.client": "*",
     "react": "^18.2.0",
     "sonner": "^1.5.0",
-    "tldraw": "^2.4.4",
+    "tldraw": "^3.2.0",
+    "@tlsync-yjs/core": "0.2.1",
     "pkg.utils": "*",
-    "pkg.stores": "*"
+    "pkg.stores": "*",
+    "@hocuspocus/provider": "2.13.6",
+    "yjs": "13.6.19",
+    "y-utility": "0.1.4"
+
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
