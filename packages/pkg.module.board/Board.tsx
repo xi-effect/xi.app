@@ -20,9 +20,9 @@ export const Board = () => {
     <Tldraw
       store={store}
       // assets={myAssetStore as TLAssetStoreT}
-      // onMount={(editor) => {
-      //   editor.updateInstanceState({ isGridMode: true });
-      // }}
+      onMount={(editor) => {
+        editor.updateInstanceState({ isGridMode: true });
+      }}
       tools={[StickerTool]}
       components={hiddenComponents}
     >
