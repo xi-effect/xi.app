@@ -1,8 +1,7 @@
-/* eslint-disable arrow-body-style */
-
 'use client';
 
 import { DefaultContextMenu, Tldraw } from 'tldraw';
+import React from 'react';
 import { Navbar } from './components/Navbar';
 import './index.css';
 import { ZoomMenu } from './components/ZoomMenu';
@@ -13,8 +12,12 @@ import { useYjsStore } from './useYjsStore';
 
 // import { myAssetStore } from './utils/imageStore';
 
-export const Board = () => {
-  const store = useYjsStore({});
+type BoardPropsT = {
+  token: string;
+};
+
+export const Board = ({ token }: BoardPropsT) => {
+  const store = useYjsStore({ roomId: token });
 
   return (
     <Tldraw
@@ -25,6 +28,9 @@ export const Board = () => {
       }}
       tools={[StickerTool]}
       components={hiddenComponents}
+      // overrides={[
+      //   LoadingScreen: () => <span> Loading </span>,
+      // ]}
     >
       <Header />
       <Navbar />
