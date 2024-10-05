@@ -19,6 +19,12 @@ type ChannelT = {
   disabled?: boolean;
 };
 
+type CommunityT = {
+  id: number | null | 'empty';
+  name: string | null;
+  description: string | null;
+};
+
 type MoveCategoryDataT = {
   categoryId: number | null | 'empty';
   afterId: number | null;
@@ -35,8 +41,10 @@ type MoveChannelDataT = {
 export type ChannelsCommunity = {
   channels: ChannelT[] | null;
   categories: CategoryT[] | null;
+  communities: CommunityT[] | null;
   updateChannels: (value: any) => void;
   updateCategories: (value: any) => void;
+  updateCommunities: (value: any) => void;
   addChannel: (value: ChannelT) => void;
   addCategory: (value: CategoryT) => void;
   deleteChannel: (value: number) => void;
@@ -53,8 +61,10 @@ export const createChannelsCommunitySt: StateCreator<
 > = (set) => ({
   channels: null,
   categories: null,
+  communities: null,
   updateChannels: (value) => set(() => ({ channels: [...value] })),
   updateCategories: (value) => set(() => ({ categories: [...value] })),
+  updateCommunities: (value) => set(() => ({ communities: [...value] })),
   addChannel: (value: ChannelT) =>
     set(({ channels }) => ({ channels: [...(channels || []), value] })),
   addCategory: (value: CategoryT) =>

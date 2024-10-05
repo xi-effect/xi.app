@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,12 +9,12 @@ import {
 import { CategoryAdd, ChannelAdd, Exit, PeopleInvite, Plus, Settings } from '@xipkg/icons';
 import { ScrollArea } from '@xipkg/scrollarea';
 import { useMainSt } from 'pkg.stores';
+import { shallow } from 'zustand/shallow';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
-import { CommunityTemplateT } from '../../type';
 import { RetrieveCommunityT } from '../types';
 
 export const DropdownMenuBasic = () => {
@@ -31,28 +31,43 @@ export const DropdownMenuBasic = () => {
     setIsOpenCommunitySettings,
   } = useCommunityStore();
 
-  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
+  const {
+    communityMeta: currentCommunity,
+    communities,
+    socket,
+    updateCommunityMeta,
+    updateCategories,
+    updateChannels,
+    updateCommunities,
+  } = useMainSt(
+    (state) => ({
+      communityMeta: state.communityMeta,
+      communities: state.communities,
+      socket: state.socket,
+      updateCommunityMeta: state.updateCommunityMeta,
+      updateCategories: state.updateCategories,
+      updateChannels: state.updateChannels,
+      updateCommunities: state.updateCommunities,
+    }),
+    shallow,
+  );
+
+  const { isOwner } = currentCommunity;
 
   // Берем community-id из URL
   const params = useParams();
-  // Делим все сообщества пользователя на то, на странице которого мы сейчас
-  // и на остальные
-  const currentCommunity = useMainSt((state) => state.communityMeta);
-  const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
-
-  const socket = useMainSt((state) => state.socket);
-  const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
-  const updateCategories = useMainSt((state) => state.updateCategories);
-  const updateChannels = useMainSt((state) => state.updateChannels);
 
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
-      const otherCommunities: CommunityTemplateT[] = communities.filter(
-        (community) => community.id.toString() !== params['community-id'],
-      );
-      setOtherCommunities(otherCommunities);
+      updateCommunities(communities);
     });
   }, [params]);
+
+  const otherCommunities = useMemo(
+    () =>
+      communities?.filter((community) => community.id?.toString() !== params['community-id']) ?? [],
+    [communities, params['community-id']],
+  );
 
   const router = useRouter();
 
