@@ -9,3 +9,7 @@ body .tl-container {
   --layer-toasts: 6;
   --layer-cursor: 7;
 }
+
+.tl-watermark_SEE-LICENSE{
+  display: none !important;
+}
