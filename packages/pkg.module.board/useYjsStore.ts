@@ -59,6 +59,7 @@ export function useYjsStore({
         name: roomId,
         document: yDoc,
         token: roomId,
+        forceSyncInterval: 20000,
         onAuthenticated: () => {},
         onAuthenticationFailed: (data) => {
           console.log('onAuthenticationFailed', data);
