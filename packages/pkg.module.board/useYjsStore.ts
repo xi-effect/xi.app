@@ -54,8 +54,19 @@ export function useYjsStore({
       yDoc,
       yStore,
       meta,
-      // room: new WebsocketProvider(hostUrl, roomId, yDoc, { connect: true }),
-      room: new HocuspocusProvider({ url: hostUrl, name: roomId, document: yDoc, token: 'token' }),
+      room: new HocuspocusProvider({
+        url: hostUrl,
+        name: roomId,
+        document: yDoc,
+        token: roomId,
+        onAuthenticated: () => {},
+        onAuthenticationFailed: (data) => {
+          console.log('onAuthenticationFailed', data);
+          if (data.reason === 'permission-denied') {
+            console.error('hocuspocus: permission-denied');
+          }
+        },
+      }),
     };
   }, [hostUrl, roomId]);
 

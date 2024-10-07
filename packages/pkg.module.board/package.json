@@ -26,7 +26,6 @@
     "@hocuspocus/provider": "2.13.6",
     "yjs": "13.6.19",
     "y-utility": "0.1.4"
-
   },
   "devDependencies": {
     "@types/node": "^20.3.1",
