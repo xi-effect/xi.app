@@ -35,12 +35,6 @@ export default function WelcomeCommunity() {
       const { status } = await put<RequestBody, ResponseBody>({
         service: 'auth',
         path: '/api/onboarding/stages/community-create/',
-        body: {},
-        config: {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
       });
 
       if (status === 204) {
@@ -55,12 +49,6 @@ export default function WelcomeCommunity() {
       const { status } = await put<RequestBody, ResponseBody>({
         service: 'auth',
         path: '/api/onboarding/stages/community-invite/',
-        body: {},
-        config: {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
       });
 
       if (status === 204) {
@@ -75,12 +63,6 @@ export default function WelcomeCommunity() {
       const { status } = await put<RequestBody, ResponseBody>({
         service: 'auth',
         path: '/api/onboarding/stages/community-invite/',
-        body: {},
-        config: {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
       });
 
       if (status === 204) {

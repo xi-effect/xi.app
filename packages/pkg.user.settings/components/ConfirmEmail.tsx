@@ -44,12 +44,6 @@ export const ConfirmEmail = () => {
     const { status } = await post<{}, {}>({
       service: 'auth',
       path: '/api/email-confirmation/requests/',
-      body: {},
-      config: {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
     });
 
     if (status === 204) {
