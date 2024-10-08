@@ -35,8 +35,11 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const getUrlWithParams = useGetUrlWithParams();
 
   useEffect(() => {
+    if (channels === null) return;
+
     const channelIds = channels?.map(({ id }) => id);
     if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
+      console.log('403');
       setErrorCode(403);
     }
   }, [params, channels]);
@@ -135,6 +138,15 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
             });
           } else if (status === 404) {
             router.replace(getUrlWithParams('/empty'));
+          }
+
+          const pathnameArr = pathname.split('/');
+          if (pathnameArr.includes('channels') && community.id) {
+            const betweenChannels = pathname.split('channels');
+
+            return router.push(
+              getUrlWithParams(`/communities/${community.id}/channels${betweenChannels[1]}`),
+            );
           }
 
           if (community && community.id) {
