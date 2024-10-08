@@ -17,6 +17,8 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
     displayName: '', // Уникальное имя пользователя, отображается в интерфейсе как основное
     onboardingStage: null,
     theme: '',
+    emailConfirmed: false,
+    allowedConfirmationResend: '', // Таймер после которого можно повторно отправить почту
     lastPasswordChange: '',
   },
   updateUser: (value) => set((state) => ({ user: { ...state.user, ...value } })),
@@ -35,6 +37,8 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          emailConfirmed: data.email_confirmed,
+          allowedConfirmationResend: data.allowed_confirmation_resend,
           lastPasswordChange: data.last_password_change,
         },
       }));
