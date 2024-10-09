@@ -7,6 +7,11 @@ import { useRouter } from 'next/navigation';
 export default function Forbidden403() {
   const router = useRouter();
 
+  const handleBack = () => {
+    router.back();
+    router.refresh();
+  };
+
   return (
     <ErrorPage
       title="Доступ запрещён"
@@ -18,12 +23,12 @@ export default function Forbidden403() {
         <button
           type="button"
           className="decoration-brand-20 hover:decoration-brand-100 text-brand-80 hover:text-brand-100 underline underline-offset-4 bg-transparent"
-          onClick={() => router.back()}
+          onClick={handleBack}
         >
           назад
         </button>
         &nbsp;или&nbsp;
-        <Link theme="brand" size="l" href="/" target="_blank">
+        <Link theme="brand" size="l" href="/">
           на главную
         </Link>
       </p>

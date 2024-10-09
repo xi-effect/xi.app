@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 
 type AvatarPreviewPropsT = {
-  communityId: number;
+  communityId: number | null | 'empty';
 };
 
 export const AvatarPreview = ({ communityId }: AvatarPreviewPropsT) => (

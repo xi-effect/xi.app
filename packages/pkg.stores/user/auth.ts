@@ -68,6 +68,8 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          emailConfirmed: data.email_confirmed,
+          allowedConfirmationResend: data.allowed_confirmation_resend,
           lastPasswordChange: data.last_password_change,
         },
       }));
@@ -98,6 +100,8 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          emailConfirmed: data.email_confirmed,
+          allowedConfirmationResend: data.allowed_confirmation_resend,
           lastPasswordChange: data.last_password_change,
         },
       }));
@@ -131,6 +135,8 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: '',
           theme: '',
           email: '',
+          emailConfirmed: false,
+          allowedConfirmationResend: '',
           lastPasswordChange: '',
         },
       }));
