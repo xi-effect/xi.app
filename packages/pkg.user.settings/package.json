@@ -20,7 +20,7 @@
     "@xipkg/modal": "1.4.0",
     "@xipkg/select": "0.2.0",
     "@xipkg/userprofile": "2.3.0",
-    "@xipkg/utils": "1.0.1",
+    "@xipkg/utils": "^1.2.3",
     "dayjs": "^1.11.13",
     "next": "^14.2.3",
     "next-themes": "^0.2.1",

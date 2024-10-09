@@ -19,6 +19,7 @@ import { Link } from '@xipkg/link';
 import { Eyeoff, Eyeon } from '@xipkg/icons';
 import { Logo } from 'pkg.logo';
 import { useMainSt } from 'pkg.stores';
+import { useTheme } from 'next-themes';
 
 const FormSchema = z.object({
   email: z
@@ -53,6 +54,8 @@ export const SignIn = () => {
 
   const onSignIn = useMainSt((state) => state.onSignIn);
 
+  const { setTheme } = useTheme();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -74,10 +77,14 @@ export const SignIn = () => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     trigger();
     setIsButtonActive(false);
-    const status = await onSignIn({ ...data, setError });
+    const answer = await onSignIn({ ...data, setError });
 
-    if (status !== 200) {
+    if (answer.status !== 200) {
       return setIsButtonActive(true);
+    }
+
+    if (answer.theme != null) {
+      setTheme(answer.theme);
     }
 
     if (searchParams.has('iid')) {
