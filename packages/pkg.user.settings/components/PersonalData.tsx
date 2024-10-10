@@ -12,6 +12,7 @@ import {
 } from '@xipkg/form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTheme } from 'next-themes';
 
 import { Input } from '@xipkg/input';
 import { useMainSt } from 'pkg.stores';
@@ -26,6 +27,7 @@ const FormSchema = z.object({
 export const PersonalData = () => {
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
+  const { theme } = useTheme();
 
   const isMobile = useMedia('(max-width: 719px)');
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -49,7 +51,7 @@ export const PersonalData = () => {
     const { status } = await patch<any, any>({
       service: 'auth',
       path: '/api/users/current/profile/',
-      body: { username: formData.username, display_name: formData.displayName, theme: 'stringdd' },
+      body: { username: formData.username, display_name: formData.displayName, theme },
       config: {
         headers: {
           'Content-Type': 'application/json',
