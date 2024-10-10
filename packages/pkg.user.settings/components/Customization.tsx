@@ -45,6 +45,7 @@ export const Customization = () => {
       updateUser({ theme: `${value}` });
       toast('Данные успешно обновлены');
     } else {
+      // если есть ошибка отправки данных, то необходимо вернуть изначальное значение
       setTheme(user.theme);
       toast('Ошибка сервера');
     }
