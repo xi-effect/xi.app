@@ -1,16 +1,17 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import { Close, Burger } from '@xipkg/icons';
 import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
-// @ts-ignore
-import SwipeableViews from 'react-swipeable-views-react-18-fix';
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 import { UserProfile } from '@xipkg/userprofile';
 import { useMainSt } from 'pkg.stores';
 import { useParams } from 'next/navigation';
+import { Swiper, SwiperSlide, SwiperRef, SwiperClass } from 'swiper/react';
 import { CommunityItems, CommunityMenu } from './Community';
+
+import 'swiper/css';
 
 type BottomBarT = {
   slideIndex: number;
@@ -18,50 +19,50 @@ type BottomBarT = {
   setSlideIndex: (value: number) => void;
 };
 
-type ValuesT = {
-  [key: string]: 0 | 1;
-};
-
-const values: ValuesT = {
-  0: 1,
-  1: 0,
-};
-
 export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) => {
   const params = useParams<{ 'community-id': string }>();
+  const swiperRef = useRef<SwiperRef | null>(null);
 
   const isNotCommunityId = typeof params['community-id'] !== 'string';
 
   const user = useMainSt((state) => state.user);
 
-  const handleMenu = () => {
-    setSlideIndex(values[slideIndex]);
+  const onSlideChange = (swiper: SwiperClass) => {
+    setSlideIndex(swiper.activeIndex);
   };
 
-  const onSwipeEnd = (value: number) => {
-    setSlideIndex(value);
+  const slieToIndex = (index: number) => {
+    if (swiperRef.current) {
+      swiperRef.current.swiper.slideTo(index);
+      setSlideIndex(index);
+    }
   };
 
   return (
     <div className="flex w-full overflow-hidden md:hidden">
-      <SwipeableViews
-        animateHeight
-        index={slideIndex}
-        onChangeIndex={onSwipeEnd}
-        className="w-full"
+      <Swiper
+        slidesPerView={1}
+        initialSlide={slideIndex}
+        ref={swiperRef}
+        onSlideChange={onSlideChange}
       >
-        <div className="w-full overflow-auto">
-          <div className="sticky left-0 top-0 px-4 pt-4">
-            <CommunityMenu />
+        <SwiperSlide>
+          <div className="w-full overflow-auto">
+            <div className="sticky left-0 top-0 px-4 pt-4">
+              <CommunityMenu />
+            </div>
+            <CommunityItems setSlideIndex={slieToIndex} />
           </div>
-          <CommunityItems setSlideIndex={setSlideIndex} />
-        </div>
-        <div className="overflow-none h-[calc(100dvh-80px)]">{children}</div>
-      </SwipeableViews>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div className="overflow-none h-[calc(100dvh-80px)]">{children}</div>
+        </SwiperSlide>
+      </Swiper>
+
       <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
         <button
           type="button"
-          onClick={handleMenu}
+          onClick={() => slieToIndex(slideIndex === 0 ? 1 : 0)}
           className="bg-gray-0 mr-4 flex h-[48px] w-[48px] items-center p-3"
         >
           {slideIndex === 0 ? <Close /> : <Burger />}
