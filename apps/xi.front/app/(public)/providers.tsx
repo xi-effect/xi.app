@@ -20,7 +20,7 @@ const PublicProvider = ({ children }: PublicProviderPropsT) => {
     const fetchUserData = async () => {
       const get = await getUser();
 
-      if (get.theme != null) {
+      if (get.theme !== null) {
         setTheme(get.theme);
       }
     };

@@ -83,7 +83,7 @@ export const SignIn = () => {
       return setIsButtonActive(true);
     }
 
-    if (answer.theme != null) {
+    if (answer.theme !== null) {
       setTheme(answer.theme);
     }
 

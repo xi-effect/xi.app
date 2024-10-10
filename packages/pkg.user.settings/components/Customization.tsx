@@ -14,7 +14,14 @@ import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
 import { useDebouncedFunction } from '@xipkg/utils/useDebouncedFunction';
 
-type Theme = 'light' | 'dark' | 'system';
+type ThemeT = 'light' | 'dark' | 'system';
+
+type PathResponseT = { status: number };
+type PathRequestBodyT = {
+  username: string;
+  display_name: string;
+  theme: ThemeT;
+};
 
 export const Customization = () => {
   const isMobile = useMedia('(max-width: 719px)', false);
@@ -22,8 +29,8 @@ export const Customization = () => {
   const user = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
 
-  const updateThemeRequest = async (value: Theme) => {
-    const { status } = await patch<any, any>({
+  const updateThemeRequest = async (value: ThemeT) => {
+    const { status } = await patch<PathRequestBodyT, PathResponseT>({
       service: 'auth',
       path: '/api/users/current/profile/',
       body: { username: user.username, display_name: user.displayName, theme: `${value}` },
@@ -39,15 +46,15 @@ export const Customization = () => {
       toast('Данные успешно обновлены');
     } else {
       setTheme(user.theme);
-      toast('Данные успешно обновлены');
+      toast('Ошибка сервера');
     }
   };
 
-  const debouncedUpdateTheme = useDebouncedFunction((value: Theme) => {
+  const debouncedUpdateTheme = useDebouncedFunction((value: ThemeT) => {
     updateThemeRequest(value);
   }, 3000);
 
-  const updateTheme = (value: Theme) => {
+  const updateTheme = (value: ThemeT) => {
     setTheme(value);
     debouncedUpdateTheme(value);
   };
@@ -64,7 +71,7 @@ export const Customization = () => {
             <Palette className="fill-brand-80" />
             <span className="text-base font-semibold leading-[24px]">Тема оформления</span>
           </div>
-          <Select value={theme} onValueChange={(value: Theme) => updateTheme(value)}>
+          <Select value={theme} onValueChange={(value: ThemeT) => updateTheme(value)}>
             <SelectTrigger className="ml-0 w-[250px] sm:ml-auto">
               <SelectValue placeholder="Select a fruit" />
             </SelectTrigger>
