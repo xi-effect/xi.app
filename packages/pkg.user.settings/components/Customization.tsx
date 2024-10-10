@@ -72,6 +72,7 @@ export const Customization = () => {
               <SelectGroup>
                 <SelectItem value="light">Светлая</SelectItem>
                 <SelectItem value="dark">Тёмная</SelectItem>
+                <SelectItem value="system">Системная</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
