@@ -11,7 +11,7 @@
     "@tldraw/editor": "3.2.0",
     "@xipkg/button": "2.0.0",
     "@xipkg/dropdown": "^2.1.0",
-    "@xipkg/icons": "1.1.1",
+    "@xipkg/icons": "1.2.0",
     "@xipkg/tooltip": "0.1.0",
     "@xipkg/slider": "1.0.0",
     "next": "^14.2.3",
