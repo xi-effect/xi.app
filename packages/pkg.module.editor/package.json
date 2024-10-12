@@ -17,7 +17,7 @@
     "@xipkg/button": "2.0.0",
     "@xipkg/dropdown": "^2.1.0",
     "@xipkg/file": "^1.1.0",
-    "@xipkg/icons": "1.1.0",
+    "@xipkg/icons": "1.2.0",
     "@xipkg/input": "1.0.0",
     "@xipkg/popover": "^2.0.0",
     "@xipkg/select": "^1.0.0",
@@ -31,7 +31,7 @@
     "slate-history": "0.100.0",
     "slate-react": "0.102.0",
     "yjs": "^13.6.18",
-    "zustand": "4.5.4",
+    "zustand": "^4.5.5",
     "@hocuspocus/provider": "2.13.5",
     "randomcolor": "0.6.2"
   },
