@@ -31,7 +31,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
     setSlideIndex(swiper.activeIndex);
   };
 
-  const slieToIndex = (index: number) => {
+  const onChangeSlideIndex = (index: number) => {
     if (swiperRef.current) {
       swiperRef.current.swiper.slideTo(index);
       setSlideIndex(index);
@@ -51,7 +51,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
             <div className="sticky left-0 top-0 px-4 pt-4">
               <CommunityMenu />
             </div>
-            <CommunityItems setSlideIndex={slieToIndex} />
+            <CommunityItems setSlideIndex={onChangeSlideIndex} />
           </div>
         </SwiperSlide>
         <SwiperSlide>
@@ -62,7 +62,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
       <div className="bg-gray-0 fixed bottom-0 z-10 flex h-[80px] w-screen flex-row items-center p-4">
         <button
           type="button"
-          onClick={() => slieToIndex(slideIndex === 0 ? 1 : 0)}
+          onClick={() => onChangeSlideIndex(slideIndex === 0 ? 1 : 0)}
           className="bg-gray-0 mr-4 flex h-[48px] w-[48px] items-center p-3"
         >
           {slideIndex === 0 ? <Close /> : <Burger />}
