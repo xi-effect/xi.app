@@ -2,7 +2,7 @@
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-
+import { useState } from 'react';
 import { Modal, ModalContent } from '@xipkg/modal';
 import { CategoryCreate } from 'pkg.modal.category-create';
 import { CommunitySettings } from 'pkg.community.settings';
@@ -17,15 +17,15 @@ export const CommunityMenu = () => {
   const {
     isOpenCommunitySettings,
     isInviteCommunityModalOpen,
-    isAddCommunityModalOpen,
     isCategoryCreateOpen,
     isCommunityChannelCreateOpen,
     setIsOpenCommunitySettings,
     setIsInviteCommunityModalOpen,
-    setIsAddCommunityModalOpen,
     setIsCategoryCreateOpen,
     setIsCommunityChannelCreateOpen,
   } = useCommunityStore();
+
+  const [isAddCommunityModalOpen, setIsAddCommunityModalOpen] = useState(false);
 
   return (
     <>
@@ -53,7 +53,7 @@ export const CommunityMenu = () => {
         open={isAddCommunityModalOpen}
         onOpenChange={() => setIsAddCommunityModalOpen(!isAddCommunityModalOpen)}
       />
-      <DropdownMenuBasic />
+      <DropdownMenuBasic setIsAddCommunityModalOpen={setIsAddCommunityModalOpen} />
     </>
   );
 };

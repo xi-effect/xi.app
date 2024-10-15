@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,11 @@ import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
 import { RetrieveCommunityT } from '../types';
 
-export const DropdownMenuBasic = () => {
+type DropdownMenuBasicPropsT = {
+  setIsAddCommunityModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const DropdownMenuBasic = ({ setIsAddCommunityModalOpen }: DropdownMenuBasicPropsT) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -24,7 +28,6 @@ export const DropdownMenuBasic = () => {
     setIsInviteCommunityModalOpen,
     isCommunityChannelCreateOpen,
     setIsCommunityChannelCreateOpen,
-    setIsAddCommunityModalOpen,
     setIsCategoryCreateOpen,
     isCategoryCreateOpen,
     setIsOpenCommunitySettings,
