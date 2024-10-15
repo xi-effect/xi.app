@@ -51,7 +51,7 @@ export const CommunityMenu = () => {
       />
       <AddCommunityModal
         open={isAddCommunityModalOpen}
-        onOpenChange={() => setIsAddCommunityModalOpen(!isAddCommunityModalOpen)}
+        setIsAddCommunityModalOpen={setIsAddCommunityModalOpen}
       />
       <DropdownMenuBasic setIsAddCommunityModalOpen={setIsAddCommunityModalOpen} />
     </>
