@@ -42,7 +42,7 @@ export const Navbar = track(() => {
                   <TooltipProvider key={item.action}>
                     <Tooltip open={isActive && item?.hasAToolTip && isTooltipOpen}>
                       <div className="pointer-events-auto">
-                        <TooltipTrigger className="rounded-lg">
+                        <TooltipTrigger className="rounded-lg" asChild>
                           <button
                             type="button"
                             className={`pointer-events-auto flex h-8 w-8 items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}

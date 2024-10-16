@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,6 @@ import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
-import { CommunityTemplateT } from '../../type';
 import { RetrieveCommunityT } from '../types';
 
 export const DropdownMenuBasic = () => {
@@ -31,28 +30,31 @@ export const DropdownMenuBasic = () => {
     setIsOpenCommunitySettings,
   } = useCommunityStore();
 
-  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
-
-  // Берем community-id из URL
-  const params = useParams();
-  // Делим все сообщества пользователя на то, на странице которого мы сейчас
-  // и на остальные
+  // из-за warn в консоли я решил вернуть обратно и оставить получения свйоств из стора в таком виде
   const currentCommunity = useMainSt((state) => state.communityMeta);
-  const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
-
+  const communities = useMainSt((state) => state.communities);
   const socket = useMainSt((state) => state.socket);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const updateCategories = useMainSt((state) => state.updateCategories);
   const updateChannels = useMainSt((state) => state.updateChannels);
+  const updateCommunities = useMainSt((state) => state.updateCommunities);
+
+  const { isOwner } = currentCommunity;
+
+  // Берем community-id из URL
+  const params = useParams();
 
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
-      const otherCommunities: CommunityTemplateT[] = communities.filter(
-        (community) => community.id.toString() !== params['community-id'],
-      );
-      setOtherCommunities(otherCommunities);
+      updateCommunities(communities);
     });
   }, [params]);
+
+  const otherCommunities = useMemo(
+    () =>
+      communities?.filter((community) => community.id?.toString() !== params['community-id']) ?? [],
+    [communities, params['community-id']],
+  );
 
   const router = useRouter();
 

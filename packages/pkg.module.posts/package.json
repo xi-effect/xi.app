@@ -10,7 +10,7 @@
   "dependencies": {
     "@xipkg/breadcrumbs": "1.0.1",
     "@xipkg/button": "^2.0.0",
-    "@xipkg/icons": "1.1.1",
+    "@xipkg/icons": "1.2.0",
     "@xipkg/input": "0.1.1",
     "@xipkg/utils": "1.0.1",
     "lodash": "^4.17.21",

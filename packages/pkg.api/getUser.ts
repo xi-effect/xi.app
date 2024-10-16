@@ -8,6 +8,8 @@ export type ResponseBodyUserT = {
   onboarding_stage: UserT['onboardingStage'];
   theme: UserT['theme'];
   email: UserT['email'];
+  email_confirmed: UserT['emailConfirmed'];
+  allowed_confirmation_resend: UserT['allowedConfirmationResend'];
   last_password_change: UserT['lastPasswordChange'];
 };
 
