@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,11 +22,9 @@ export const DropdownMenuBasic = () => {
   const {
     isInviteCommunityModalOpen,
     setIsInviteCommunityModalOpen,
-    isCommunityChannelCreateOpen,
-    setIsCommunityChannelCreateOpen,
     setIsAddCommunityModalOpen,
+    setIsCommunityChannelCreateOpen,
     setIsCategoryCreateOpen,
-    isCategoryCreateOpen,
     setIsOpenCommunitySettings,
   } = useCommunityStore();
 
@@ -143,7 +141,7 @@ export const DropdownMenuBasic = () => {
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
                   onClick={() => {
-                    setIsCommunityChannelCreateOpen(!isCommunityChannelCreateOpen);
+                    setIsCommunityChannelCreateOpen(true);
                     handleClose();
                   }}
                 >
@@ -153,7 +151,7 @@ export const DropdownMenuBasic = () => {
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
                   onClick={() => {
-                    setIsCategoryCreateOpen(!isCategoryCreateOpen);
+                    setIsCategoryCreateOpen(true);
                     handleClose();
                   }}
                 >
