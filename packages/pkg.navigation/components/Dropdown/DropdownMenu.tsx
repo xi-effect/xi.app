@@ -16,20 +16,15 @@ import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
 import { RetrieveCommunityT } from '../types';
 
-type DropdownMenuBasicPropsT = {
-  setIsAddCommunityModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export const DropdownMenuBasic = ({ setIsAddCommunityModalOpen }: DropdownMenuBasicPropsT) => {
+export const DropdownMenuBasic = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
     isInviteCommunityModalOpen,
     setIsInviteCommunityModalOpen,
-    isCommunityChannelCreateOpen,
+    setIsAddCommunityModalOpen,
     setIsCommunityChannelCreateOpen,
     setIsCategoryCreateOpen,
-    isCategoryCreateOpen,
     setIsOpenCommunitySettings,
   } = useCommunityStore();
 
@@ -146,7 +141,7 @@ export const DropdownMenuBasic = ({ setIsAddCommunityModalOpen }: DropdownMenuBa
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
                   onClick={() => {
-                    setIsCommunityChannelCreateOpen(!isCommunityChannelCreateOpen);
+                    setIsCommunityChannelCreateOpen(true);
                     handleClose();
                   }}
                 >
@@ -156,7 +151,7 @@ export const DropdownMenuBasic = ({ setIsAddCommunityModalOpen }: DropdownMenuBa
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
                   onClick={() => {
-                    setIsCategoryCreateOpen(!isCategoryCreateOpen);
+                    setIsCategoryCreateOpen(true);
                     handleClose();
                   }}
                 >

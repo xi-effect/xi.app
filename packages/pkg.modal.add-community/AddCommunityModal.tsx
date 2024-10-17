@@ -9,7 +9,7 @@ import FormJoin from './components/FormJoinStage';
 
 type AddCommunityModalT = {
   open: boolean;
-  setIsAddCommunityModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAddCommunityModalOpen: (isOpen: boolean) => void;
 };
 
 export const AddCommunityModal = ({ open, setIsAddCommunityModalOpen }: AddCommunityModalT) => {
