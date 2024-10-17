@@ -3,10 +3,10 @@
 import { ErrorPage } from 'pkg.error-page';
 import * as Sentry from '@sentry/nextjs';
 import Error from 'next/error';
-import { useEffect } from 'react';
+import React from 'react';
 
 export default function Error500({ error }: { error: Error }) {
-  useEffect(() => {
+  React.useEffect(() => {
     Sentry.captureException(error);
   }, [error]);
 

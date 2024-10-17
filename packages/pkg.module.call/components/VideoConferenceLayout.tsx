@@ -110,7 +110,7 @@ export const CarouselLayout = ({
   return (
     <div
       ref={asideEl}
-      className={`${carouselOrientation === 'horizontal' ? 'm-auto w-[95%]' : 'mx-5 h-[calc(100vh-13rem)] max-w-[277px]'}`}
+      className={`${carouselOrientation === 'horizontal' ? 'm-auto w-full' : 'mx-5 h-[calc(100vh-13rem)] max-w-[277px]'}`}
     >
       {isOneItem && (
         <div className="h-[144px] w-[250px]">

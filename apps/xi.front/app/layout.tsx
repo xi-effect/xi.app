@@ -77,12 +77,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Suspense>
               <YandexMetrika />
             </Suspense>
-            <Script
-              async
-              defer
-              data-website-id="484fa2fe-898c-4ffa-8bbb-e0a2afe4e018"
-              src="https://analytics.xieffect.ru/umami.js"
-            />
           </>
         )}
         <Providers>

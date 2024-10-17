@@ -4,6 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { redirect, useParams, usePathname, useRouter } from 'next/navigation';
 import { useGetUrlWithParams } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
+import { toast } from 'sonner';
 
 import Error404 from 'app/not-found';
 import Forbidden403 from 'app/forbidden';
@@ -15,6 +16,7 @@ type ProtectedProviderPropsT = {
 
 const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const [errorCode, setErrorCode] = useState<number | null>(null);
+  const [redirecting, setRedirecting] = useState<boolean>(false);
 
   const params = useParams<{ 'community-id': string }>();
 
@@ -23,6 +25,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const communityMeta = useMainSt((state) => state.communityMeta);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
+  const communities = useMainSt((state) => state.communities);
   const channels = useMainSt((state) => state.channels);
 
   const isLogin = useMainSt((state) => state.isLogin);
@@ -32,8 +35,11 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const getUrlWithParams = useGetUrlWithParams();
 
   useEffect(() => {
+    if (channels === null) return;
+
     const channelIds = channels?.map(({ id }) => id);
     if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
+      console.log('403');
       setErrorCode(403);
     }
   }, [params, channels]);
@@ -41,8 +47,15 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
 
-    // Если 403 ошибка, не перенапрвляем сразу на страницу доступного сообщества
+    // Если ошибка, не перенаправляем сразу на страницу доступного сообщества.
     if (errorCode !== null) return;
+
+    if (communities?.length === 0 && communityMeta.id === null && !pathname.includes('/empty')) {
+      toast('Вы не состоите ни в одном сообществе');
+      setRedirecting(true);
+      router.replace(getUrlWithParams('/empty'));
+      return;
+    }
 
     if (socket?.connected === false && typeof params['community-id'] !== 'string') {
       // Если мы не знаем id текущего сообщества, мы получаем любое и редиректим туда пользователя
@@ -50,7 +63,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
         socket.emit(
           'retrieve-any-community',
           (status: number, { community, participant }: { community: any; participant: any }) => {
-            console.log('11', community, participant);
             if (status === 200) {
               updateCommunityMeta({
                 id: community.id,
@@ -77,31 +89,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
           },
         );
       });
-
-      return;
-    }
-
-    // Если мы не знаем id текущего сообщества, но соединение сокета уже установлено
-    if (socket?.connected === true && communityMeta.id === null) {
-      socket.emit(
-        'retrieve-any-community',
-        (status: number, { community, participant }: { community: any; participant: any }) => {
-          if (status === 200) {
-            updateCommunityMeta({
-              id: community.id,
-              isOwner: participant.is_owner,
-              name: community.name,
-              description: community.description,
-            });
-          }
-
-          if (community && community.id) {
-            router.push(getUrlWithParams(`/communities/${community.id}/home`));
-          }
-
-          return null;
-        },
-      );
 
       return;
     }
@@ -137,6 +124,42 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
       return;
     }
 
+    // Если мы не знаем id текущего сообщества, но соединение сокета уже установлено
+    if (socket?.connected === true && communityMeta.id === null) {
+      socket.emit(
+        'retrieve-any-community',
+        (status: number, { community, participant }: { community: any; participant: any }) => {
+          if (status === 200) {
+            updateCommunityMeta({
+              id: community.id,
+              isOwner: participant.is_owner,
+              name: community.name,
+              description: community.description,
+            });
+          } else if (status === 404) {
+            router.replace(getUrlWithParams('/empty'));
+          }
+
+          const pathnameArr = pathname.split('/');
+          if (pathnameArr.includes('channels') && community.id) {
+            const betweenChannels = pathname.split('channels');
+
+            return router.push(
+              getUrlWithParams(`/communities/${community.id}/channels${betweenChannels[1]}`),
+            );
+          }
+
+          if (community && community.id) {
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
+          }
+
+          return null;
+        },
+      );
+
+      return;
+    }
+
     // Если мы знаем id текущего сообщества из url, но соединение сокета уже установлено
     if (socket?.connected === true && communityMeta.id === null) {
       socket.emit(
@@ -162,6 +185,34 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   }, [socket?.connected]);
 
   useEffect(() => {
+    if (socket?.connected) {
+      socket.on('delete-community', (deletedCommunity) => {
+        if (deletedCommunity.community_id === communityMeta.id) {
+          updateCommunityMeta({
+            id: null,
+            isOwner: false,
+            name: '',
+            description: '',
+          });
+          toast('Сообщество удалено');
+          router.replace(getUrlWithParams('/communities'));
+          window.location.reload();
+        }
+      });
+    }
+
+    if (socket?.connected) {
+      socket.on('kicked-from-community', (kickedCommunity) => {
+        if (kickedCommunity.community_id === communityMeta.id) {
+          toast(`Вы исключены из сообщества ${communityMeta.name}`);
+          router.replace(getUrlWithParams('/communities'));
+          window.location.reload();
+        }
+      });
+    }
+  }, [socket?.connected, communityMeta.id]);
+
+  useEffect(() => {
     if (pathname !== '/communities' || (pathname === '/communities' && isLogin === null)) {
       if (isLogin === false) {
         redirect('/signin');
@@ -184,11 +235,11 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
 
   if (isLogin === null) return <Load />;
 
-  if (errorCode === 403) {
+  if (!redirecting && errorCode === 403) {
     return <Forbidden403 />;
   }
 
-  if (errorCode === 404) {
+  if (!redirecting && errorCode === 404) {
     return <Error404 />;
   }
 

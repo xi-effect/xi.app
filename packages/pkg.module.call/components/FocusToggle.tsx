@@ -28,7 +28,11 @@ export function FocusToggle({ trackRef, ...props }: FocusToggleProps) {
       {(layoutContext) =>
         layoutContext && (
           <button type="button" {...mergedProps}>
-            {props.children ? props.children : inFocus ? null : <FocusToggleIcon />}
+            {props.children ? (
+              props.children
+            ) : inFocus ? null : (
+              <FocusToggleIcon className="fill-gray-100" />
+            )}
           </button>
         )
       }

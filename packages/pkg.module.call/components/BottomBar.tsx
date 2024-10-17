@@ -22,7 +22,7 @@ const DisconnectButton = () => {
     <button
       type="button"
       {...buttonProps}
-      className="bg-red-80 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] hover:bg-red-100"
+      className="bg-red-80 hover:bg-red-60 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px]"
     >
       <Endcall className="fill-gray-100" />
     </button>

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@xipkg/button": "1.3.0",
-    "@xipkg/icons": "1.1.1",
+    "@xipkg/icons": "1.2.0",
     "@xipkg/input": "0.1.1",
     "@xipkg/label": "0.0.9",
     "@xipkg/modal": "^2.1.0",

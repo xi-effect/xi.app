@@ -135,7 +135,7 @@ export const ParticipantTile = ({
     >
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
-          <div className="h-full">
+          <div className="bg-gray-10 h-full rounded-lg">
             {children ?? (
               <div className="h-full">
                 {isTrackReference(trackReference) &&
@@ -168,7 +168,7 @@ export const ParticipantTile = ({
                   style={{
                     borderRadius: '8px',
                     height: '100%',
-                    backgroundColor: 'var(--xi-bg-gray-10)',
+                    backgroundColor: 'var(--xi-bg-gray-0)',
                   }}
                   className="lk-participant-placeholder flex justify-center"
                 >
@@ -177,7 +177,7 @@ export const ParticipantTile = ({
                 <div className="lk-participant-metadata p-1">
                   <div>
                     {trackReference.source === Track.Source.Camera ? (
-                      <div className="bg-gray-10 flex h-[24px] w-full gap-[6px] rounded-[4px] px-[6px] py-[4px]">
+                      <div className="bg-gray-0 flex h-[24px] w-full gap-[6px] rounded-[4px] px-[6px] py-[4px]">
                         {isEncrypted && <LockLockedIcon />}
                         <TrackMutedIndicator
                           trackRef={{
@@ -190,7 +190,7 @@ export const ParticipantTile = ({
                         <ParticipantName className="text-[12px] text-gray-100" />
                       </div>
                     ) : (
-                      <div className="bg-gray-10 flex items-center gap-[6px] rounded-[4px] px-[8px] py-[4px]">
+                      <div className="bg-gray-0 flex items-center gap-[6px] rounded-[4px] px-[8px] py-[4px]">
                         <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
                         <ParticipantName>&apos;s screen</ParticipantName>
                       </div>
