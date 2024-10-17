@@ -32,9 +32,9 @@ export const ActiveRoom = ({
       audio={userChoice?.audioEnabled || false}
       video={userChoice?.videoEnabled || false}
     >
-      <div className="flex min-h-screen flex-col justify-between gap-3">
+      <div className="flex min-h-screen flex-col justify-stretch">
         <UpBar />
-        <div className="px-4">
+        <div className="flex min-h-[calc(100vh-152px)] items-center justify-center px-4">
           <div className="h-full w-full text-center text-gray-100">
             {isConnected && <VideoConference />}
           </div>
