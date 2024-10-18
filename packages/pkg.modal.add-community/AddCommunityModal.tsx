@@ -9,14 +9,14 @@ import FormJoin from './components/FormJoinStage';
 
 type AddCommunityModalT = {
   open: boolean;
-  setIsAddCommunityModalOpen: (isOpen: boolean) => void;
+  setModal: (modalType: string | null) => void;
 };
 
-export const AddCommunityModal = ({ open, setIsAddCommunityModalOpen }: AddCommunityModalT) => {
+export const AddCommunityModal = ({ open, setModal }: AddCommunityModalT) => {
   const [stage, setStage] = useState<'create' | 'join'>('create');
 
   const handleOpenChange = () => {
-    setIsAddCommunityModalOpen(!open);
+    setModal(null);
     setStage('create');
   };
 
