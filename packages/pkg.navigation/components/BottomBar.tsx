@@ -9,7 +9,8 @@ import { UserProfile } from '@xipkg/userprofile';
 import { useMainSt } from 'pkg.stores';
 import { useParams } from 'next/navigation';
 import { Swiper, SwiperSlide, SwiperRef, SwiperClass } from 'swiper/react';
-import { CommunityItems, CommunityMenu } from './Community';
+import { CommunityItems } from './Community';
+import { DropdownMenuBasic } from './Dropdown';
 
 import 'swiper/css';
 
@@ -49,7 +50,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
         <SwiperSlide>
           <div className="w-full overflow-auto">
             <div className="sticky left-0 top-0 px-4 pt-4">
-              <CommunityMenu />
+              <DropdownMenuBasic />
             </div>
             <CommunityItems setSlideIndex={onChangeSlideIndex} />
           </div>

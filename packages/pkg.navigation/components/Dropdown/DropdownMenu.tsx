@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,21 +14,19 @@ import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
+import {
+  CATEGORY_CREATE,
+  CHANNEL_CREATE,
+  INVITE_COMMUNITY,
+  ADD_COMMUNITY,
+  OPEN_COMMUNITY_SETTINGS,
+} from '../../store/modalConst';
 import { RetrieveCommunityT } from '../types';
 
 export const DropdownMenuBasic = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    isInviteCommunityModalOpen,
-    setIsInviteCommunityModalOpen,
-    isCommunityChannelCreateOpen,
-    setIsCommunityChannelCreateOpen,
-    setIsAddCommunityModalOpen,
-    setIsCategoryCreateOpen,
-    isCategoryCreateOpen,
-    setIsOpenCommunitySettings,
-  } = useCommunityStore();
+  const { setModal } = useCommunityStore();
 
   // из-за warn в консоли я решил вернуть обратно и оставить получения свйоств из стора в таком виде
   const currentCommunity = useMainSt((state) => state.communityMeta);
@@ -122,7 +120,7 @@ export const DropdownMenuBasic = () => {
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
                   onClick={() => {
-                    setIsInviteCommunityModalOpen(!isInviteCommunityModalOpen);
+                    setModal(INVITE_COMMUNITY);
                     handleClose();
                   }}
                 >
@@ -131,7 +129,7 @@ export const DropdownMenuBasic = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    setIsOpenCommunitySettings(true);
+                    setModal(OPEN_COMMUNITY_SETTINGS);
                     handleClose();
                   }}
                   className="group sm:w-[302px]"
@@ -143,7 +141,7 @@ export const DropdownMenuBasic = () => {
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
                   onClick={() => {
-                    setIsCommunityChannelCreateOpen(!isCommunityChannelCreateOpen);
+                    setModal(CHANNEL_CREATE);
                     handleClose();
                   }}
                 >
@@ -153,7 +151,7 @@ export const DropdownMenuBasic = () => {
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
                   onClick={() => {
-                    setIsCategoryCreateOpen(!isCategoryCreateOpen);
+                    setModal(CATEGORY_CREATE);
                     handleClose();
                   }}
                 >
@@ -190,7 +188,7 @@ export const DropdownMenuBasic = () => {
           <DropdownMenuItem
             className="group text-gray-50 sm:w-[302px]"
             onClick={() => {
-              setIsAddCommunityModalOpen(true);
+              setModal(ADD_COMMUNITY);
               handleClose();
             }}
           >
