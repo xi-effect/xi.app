@@ -1,4 +1,4 @@
-import { File, Group, Pin } from '@xipkg/icons';
+import { File, Group, Pin, Search } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { useParams } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
@@ -36,6 +36,15 @@ export const Header = () => {
           )}
         </div>
         <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="s"
+            type="button"
+            className="h-auto p-2"
+            onClick={() => console.log('search')}
+          >
+            <Search size="s" />
+          </Button>
           <Button
             variant="ghost"
             size="s"
