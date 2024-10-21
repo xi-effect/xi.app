@@ -58,6 +58,11 @@ export const DropdownMenuBasic = () => {
 
   const handleClose = () => setIsOpen(false);
 
+  const handleMenuItemClick = (modalType: string) => () => {
+    setModal(modalType);
+    setIsOpen(false);
+  };
+
   const handleLeaveCommunity = () => {
     socket?.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
       if (status === 204 && otherCommunities) {
@@ -119,19 +124,13 @@ export const DropdownMenuBasic = () => {
               <>
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
-                  onClick={() => {
-                    setModal(INVITE_COMMUNITY);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(INVITE_COMMUNITY)}
                 >
                   <span>Пригласить людей</span>
                   <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => {
-                    setModal(OPEN_COMMUNITY_SETTINGS);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(OPEN_COMMUNITY_SETTINGS)}
                   className="group sm:w-[302px]"
                 >
                   <span>Настройки сообщества</span>
@@ -140,20 +139,14 @@ export const DropdownMenuBasic = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
-                  onClick={() => {
-                    setModal(CHANNEL_CREATE);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(CHANNEL_CREATE)}
                 >
                   <span>Создать канал</span>
                   <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
-                  onClick={() => {
-                    setModal(CATEGORY_CREATE);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(CATEGORY_CREATE)}
                 >
                   <span>Создать категорию</span>
                   <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
@@ -187,10 +180,7 @@ export const DropdownMenuBasic = () => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="group text-gray-50 sm:w-[302px]"
-            onClick={() => {
-              setModal(ADD_COMMUNITY);
-              handleClose();
-            }}
+            onClick={handleMenuItemClick(ADD_COMMUNITY)}
           >
             <span>Присоединиться к сообществу</span>
             <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />

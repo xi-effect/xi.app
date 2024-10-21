@@ -13,7 +13,7 @@ import {
   OPEN_COMMUNITY_SETTINGS,
 } from './store/modalConst';
 
-export const NavigationModalsProvider = ({ children }: { children: React.ReactNode }) => {
+export const ModalsProvider = ({ children }: { children: React.ReactNode }) => {
   const { modal, setModal } = useCommunityStore();
 
   const closeModal = useCallback(() => setModal(null), []);
