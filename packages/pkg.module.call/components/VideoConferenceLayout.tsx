@@ -16,7 +16,7 @@ import {
 import { ChevronLeft, ChevronRight } from '@xipkg/icons';
 import { useSearchParams } from 'next/navigation';
 import { useSize } from '../utility/useSize';
-import { ParticipantTile } from './ParticipantTile';
+import { ParticipantTile } from './Participant/ParticipantTile';
 import { SliderVideoConference } from './SliderVideoConference';
 
 export type PaginationControlPropsT = Pick<

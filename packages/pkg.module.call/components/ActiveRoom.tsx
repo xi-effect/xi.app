@@ -3,9 +3,10 @@ import { HTMLAttributes } from 'react';
 import { ConnectionQuality } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
-import { serverUrl, LocalUserChoiceT } from '../Call';
+import { LocalUserChoiceT } from '../Call';
 import { ISettingsRoom } from '../types/types';
 import { VideoConference } from './VideoTrack';
+import { serverUrl, serverUrlDev, isDevMode, devToken } from '../config';
 
 export const ActiveRoom = ({
   token,
@@ -24,8 +25,8 @@ export const ActiveRoom = ({
   return (
     <LiveKitRoom
       room={room}
-      token={token}
-      serverUrl={serverUrl}
+      token={isDevMode ? devToken : token}
+      serverUrl={isDevMode ? serverUrlDev : serverUrl}
       connect={connect}
       onConnected={() => setIsConnected(true)}
       onDisconnected={handleDisconnect}
