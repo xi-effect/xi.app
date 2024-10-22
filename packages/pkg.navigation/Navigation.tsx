@@ -10,6 +10,7 @@ import { useMainSt } from 'pkg.stores';
 import { toast } from 'sonner';
 import { nanoid } from 'nanoid';
 import { BottomBar, Menu } from './components';
+import { ModalsProvider } from './ModalsProvider';
 
 type NavigationPropT = {
   children: ReactNode;
@@ -244,7 +245,7 @@ export const Navigation = ({ children }: NavigationPropT) => {
   if (pathname.includes('/empty/')) return children;
 
   return (
-    <>
+    <ModalsProvider>
       <div className="relative hidden flex-row md:flex">
         <div className="fixed flex h-screen min-h-screen min-w-[350px] flex-col p-6">
           <Menu setSlideIndex={setSlideIndex} />
@@ -255,6 +256,6 @@ export const Navigation = ({ children }: NavigationPropT) => {
         {children}
       </BottomBar>
       <WelcomeModal open={modalOpen} setModalOpen={setModalOpen} />
-    </>
+    </ModalsProvider>
   );
 };
