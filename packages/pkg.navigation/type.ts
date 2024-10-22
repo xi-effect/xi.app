@@ -2,10 +2,11 @@ import { SetStateAction } from 'react';
 import { CategoryT } from './components/types';
 
 export type CommunityTemplateT = {
-  name: string;
-  avatar: string;
-  id: number;
-  isOwner: boolean;
+  name: string | null;
+  avatar?: string;
+  id: number | null | 'empty';
+  isOwner?: boolean;
+  description: string | null;
 };
 
 export type EditCategoryFormT = {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,49 +14,54 @@ import { toast } from 'sonner';
 import { DropdownHeader } from './DropdownHeader';
 import { CommunityLink } from '../Community';
 import { useCommunityStore } from '../../store/communityStore';
-import { CommunityTemplateT } from '../../type';
+import {
+  CATEGORY_CREATE,
+  CHANNEL_CREATE,
+  INVITE_COMMUNITY,
+  ADD_COMMUNITY,
+  OPEN_COMMUNITY_SETTINGS,
+} from '../../store/modalConst';
 import { RetrieveCommunityT } from '../types';
 
 export const DropdownMenuBasic = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    isInviteCommunityModalOpen,
-    setIsInviteCommunityModalOpen,
-    isCommunityChannelCreateOpen,
-    setIsCommunityChannelCreateOpen,
-    setIsAddCommunityModalOpen,
-    setIsCategoryCreateOpen,
-    isCategoryCreateOpen,
-    setIsOpenCommunitySettings,
-  } = useCommunityStore();
+  const { setModal } = useCommunityStore();
 
-  const isOwner = useMainSt((state) => state.communityMeta.isOwner);
-
-  // Берем community-id из URL
-  const params = useParams();
-  // Делим все сообщества пользователя на то, на странице которого мы сейчас
-  // и на остальные
+  // из-за warn в консоли я решил вернуть обратно и оставить получения свйоств из стора в таком виде
   const currentCommunity = useMainSt((state) => state.communityMeta);
-  const [otherCommunities, setOtherCommunities] = useState<CommunityTemplateT[]>();
-
+  const communities = useMainSt((state) => state.communities);
   const socket = useMainSt((state) => state.socket);
   const updateCommunityMeta = useMainSt((state) => state.updateCommunityMeta);
   const updateCategories = useMainSt((state) => state.updateCategories);
   const updateChannels = useMainSt((state) => state.updateChannels);
+  const updateCommunities = useMainSt((state) => state.updateCommunities);
+
+  const { isOwner } = currentCommunity;
+
+  // Берем community-id из URL
+  const params = useParams();
 
   useEffect(() => {
     socket?.emit('list-communities', (status: number, communities: any[]) => {
-      const otherCommunities: CommunityTemplateT[] = communities.filter(
-        (community) => community.id.toString() !== params['community-id'],
-      );
-      setOtherCommunities(otherCommunities);
+      updateCommunities(communities);
     });
   }, [params]);
+
+  const otherCommunities = useMemo(
+    () =>
+      communities?.filter((community) => community.id?.toString() !== params['community-id']) ?? [],
+    [communities, params['community-id']],
+  );
 
   const router = useRouter();
 
   const handleClose = () => setIsOpen(false);
+
+  const handleMenuItemClick = (modalType: string) => () => {
+    setModal(modalType);
+    setIsOpen(false);
+  };
 
   const handleLeaveCommunity = () => {
     socket?.emit('leave-community', { community_id: currentCommunity.id }, (status: number) => {
@@ -119,19 +124,13 @@ export const DropdownMenuBasic = () => {
               <>
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
-                  onClick={() => {
-                    setIsInviteCommunityModalOpen(!isInviteCommunityModalOpen);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(INVITE_COMMUNITY)}
                 >
                   <span>Пригласить людей</span>
                   <PeopleInvite size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => {
-                    setIsOpenCommunitySettings(true);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(OPEN_COMMUNITY_SETTINGS)}
                   className="group sm:w-[302px]"
                 >
                   <span>Настройки сообщества</span>
@@ -140,20 +139,14 @@ export const DropdownMenuBasic = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
-                  onClick={() => {
-                    setIsCommunityChannelCreateOpen(!isCommunityChannelCreateOpen);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(CHANNEL_CREATE)}
                 >
                   <span>Создать канал</span>
                   <ChannelAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="group sm:w-[302px]"
-                  onClick={() => {
-                    setIsCategoryCreateOpen(!isCategoryCreateOpen);
-                    handleClose();
-                  }}
+                  onClick={handleMenuItemClick(CATEGORY_CREATE)}
                 >
                   <span>Создать категорию</span>
                   <CategoryAdd size="s" className="ml-auto h-4 w-4 group-hover:fill-gray-100" />
@@ -187,10 +180,7 @@ export const DropdownMenuBasic = () => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="group text-gray-50 sm:w-[302px]"
-            onClick={() => {
-              setIsAddCommunityModalOpen(true);
-              handleClose();
-            }}
+            onClick={handleMenuItemClick(ADD_COMMUNITY)}
           >
             <span>Присоединиться к сообществу</span>
             <Plus size="s" className="ml-auto h-4 w-4 fill-gray-50 group-hover:fill-gray-100" />

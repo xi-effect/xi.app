@@ -3,9 +3,10 @@ import { HTMLAttributes } from 'react';
 import { ConnectionQuality } from 'livekit-client';
 import { UpBar } from './UpBar';
 import { BottomBar } from './BottomBar';
-import { serverUrl, LocalUserChoiceT } from '../Call';
+import { LocalUserChoiceT } from '../Call';
 import { ISettingsRoom } from '../types/types';
 import { VideoConference } from './VideoTrack';
+import { serverUrl, serverUrlDev, isDevMode, devToken } from '../config';
 
 export const ActiveRoom = ({
   token,
@@ -24,17 +25,17 @@ export const ActiveRoom = ({
   return (
     <LiveKitRoom
       room={room}
-      token={token}
-      serverUrl={serverUrl}
+      token={isDevMode ? devToken : token}
+      serverUrl={isDevMode ? serverUrlDev : serverUrl}
       connect={connect}
       onConnected={() => setIsConnected(true)}
       onDisconnected={handleDisconnect}
       audio={userChoice?.audioEnabled || false}
       video={userChoice?.videoEnabled || false}
     >
-      <div className="flex min-h-screen flex-col justify-between gap-3">
+      <div className="flex min-h-screen flex-col justify-stretch">
         <UpBar />
-        <div className="px-4">
+        <div className="flex min-h-[calc(100vh-152px)] items-center justify-center px-4">
           <div className="h-full w-full text-center text-gray-100">
             {isConnected && <VideoConference />}
           </div>

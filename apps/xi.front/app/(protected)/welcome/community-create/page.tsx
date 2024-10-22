@@ -130,12 +130,6 @@ export default function WelcomeCommunityCreate() {
           const { status } = await put<RequestBody, ResponseBody>({
             service: 'auth',
             path: '/api/onboarding/stages/completed/',
-            body: {},
-            config: {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
           });
 
           updateCommunityMeta({

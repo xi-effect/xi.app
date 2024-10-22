@@ -6,6 +6,13 @@ import { Common, useMainSt } from '../main';
 
 type Data = { email: string; password: string };
 
+type StatusT = 200 | 400;
+
+type ReturnT = {
+  status: StatusT;
+  theme: string | null;
+};
+
 export type Auth = {
   // TODO: Типизация SocketIO больная, не на пару минут
   socket: any;
@@ -17,7 +24,7 @@ export type Auth = {
     password,
   }: Data & {
     setError: UseFormSetError<{ email: string; password: string }>;
-  }) => Promise<200 | 400>;
+  }) => Promise<ReturnT>;
   onSignUp: ({
     email,
     password,
@@ -25,14 +32,14 @@ export type Auth = {
   }: Data & {
     setError: UseFormSetError<{ email: string; password: string; username: string }>;
     username: string;
-  }) => Promise<200 | 400>;
+  }) => Promise<StatusT>;
   onEmailChange: ({
     email,
     password,
   }: Data & {
     setError: UseFormSetError<{ email: string; password: string }>;
-  }) => Promise<200 | 400>;
-  onSignOut: () => Promise<200 | 400>;
+  }) => Promise<StatusT>;
+  onSignOut: () => Promise<StatusT>;
 };
 
 export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
@@ -68,10 +75,12 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          emailConfirmed: data.email_confirmed,
+          allowedConfirmationResend: data.allowed_confirmation_resend,
           lastPasswordChange: data.last_password_change,
         },
       }));
-      return 200;
+      return { status: 200, theme: data.theme };
     }
 
     if (data?.detail === 'User not found') {
@@ -80,7 +89,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
       setError('password', { type: 'manual', message: 'Неправильный пароль' });
     }
 
-    return 400;
+    return { status: 400, theme: null };
   },
   onSignUp: async ({ username, email, password, setError }) => {
     const { data, status } = await postSignup({ username, email, password });
@@ -98,6 +107,8 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: data.display_name,
           theme: data.theme,
           email: data.email,
+          emailConfirmed: data.email_confirmed,
+          allowedConfirmationResend: data.allowed_confirmation_resend,
           lastPasswordChange: data.last_password_change,
         },
       }));
@@ -131,6 +142,8 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
           displayName: '',
           theme: '',
           email: '',
+          emailConfirmed: false,
+          allowedConfirmationResend: '',
           lastPasswordChange: '',
         },
       }));

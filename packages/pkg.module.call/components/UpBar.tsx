@@ -5,8 +5,8 @@
 import React, { useEffect } from 'react';
 import {
   Grid,
-  Settings,
-  External,
+  // Settings,
+  // External,
   Speaker,
   SpeakerHorizontal,
   Maximize,
@@ -88,18 +88,18 @@ export const UpBar = () => {
           <Maximize className="fill-gray-100" />
         )}
       </button>
-      <button
+      {/* <button
         type="button"
-        className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
+      className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
       >
         <External className="fill-gray-100" />
       </button>
       <button
         type="button"
-        className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
+      className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
       >
         <Settings className="fill-gray-100" />
-      </button>
+      </button> */}
     </div>
   );
 };

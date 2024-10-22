@@ -3,7 +3,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const Board = dynamic(() => import('pkg.module.board').then((mod) => mod.Board), {
+const BoardProvider = dynamic(() => import('pkg.module.board').then((mod) => mod.BoardProvider), {
   ssr: false,
 });
 
@@ -13,7 +13,7 @@ export default function BoardPage() {
       id="whiteboard-container"
       className="w-full md:w-[calc(100vw-350px)] md:min-h-screen md:h-screen md:overflow-auto bg-gray-0"
     >
-      <Board />
+      <BoardProvider />
     </div>
   );
 }

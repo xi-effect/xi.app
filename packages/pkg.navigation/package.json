@@ -1,6 +1,6 @@
 {
   "name": "pkg.navigation",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "@xipkg/contextmenu": "^0.1.0",
     "@xipkg/dropdown": "1.2.0",
     "@xipkg/form": "^3.0.0",
-    "@xipkg/icons": "1.1.1",
+    "@xipkg/icons": "1.2.0",
     "@xipkg/input": "^1.0.0",
     "@xipkg/modal": "3.1.0",
     "@xipkg/scrollarea": "0.1.0",
@@ -26,7 +26,6 @@
     "driver.js": "^1.3.1",
     "framer-motion": "^11.3.31",
     "nanoid": "5.0.7",
-    "next": "^14.2.3",
     "pkg.community.channel-create": "*",
     "pkg.community.settings": "*",
     "pkg.logo": "*",
@@ -40,11 +39,9 @@
     "pkg.user.settings": "*",
     "pkg.utils": "*",
     "pkg.utils.client": "*",
-    "react": "^18.2.0",
-    "react-dom": "18.2.0",
-    "react-swipeable-views-react-18-fix": "^0.14.1",
     "socket.io-client": "4.7.5",
     "sonner": "1.4.41",
+    "swiper": "^11.1.14",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
@@ -56,6 +53,11 @@
     "eslint-config-custom": "*",
     "typescript": "^5.4.2"
   },
-  "description": "form for signin",
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "18.2.0",
+    "next": "^14.2.3"
+  },
+  "description": "app navigation",
   "author": "xi.effect"
 }

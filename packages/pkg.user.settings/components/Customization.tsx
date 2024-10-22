@@ -9,10 +9,56 @@ import {
   SelectValue,
 } from '@xipkg/select';
 import { useTheme } from 'next-themes';
+import { patch } from 'pkg.utils';
+import { toast } from 'sonner';
+import { useMainSt } from 'pkg.stores';
+import { useDebouncedFunction } from '@xipkg/utils/useDebouncedFunction';
+
+type ThemeT = 'light' | 'dark' | 'system';
+
+type PathResponseT = { status: number };
+type PathRequestBodyT = {
+  username: string;
+  display_name: string;
+  theme: ThemeT;
+};
 
 export const Customization = () => {
   const isMobile = useMedia('(max-width: 719px)', false);
   const { theme, setTheme } = useTheme();
+  const user = useMainSt((state) => state.user);
+  const updateUser = useMainSt((state) => state.updateUser);
+
+  const updateThemeRequest = async (value: ThemeT) => {
+    const { status } = await patch<PathRequestBodyT, PathResponseT>({
+      service: 'auth',
+      path: '/api/users/current/profile/',
+      body: { username: user.username, display_name: user.displayName, theme: `${value}` },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+
+    if (status === 200) {
+      updateUser({ theme: `${value}` });
+      toast('Данные успешно обновлены');
+    } else {
+      // если есть ошибка отправки данных, то необходимо вернуть изначальное значение
+      setTheme(user.theme);
+      toast('Ошибка сервера');
+    }
+  };
+
+  const debouncedUpdateTheme = useDebouncedFunction((value: ThemeT) => {
+    updateThemeRequest(value);
+  }, 3000);
+
+  const updateTheme = (value: ThemeT) => {
+    setTheme(value);
+    debouncedUpdateTheme(value);
+  };
 
   return (
     <>
@@ -26,7 +72,7 @@ export const Customization = () => {
             <Palette className="fill-brand-80" />
             <span className="text-base font-semibold leading-[24px]">Тема оформления</span>
           </div>
-          <Select value={theme} onValueChange={(value) => setTheme(value)}>
+          <Select value={theme} onValueChange={(value: ThemeT) => updateTheme(value)}>
             <SelectTrigger className="ml-0 w-[250px] sm:ml-auto">
               <SelectValue placeholder="Select a fruit" />
             </SelectTrigger>
@@ -34,6 +80,7 @@ export const Customization = () => {
               <SelectGroup>
                 <SelectItem value="light">Светлая</SelectItem>
                 <SelectItem value="dark">Тёмная</SelectItem>
+                <SelectItem value="system">Системная</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
