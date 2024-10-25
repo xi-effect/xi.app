@@ -1,12 +1,17 @@
 import { useState, useRef } from 'react';
 
+// import { toast } from 'sonner';
+
 import HeaderCreateTask from './components/HeaderCreateTask';
 import { FormBlock } from './components/Form';
 import { SimpleAnswer } from './tasks/SimpleAnswer';
 import { FooterCreateTask } from './components/FooterCreateTask';
-import { Task, TaskType, SimpleAnswerRef, SimpleAnswerData, AllTasksData } from './typesTask';
-
-import { toast } from 'sonner';
+import {
+  Task,
+  TaskType,
+  SimpleAnswerRef,
+  // SimpleAnswerData, AllTasksData
+} from './typesTask';
 
 export const TasksCreate = () => {
   const [timer, setTimer] = useState(true);
@@ -57,25 +62,25 @@ export const TasksCreate = () => {
 
   // Метод будет передаваться в FormBlock для отправки данных
   // Проверить работу можно в закоментированной кнопке внизу
-  const handleSubmitAll = async () => {
-    try {
-      const results: AllTasksData[] = [];
+  // const handleSubmitAll = async () => {
+  //   try {
+  //     const results: AllTasksData[] = [];
 
-      for (const task of tasks) {
-        const taskRef = taskRefs.current[task.id];
-        if (taskRef && taskRef.getData) {
-          const data: SimpleAnswerData = await taskRef.getData();
-          results.push({ taskId: task.id, ...data });
-        }
-      }
+  //     for (const task of tasks) {
+  //       const taskRef = taskRefs.current[task.id];
+  //       if (taskRef && taskRef.getData) {
+  //         const data: SimpleAnswerData = await taskRef.getData();
+  //         results.push({ taskId: task.id, ...data });
+  //       }
+  //     }
 
-      toast.success('Задания сохранены');
-      console.log('Данные заданий:', results);
-    } catch (error) {
-      toast.error('Ошибка при отправке заданий.');
-      console.error(error);
-    }
-  };
+  //     toast.success('Задания сохранены');
+  //     console.log('Данные заданий:', results);
+  //   } catch (error) {
+  //     toast.error('Ошибка при отправке заданий.');
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="flex h-full flex-col md:h-[100dvh] lg:p-0">
@@ -107,7 +112,7 @@ export const TasksCreate = () => {
 
               {/* Прочие варианты заданий
               {task.type === 'long' && <LongAnswer />}
-              {task.type === 'choose' && <ChooseAnswer />} 
+              {task.type === 'choose' && <ChooseAnswer />}
               */}
             </div>
           ))}

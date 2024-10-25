@@ -40,17 +40,12 @@ export const HeaderTask = ({
 }: HeaderTaskT) => (
   <div className="flex justify-between">
     <div className="flex items-center">
-      <div className="bg-brand-0 rounded-full p-2">{iconType[icon] || iconType['simple']}</div>
+      <div className="bg-brand-0 rounded-full p-2">{iconType[icon] || iconType.simple}</div>
       <p className="text-m-base pl-4 font-medium">Простой ответ</p>
     </div>
 
     <div>
-      <Button
-        variant="ghost"
-        className="p-2 sm:inline-block"
-        onClick={onMoveUp}
-        disabled={isFirst}
-      >
+      <Button variant="ghost" className="p-2 sm:inline-block" onClick={onMoveUp} disabled={isFirst}>
         <ArrowUp />
       </Button>
       <Button

@@ -74,18 +74,13 @@ export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
       name: 'answers',
     });
 
-    const getData = async (): Promise<SimpleAnswerData> => {
-      return new Promise<SimpleAnswerData>((resolve, reject) => {
+    const getData = async (): Promise<SimpleAnswerData> =>
+      new Promise<SimpleAnswerData>((resolve, reject) => {
         handleSubmit(
-          (data) => {
-            resolve(data);
-          },
-          (errors) => {
-            reject(errors);
-          },
+          (data) => resolve(data),
+          (errors) => reject(errors),
         )();
       });
-    };
 
     useImperativeHandle(ref, () => ({
       getData,
@@ -215,3 +210,5 @@ export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
     );
   },
 );
+
+SimpleAnswer.displayName = 'SimpleAnswer';
