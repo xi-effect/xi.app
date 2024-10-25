@@ -34,15 +34,15 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const router = useRouter();
   const getUrlWithParams = useGetUrlWithParams();
 
-  useEffect(() => {
-    if (channels === null) return;
+  // useEffect(() => {
+  //   if (channels === null) return;
 
-    const channelIds = channels?.map(({ id }) => id);
-    if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
-      console.log('403');
-      setErrorCode(403);
-    }
-  }, [params, channels]);
+  //   const channelIds = channels?.map(({ id }) => id);
+  //   if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
+  //     console.log('403');
+  //     setErrorCode(403);
+  //   }
+  // }, [params, channels]);
 
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
