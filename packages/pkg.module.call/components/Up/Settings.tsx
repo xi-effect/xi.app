@@ -22,10 +22,10 @@ export const Settings = ({ children }: SettingsPropsT) => {
   return (
     <Sheet>
       <SheetTrigger className="ml-2 bg-transparent">{children}</SheetTrigger>
-      <SheetContent className="bg-gray-100">
-        <SheetHeader className="flex flex-row justify-between">
+      <SheetContent className="bg-gray-100 p-4">
+        <SheetHeader className="flex h-10 flex-row items-center justify-between space-y-0">
           <SheetTitle className="text-gray-0">Настройки</SheetTitle>
-          <SheetClose className="bg-transparent">
+          <SheetClose className="mt-0 bg-transparent pt-0">
             <Close className="fill-gray-0" />
           </SheetClose>
         </SheetHeader>
