@@ -13,7 +13,7 @@ import {
   useTracks,
 } from '@livekit/components-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ParticipantTile } from './Participant/ParticipantTile';
+import { ParticipantTile } from './Participant';
 import { CarouselContainer, GridLayout, FocusLayoutContainer } from './VideoConferenceLayout';
 
 export const VideoConference = ({ ...props }: VideoConferenceProps) => {

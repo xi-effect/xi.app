@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Room } from 'livekit-client';
 import { ActiveRoom } from './components/ActiveRoom';
-import { PreJoin } from './components/PreJoinSection';
+import { PreJoinSection } from './components/PreJoin';
 
 type CallPropsT = {
   token: string;
@@ -52,7 +52,7 @@ export const Call = ({ token }: CallPropsT) => {
           />
         </div>
       ) : (
-        <PreJoin defaults={preJoinDefaults} connect={connect} onSubmit={onSubmit} />
+        <PreJoinSection defaults={preJoinDefaults} connect={connect} onSubmit={onSubmit} />
       )}
     </div>
   );

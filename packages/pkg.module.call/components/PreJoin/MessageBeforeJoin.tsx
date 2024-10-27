@@ -5,13 +5,13 @@ type MessageBeforeJoinPropsT = {
 };
 
 export const MessageBeforeJoin = ({ typeOfMessage }: MessageBeforeJoinPropsT) => (
-  <div className="mb-4">
-    {typeOfMessage === 'notStarted' && (
+  <div>
+    {/* {typeOfMessage === 'notStarted' && (
       <div className="bg-gray-5 mb-4 rounded-md p-4 font-sans">
         <h2 className="text-[20px] font-medium">Конференция не началась</h2>
         <p>Дождитесь организатора</p>
       </div>
-    )}
+    )} */}
     {typeOfMessage === 'needPermission' && (
       <div className="bg-orange-0 mb-4 rounded-md p-4 font-sans">
         <div className="flex items-center gap-5">

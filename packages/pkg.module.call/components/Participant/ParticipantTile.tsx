@@ -8,8 +8,6 @@ import {
   ConnectionQualityIndicator,
   LockLockedIcon,
   ParticipantContextIfNeeded,
-  // ParticipantName,
-  // ParticipantPlaceholder,
   ParticipantTileProps,
   ScreenShareIcon,
   TrackMutedIndicatorProps,
@@ -26,7 +24,7 @@ import {
 } from '@livekit/components-react';
 import { MicrophoneOff, RedLine } from '@xipkg/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
-import { FocusToggle } from '../FocusToggle';
+import { FocusToggle } from './FocusToggle';
 import '../../utility/style.css';
 import { ParticipantName } from './ParticipantName';
 
@@ -104,15 +102,7 @@ export const ParticipantTile = ({
     [maybeTrackRef, p, publication, source, trackRef],
   );
 
-  const {
-    identity,
-    name,
-    // metadata,
-  } = useParticipantInfo({ participant: trackReference.participant });
-
-  // const displayName = (metadata as any)?.displayName ?? null;
-
-  // console.log('useParticipantInfo', identity, name, metadata);
+  const { identity, name } = useParticipantInfo({ participant: trackReference.participant });
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
     htmlProps,
