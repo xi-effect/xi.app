@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.className} ${markerHand.className} text-[16px] font-sans`}
+      className={`${inter.variable} ${markerHand.variable} text-[16px] font-sans`}
     >
       <body className="overflow-hidden bg-gray-0">
         {process.env.NODE_ENV === 'production' && (
