@@ -151,7 +151,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
               <UserProfile
                 loading={isNotCommunityId || user?.id === null || user?.id === undefined}
                 userId={user?.id || null}
-                text={user?.displayName}
+                text={user?.displayName ?? user?.username}
                 label={user?.username}
                 size="m"
               />
