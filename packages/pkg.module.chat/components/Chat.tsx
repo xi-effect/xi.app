@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { Button } from '@xipkg/button';
 /* import { time } from 'console'; */
@@ -18,106 +18,73 @@ import { useLoadItems } from '../utils';
 //   message: string;
 // };
 
-const mocksMessages = [
+type MessageItemT = {
+  id: string;
+  name: string;
+  time: string;
+  message: string;
+};
+
+const mocksMessages: MessageItemT[] = [
   {
+    id: '1',
     name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
+    time: '22.03.2024 09:15',
     message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
   },
   {
+    id: '2',
     name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
+    time: '22.03.2024 09:30',
     message: 'Ой, как жаль! Выздоравливайте скорее!',
   },
   {
+    id: '3',
     name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
+    time: '22.03.2024 10:05',
+    message: 'Спасибо, Денис!',
   },
   {
+    id: '4',
     name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
+    time: '22.03.2024 10:30',
+    message: 'Если что, можем помочь с уроками онлайн.',
   },
   {
+    id: '5',
     name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
+    time: '22.03.2024 11:00',
+    message: 'Это было бы здорово, давайте завтра.',
   },
   {
+    id: '6',
     name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
+    time: '22.03.2024 11:15',
+    message: 'Договорились! Выздоравливайте!',
   },
   {
+    id: '7',
     name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
+    time: '22.03.2024 12:00',
+    message: 'Спасибо за поддержку, до завтра!',
   },
   {
+    id: '8',
     name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
+    time: '22.03.2024 12:30',
+    message: 'Не за что, до завтра!',
   },
   {
+    id: '9',
     name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
+    time: '23.03.2024 09:00',
+    message: 'Всем доброе утро! Я готова к уроку.',
   },
   {
+    id: '10',
     name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
-  },
-  {
-    name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
-  },
-  {
-    name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
-  },
-  {
-    name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
-  },
-  {
-    name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
-  },
-  {
-    name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
-  },
-  {
-    name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
-  },
-  {
-    name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
-  },
-  {
-    name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
-  },
-  {
-    name: 'Анна Иванова',
-    time: '21.03.2024 15:25',
-    message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
-  },
-  {
-    name: 'Денис Спиридонов',
-    time: '21.03.2024 15:58',
-    message: 'Ой, как жаль! Выздоравливайте скорее!',
+    time: '23.03.2024 09:05',
+    message: 'Доброе утро! Начинаем через 5 минут.',
   },
 ];
 
@@ -132,13 +99,13 @@ export const Chat = () => {
     rootMargin: '400px 0px 0px 0px',
   });
 
-  const scrollableRootRef = React.useRef<React.ElementRef<'div'> | null>(null);
-  const lastScrollDistanceToBottomRef = React.useRef<number>();
+  const scrollableRootRef = useRef<React.ElementRef<'div'> | null>(null);
+  const lastScrollDistanceToBottomRef = useRef<number>();
 
-  const reversedItems = React.useMemo(() => [...items].reverse(), [items]);
+  const reversedItems = useMemo(() => [...items].reverse(), [items]);
 
   // We keep the scroll position when new items are added etc.
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     const scrollableRoot = scrollableRootRef.current;
     const lastScrollDistanceToBottom = lastScrollDistanceToBottomRef.current ?? 0;
     if (scrollableRoot) {
@@ -173,6 +140,29 @@ export const Chat = () => {
     });
   };
 
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [lockedHovered, setLockedHovered] = useState<string | null>(null);
+  const menuRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const currentHovered = lockedHovered || hovered;
+      if (
+        currentHovered &&
+        menuRefs.current[currentHovered] &&
+        !menuRefs.current[currentHovered]!.contains(event.target as Node)
+      ) {
+        setLockedHovered(null);
+        setHovered(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [lockedHovered, hovered]);
+
   return (
     <div
       ref={rootRefSetter}
@@ -198,16 +188,25 @@ export const Chat = () => {
           </div>
         ) : (
           mocksMessages.map(
-            (item, index) =>
+            (item: MessageItemT) =>
               item != null && (
-                <div key={index} className="">
-                  <div className="flex w-full justify-center p-2">
+                <div key={item.id}>
+                  <div className="hover: flex w-full justify-center p-2 opacity-0">
                     <span className="rounded-lg bg-[#F7F7F7] px-2 py-1 text-[#585858]">
                       {formatDate(item.time)}
                     </span>
                   </div>
-                  <div className="group relative">
-                    <div className="flex w-full p-2 transition-colors hover:bg-[#F7F7F7]">
+
+                  <div
+                    className={`group relative ${hovered === item.id || lockedHovered === item.id ? 'bg-[#F7F7F7]' : 'hover:bg-[#F7F7F7]'} `}
+                    onMouseEnter={() => setHovered(item.id)}
+                    onMouseLeave={() => {
+                      if (lockedHovered !== item.id) {
+                        setHovered(null);
+                      }
+                    }}
+                  >
+                    <div className="flex w-full p-2 transition-colors">
                       <img className="mr-2 h-12 w-12 rounded-full" src="" alt="User Avatar" />
                       <div className="flex-1">
                         <div className="flex items-center">
@@ -220,13 +219,18 @@ export const Chat = () => {
                       </div>
                     </div>
 
-                    <div className="pointer-events-none absolute right-1 top-5 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100">
+                    <div
+                      ref={(el: HTMLDivElement | null) => {
+                        menuRefs.current[item.id] = el;
+                      }}
+                      className={`pointer-events-none absolute right-1 top-5 ${hovered === item.id ? 'pointer-events-auto opacity-100' : 'opacity-0'}`}
+                    >
                       <div className="relative flex">
                         <Button
                           variant="ghost"
                           type="button"
                           className="m-0 h-6 w-6 p-0"
-                          onClick={() => console.log('Emotions')}
+                          onClick={() => setHovered(item.id)}
                         >
                           <Emotions />
                         </Button>
@@ -234,7 +238,7 @@ export const Chat = () => {
                           variant="ghost"
                           type="button"
                           className="m-0 h-6 w-6 p-0"
-                          onClick={() => console.log('Share')}
+                          onClick={() => setHovered(item.id)}
                         >
                           <Share />
                         </Button>
@@ -242,7 +246,7 @@ export const Chat = () => {
                           variant="ghost"
                           type="button"
                           className="m-0 h-6 w-6 p-0"
-                          onClick={() => console.log('Edit')}
+                          onClick={() => setHovered(item.id)}
                         >
                           <Edit />
                         </Button>
@@ -252,7 +256,10 @@ export const Chat = () => {
                               variant="ghost"
                               type="button"
                               className="m-0 h-6 w-6 p-0"
-                              onClick={() => console.log('pinned')}
+                              onClick={() => {
+                                setLockedHovered(item.id);
+                                setHovered(item.id);
+                              }}
                             >
                               <MenuDots />
                             </Button>
