@@ -5,16 +5,18 @@
 import React, { useEffect } from 'react';
 import {
   Grid,
-  Settings,
-  External,
+  // Settings,
+  // External,
   Speaker,
   SpeakerHorizontal,
   Maximize,
   Minimize,
+  Settings as SettingsIcon,
 } from '@xipkg/icons';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useFullScreen } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
+import { Settings } from './Settings';
 
 export const UpBar = () => {
   const params = useParams<{ 'community-id': string; 'channel-id': string }>();
@@ -88,18 +90,20 @@ export const UpBar = () => {
           <Maximize className="fill-gray-100" />
         )}
       </button>
-      <button
+      {/* <button
         type="button"
-        className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
+      className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
       >
         <External className="fill-gray-100" />
-      </button>
-      <button
-        type="button"
-        className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
-      >
-        <Settings className="fill-gray-100" />
-      </button>
+      </button> */}
+      <Settings>
+        <button
+          type="button"
+          className="bg-gray-0 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
+        >
+          <SettingsIcon className="fill-gray-100" />
+        </button>
+      </Settings>
     </div>
   );
 };

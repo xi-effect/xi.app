@@ -9,14 +9,19 @@ import FormJoin from './components/FormJoinStage';
 
 type AddCommunityModalT = {
   open: boolean;
-  onOpenChange: (value: boolean) => void;
+  setModal: (modalType: string | null) => void;
 };
 
-export const AddCommunityModal = ({ open, onOpenChange }: AddCommunityModalT) => {
+export const AddCommunityModal = ({ open, setModal }: AddCommunityModalT) => {
   const [stage, setStage] = useState<'create' | 'join'>('create');
 
+  const handleOpenChange = () => {
+    setModal(null);
+    setStage('create');
+  };
+
   return (
-    <M.Modal open={open} onOpenChange={onOpenChange}>
+    <M.Modal open={open} onOpenChange={handleOpenChange}>
       <M.ModalContent>
         <M.ModalCloseButton>
           <Close className="fill-gray-80 sm:fill-gray-0" />
@@ -26,7 +31,7 @@ export const AddCommunityModal = ({ open, onOpenChange }: AddCommunityModalT) =>
             <M.ModalHeader>
               <M.ModalTitle>Создание сообщества</M.ModalTitle>
             </M.ModalHeader>
-            <FormCreate onOpenChange={onOpenChange} />
+            <FormCreate onOpenChange={handleOpenChange} />
             <div className="bg-gray-5 flex flex-col items-center rounded-b-[16px] p-8">
               <p className="text-xl font-semibold">У вас есть приглашение?</p>
               <Button
@@ -45,7 +50,7 @@ export const AddCommunityModal = ({ open, onOpenChange }: AddCommunityModalT) =>
                 Присоединение к сообществу
               </M.ModalTitle>
             </M.ModalHeader>
-            <FormJoin setStage={setStage} onOpenChange={onOpenChange} />
+            <FormJoin setStage={setStage} onOpenChange={handleOpenChange} />
           </>
         )}
       </M.ModalContent>

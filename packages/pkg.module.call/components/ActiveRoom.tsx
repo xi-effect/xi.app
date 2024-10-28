@@ -1,11 +1,10 @@
-import { LiveKitRoom, useConnectionQualityIndicator } from '@livekit/components-react';
-import { HTMLAttributes } from 'react';
-import { ConnectionQuality } from 'livekit-client';
-import { UpBar } from './UpBar';
-import { BottomBar } from './BottomBar';
-import { serverUrl, LocalUserChoiceT } from '../Call';
+import { LiveKitRoom } from '@livekit/components-react';
+import { UpBar } from './Up';
+import { BottomBar } from './Bottom';
+import { LocalUserChoiceT } from '../Call';
 import { ISettingsRoom } from '../types/types';
-import { VideoConference } from './VideoTrack';
+import { VideoConference } from './VideoConference';
+import { serverUrl, serverUrlDev, isDevMode, devToken } from '../config';
 
 export const ActiveRoom = ({
   token,
@@ -24,8 +23,8 @@ export const ActiveRoom = ({
   return (
     <LiveKitRoom
       room={room}
-      token={token}
-      serverUrl={serverUrl}
+      token={isDevMode ? devToken : token}
+      serverUrl={isDevMode ? serverUrlDev : serverUrl}
       connect={connect}
       onConnected={() => setIsConnected(true)}
       onDisconnected={handleDisconnect}
@@ -43,27 +42,4 @@ export const ActiveRoom = ({
       </div>
     </LiveKitRoom>
   );
-};
-
-export const UserDefinedConnectionQualityIndicator = (props: HTMLAttributes<HTMLSpanElement>) => {
-  const { quality } = useConnectionQualityIndicator();
-
-  function qualityToText(quality: ConnectionQuality): string {
-    switch (quality) {
-      case ConnectionQuality.Poor:
-        return 'Poor';
-      case ConnectionQuality.Good:
-        return 'Good';
-      case ConnectionQuality.Excellent:
-        return 'Excellent';
-      case ConnectionQuality.Lost:
-        return 'Reconnecting';
-      default:
-        return 'No idea';
-    }
-  }
-
-  const qualityText = qualityToText(quality);
-
-  return <span {...props}>{qualityText}</span>;
 };

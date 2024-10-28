@@ -11,9 +11,8 @@ import {
 import { Chat, Endcall, Group, Hand } from '@xipkg/icons';
 import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client';
 import { supportsScreenSharing } from '@livekit/components-core';
-import { TrackToggle } from '../utility/TrackToggle';
-import { ActionButton } from './ActionButton';
-import { DevicesBar } from './DevicesBar';
+import { TrackToggle } from '../../utility/TrackToggle';
+import { ActionButton, DevicesBar } from '../common';
 
 const DisconnectButton = () => {
   const { buttonProps } = useDisconnectButton({});

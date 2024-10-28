@@ -3,7 +3,7 @@ import { useTrackVolume } from '@livekit/components-react';
 import { Conference, Microphone } from '@xipkg/icons';
 import { motion } from 'framer-motion';
 import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client';
-import { TrackToggle, TrackToggleProps } from '../utility/TrackToggle';
+import { TrackToggle, TrackToggleProps } from '../../utility/TrackToggle';
 
 type DevicesBarPropsT = {
   microTrack: LocalAudioTrack | undefined;

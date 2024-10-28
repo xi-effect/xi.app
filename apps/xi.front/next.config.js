@@ -57,6 +57,7 @@ const nextConfig = {
     '@xipkg/file',
     '@xipkg/tooltip',
     '@xipkg/breadcrumbs',
+    '@xipkg/sheet',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
