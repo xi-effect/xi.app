@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { Button } from '@xipkg/button';
-/* import { time } from 'console'; */
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,12 +10,6 @@ import {
 import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
 
 import { useLoadItems } from '../utils';
-
-// type Message = {
-//   name: string;
-//   time: string;
-//   message: string;
-// };
 
 type MessageItemT = {
   id: string;
@@ -134,10 +127,18 @@ export const Chat = () => {
     const [day, month, year] = datePart.split('.');
     const date = new Date(Number(year), Number(month) - 1, Number(day));
 
-    return date.toLocaleDateString('ru-RU', {
+    const dateFormat = date.toLocaleDateString('ru-RU', {
       day: 'numeric',
       month: 'long',
     });
+
+    return dateFormat;
+  };
+
+  const shouldShowDate = (index: number, messages: MessageItemT[]) => {
+    const dateFiltering =
+      index === 0 || formatDate(messages[index].time) !== formatDate(messages[index - 1].time);
+    return dateFiltering;
   };
 
   const [hovered, setHovered] = useState<string | null>(null);
@@ -188,14 +189,16 @@ export const Chat = () => {
           </div>
         ) : (
           mocksMessages.map(
-            (item: MessageItemT) =>
+            (item: MessageItemT, index: number) =>
               item != null && (
                 <div key={item.id}>
-                  <div className="hover: flex w-full justify-center p-2 opacity-0">
-                    <span className="rounded-lg bg-[#F7F7F7] px-2 py-1 text-[#585858]">
-                      {formatDate(item.time)}
-                    </span>
-                  </div>
+                  {shouldShowDate(index, mocksMessages) && (
+                    <div className="flex w-full justify-center p-2">
+                      <span className="rounded-lg bg-[#F7F7F7] px-2 py-1 text-[#585858]">
+                        {formatDate(item.time)}
+                      </span>
+                    </div>
+                  )}
 
                   <div
                     className={`group relative ${hovered === item.id || lockedHovered === item.id ? 'bg-[#F7F7F7]' : 'hover:bg-[#F7F7F7]'} `}
@@ -223,13 +226,13 @@ export const Chat = () => {
                       ref={(el: HTMLDivElement | null) => {
                         menuRefs.current[item.id] = el;
                       }}
-                      className={`pointer-events-none absolute right-1 top-5 ${hovered === item.id ? 'pointer-events-auto opacity-100' : 'opacity-0'}`}
+                      className={`pointer-events-none absolute right-1 top-4 ${hovered === item.id ? 'pointer-events-auto opacity-100' : 'opacity-0'}`}
                     >
-                      <div className="relative flex">
+                      <div className="border-gray-10 bg-gray-0 relative flex items-center justify-center gap-1 rounded border p-1">
                         <Button
                           variant="ghost"
                           type="button"
-                          className="m-0 h-6 w-6 p-0"
+                          className="m-0 h-6 w-6 rounded p-1"
                           onClick={() => setHovered(item.id)}
                         >
                           <Emotions />
@@ -237,7 +240,7 @@ export const Chat = () => {
                         <Button
                           variant="ghost"
                           type="button"
-                          className="m-0 h-6 w-6 p-0"
+                          className="m-0 h-6 w-6 rounded p-1"
                           onClick={() => setHovered(item.id)}
                         >
                           <Share />
@@ -245,7 +248,7 @@ export const Chat = () => {
                         <Button
                           variant="ghost"
                           type="button"
-                          className="m-0 h-6 w-6 p-0"
+                          className="m-0 h-6 w-6 rounded p-1"
                           onClick={() => setHovered(item.id)}
                         >
                           <Edit />
@@ -255,7 +258,7 @@ export const Chat = () => {
                             <Button
                               variant="ghost"
                               type="button"
-                              className="m-0 h-6 w-6 p-0"
+                              className="m-0 h-6 w-6 rounded p-1"
                               onClick={() => {
                                 setLockedHovered(item.id);
                                 setHovered(item.id);
@@ -265,17 +268,63 @@ export const Chat = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                              <Pin className="mr-2 h-5 w-5" />
-                              <span className="text-[14px]">Закрепить сообщение</span>
+                            <DropdownMenuItem className="flex items-center justify-center gap-4">
+                              <Button
+                                variant="ghost"
+                                type="button"
+                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
+                                onClick={() => {
+                                  setLockedHovered(item.id);
+                                  setHovered(item.id);
+                                }}
+                              >
+                                <MenuDots />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                type="button"
+                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
+                                onClick={() => {
+                                  setLockedHovered(item.id);
+                                  setHovered(item.id);
+                                }}
+                              >
+                                <MenuDots />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                type="button"
+                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
+                                onClick={() => {
+                                  setLockedHovered(item.id);
+                                  setHovered(item.id);
+                                }}
+                              >
+                                <MenuDots />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                type="button"
+                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
+                                onClick={() => {
+                                  setLockedHovered(item.id);
+                                  setHovered(item.id);
+                                }}
+                              >
+                                <MenuDots />
+                              </Button>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                              <Link className="mr-2 h-5 w-5" />
-                              <span className="text-[14px]">Видео</span>
+                              <Pin className="mr-2 h-4 w-4" />
+                              <span className="text-xs">Закрепить сообщение</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                              <Trash className="mr-2 h-5 w-5" />
-                              <span className="text-[14px]">Удалить</span>
+                              <Link className="mr-2 h-4 w-4" />
+                              <span className="text-xs">Видео</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Trash className="fill-red-60 mr-2 h-4 w-4" />
+                              <span className="text-red-60 text-xs">Удалить</span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
