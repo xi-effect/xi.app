@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { Button } from '@xipkg/button';
 import {
@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
-
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import { useLoadItems } from '../utils';
 
 type MessageItemT = {
@@ -92,13 +92,13 @@ export const Chat = () => {
     rootMargin: '400px 0px 0px 0px',
   });
 
-  const scrollableRootRef = useRef<React.ElementRef<'div'> | null>(null);
-  const lastScrollDistanceToBottomRef = useRef<number>();
+  const scrollableRootRef = React.useRef<React.ElementRef<'div'> | null>(null);
+  const lastScrollDistanceToBottomRef = React.useRef<number>();
 
-  const reversedItems = useMemo(() => [...items].reverse(), [items]);
+  const reversedItems = React.useMemo(() => [...items].reverse(), [items]);
 
   // We keep the scroll position when new items are added etc.
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     const scrollableRoot = scrollableRootRef.current;
     const lastScrollDistanceToBottom = lastScrollDistanceToBottomRef.current ?? 0;
     if (scrollableRoot) {
@@ -141,11 +141,11 @@ export const Chat = () => {
     return dateFiltering;
   };
 
-  const [hovered, setHovered] = useState<string | null>(null);
-  const [lockedHovered, setLockedHovered] = useState<string | null>(null);
-  const menuRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const [hovered, setHovered] = React.useState<string | null>(null);
+  const [lockedHovered, setLockedHovered] = React.useState<string | null>(null);
+  const menuRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const currentHovered = lockedHovered || hovered;
       if (
@@ -173,35 +173,35 @@ export const Chat = () => {
       <ul className="block p-2">
         {hasNextPage && (
           <div className="flex w-full p-2" ref={infiniteRef}>
-            <div className="mr-2 h-12 w-12 rounded-full bg-[#e1e3e4]" />
+            <div className="bg-gray-10 mr-2 h-12 w-12 rounded-full" />
             <div className="flex-1">
               <div className="flex items-center">
-                <div className="mr-2 h-6 w-36 rounded-lg bg-[#e1e3e4]" />
-                <div className="h-5 w-24 rounded-lg bg-[#e1e3e4] text-[14px] font-normal leading-[20px]" />
+                <div className="bg-gray-10 mr-2 h-6 w-36 rounded-lg" />
+                <div className="text-s-base bg-gray-10 h-5 w-24 rounded-lg" />
               </div>
-              <div className="mt-1 h-6 w-full rounded-lg bg-[#e1e3e4]" />
+              <div className="bg-gray-10 mt-1 h-6 w-full rounded-lg" />
             </div>
           </div>
         )}
         {mocksMessages.length === 0 ? (
           <div className="flex min-h-screen items-center justify-center">
-            <span className="text-gray-500">Тут пока пусто</span>
+            <span className="text-gray-60">Тут пока пусто</span>
           </div>
         ) : (
           mocksMessages.map(
             (item: MessageItemT, index: number) =>
-              item != null && (
+              item !== null && (
                 <div key={item.id}>
                   {shouldShowDate(index, mocksMessages) && (
                     <div className="flex w-full justify-center p-2">
-                      <span className="rounded-lg bg-[#F7F7F7] px-2 py-1 text-[#585858]">
+                      <span className="bg-gray-5 text-gray-70 rounded-lg px-2 py-1">
                         {formatDate(item.time)}
                       </span>
                     </div>
                   )}
 
                   <div
-                    className={`group relative ${hovered === item.id || lockedHovered === item.id ? 'bg-[#F7F7F7]' : 'hover:bg-[#F7F7F7]'} `}
+                    className={`group relative rounded-md ${hovered === item.id || lockedHovered === item.id ? 'bg-gray-5' : 'hover:bg-gray-5'} `}
                     onMouseEnter={() => setHovered(item.id)}
                     onMouseLeave={() => {
                       if (lockedHovered !== item.id) {
@@ -210,15 +210,23 @@ export const Chat = () => {
                     }}
                   >
                     <div className="flex w-full p-2 transition-colors">
-                      <img className="mr-2 h-12 w-12 rounded-full" src="" alt="User Avatar" />
+                      <Avatar size="l" className="mr-2">
+                        <AvatarImage
+                          src="https://auth.xieffect.ru/api/users/3/avatar.webp"
+                          imageProps={{
+                            src: 'https://auth.xieffect.ru/api/users/3/avatar.webp',
+                            alt: 'User Avatar',
+                          }}
+                          alt="User Avatar"
+                        />
+                        <AvatarFallback size="l">{item.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
                       <div className="flex-1">
                         <div className="flex items-center">
                           <span className="mr-2 font-semibold">{item.name}</span>
-                          <span className="text-[14px] font-normal leading-[20px] text-[#9f9f9f]">
-                            {item.time}
-                          </span>
+                          <span className="text-s-base text-gray-40 font-normal">{item.time}</span>
                         </div>
-                        <p className="relative mt-1 w-[600] text-gray-800">{item.message}</p>
+                        <p className="relative mt-1 w-[600] text-gray-100">{item.message}</p>
                       </div>
                     </div>
 
@@ -226,7 +234,7 @@ export const Chat = () => {
                       ref={(el: HTMLDivElement | null) => {
                         menuRefs.current[item.id] = el;
                       }}
-                      className={`pointer-events-none absolute right-1 top-4 ${hovered === item.id ? 'pointer-events-auto opacity-100' : 'opacity-0'}`}
+                      className={`pointer-events-none absolute right-1 top-2 ${hovered === item.id ? 'pointer-events-auto group-hover:opacity-100' : 'opacity-0'}`}
                     >
                       <div className="border-gray-10 bg-gray-0 relative flex items-center justify-center gap-1 rounded border p-1">
                         <Button
@@ -258,71 +266,32 @@ export const Chat = () => {
                             <Button
                               variant="ghost"
                               type="button"
-                              className="m-0 h-6 w-6 rounded p-1"
+                              className={`m-0 h-6 w-6 rounded p-1 ${
+                                lockedHovered === item.id ? 'bg-gray-10' : 'hover:bg-gray-10'
+                              }`}
                               onClick={() => {
-                                setLockedHovered(item.id);
-                                setHovered(item.id);
+                                if (lockedHovered === item.id) {
+                                  setLockedHovered(null);
+                                  setHovered(null);
+                                } else {
+                                  setLockedHovered(item.id);
+                                  setHovered(item.id);
+                                }
                               }}
                             >
                               <MenuDots />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem className="flex items-center justify-center gap-4">
-                              <Button
-                                variant="ghost"
-                                type="button"
-                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
-                                onClick={() => {
-                                  setLockedHovered(item.id);
-                                  setHovered(item.id);
-                                }}
-                              >
-                                <MenuDots />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                type="button"
-                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
-                                onClick={() => {
-                                  setLockedHovered(item.id);
-                                  setHovered(item.id);
-                                }}
-                              >
-                                <MenuDots />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                type="button"
-                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
-                                onClick={() => {
-                                  setLockedHovered(item.id);
-                                  setHovered(item.id);
-                                }}
-                              >
-                                <MenuDots />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                type="button"
-                                className="bg-gray-5 m-0 h-7 w-7 rounded-3xl p-1"
-                                onClick={() => {
-                                  setLockedHovered(item.id);
-                                  setHovered(item.id);
-                                }}
-                              >
-                                <MenuDots />
-                              </Button>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
+                          <DropdownMenuContent align="end" className="mt-1">
+                            <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
                               <Pin className="mr-2 h-4 w-4" />
                               <span className="text-xs">Закрепить сообщение</span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
                               <Link className="mr-2 h-4 w-4" />
                               <span className="text-xs">Видео</span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
                               <Trash className="fill-red-60 mr-2 h-4 w-4" />
                               <span className="text-red-60 text-xs">Удалить</span>
                             </DropdownMenuItem>
