@@ -9,13 +9,14 @@ import {
   useForm,
   useFieldArray,
 } from '@xipkg/form';
-import { Plus, Italic } from '@xipkg/icons';
+import { Plus, Hint } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { FileUploader } from '@xipkg/fileuploader';
 import { Input } from '@xipkg/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@xipkg/select';
 import { Checkbox } from '@xipkg/checkbox';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
+import { ScrollArea } from '@xipkg/scrollarea';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -26,13 +27,7 @@ import { SimpleAnswerRef, SimpleAnswerData } from '../typesTask';
 
 type SimpleAnswerProps = {
   index: number;
-  moveTaskUp: () => void;
-  moveTaskDown: () => void;
-  moveTaskToStart: () => void;
-  moveTaskToEnd: () => void;
-  deleteTask: () => void;
-  isFirst: boolean;
-  isLast: boolean;
+  taskId: number;
 };
 
 const FormSchema = z.object({
@@ -47,19 +42,7 @@ const FormSchema = z.object({
 });
 
 export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
-  (
-    {
-      index,
-      moveTaskUp,
-      moveTaskDown,
-      moveTaskToStart,
-      moveTaskToEnd,
-      deleteTask,
-      isFirst,
-      isLast,
-    },
-    ref,
-  ) => {
+  ({ index, taskId }, ref) => {
     const form = useForm({
       resolver: zodResolver(FormSchema),
       defaultValues: {
@@ -92,17 +75,7 @@ export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
           onSubmit={handleSubmit(() => {})}
           className="border-gray-10 rounded-2xl border px-6 py-4"
         >
-          <HeaderTask
-            icon="simple"
-            index={index}
-            onMoveUp={moveTaskUp}
-            onMoveDown={moveTaskDown}
-            onMoveToStart={moveTaskToStart}
-            onMoveToEnd={moveTaskToEnd}
-            onDelete={deleteTask}
-            isFirst={isFirst}
-            isLast={isLast}
-          />
+          <HeaderTask type="simple" index={index} taskId={taskId} />
 
           <p className="text-m-base mt-4 font-medium">Вопрос</p>
           <div className="pb-4 pt-2">
@@ -117,20 +90,17 @@ export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
 
           {fields.map((field, index) => (
             <div key={field.id} className={`${index === 0 ? 'mt-12' : 'mt-6'} flex flex-col`}>
-              <div className="flex items-end">
+              <div className="flex items-center">
                 <p className="text-m-base font-medium">Правильный ответ</p>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="bg-gray-60 ml-2 rounded-full">
-                        <Italic size="s" className="bg-gray-0" />
+                      <div>
+                        <Hint className="fill-gray-60 ml-1" />
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent
-                      sideOffset={5}
-                      className="max-w-80 whitespace-normal break-words"
-                    >
-                      {hint}
+                    <TooltipContent sideOffset={5} className="">
+                      <ScrollArea className="h-64 whitespace-pre-wrap">{hint}</ScrollArea>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -200,7 +170,7 @@ export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
             size="s"
             className="mt-4"
             variant="secondary"
-            onClick={() => append({ answerType: '', answer: '', isCaseSensitive: false })}
+            onClick={() => append({ answerType: 'exact', answer: '', isCaseSensitive: false })}
           >
             <Plus size="s" className="fill-gray-100" />
             <span className="ml-1">Добавить вариант ответа</span>

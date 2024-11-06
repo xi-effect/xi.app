@@ -26,7 +26,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const communityMeta = useMainSt((state) => state.communityMeta);
   const onboardingStage = useMainSt((state) => state.user.onboardingStage);
   const communities = useMainSt((state) => state.communities);
-  // const channels = useMainSt((state) => state.channels);
+  const channels = useMainSt((state) => state.channels);
 
   const isLogin = useMainSt((state) => state.isLogin);
 
@@ -34,15 +34,15 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
   const router = useRouter();
   const getUrlWithParams = useGetUrlWithParams();
 
-  // useEffect(() => {
-  //   if (channels === null) return;
+  useEffect(() => {
+    if (channels === null) return;
 
-  //   const channelIds = channels?.map(({ id }) => id);
-  //   if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
-  //     console.log('403');
-  //     setErrorCode(403);
-  //   }
-  // }, [params, channels]);
+    const channelIds = channels?.map(({ id }) => id);
+    if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
+      console.log('403');
+      setErrorCode(403);
+    }
+  }, [params, channels]);
 
   useEffect(() => {
     if (onboardingStage !== 'completed') return;
