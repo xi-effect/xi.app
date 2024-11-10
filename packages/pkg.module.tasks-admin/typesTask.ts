@@ -16,9 +16,9 @@ export type SimpleAnswerData = {
   answers: Answer[];
 };
 
-export interface SimpleAnswerRef {
+export type SimpleAnswerRef = {
   getData: () => Promise<SimpleAnswerData>;
-}
+};
 
 export type AllTasksData = {
   taskId: number;

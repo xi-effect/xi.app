@@ -17,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from '@xipkg/dropdown';
 
 import { useTaskSt } from '../store/tasksStore';
@@ -76,29 +77,43 @@ export const HeaderTask = ({ type, index, taskId }: HeaderTaskT) => {
               <MenuDots />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[350px] flex-col p-4">
-            <DropdownMenuItem>
-              <p className="text-m-base font-medium text-gray-100">Вопрос № {index + 1}</p>
-            </DropdownMenuItem>
+          <DropdownMenuContent className="w-[350px] flex-col py-4 drop-shadow px-3">
+            <DropdownMenuLabel>
+              <p className="text-m-base mt-1 pl-1 font-medium text-gray-100">
+                Вопрос № {index + 1}
+              </p>
+            </DropdownMenuLabel>
             <DropdownMenuItem
-              className="mt-4 flex"
+              className="mt-4"
               onSelect={() => moveTaskToStart(taskId)}
               disabled={isFirst}
+              asChild
             >
-              <DoubleUpArrows size="s" className="fill-gray-80" />
-              <p className="text-m-base text-gray-80 ml-2 font-medium">Переместить в начало</p>
+              <Button variant="ghost" className="h-[40px] w-full justify-start pl-2">
+                <DoubleUpArrows className="fill-gray-80 h-6 w-6" />
+                <span className="text-m-base text-gray-80 ml-2 font-medium">
+                  Переместить в начало
+                </span>
+              </Button>
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="mt-4 flex"
+              className="mt-5"
               onSelect={() => moveTaskToEnd(taskId)}
               disabled={isLast}
+              asChild
             >
-              <DoubleBottomArrows size="s" className="fill-gray-80" />
-              <p className="text-m-base text-gray-80 ml-2 font-medium">Переместить в конец</p>
+              <Button variant="ghost" className="h-[40px] w-full justify-start pl-2">
+                <DoubleBottomArrows className="fill-gray-80 h-6 w-6" />
+                <span className="text-m-base text-gray-80 ml-2 font-medium">
+                  Переместить в конец
+                </span>
+              </Button>
             </DropdownMenuItem>
-            <DropdownMenuItem className="mt-4 flex" onSelect={() => deleteTask(taskId)}>
-              <Trash size="s" className="fill-gray-80" />
-              <p className="text-m-base text-gray-80 ml-2 font-medium">Удалить</p>
+            <DropdownMenuItem className="mt-5" onSelect={() => deleteTask(taskId)} asChild>
+              <Button variant="ghost" className="h-[40px] w-full justify-start pl-2">
+                <Trash className="fill-gray-80 h-6 w-6" />
+                <span className="text-m-base text-gray-80 ml-2 font-medium">Удалить</span>
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -19,7 +19,6 @@
     "@xipkg/input": "^1.0.0",
     "@xipkg/modal": "^3.0.0",
     "@xipkg/popover": "^2.0.0",
-    "@xipkg/scrollarea": "^1.0.0",
     "@xipkg/select": "^0.2.0",
     "@xipkg/tooltip": "^1.0.0",
     "@xipkg/utils": "^1.2.3",

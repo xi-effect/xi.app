@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { Task, TaskType } from '../typesTask';
 
-interface TaskStore {
+type TaskStore = {
   tasks: Task[];
   addTask: (taskType: TaskType) => void;
   moveTaskUp: (id: number) => void;
@@ -11,7 +11,7 @@ interface TaskStore {
   moveTaskToEnd: (id: number) => void;
   deleteTask: (id: number) => void;
   setTasks: (tasks: Task[]) => void;
-}
+};
 
 export const useTaskSt = create<TaskStore>((set, get) => ({
   tasks: [{ id: 1, type: 'simple' }],

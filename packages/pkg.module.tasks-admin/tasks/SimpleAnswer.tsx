@@ -16,7 +16,6 @@ import { Input } from '@xipkg/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@xipkg/select';
 import { Checkbox } from '@xipkg/checkbox';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg/tooltip';
-import { ScrollArea } from '@xipkg/scrollarea';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -99,8 +98,11 @@ export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
                         <Hint className="fill-gray-60 ml-1" />
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent sideOffset={5} className="">
-                      <ScrollArea className="h-64 whitespace-pre-wrap">{hint}</ScrollArea>
+                    <TooltipContent
+                      sideOffset={5}
+                      className="h-[310px] w-[320px] max-w-none whitespace-pre-wrap"
+                    >
+                      {hint}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -143,7 +145,7 @@ export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
                   />
                 </div>
               </div>
-              <div className="mt-4">
+              <div className="mt-4 h-6">
                 <FormField
                   control={control}
                   name={`answers.${index}.isCaseSensitive`}
