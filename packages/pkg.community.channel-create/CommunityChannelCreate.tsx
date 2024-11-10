@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   Modal,
   ModalContent,
@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, useForm } from '@xipkg/form';
 import { useMainSt } from 'pkg.stores';
 import { Input } from '@xipkg/input';
-import { Close, Announce, Task, Conference, Chat, WhiteBoard } from '@xipkg/icons';
+import { Close, Announce, Task, Conference, Chat, WhiteBoard, IconProps } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { toast } from 'sonner';
 import { nanoid } from 'nanoid';
@@ -36,7 +36,15 @@ interface CommunityChannelCreateT {
 const classBtnActive = 'border-[6px] border-solid border-brand-80';
 const classBtnNotActive = 'border border-solid border-gray-30';
 
-const actionsSheetList = [
+type ActionsSheetListT = {
+  icon: ({ ...props }: IconProps) => ReactNode;
+  title: string;
+  type: 'posts' | 'board' | 'call' | 'tasks' | 'chat';
+  desctiption: string;
+  disabled?: boolean;
+};
+
+const actionsSheetList: ActionsSheetListT[] = [
   {
     icon: Announce,
     title: 'Объявления',
@@ -68,7 +76,7 @@ const actionsSheetList = [
     title: 'Чат со студентами',
     type: 'chat',
     desctiption: 'Общайтесь, отвечайте на вопросы, объясняйте непонятные моменты',
-    disabled: true,
+    // disabled: true,
   },
 ];
 
