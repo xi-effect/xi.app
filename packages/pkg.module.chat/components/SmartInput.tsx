@@ -27,15 +27,15 @@ export const SmartInput = () => {
         <DropdownMenuContent className="w-[150px]">
           <DropdownMenuItem>
             <Image className="mr-2 h-5 w-5" />
-            <span className="text-[14px]">Изображение</span>
+            <span className="text-sm">Изображение</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Movie className="mr-2 h-5 w-5" />
-            <span className="text-[14px]">Видео</span>
+            <span className="text-sm">Видео</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <File className="mr-2 h-5 w-5" />
-            <span className="text-[14px]">Файл</span>
+            <span className="text-sm">Файл</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -50,17 +50,14 @@ export const SmartInput = () => {
         variant="ghost"
         size="m"
         type="button"
-        className="absolute right-[76px] top-[22px] h-auto p-2"
+        className="absolute right-20 top-5 h-auto p-2"
         onClick={() => console.log('emotions')}
       >
         <Emotions size="m" />
       </Button>
 
-      <Button
-        type="button"
-        className="flex h-12 w-12 items-center rounded-lg bg-[#445AFF] p-4 text-white"
-      >
-        <Send size="m" color="white" className="!important fill-white" />
+      <Button variant="default" size="m" type="button" className="bg-[#445AFF] pb-0">
+        <Send size="m" className="fill-white" />
       </Button>
 
       <div className="invisible absolute flex">

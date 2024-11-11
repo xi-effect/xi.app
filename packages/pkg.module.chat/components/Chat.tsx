@@ -1,15 +1,9 @@
 import React from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
-import { Button } from '@xipkg/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@xipkg/dropdown';
-import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
-import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+import { ZeroMessage } from './ZeroMessage';
 import { useLoadItems } from '../utils';
+import { ChatMessage } from './ChatMessage';
+import { SkeletMessage } from './SkeletMessage';
 
 type MessageItemT = {
   id: string;
@@ -122,25 +116,6 @@ export const Chat = () => {
     }
   }, []);
 
-  const formatDate = (dateString: string) => {
-    const [datePart] = dateString.split(' ');
-    const [day, month, year] = datePart.split('.');
-    const date = new Date(Number(year), Number(month) - 1, Number(day));
-
-    const dateFormat = date.toLocaleDateString('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-    });
-
-    return dateFormat;
-  };
-
-  const shouldShowDate = (index: number, messages: MessageItemT[]) => {
-    const dateFiltering =
-      index === 0 || formatDate(messages[index].time) !== formatDate(messages[index - 1].time);
-    return dateFiltering;
-  };
-
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [lockedHovered, setLockedHovered] = React.useState<string | null>(null);
   const menuRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -171,136 +146,14 @@ export const Chat = () => {
       className="h-[calc(100vh-144px)] overflow-y-auto p-4"
     >
       <ul className="block p-2">
-        {hasNextPage && (
-          <div className="flex w-full p-2" ref={infiniteRef}>
-            <div className="bg-gray-10 mr-2 h-12 w-12 rounded-full" />
-            <div className="flex-1">
-              <div className="flex items-center">
-                <div className="bg-gray-10 mr-2 h-6 w-36 rounded-lg" />
-                <div className="text-s-base bg-gray-10 h-5 w-24 rounded-lg" />
-              </div>
-              <div className="bg-gray-10 mt-1 h-6 w-full rounded-lg" />
-            </div>
-          </div>
-        )}
+        {hasNextPage && <SkeletMessage refProp={infiniteRef} />}
         {mocksMessages.length === 0 ? (
-          <div className="flex min-h-screen items-center justify-center">
-            <span className="text-gray-60">Тут пока пусто</span>
-          </div>
+          <ZeroMessage />
         ) : (
           mocksMessages.map(
             (item: MessageItemT, index: number) =>
               item !== null && (
-                <div key={item.id}>
-                  {shouldShowDate(index, mocksMessages) && (
-                    <div className="flex w-full justify-center p-2">
-                      <span className="bg-gray-5 text-gray-70 rounded-lg px-2 py-1">
-                        {formatDate(item.time)}
-                      </span>
-                    </div>
-                  )}
-
-                  <div
-                    className={`group relative rounded-md ${hovered === item.id || lockedHovered === item.id ? 'bg-gray-5' : 'hover:bg-gray-5'} `}
-                    onMouseEnter={() => setHovered(item.id)}
-                    onMouseLeave={() => {
-                      if (lockedHovered !== item.id) {
-                        setHovered(null);
-                      }
-                    }}
-                  >
-                    <div className="flex w-full p-2 transition-colors">
-                      <Avatar size="l" className="mr-2">
-                        <AvatarImage
-                          src="https://auth.xieffect.ru/api/users/3/avatar.webp"
-                          imageProps={{
-                            src: 'https://auth.xieffect.ru/api/users/3/avatar.webp',
-                            alt: 'User Avatar',
-                          }}
-                          alt="User Avatar"
-                        />
-                        <AvatarFallback size="l">{item.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center">
-                          <span className="mr-2 font-semibold">{item.name}</span>
-                          <span className="text-s-base text-gray-40 font-normal">{item.time}</span>
-                        </div>
-                        <p className="relative mt-1 w-[600] text-gray-100">{item.message}</p>
-                      </div>
-                    </div>
-
-                    <div
-                      ref={(el: HTMLDivElement | null) => {
-                        menuRefs.current[item.id] = el;
-                      }}
-                      className={`pointer-events-none absolute right-1 top-2 ${hovered === item.id ? 'pointer-events-auto group-hover:opacity-100' : 'opacity-0'}`}
-                    >
-                      <div className="border-gray-10 bg-gray-0 relative flex items-center justify-center gap-1 rounded border p-1">
-                        <Button
-                          variant="ghost"
-                          type="button"
-                          className="m-0 h-6 w-6 rounded p-1"
-                          onClick={() => setHovered(item.id)}
-                        >
-                          <Emotions />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          type="button"
-                          className="m-0 h-6 w-6 rounded p-1"
-                          onClick={() => setHovered(item.id)}
-                        >
-                          <Share />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          type="button"
-                          className="m-0 h-6 w-6 rounded p-1"
-                          onClick={() => setHovered(item.id)}
-                        >
-                          <Edit />
-                        </Button>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger className="cursor-pointer" asChild>
-                            <Button
-                              variant="ghost"
-                              type="button"
-                              className={`m-0 h-6 w-6 rounded p-1 ${
-                                lockedHovered === item.id ? 'bg-gray-10' : 'hover:bg-gray-10'
-                              }`}
-                              onClick={() => {
-                                if (lockedHovered === item.id) {
-                                  setLockedHovered(null);
-                                  setHovered(null);
-                                } else {
-                                  setLockedHovered(item.id);
-                                  setHovered(item.id);
-                                }
-                              }}
-                            >
-                              <MenuDots />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="mt-1">
-                            <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
-                              <Pin className="mr-2 h-4 w-4" />
-                              <span className="text-xs">Закрепить сообщение</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
-                              <Link className="mr-2 h-4 w-4" />
-                              <span className="text-xs">Видео</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
-                              <Trash className="fill-red-60 mr-2 h-4 w-4" />
-                              <span className="text-red-60 text-xs">Удалить</span>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <ChatMessage item={item} index={index} mocksMessages={mocksMessages} />
               ),
           )
         )}
