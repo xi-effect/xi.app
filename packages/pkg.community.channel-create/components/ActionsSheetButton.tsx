@@ -1,7 +1,7 @@
 import React from 'react';
 
 type ActionsSheetButtonT = {
-  Icon: React.ComponentType<any>;
+  Icon: React.ComponentType<{ className: string }>;
   title: string;
   desctiption: string;
   index: number;

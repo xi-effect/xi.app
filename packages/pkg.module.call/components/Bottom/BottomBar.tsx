@@ -11,9 +11,8 @@ import {
 import { Chat, Endcall, Group, Hand } from '@xipkg/icons';
 import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client';
 import { supportsScreenSharing } from '@livekit/components-core';
-import { TrackToggle } from '../utility/TrackToggle';
-import { ActionButton } from './ActionButton';
-import { DevicesBar } from './DevicesBar';
+import { TrackToggle } from '../../utility/TrackToggle';
+import { ActionButton, DevicesBar } from '../common';
 
 const DisconnectButton = () => {
   const { buttonProps } = useDisconnectButton({});
@@ -22,7 +21,7 @@ const DisconnectButton = () => {
     <button
       type="button"
       {...buttonProps}
-      className="bg-red-80 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px] hover:bg-red-100"
+      className="bg-red-80 hover:bg-red-60 ml-2 flex h-12 w-12 flex-row items-center justify-center rounded-[24px]"
     >
       <Endcall className="fill-gray-100" />
     </button>

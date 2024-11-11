@@ -14,7 +14,8 @@ import 'driver.js/dist/driver.css';
 import '../utils/driver.css';
 import { useMainSt } from 'pkg.stores';
 import { createRoot } from 'react-dom/client';
-import { CommunityItems, CommunityMenu } from './Community';
+import { CommunityItems } from './Community';
+import { DropdownMenuBasic } from './Dropdown';
 
 type MenuT = {
   setSlideIndex: (value: number) => void;
@@ -129,7 +130,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
       <div id="header-logo" className="flex h-8 w-fit flex-wrap p-2">
         <Logo height={16} width={134} logoVariant="navigation" logoSize="default" />
       </div>
-      <CommunityMenu />
+      <DropdownMenuBasic />
       <CommunityItems setSlideIndex={setSlideIndex} />
       <div className="bg-gray-0 fixed bottom-0 flex flex-col pb-6 sm:w-[302px]">
         <Modal open={menuIsOpen}>
@@ -150,7 +151,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
               <UserProfile
                 loading={isNotCommunityId || user?.id === null || user?.id === undefined}
                 userId={user?.id || null}
-                text={user?.displayName}
+                text={user?.displayName ?? user?.username}
                 label={user?.username}
                 size="m"
               />

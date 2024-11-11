@@ -8,8 +8,6 @@ import {
   ConnectionQualityIndicator,
   LockLockedIcon,
   ParticipantContextIfNeeded,
-  ParticipantName,
-  ParticipantPlaceholder,
   ParticipantTileProps,
   ScreenShareIcon,
   TrackMutedIndicatorProps,
@@ -22,10 +20,13 @@ import {
   useMaybeTrackRefContext,
   useParticipantTile,
   useTrackMutedIndicator,
+  useParticipantInfo,
 } from '@livekit/components-react';
 import { MicrophoneOff, RedLine } from '@xipkg/icons';
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import { FocusToggle } from './FocusToggle';
-import '../utility/style.css';
+import '../../utility/style.css';
+import { ParticipantName } from './ParticipantName';
 
 type TrackRefContextIfNeededPropsT = {
   trackRef?: TrackReferenceOrPlaceholder;
@@ -91,6 +92,7 @@ export const ParticipantTile = ({
 }: ParticipantTilePropsT) => {
   const maybeTrackRef = useMaybeTrackRefContext();
   const p = useEnsureParticipant(participant);
+
   const trackReference: TrackReferenceOrPlaceholder = React.useMemo(
     () => ({
       participant: trackRef?.participant ?? maybeTrackRef?.participant ?? p,
@@ -99,6 +101,8 @@ export const ParticipantTile = ({
     }),
     [maybeTrackRef, p, publication, source, trackRef],
   );
+
+  const { identity, name } = useParticipantInfo({ participant: trackReference.participant });
 
   const { elementProps } = useParticipantTile<HTMLDivElement>({
     htmlProps,
@@ -135,7 +139,7 @@ export const ParticipantTile = ({
     >
       <TrackRefContextIfNeeded trackRef={trackReference}>
         <ParticipantContextIfNeeded participant={trackReference.participant}>
-          <div className="h-full">
+          <div className="bg-gray-10 h-full rounded-lg">
             {children ?? (
               <div className="h-full">
                 {isTrackReference(trackReference) &&
@@ -170,14 +174,24 @@ export const ParticipantTile = ({
                     height: '100%',
                     backgroundColor: 'var(--xi-bg-gray-10)',
                   }}
-                  className="lk-participant-placeholder flex justify-center"
+                  className="lk-participant-placeholder flex h-full w-full justify-center"
                 >
-                  <ParticipantPlaceholder />
+                  <Avatar size="xxl">
+                    <AvatarImage
+                      src={`https://auth.xieffect.ru/api/users/${identity}/avatar.webp`}
+                      imageProps={{
+                        src: `https://auth.xieffect.ru/api/users/${identity}/avatar.webp`,
+                        alt: 'user avatar',
+                      }}
+                      alt="user avatar"
+                    />
+                    <AvatarFallback size="xxl" loading />
+                  </Avatar>
                 </div>
                 <div className="lk-participant-metadata p-1">
                   <div>
                     {trackReference.source === Track.Source.Camera ? (
-                      <div className="bg-gray-10 flex h-[24px] w-full gap-[6px] rounded-[4px] px-[6px] py-[4px]">
+                      <div className="bg-gray-0 flex h-[24px] w-full gap-[6px] rounded-[4px] px-[6px] py-[4px]">
                         {isEncrypted && <LockLockedIcon />}
                         <TrackMutedIndicator
                           trackRef={{
@@ -187,12 +201,14 @@ export const ParticipantTile = ({
                           show="muted"
                           style={{ marginRight: '0.45rem', background: 'transparent' }}
                         />
-                        <ParticipantName className="text-[12px] text-gray-100" />
+                        <ParticipantName id={identity} username={name} />
                       </div>
                     ) : (
-                      <div className="bg-gray-10 flex items-center gap-[6px] rounded-[4px] px-[8px] py-[4px]">
+                      <div className="bg-gray-0 flex items-center gap-[6px] rounded-[4px] px-[8px] py-[4px]">
                         <ScreenShareIcon style={{ marginRight: '0.25rem' }} />
-                        <ParticipantName>&apos;s screen</ParticipantName>
+                        <ParticipantName id={identity} username={name}>
+                          Демонстрация&nbsp;
+                        </ParticipantName>
                       </div>
                     )}
                   </div>

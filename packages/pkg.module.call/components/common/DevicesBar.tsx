@@ -3,7 +3,7 @@ import { useTrackVolume } from '@livekit/components-react';
 import { Conference, Microphone } from '@xipkg/icons';
 import { motion } from 'framer-motion';
 import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client';
-import { TrackToggle, TrackToggleProps } from '../utility/TrackToggle';
+import { TrackToggle, TrackToggleProps } from '../../utility/TrackToggle';
 
 type DevicesBarPropsT = {
   microTrack: LocalAudioTrack | undefined;
@@ -57,8 +57,11 @@ export const DevicesBar = ({
           transition: 'border-color 0.3s ease',
         }}
       >
-        <TrackToggle className="text-gray-0 bg-transparent" {...videoTrackToggle}>
-          <Conference width={214} className="fill-gray-100" />
+        <TrackToggle
+          className="text-gray-0 bg-gray-0 flex size-[40px] items-center justify-center rounded-[20px] p-0"
+          {...videoTrackToggle}
+        >
+          <Conference width={25} className="fill-gray-100" />
         </TrackToggle>
       </div>
     </>

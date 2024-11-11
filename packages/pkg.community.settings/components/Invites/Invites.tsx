@@ -149,7 +149,7 @@ const UserCard = ({
             {user !== null ? (
               <UserProfile
                 userId={creatorId}
-                text={user.displayName}
+                text={user.displayName ?? user.username}
                 label={user.username}
                 size="m"
               />
