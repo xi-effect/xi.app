@@ -77,7 +77,7 @@ export const HeaderTask = ({ type, index, taskId }: HeaderTaskT) => {
               <MenuDots />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[350px] flex-col py-4 drop-shadow px-3">
+          <DropdownMenuContent className="w-[350px] flex-col px-3 py-4 drop-shadow">
             <DropdownMenuLabel>
               <p className="text-m-base mt-1 pl-1 font-medium text-gray-100">
                 Вопрос № {index + 1}
