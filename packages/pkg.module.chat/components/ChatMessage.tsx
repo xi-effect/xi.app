@@ -24,8 +24,6 @@ type ChatMessageProps = {
 };
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMessages }) => {
-  const { id, name, time, message } = item;
-
   const getContainerClassNames = (
     itemId: string,
     hovered: string | null,
@@ -85,12 +83,12 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMess
   };
 
   return (
-    <div key={id}>
-      <DateChat index={index} mocksMessages={mocksMessages} time={time} />
+    <div key={item.id}>
+      <DateChat index={index} mocksMessages={mocksMessages} time={item.time} />
       <div
-        className={getContainerClassNames(id, hovered, lockedHovered)}
-        onMouseEnter={() => setHovered(id)}
-        onMouseLeave={() => handleMouseLeave(id)}
+        className={getContainerClassNames(item.id, hovered, lockedHovered)}
+        onMouseEnter={() => setHovered(item.id)}
+        onMouseLeave={() => handleMouseLeave(item.id)}
       >
         <div className="flex w-full p-2 transition-colors">
           <Avatar size="l" className="mr-2">
@@ -102,29 +100,29 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMess
               }}
               alt="User Avatar"
             />
-            <AvatarFallback size="l">{name.charAt(0)}</AvatarFallback>
+            <AvatarFallback size="l">{item.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center">
-              <span className="mr-2 font-semibold">{name}</span>
-              <span className="text-s-base text-gray-40 font-normal">{time}</span>
+              <span className="mr-2 font-semibold">{item.name}</span>
+              <span className="text-s-base text-gray-40 font-normal">{item.time}</span>
             </div>
-            <p className="relative mt-1 w-[600] text-gray-100">{message}</p>
+            <p className="relative mt-1 w-[600] text-gray-100">{item.message}</p>
           </div>
         </div>
 
         <div
           ref={(el: HTMLDivElement | null) => {
-            menuRefs.current[id] = el;
+            menuRefs.current[item.id] = el;
           }}
-          className={getMenuClassNames(id, hovered)}
+          className={getMenuClassNames(item.id, hovered)}
         >
           <div className="border-gray-10 bg-gray-0 relative flex items-center justify-center gap-1 rounded border p-1">
             <Button
               variant="ghost"
               type="button"
               className="m-0 h-6 w-6 rounded p-1"
-              onClick={() => setHovered(id)}
+              onClick={() => setHovered(item.id)}
             >
               <Emotions />
             </Button>
@@ -132,7 +130,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMess
               variant="ghost"
               type="button"
               className="m-0 h-6 w-6 rounded p-1"
-              onClick={() => setHovered(id)}
+              onClick={() => setHovered(item.id)}
             >
               <Share />
             </Button>
@@ -140,7 +138,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMess
               variant="ghost"
               type="button"
               className="m-0 h-6 w-6 rounded p-1"
-              onClick={() => setHovered(id)}
+              onClick={() => setHovered(item.id)}
             >
               <Edit />
             </Button>
@@ -149,8 +147,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMess
                 <Button
                   variant="ghost"
                   type="button"
-                  className={getButtonClassNames(id, lockedHovered)}
-                  onClick={() => toggleHoverLock(id)}
+                  className={getButtonClassNames(item.id, lockedHovered)}
+                  onClick={() => toggleHoverLock(item.id)}
                 >
                   <MenuDots />
                 </Button>
