@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Breadcrumbs } from '@xipkg/breadcrumbs';
 import Timer from './Timer';
 
@@ -19,8 +18,8 @@ const Header = ({ timer, setTimer }: HeaderPropsT) => (
       <Breadcrumbs breadcrumbs={breadcrumbs} size="s" />
     </div>
     <div className="flex justify-between gap-4 lg:flex-row lg:items-center">
-      <h1 className="text-h5 max-[520px]:text-xl-base sm:text-xl-base w-[966px] flex-auto font-semibold sm:inline-block">
-        Создание задания
+      <h1 className="text-h5 max-[800px]:text-h6 w-[966px] flex-auto font-semibold sm:inline-block">
+        Создание теста
       </h1>
       {timer && (
         <Timer
