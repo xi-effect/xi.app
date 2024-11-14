@@ -14,7 +14,7 @@ export const Header = () => {
   const categories = useMainSt((state) => state.categories);
   const currentBoard = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
-  if (!currentBoard) return null;
+  if (!currentBoard || currentBoard.length === 0) return null;
 
   const currentBoardsCategory =
     typeof currentBoard[0].categoryId === 'number'

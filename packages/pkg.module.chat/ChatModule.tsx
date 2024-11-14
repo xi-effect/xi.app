@@ -4,22 +4,22 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Chat } from './components/Chat';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
-import { SmartInput } from './components/SmartInput';
+import { BottomBar } from './components/BottomBar';
 import { useInterfaceStore } from './interfaceStore';
 
 export const ChatModule = () => {
   const currentSidebar = useInterfaceStore((state) => state.currentSidebar);
 
   return (
-    <div className="flex h-full w-full flex-row overflow-x-hidden">
+    <div className="flex h-full max-h-full w-full flex-row overflow-x-hidden">
       <motion.div
         animate={{ marginRight: currentSidebar !== null ? '300px' : '0px' }} // Меняем размер шапки при открытии меню
         transition={{ type: 'tween', duration: 0.3 }}
-        className="relative h-full w-full overflow-hidden"
+        className="relative flex h-full w-full flex-col overflow-hidden"
       >
         <Header />
         <Chat />
-        <SmartInput />
+        <BottomBar />
       </motion.div>
       <AnimatePresence>
         {currentSidebar !== null && (

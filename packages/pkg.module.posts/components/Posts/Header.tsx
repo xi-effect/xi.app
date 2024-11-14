@@ -25,7 +25,7 @@ export const Header = () => {
 
   const currentPosts = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
-  if (!currentPosts) return null;
+  if (!currentPosts || currentPosts.length === 0) return null;
 
   const handleRouteChange = () =>
     router.push(

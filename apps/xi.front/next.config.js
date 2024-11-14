@@ -58,6 +58,7 @@ const nextConfig = {
     '@xipkg/tooltip',
     '@xipkg/breadcrumbs',
     '@xipkg/sheet',
+    '@xipkg/inputsmart',
   ],
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',

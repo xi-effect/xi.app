@@ -9,17 +9,15 @@
   },
   "dependencies": {
     "react-infinite-scroll-hook": "5.0.1",
-    "@xipkg/icons": "1.2.0",
+    "@xipkg/icons": "1.4.0",
     "@xipkg/button": "2.0.0",
     "@xipkg/select": "0.2.0",
+    "@xipkg/inputsmart": "0.2.2",
     "pkg.utils.client": "*",
     "pkg.utils": "*",
     "pkg.stores": "*",
     "@xipkg/utils": "1.2.3",
     "framer-motion": "11.3.28",
-    "slate": "0.102.0",
-    "slate-history": "0.100.0",
-    "slate-react": "0.102.0",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

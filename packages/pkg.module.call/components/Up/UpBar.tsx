@@ -57,7 +57,7 @@ export const UpBar = () => {
     return <Grid className="fill-gray-100" />;
   };
 
-  if (!currentCall) return null;
+  if (!currentCall || currentCall.length === 0) return null;
 
   const currentCallsCategory =
     typeof currentCall[0].categoryId === 'number'

@@ -14,7 +14,9 @@ export const Header = () => {
   const categories = useMainSt((state) => state.categories);
   const currentChat = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
-  if (!currentChat) return null;
+  if (!currentChat || currentChat.length === 0) return null;
+
+  console.log('currentChat', currentChat);
 
   const currentChatCategory =
     typeof currentChat[0].categoryId === 'number'
