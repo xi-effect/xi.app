@@ -19,7 +19,7 @@ export const Header = () => {
 
   const currentTasks = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
-  if (currentTasks === undefined) return null;
+  if (currentTasks === undefined || currentTasks.length === 0) return null;
 
   return (
     <div className="flex flex-col gap-4 pb-4 md:pb-8">

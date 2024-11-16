@@ -143,7 +143,7 @@ export const Chat = () => {
     <div
       ref={rootRefSetter}
       onScroll={handleRootScroll}
-      className="h-[calc(100vh-144px)] overflow-y-auto p-4"
+      className="flex-1 overflow-y-auto p-4" // [calc(100vh-144px)]
     >
       <ul className="block p-2">
         {hasNextPage && <SkeletMessage refProp={infiniteRef} />}

@@ -38,6 +38,7 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
     if (channels === null) return;
 
     const channelIds = channels?.map(({ id }) => id);
+    console.log('channelIds', channelIds);
     if (params['channel-id'] && !channelIds?.includes(Number(params['channel-id']))) {
       console.log('403');
       setErrorCode(403);

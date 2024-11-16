@@ -3,14 +3,7 @@
 import { Form, FormControl, FormField, FormItem, FormMessage, useForm } from '@xipkg/form';
 import { Input } from '@xipkg/input';
 import { Calendar } from '@xipkg/icons';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@xipkg/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@xipkg/select';
 
 import { Button } from '@xipkg/button';
 import { DatePicker } from '@xipkg/datepicker';
@@ -20,6 +13,8 @@ import * as z from 'zod';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
+
+import { gradingModels } from '../consts';
 
 import { TimeInput } from './TimeInput ';
 
@@ -175,14 +170,11 @@ export const FormBlock = ({ timer }: FormPropsT) => {
                         <SelectValue placeholder="Модель оценивания" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="5-point">5-бальная</SelectItem>
-                          <SelectItem value="12-point">12-бальная</SelectItem>
-                          <SelectItem value="100-point">100-бальная</SelectItem>
-                          <SelectItem value="letter">Буквенная</SelectItem>
-                          <SelectItem value="custom">Произвольная</SelectItem>
-                          <SelectItem value="none">Без оценки</SelectItem>
-                        </SelectGroup>
+                        {Object.entries(gradingModels).map(([key, value]) => (
+                          <SelectItem key={key} value={key}>
+                            {value}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>

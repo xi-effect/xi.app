@@ -23,26 +23,26 @@ type ChatMessageProps = {
   mocksMessages: MessageItemT[];
 };
 
+const getContainerClassNames = (
+  itemId: string,
+  hovered: string | null,
+  lockedHovered: string | null,
+): string => {
+  const isActive = hovered === itemId || lockedHovered === itemId;
+  return `group relative rounded-md ${isActive ? 'bg-gray-5' : 'hover:bg-gray-5'}`;
+};
+
+const getMenuClassNames = (itemId: string, hovered: string | null): string => {
+  const isHovered = hovered === itemId;
+  return `pointer-events-none absolute right-1 top-2 ${isHovered ? 'pointer-events-auto group-hover:opacity-100' : 'opacity-0'}`;
+};
+
+const getButtonClassNames = (itemId: string, lockedHovered: string | null): string => {
+  const isLocked = lockedHovered === itemId;
+  return `m-0 h-6 w-6 rounded p-1 ${isLocked ? 'bg-gray-10' : 'hover:bg-gray-10'}`;
+};
+
 export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMessages }) => {
-  const getContainerClassNames = (
-    itemId: string,
-    hovered: string | null,
-    lockedHovered: string | null,
-  ): string => {
-    const isActive = hovered === itemId || lockedHovered === itemId;
-    return `group relative rounded-md ${isActive ? 'bg-gray-5' : 'hover:bg-gray-5'}`;
-  };
-
-  const getMenuClassNames = (itemId: string, hovered: string | null): string => {
-    const isHovered = hovered === itemId;
-    return `pointer-events-none absolute right-1 top-2 ${isHovered ? 'pointer-events-auto group-hover:opacity-100' : 'opacity-0'}`;
-  };
-
-  const getButtonClassNames = (itemId: string, lockedHovered: string | null): string => {
-    const isLocked = lockedHovered === itemId;
-    return `m-0 h-6 w-6 rounded p-1 ${isLocked ? 'bg-gray-10' : 'hover:bg-gray-10'}`;
-  };
-
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [lockedHovered, setLockedHovered] = React.useState<string | null>(null);
   const menuRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
