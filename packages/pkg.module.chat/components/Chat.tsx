@@ -153,7 +153,12 @@ export const Chat = () => {
           mocksMessages.map(
             (item: MessageItemT, index: number) =>
               item !== null && (
-                <ChatMessage item={item} index={index} mocksMessages={mocksMessages} />
+                <ChatMessage
+                  item={item}
+                  key={item.id}
+                  index={index}
+                  mocksMessages={mocksMessages}
+                />
               ),
           )
         )}
