@@ -30,18 +30,23 @@ export const ChatModule = () => {
       status: number,
       { chat_id: newChatId }: { chat_id: string },
     ) => {
+      console.log('p', params);
       console.log('handleRetrieveChatChannel', status, newChatId);
-      if (status === 204 && newChatId && typeof newChatId === 'number' && chatId !== newChatId) {
+      if (status === 200 && newChatId && typeof newChatId === 'number' && chatId !== newChatId) {
         setChatId(chatId);
 
         socket.emit(
           'open-chat',
-          { chat_id: newChatId },
+          {
+            chat_id: newChatId,
+            limit: 20,
+          },
           (
             status: number,
             { latest_messages: latestMessages }: { latest_messages: MessageSnakeCaseT[] },
           ) => {
-            if (status === 204) {
+            console.log('status', status);
+            if (status === 200) {
               const messages = convertSnakeToCamelCase(latestMessages);
 
               console.log('messages', messages);
@@ -60,8 +65,14 @@ export const ChatModule = () => {
       handleRetrieveChatChannel,
     );
 
-    return () => {};
-  }, [params['channel-id'], params['community-id']]);
+    return () => {
+      if (!chatId || !socket) return;
+
+      socket.emit('close-chat', { chat_id: chatId }, (status: number) => {
+        console.log('status', status);
+      });
+    };
+  }, []);
 
   return (
     <div className="flex h-full max-h-full w-full flex-row overflow-x-hidden">
