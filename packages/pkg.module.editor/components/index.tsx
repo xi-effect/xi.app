@@ -4,4 +4,4 @@ export { Portal } from './CellControls';
 export { SortableElement } from './SortableElement';
 export { EditableElement } from './EditableElement';
 export { Leaf } from './Leaf';
-export { InlineToolbar } from './InlineToolbar';
+export { InlineToolbar } from './inlineToolbar/InlineToolbar';
