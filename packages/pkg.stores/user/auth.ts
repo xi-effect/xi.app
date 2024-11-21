@@ -2,6 +2,7 @@ import { StateCreator } from 'zustand';
 import { io } from 'socket.io-client';
 import { UseFormSetError } from 'react-hook-form';
 import { postSignin, postSignout, postSignup, putEmail } from 'pkg.api';
+import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { Common, useMainSt } from '../main';
 
 type Data = { email: string; password: string };
@@ -69,15 +70,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         isLogin: true,
         user: {
           ...state.user,
-          onboardingStage: data.onboarding_stage,
-          username: data.username,
-          id: data.id,
-          displayName: data.display_name,
-          theme: data.theme,
-          email: data.email,
-          emailConfirmed: data.email_confirmed,
-          allowedConfirmationResend: data.allowed_confirmation_resend,
-          lastPasswordChange: data.last_password_change,
+          ...convertSnakeToCamelCase(data),
         },
       }));
       return { status: 200, theme: data.theme };
@@ -101,15 +94,7 @@ export const createAuthSt: StateCreator<Common, [], [], Auth> = (set) => ({
         isLogin: true,
         user: {
           ...state.user,
-          onboardingStage: data.onboarding_stage,
-          username: data.username,
-          id: data.id,
-          displayName: data.display_name,
-          theme: data.theme,
-          email: data.email,
-          emailConfirmed: data.email_confirmed,
-          allowedConfirmationResend: data.allowed_confirmation_resend,
-          lastPasswordChange: data.last_password_change,
+          ...convertSnakeToCamelCase(data),
         },
       }));
       return 200;

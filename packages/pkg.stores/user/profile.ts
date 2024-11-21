@@ -1,6 +1,7 @@
 import { StateCreator } from 'zustand';
 import { UserT } from 'pkg.models';
 import { getUser } from 'pkg.api';
+import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { useMainSt } from '../index';
 
 type ReturnT = {
@@ -35,15 +36,7 @@ export const createUserProfileSt: StateCreator<UserProfile, [], [], UserProfile>
       set((state) => ({
         user: {
           ...state.user,
-          onboardingStage: data.onboarding_stage,
-          username: data.username,
-          id: data.id,
-          displayName: data.display_name,
-          theme: data.theme,
-          email: data.email,
-          emailConfirmed: data.email_confirmed,
-          allowedConfirmationResend: data.allowed_confirmation_resend,
-          lastPasswordChange: data.last_password_change,
+          ...convertSnakeToCamelCase(data),
         },
       }));
 

@@ -19,7 +19,7 @@ export const Header = () => {
 
   const currentCall = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
-  if (currentCall === undefined) return null;
+  if (currentCall === undefined || currentCall.length === 0) return null;
 
   console.log('channels', channels, currentCall);
 

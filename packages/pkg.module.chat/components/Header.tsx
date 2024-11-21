@@ -3,7 +3,7 @@ import { Button } from '@xipkg/button';
 import { useParams } from 'next/navigation';
 import { useMainSt } from 'pkg.stores';
 import React from 'react';
-import { useInterfaceStore } from '../interfaceStore';
+import { useInterfaceStore } from '../stores/interfaceStore';
 
 export const Header = () => {
   const currentSidebar = useInterfaceStore((state) => state.currentSidebar);
@@ -14,7 +14,7 @@ export const Header = () => {
   const categories = useMainSt((state) => state.categories);
   const currentChat = channels?.filter((item) => Number(params['channel-id']) === item.id);
 
-  if (!currentChat) return null;
+  if (!currentChat || currentChat.length === 0) return null;
 
   const currentChatCategory =
     typeof currentChat[0].categoryId === 'number'
