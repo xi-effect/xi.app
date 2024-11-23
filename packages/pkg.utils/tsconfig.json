@@ -1,5 +1,8 @@
 {
   "extends": "@xipkg/typescript/react-library.json",
   "include": ["*", "../pkg.utils.client/UseGetUrlWithParams.ts"],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"]
+  },
 }
