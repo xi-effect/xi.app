@@ -5,7 +5,7 @@ import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
-import { Chat } from './components/Chat/Chat';
+import { ChatProvider } from './components/Chat';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
@@ -64,7 +64,7 @@ export const ChatModule = () => {
       ) => {
         console.log('status', status);
         if (status === 200) {
-          const messages = convertSnakeToCamelCase(latestMessages);
+          const messages = latestMessages.map((item) => convertSnakeToCamelCase(item));
 
           console.log('messages', messages);
         }
@@ -88,7 +88,7 @@ export const ChatModule = () => {
         className="relative flex h-full w-full flex-col overflow-hidden"
       >
         <Header />
-        <Chat />
+        <ChatProvider />
         <BottomBar />
       </motion.div>
       <AnimatePresence>
