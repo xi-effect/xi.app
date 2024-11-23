@@ -9,18 +9,11 @@ import {
 import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import { DateChat } from './DateChat';
-
-type MessageItemT = {
-  id: string;
-  name: string;
-  time: string;
-  message: string;
-};
+import { MessageT } from '../../models/Message';
 
 type ChatMessageProps = {
-  item: MessageItemT;
-  index: number;
-  mocksMessages: MessageItemT[];
+  item: MessageT;
+  prevItemCreatedAt: MessageT['createdAt'];
 };
 
 const getContainerClassNames = (
@@ -42,7 +35,7 @@ const getButtonClassNames = (itemId: string, lockedHovered: string | null): stri
   return `m-0 h-6 w-6 rounded p-1 ${isLocked ? 'bg-gray-10' : 'hover:bg-gray-10'}`;
 };
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMessages }) => {
+export const ChatMessage = ({ item, prevItemCreatedAt }: ChatMessageProps) => {
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [lockedHovered, setLockedHovered] = React.useState<string | null>(null);
   const menuRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -84,7 +77,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMess
 
   return (
     <div key={item.id}>
-      <DateChat index={index} mocksMessages={mocksMessages} time={item.time} />
+      <DateChat itemCreatedAt={item.createdAt} prevItemCreatedAt={prevItemCreatedAt} />
       <div
         className={getContainerClassNames(item.id, hovered, lockedHovered)}
         onMouseEnter={() => setHovered(item.id)}
@@ -100,14 +93,14 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ item, index, mocksMess
               }}
               alt="User Avatar"
             />
-            <AvatarFallback size="l">{item.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback size="l">А</AvatarFallback>
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center">
-              <span className="mr-2 font-semibold">{item.name}</span>
-              <span className="text-s-base text-gray-40 font-normal">{item.time}</span>
+              <span className="mr-2 font-semibold">ААААА</span>
+              <span className="text-s-base text-gray-40 font-normal">{item.createdAt}</span>
             </div>
-            <p className="relative mt-1 w-[600] text-gray-100">{item.message}</p>
+            <p className="relative mt-1 w-[600] text-gray-100">{item.content}</p>
           </div>
         </div>
 

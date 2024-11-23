@@ -24,6 +24,8 @@ export const SubmitButton = ({ editorRef }: SubmitButtonPropsT) => {
   const handleClick = () => {
     if (!socket) return;
 
+    console.log('handleClick', chatId);
+
     socket.emit(
       'send-chat-message',
       {
@@ -33,6 +35,7 @@ export const SubmitButton = ({ editorRef }: SubmitButtonPropsT) => {
         },
       },
       (status: number) => {
+        console.log('status', status);
         if (status === 201) {
           handleReset();
         }

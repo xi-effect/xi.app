@@ -5,7 +5,7 @@ import { useMainSt } from 'pkg.stores';
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
-import { Chat } from './components/Chat';
+import { Chat } from './components/Chat/Chat';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
@@ -33,26 +33,7 @@ export const ChatModule = () => {
       console.log('p', params);
       console.log('handleRetrieveChatChannel', status, newChatId);
       if (status === 200 && newChatId && typeof newChatId === 'number' && chatId !== newChatId) {
-        setChatId(chatId);
-
-        socket.emit(
-          'open-chat',
-          {
-            chat_id: newChatId,
-            limit: 20,
-          },
-          (
-            status: number,
-            { latest_messages: latestMessages }: { latest_messages: MessageSnakeCaseT[] },
-          ) => {
-            console.log('status', status);
-            if (status === 200) {
-              const messages = convertSnakeToCamelCase(latestMessages);
-
-              console.log('messages', messages);
-            }
-          },
-        );
+        setChatId(newChatId);
       }
     };
 
@@ -65,6 +46,31 @@ export const ChatModule = () => {
       handleRetrieveChatChannel,
     );
 
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (!chatId) return () => {};
+
+    socket.emit(
+      'open-chat',
+      {
+        chat_id: chatId,
+        limit: 20,
+      },
+      (
+        status: number,
+        { latest_messages: latestMessages }: { latest_messages: MessageSnakeCaseT[] },
+      ) => {
+        console.log('status', status);
+        if (status === 200) {
+          const messages = convertSnakeToCamelCase(latestMessages);
+
+          console.log('messages', messages);
+        }
+      },
+    );
+
     return () => {
       if (!chatId || !socket) return;
 
@@ -72,7 +78,7 @@ export const ChatModule = () => {
         console.log('status', status);
       });
     };
-  }, []);
+  }, [chatId]);
 
   return (
     <div className="flex h-full max-h-full w-full flex-row overflow-x-hidden">
