@@ -3,7 +3,7 @@ import { Close } from '@xipkg/icons';
 import * as M from '@xipkg/modal';
 import { UserProfile } from '@xipkg/userprofile';
 import { useMainSt } from 'pkg.stores';
-import { useInterfaceStore } from '../../interfaceStore';
+import { useInterfaceStore } from '../../stores/interfaceStore';
 
 export const Users = () => {
   const currentSidebar = useInterfaceStore((state) => state.currentSidebar);
