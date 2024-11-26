@@ -1,7 +1,7 @@
 import React from 'react';
 
 type LoadingSkeletonProps = {
-  refProp: React.Ref<HTMLDivElement>;
+  refProp?: React.Ref<HTMLDivElement>;
 };
 
 export const SkeletMessage = ({ refProp }: LoadingSkeletonProps) => (

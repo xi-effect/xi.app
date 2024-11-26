@@ -36,7 +36,7 @@ export const useLoadItems = () => {
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [error, setError] = useState<Error>();
 
-  async function loadMore() {
+  const loadMore = async () => {
     setLoading(true);
     try {
       const { data, hasNextPage: newHasNextPage } = await loadItems(items.length);
@@ -47,7 +47,7 @@ export const useLoadItems = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return { loading, items, hasNextPage, error, loadMore };
 };
