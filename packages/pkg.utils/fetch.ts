@@ -1,4 +1,6 @@
+// TODO: Разобраться с типизацией RequestInit
 /* eslint-disable no-undef */
+
 type ServicesT = 'backend' | 'auth' | 'live';
 
 type ServicesMapT = {
@@ -22,11 +24,12 @@ const servicesMap: ServicesMapT = {
   live: process.env.NEXT_PUBLIC_SERVER_URL_LIVE ?? '',
 };
 
+// Основная функция HTTP-запроса с обработкой ошибок
 async function http<T>(
   service: ServicesT,
   path: string,
   configInit: RequestInit,
-): Promise<{ data: T; status: number }> {
+): Promise<{ data: T; status: number; error?: string }> {
   const url = `${servicesMap[service]}${path}`;
 
   const config: RequestInit = {
@@ -37,12 +40,19 @@ async function http<T>(
     },
   };
 
-  const request = new Request(url, config);
+  try {
+    const response = await fetch(url, config);
+    const data = await response.json().catch(() => ({})); // Если JSON некорректен
 
-  const response = await fetch(request);
-  const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      // Если статус ответа не 2xx
+      return { data, status: response.status, error: `Error: ${response.statusText}` };
+    }
 
-  return { data, status: response.status };
+    return { data, status: response.status };
+  } catch (error) {
+    return { data: {} as T, status: 500, error: (error as Error).message };
+  }
 }
 
 export async function get<T>({ service, path, config }: GetT) {

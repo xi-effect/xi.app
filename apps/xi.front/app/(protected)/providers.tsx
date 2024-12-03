@@ -62,14 +62,11 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
       return;
     }
 
-    console.log('params[community-id]', params['community-id']);
-
     // Если мы не знаем id текущего сообщества, мы получаем любое и редиректим туда пользователя
     if (typeof params['community-id'] !== 'string') {
       socket.emit(
         'retrieve-any-community',
         (status: number, { community, participant }: { community: any; participant: any }) => {
-          console.log('retrieve-any-community', community);
           if (status === 200) {
             updateCommunityMeta({
               id: community.id,
@@ -107,7 +104,6 @@ const ProtectedProvider = ({ children }: ProtectedProviderPropsT) => {
           community_id: params['community-id'],
         },
         (status: number, { community, participant }: { community: any; participant: any }) => {
-          console.log('retrieve-community', community);
           if (status === 403) {
             return setErrorCode(403);
           }

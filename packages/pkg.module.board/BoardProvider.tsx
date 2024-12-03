@@ -22,7 +22,6 @@ export const BoardProvider = () => {
           channel_id: params['channel-id'],
         },
         (status: number, { ydoc_id: YdocId }: { ydoc_id: string }) => {
-          console.log('status', status, YdocId);
           if (status === 200) {
             setToken(YdocId);
           } else {

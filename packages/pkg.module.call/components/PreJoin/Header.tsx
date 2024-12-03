@@ -21,8 +21,6 @@ export const Header = () => {
 
   if (currentCall === undefined || currentCall.length === 0) return null;
 
-  console.log('channels', channels, currentCall);
-
   return (
     <div className="flex flex-col gap-4 pb-4 md:pb-8">
       <div>
