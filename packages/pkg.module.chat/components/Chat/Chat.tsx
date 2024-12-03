@@ -1,96 +1,56 @@
 import React from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
-import { useLoadItems } from '../../utils';
+import { useMainSt } from 'pkg.stores';
 import { ChatMessage } from './ChatMessage';
-import { SkeletMessage } from '../Skelets';
+import { SkeletMessages } from '../Skelets';
 import { useChatStore } from '../../stores/chatStore';
-import { MessageT } from '../../models/Message';
-
-// type MessageItemT = {
-//   id: string;
-//   name: string;
-//   time: string;
-//   message: string;
-// };
-
-// const mocksMessages: MessageItemT[] = [
-//   {
-//     id: '1',
-//     name: 'Анна Иванова',
-//     time: '22.03.2024 09:15',
-//     message: 'Привет, ребята! Сегодня занятий не будет, я заболела.',
-//   },
-//   {
-//     id: '2',
-//     name: 'Денис Спиридонов',
-//     time: '22.03.2024 09:30',
-//     message: 'Ой, как жаль! Выздоравливайте скорее!',
-//   },
-//   {
-//     id: '3',
-//     name: 'Анна Иванова',
-//     time: '22.03.2024 10:05',
-//     message: 'Спасибо, Денис!',
-//   },
-//   {
-//     id: '4',
-//     name: 'Денис Спиридонов',
-//     time: '22.03.2024 10:30',
-//     message: 'Если что, можем помочь с уроками онлайн.',
-//   },
-//   {
-//     id: '5',
-//     name: 'Анна Иванова',
-//     time: '22.03.2024 11:00',
-//     message: 'Это было бы здорово, давайте завтра.',
-//   },
-//   {
-//     id: '6',
-//     name: 'Денис Спиридонов',
-//     time: '22.03.2024 11:15',
-//     message: 'Договорились! Выздоравливайте!',
-//   },
-//   {
-//     id: '7',
-//     name: 'Анна Иванова',
-//     time: '22.03.2024 12:00',
-//     message: 'Спасибо за поддержку, до завтра!',
-//   },
-//   {
-//     id: '8',
-//     name: 'Денис Спиридонов',
-//     time: '22.03.2024 12:30',
-//     message: 'Не за что, до завтра!',
-//   },
-//   {
-//     id: '9',
-//     name: 'Анна Иванова',
-//     time: '23.03.2024 09:00',
-//     message: 'Всем доброе утро! Я готова к уроку.',
-//   },
-//   {
-//     id: '10',
-//     name: 'Денис Спиридонов',
-//     time: '23.03.2024 09:05',
-//     message: 'Доброе утро! Начинаем через 5 минут.',
-//   },
-// ];
+import { MessageSnakeCaseT, MessageT } from '../../models/Message';
 
 export const Chat = () => {
-  const { loading, items, hasNextPage, error, loadMore } = useLoadItems();
+  const socket = useMainSt((state) => state.socket);
+  const messages = useChatStore((state) => state.messages);
+  // const setMessages = useChatStore((state) => state.setMessages);
+  const chatId = useChatStore((state) => state.chatId);
+
+  const [hasNextPage] = React.useState(true);
+  const [loading] = React.useState(false);
+
+  const reversedItems = React.useMemo(() => [...(messages ?? [])].reverse(), [messages]);
+
+  const loadMore = () => {
+    if (!socket) {
+      console.error('Socket is not defined');
+      return;
+    }
+
+    socket.emit(
+      'list-chat-messages',
+      {
+        chat_id: chatId,
+        created_before: reversedItems[0].createdAt,
+        limit: 20,
+      },
+      (
+        status: number,
+        { latest_messages: latestMessages }: { latest_messages: MessageSnakeCaseT[] },
+      ) => {
+        console.log('status', status);
+        console.log('latestMessages', latestMessages);
+      },
+    );
+
+    console.log('loadMore');
+  };
 
   const [infiniteRef, { rootRef }] = useInfiniteScroll({
     loading,
     hasNextPage,
     onLoadMore: loadMore,
-    disabled: Boolean(error),
-    rootMargin: '400px 0px 0px 0px',
+    rootMargin: '600px 0px 0px 0px',
   });
 
   const scrollableRootRef = React.useRef<React.ElementRef<'div'> | null>(null);
   const lastScrollDistanceToBottomRef = React.useRef<number>();
-
-  const reversedItems = React.useMemo(() => [...items].reverse(), [items]);
 
   // We keep the scroll position when new items are added etc.
   React.useLayoutEffect(() => {
@@ -140,25 +100,29 @@ export const Chat = () => {
     };
   }, [lockedHovered, hovered]);
 
-  const messages = useChatStore((state) => state.messages);
-
   if (messages === null) return null;
 
   return (
-    <div ref={rootRefSetter} onScroll={handleRootScroll} className="flex-1 overflow-y-auto p-4">
-      <ul className="block p-2">
-        {hasNextPage && <SkeletMessage refProp={infiniteRef} />}
-        {messages.map(
-          (item: MessageT, index: number) =>
-            item !== null && (
-              <ChatMessage
-                item={item}
-                key={item.id}
-                prevItemCreatedAt={messages[index - 1].createdAt}
-              />
-            ),
-        )}
-      </ul>
+    <div
+      ref={rootRefSetter}
+      onScroll={handleRootScroll}
+      className="flex h-[calc(100%-128px)] w-full flex-1 flex-col justify-items-end overflow-y-auto p-2"
+    >
+      {hasNextPage && (
+        <div className="flex grow flex-col justify-end" ref={infiniteRef}>
+          <SkeletMessages withoutLayout length={7} />
+        </div>
+      )}
+      {reversedItems.map(
+        (item: MessageT, index: number) =>
+          item !== null && (
+            <ChatMessage
+              item={item}
+              key={item.id}
+              prevItemCreatedAt={index !== 0 ? reversedItems[index - 1].createdAt : null}
+            />
+          ),
+      )}
     </div>
   );
 };

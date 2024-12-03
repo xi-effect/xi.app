@@ -11,17 +11,16 @@ import { Sidebar } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
 import { useInterfaceStore } from './stores/interfaceStore';
 import { useChatStore } from './stores/chatStore';
-import { MessageSnakeCaseT } from './models/Message';
+import { MessageSnakeCaseT, MessageT } from './models/Message';
 
 export const ChatModule = () => {
   const socket = useMainSt((state) => state.socket);
   const chatId = useChatStore((state) => state.chatId);
   const setChatId = useChatStore((state) => state.setChatId);
+  const setMessages = useChatStore((state) => state.setMessages);
 
   const currentSidebar = useInterfaceStore((state) => state.currentSidebar);
   const params = useParams<{ 'channel-id': string; 'community-id': string }>();
-
-  console.log('params', params);
 
   useEffect(() => {
     if (!socket) return () => {};
@@ -64,7 +63,10 @@ export const ChatModule = () => {
       ) => {
         console.log('status', status);
         if (status === 200) {
-          const messages = latestMessages.map((item) => convertSnakeToCamelCase(item));
+          const messages: MessageT[] = latestMessages.map(
+            (item) => convertSnakeToCamelCase(item) as MessageT,
+          );
+          setMessages(messages);
 
           console.log('messages', messages);
         }
