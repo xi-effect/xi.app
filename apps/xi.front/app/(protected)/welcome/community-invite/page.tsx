@@ -38,6 +38,7 @@ export default function WelcomeCommunityInvite() {
   const searchParams = useSearchParams();
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isError, setIsError] = React.useState(false);
 
   const updateUser = useMainSt((state) => state.updateUser);
   const socket = useMainSt((state) => state.socket);
@@ -91,8 +92,6 @@ export default function WelcomeCommunityInvite() {
         code: arrayFromInvite[arrayFromInvite.length - 1],
       },
       async (status: number, { community, participant }: { community: any; participant: any }) => {
-        console.log('status', status);
-
         if (status === 409) {
           toast('Вы уже являетесь участником сообщества');
         }
@@ -113,11 +112,16 @@ export default function WelcomeCommunityInvite() {
           if (status === 204) {
             updateUser({ onboardingStage: 'final' });
             router.push(getUrlWithParams('/welcome/final'));
+            setIsError(false);
             setIsLoading(false);
           } else {
+            setIsError(false);
             setIsLoading(false);
             toast('Ошибка сервера');
           }
+        } else {
+          setIsLoading(false);
+          setIsError(true);
         }
       },
     );
@@ -136,16 +140,21 @@ export default function WelcomeCommunityInvite() {
             <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
             <div className="bg-gray-10 w-1/4 h-1.5 rounded" />
           </div>
-          <div id="title" className="mt-8 text-2xl font-semibold leading-[32px] text-gray-100">
+          <div id="title" className="my-8 text-2xl font-semibold leading-[32px] text-gray-100">
             Присоединитесь к сообществу
           </div>
+          {isError && (
+            <div className="bg-red-0 mb-4 rounded-lg p-4 text-red-100 font-semibold text-m-base">
+              Приглашение недействительно
+            </div>
+          )}
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full flex flex-col">
               <FormField
                 control={control}
                 name="invite"
                 render={({ field }) => (
-                  <FormItem className="mt-8">
+                  <FormItem>
                     <FormLabel>Ссылка-приглашение</FormLabel>
                     <FormControl>
                       <Input

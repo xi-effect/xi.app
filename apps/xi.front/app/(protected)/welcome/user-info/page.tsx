@@ -177,9 +177,10 @@ export default function WelcomeUserInfo() {
           <div className="flex flex-row mt-8 h-16">
             <AvatarPreview userId={user.id} date={date} />
             <div className="ml-4 flex flex-col gap-2">
-              <span className="font-medium leading-[22px] text-gray-90 w-full">
-                Изображение профиля
-              </span>
+              <p className="font-medium leading-[22px] text-gray-90 w-full">
+                Аватар&nbsp;
+                <span className="text-gray-40 font-normal">(необязательно)</span>
+              </p>
               <AvatarEditor
                 file={file}
                 open={isAvatarEditorOpen}
@@ -202,7 +203,7 @@ export default function WelcomeUserInfo() {
                 name="displayName"
                 render={({ field }) => (
                   <FormItem className="mt-8">
-                    <FormLabel>Отображаемое имя</FormLabel>
+                    <FormLabel>Как вас зовут?</FormLabel>
                     <FormControl>
                       <Input
                         className="mt-1"

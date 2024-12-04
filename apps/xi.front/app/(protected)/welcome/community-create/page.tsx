@@ -202,9 +202,10 @@ export default function WelcomeCommunityCreate() {
               <div className="rounded-[32px] shrink-0 w-16 h-16 bg-brand-80" />
             )}
             <div className="ml-4 flex flex-col gap-2">
-              <span className="font-medium leading-[22px] text-gray-90 w-full">
-                Изображение сообщества
-              </span>
+              <p className="font-medium leading-[22px] text-gray-90 w-full">
+                Аватар сообщества&nbsp;
+                <span className="text-gray-40 font-normal">(необязательно)</span>
+              </p>
               <AvatarEditor
                 file={file}
                 open={isAvatarEditorOpen}
