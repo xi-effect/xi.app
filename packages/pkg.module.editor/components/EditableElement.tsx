@@ -7,7 +7,7 @@ export type EditableElementPropsT = {
   readOnly?: boolean;
   renderElement: (props: RenderElementProps) => React.JSX.Element;
   decorate?: (entry: NodeEntry) => Range[];
-  renderLeaf: (props: RenderLeafProps) => React.JSX.Element;
+  renderLeaf?: (props: RenderLeafProps) => React.JSX.Element;
   onKeyDown?: React.KeyboardEventHandler;
 };
 
