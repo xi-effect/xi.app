@@ -110,8 +110,8 @@ export default function WelcomeCommunityInvite() {
           });
 
           if (status === 204) {
-            updateUser({ onboardingStage: 'final' });
-            router.push(getUrlWithParams('/welcome/final'));
+            updateUser({ onboardingStage: 'completed' });
+            router.push(getUrlWithParams(`/communities/${community.id}/home`));
             setIsError(false);
             setIsLoading(false);
           } else {
@@ -135,10 +135,9 @@ export default function WelcomeCommunityInvite() {
             <Logo height={24} width={202} logoVariant="navigation" logoSize="default" />
           </div>
           <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
-            <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
-            <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
-            <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
-            <div className="bg-gray-10 w-1/4 h-1.5 rounded" />
+            <div className="bg-brand-80 w-full h-1.5 rounded" />
+            <div className="bg-brand-80 w-full h-1.5 rounded" />
+            <div className="bg-brand-80 w-full h-1.5 rounded" />
           </div>
           <div id="title" className="my-8 text-2xl font-semibold leading-[32px] text-gray-100">
             Присоединитесь к сообществу
