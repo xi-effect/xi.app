@@ -9,7 +9,6 @@ const welcomePagesPathsDict = {
   'community-choice': '/welcome/community',
   'community-create': '/welcome/community-create',
   'community-invite': '/welcome/community-invite',
-  final: '/welcome/final',
 };
 
 const WelcomeLayout = ({ children }) => {

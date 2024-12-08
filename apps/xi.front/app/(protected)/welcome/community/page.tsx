@@ -26,7 +26,7 @@ export default function WelcomeCommunity() {
 
   const [activeButton, setActiveButton] = useState({
     tab: 0,
-    height: 86,
+    height: 60,
     top: 0,
   });
 
@@ -176,18 +176,16 @@ export default function WelcomeCommunity() {
             <Logo height={24} width={202} logoVariant="navigation" logoSize="default" />
           </div>
           <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
-            <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
-            <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
-            <div className="bg-gray-10 w-1/4 h-1.5 rounded" />
-            <div className="bg-gray-10 w-1/4 h-1.5 rounded" />
+            <div className="bg-brand-80 w-full h-1.5 rounded" />
+            <div className="bg-brand-80 w-full h-1.5 rounded" />
+            <div className="bg-gray-10 w-full h-1.5 rounded" />
           </div>
           <div id="title" className="mt-8 text-2xl font-semibold leading-[32px] text-gray-100">
             Сообщество
           </div>
           <div className="leading-[22px] text-gray-100 mt-8">
-            Сообщества — основная часть нашего приложения. Вся ваша работа будет связана с ними.
-            В дальнейшем вы сможете создать ещё неограниченное число сообществ, а пока выберите,
-            что хотите сделать
+            Сообщество помогает хранить учебные материалы, проверять знания и проводить уроки.
+            Создавайте свои сообщества или присоединяйтесь к друзьям.
           </div>
           <div className="relative mt-6 border border-gray-30 bg-gray-0 flex flex-col w-full items-start rounded-2xl">
             <div
@@ -203,18 +201,13 @@ export default function WelcomeCommunity() {
               <Plus
                 className={`z-10 mt-0.5 ${activeButton.tab === 0 ? 'fill-brand-100' : 'fill-gray-80'}`}
               />
-              <div className="flex flex-col gap-1 text-start">
+              <div className="text-start flex">
                 <span
                   className={`z-10 text-xl font-medium leading-[28px] ${
                     activeButton.tab === 0 ? 'text-brand-100' : 'text-gray-80'
                   }`}
                 >
                   Создать
-                </span>
-                <span
-                  className={`z-10 leading-[22px] ${activeButton.tab === 0 ? 'text-brand-100' : 'text-gray-80'}`}
-                >
-                  Новое сообщество под ваши задачи
                 </span>
               </div>
             </button>
@@ -227,18 +220,13 @@ export default function WelcomeCommunity() {
               <Mail
                 className={`z-10 mt-0.5 ${activeButton.tab === 1 ? 'fill-brand-100' : 'fill-gray-80'}`}
               />
-              <div className="flex flex-col gap-1 text-start">
+              <div className="text-start flex">
                 <span
                   className={`z-10 text-xl font-medium leading-[28px] ${
                     activeButton.tab === 1 ? 'text-brand-100' : 'text-gray-80'
                   }`}
                 >
                   Присоединиться
-                </span>
-                <span
-                  className={`z-10 leading-[22px] ${activeButton.tab === 1 ? 'text-brand-100' : 'text-gray-80'}`}
-                >
-                  Если есть ссылка-приглашение
                 </span>
               </div>
             </button>
@@ -258,7 +246,7 @@ export default function WelcomeCommunity() {
                       activeButton.tab === 2 ? 'text-brand-100' : 'text-gray-80'
                     }`}
                   >
-                    Присоедениться к сообществу «{searchParams.get('community')}»
+                    Присоединиться к сообществу «{searchParams.get('community')}»
                   </span>
                 </div>
               </button>
