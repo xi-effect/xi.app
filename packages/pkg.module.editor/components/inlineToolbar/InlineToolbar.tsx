@@ -1,11 +1,7 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useEffect, useState, KeyboardEvent } from 'react';
-
-import { Editor } from 'slate';
 import { useSlate } from 'slate-react';
-import { Bold, Italic, Underline, Stroke } from '@xipkg/icons';
-import { Button } from '@xipkg/button';
 import {
   useFloating,
   useDismiss,
@@ -17,25 +13,9 @@ import {
   flip,
   FloatingDelayGroup,
 } from '@floating-ui/react';
-import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
-
-const toggleFormat = (editor: Editor, format: string) => {
-  const isActive = isFormatActive(editor, format);
-
-  if (isActive) {
-    Editor.removeMark(editor, format);
-  } else {
-    Editor.addMark(editor, format, true);
-  }
-};
-
-const isFormatActive = (editor: Editor, format: string) => {
-  const [match] = Editor.nodes(editor, {
-    match: (n) => (n as any)?.[format] === true,
-    mode: 'all',
-  });
-  return !!match;
-};
+import { Tooltip, TooltipTrigger, TooltipContent } from '../Tooltip';
+import { toggleFormat } from './functions/toggleFormat';
+import { FormatButton } from './FormatButton';
 
 export const InlineToolbar = () => {
   const editor = useSlate();
@@ -139,7 +119,7 @@ export const InlineToolbar = () => {
         event.key === 's' &&
         (/Mac|iPod|iPhone|iPad/.test(navigator.platform) ? event.metaKey : event.ctrlKey)
       ) {
-        event.preventDefault(); // Prevent default save action
+        event.preventDefault();
       }
 
       if (event && event.target) {
@@ -172,10 +152,7 @@ export const InlineToolbar = () => {
             <FloatingDelayGroup delay={{ open: 1500, close: 0 }}>
               <Tooltip placement="bottom">
                 <TooltipTrigger>
-                  <FormatButton
-                    format="bold"
-                    icon={<Bold className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                  />
+                  <FormatButton format="bold" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <div>
@@ -188,10 +165,7 @@ export const InlineToolbar = () => {
               </Tooltip>
               <Tooltip placement="bottom">
                 <TooltipTrigger>
-                  <FormatButton
-                    format="italic"
-                    icon={<Italic className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                  />
+                  <FormatButton format="italic" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <div>
@@ -204,12 +178,7 @@ export const InlineToolbar = () => {
               </Tooltip>
               <Tooltip placement="bottom">
                 <TooltipTrigger>
-                  <FormatButton
-                    format="underlined"
-                    icon={
-                      <Underline className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />
-                    }
-                  />
+                  <FormatButton format="underlined" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <div>
@@ -222,10 +191,7 @@ export const InlineToolbar = () => {
               </Tooltip>
               <Tooltip placement="bottom">
                 <TooltipTrigger>
-                  <FormatButton
-                    format="stroke"
-                    icon={<Stroke className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-                  />
+                  <FormatButton format="stroke" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <div>
@@ -236,46 +202,10 @@ export const InlineToolbar = () => {
                   </div>
                 </TooltipContent>
               </Tooltip>
-              {/* <FormatButton
-              onClick={handleLinkClick}
-              format="link"
-              icon={<Link className="group-hover:fill-brand-100 h-4 w-4 fill-gray-100" />}
-            /> */}
             </FloatingDelayGroup>
           </div>
         </FloatingFocusManager>
       )}
     </>
-  );
-};
-
-const FormatButton = ({
-  format,
-  icon,
-  onClick,
-}: {
-  format: string;
-  icon: React.ReactNode;
-  onClick?: () => void;
-}) => {
-  const editor = useSlate();
-  const isActive = isFormatActive(editor, format);
-
-  return (
-    <Button
-      className={`${isActive ? 'bg-brand-0 *:fill-brand-100' : 'bg-gray-0'} hover:bg-brand-0 hover:fill-brand-100 group h-6 w-6 rounded-sm p-0`}
-      variant="ghost"
-      onMouseDown={(event) => {
-        event.preventDefault();
-        if (onClick) {
-          onClick();
-          toggleFormat(editor, format);
-        } else {
-          toggleFormat(editor, format);
-        }
-      }}
-    >
-      {icon}
-    </Button>
   );
 };
