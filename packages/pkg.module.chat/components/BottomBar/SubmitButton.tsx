@@ -8,10 +8,11 @@ import { CustomEditor } from '@xipkg/inputsmart';
 import { useChatStore } from '../../stores/chatStore';
 
 type SubmitButtonPropsT = {
+  storageKey: string;
   editorRef: React.MutableRefObject<CustomEditor | null>;
 };
 
-export const SubmitButton = ({ editorRef }: SubmitButtonPropsT) => {
+export const SubmitButton = ({ editorRef, storageKey }: SubmitButtonPropsT) => {
   const socket = useMainSt((state) => state.socket);
   const chatId = useChatStore((state) => state.chatId);
 
@@ -24,20 +25,19 @@ export const SubmitButton = ({ editorRef }: SubmitButtonPropsT) => {
   const handleClick = () => {
     if (!socket) return;
 
-    console.log('handleClick', chatId);
-
     socket.emit(
       'send-chat-message',
       {
         chat_id: chatId,
         data: {
-          content: '123',
+          content: JSON.stringify(localStorage.getItem(storageKey)),
         },
       },
       (status: number) => {
         console.log('status', status);
         if (status === 201) {
           handleReset();
+          localStorage.removeItem(storageKey);
         }
       },
     );

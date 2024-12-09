@@ -18,7 +18,7 @@ export const SkeletMessages = ({ length, withoutLayout = false }: SkeletMessages
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4">
+    <div className="flex-1 overflow-hidden p-4">
       <ul className="block p-2">
         {[...new Array(length ?? 10)].map((_, index) => (
           <SkeletMessage key={index.toString()} />

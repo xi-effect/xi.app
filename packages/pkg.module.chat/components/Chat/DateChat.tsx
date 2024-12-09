@@ -2,13 +2,6 @@ import React from 'react';
 import { MessageT } from '../../models/Message';
 import { areDatesDifferent, formatDate } from '../../utils';
 
-// type MessageItemT = {
-//   id: string;
-//   name: string;
-//   time: string;
-//   message: string;
-// };
-
 type DateMessageProps = {
   itemCreatedAt: MessageT['createdAt'];
   prevItemCreatedAt: MessageT['createdAt'];
