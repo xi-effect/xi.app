@@ -25,6 +25,32 @@ export const SubmitButton = ({ editorRef, storageKey }: SubmitButtonPropsT) => {
   const handleClick = () => {
     if (!socket) return;
 
+    console.log('storageKey', localStorage.getItem(storageKey));
+
+    const slateString = localStorage.getItem(storageKey);
+
+    if (!slateString) return;
+
+    let parsedContent;
+
+    try {
+      // Попытка распарсить строку
+      parsedContent = JSON.parse(slateString);
+
+      // Иногда может понадобиться распарсить ещё раз
+      if (typeof parsedContent !== 'object') {
+        parsedContent = JSON.parse(parsedContent);
+      }
+    } catch (e) {
+      // Если парсинг не удался, то ничего не отправляем
+      return;
+    }
+
+    // не даём отправить пустую строку
+    if (parsedContent[0].children[0].text.trim().length === 0) {
+      return;
+    }
+
     socket.emit(
       'send-chat-message',
       {
