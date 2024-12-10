@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button } from '@xipkg/button';
 import {
   DropdownMenu,
@@ -8,6 +8,7 @@ import {
 } from '@xipkg/dropdown';
 import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+import { MarkdownPreview, slateToMarkdown } from '@xipkg/inputsmart';
 import { DateChat } from './DateChat';
 import { MessageT } from '../../models/Message';
 
@@ -47,7 +48,7 @@ const getButtonClassNames = (itemId: string, lockedHovered: string | null): stri
   return `m-0 h-6 w-6 rounded p-1 ${isLocked ? 'bg-gray-10' : 'hover:bg-gray-10'}`;
 };
 
-export const ChatMessage = ({ item, prevItemCreatedAt }: ChatMessageProps) => {
+const ChatMessage = React.memo(({ item, prevItemCreatedAt }: ChatMessageProps) => {
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [lockedHovered, setLockedHovered] = React.useState<string | null>(null);
   const menuRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -87,6 +88,33 @@ export const ChatMessage = ({ item, prevItemCreatedAt }: ChatMessageProps) => {
     }
   };
 
+  const markdownedContent = useMemo(() => {
+    let parsedContent;
+
+    try {
+      // Попытка распарсить строку
+      parsedContent = JSON.parse(item.content);
+
+      // Иногда может понадобиться распарсить ещё раз
+      if (typeof parsedContent !== 'object') {
+        parsedContent = JSON.parse(parsedContent);
+      }
+    } catch (e) {
+      // Если парсинг не удался, возвращаем исходную строку
+      return item.content;
+    }
+
+    // Проверяем, является ли результат парсинга массивом объектов
+    if (Array.isArray(parsedContent) && parsedContent.every((el) => typeof el === 'object')) {
+      return slateToMarkdown(parsedContent);
+    }
+
+    // Если это не массив объектов, возвращаем строку как есть
+    return item.content;
+  }, [item.content]);
+
+  console.log('markdownedContent', markdownedContent, typeof markdownedContent);
+
   return (
     <div key={item.id}>
       {prevItemCreatedAt !== null && (
@@ -118,7 +146,9 @@ export const ChatMessage = ({ item, prevItemCreatedAt }: ChatMessageProps) => {
                 </span>
               )}
             </div>
-            <p className="relative mt-1 w-[600] text-gray-100">{item.content}</p>
+            <div className="relative mt-1 w-[600] text-gray-100">
+              <MarkdownPreview markdown={markdownedContent} />
+            </div>
           </div>
         </div>
 
@@ -184,4 +214,8 @@ export const ChatMessage = ({ item, prevItemCreatedAt }: ChatMessageProps) => {
       </div>
     </div>
   );
-};
+});
+
+ChatMessage.displayName = 'ChatMessage';
+
+export { ChatMessage };
