@@ -3,7 +3,7 @@
 'use client';
 
 import React, { ReactNode, useState, useEffect } from 'react';
-import { useGetUrlWithParams, useSessionStorage } from 'pkg.utils.client';
+import { useGetUrlWithParams, useMedia, useSessionStorage } from 'pkg.utils.client';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { WelcomeModal } from 'pkg.modal.welcome';
 import { useMainSt } from 'pkg.stores';
@@ -242,19 +242,24 @@ export const Navigation = ({ children }: NavigationPropT) => {
     setModalOpen(searchParams.get('welcome-modal') === 'true');
   }, [searchParams]);
 
+  const isDesktop = useMedia('(min-width: 960px)');
+
   if (pathname.includes('/empty/')) return children;
 
   return (
     <ModalsProvider>
-      <div className="relative hidden flex-row md:flex">
-        <div className="fixed flex h-screen min-h-screen min-w-[350px] flex-col p-6">
-          <Menu setSlideIndex={setSlideIndex} />
+      {isDesktop ? (
+        <div className="relative flex flex-row">
+          <div className="fixed flex h-screen min-h-screen min-w-[350px] flex-col p-6">
+            <Menu setSlideIndex={setSlideIndex} />
+          </div>
+          <div className="ml-[350px] h-full w-[calc(100vw-350px)] overflow-auto">{children}</div>
         </div>
-        <div className="ml-[350px] h-full w-[calc(100vw-350px)] overflow-auto">{children}</div>
-      </div>
-      <BottomBar slideIndex={slideIndex} setSlideIndex={setSlideIndex}>
-        {children}
-      </BottomBar>
+      ) : (
+        <BottomBar slideIndex={slideIndex} setSlideIndex={setSlideIndex}>
+          {children}
+        </BottomBar>
+      )}
       <WelcomeModal open={modalOpen} setModalOpen={setModalOpen} />
     </ModalsProvider>
   );

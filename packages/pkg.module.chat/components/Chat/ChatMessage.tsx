@@ -113,8 +113,6 @@ const ChatMessage = React.memo(({ item, prevItemCreatedAt }: ChatMessageProps) =
     return item.content;
   }, [item.content]);
 
-  console.log('markdownedContent', markdownedContent, typeof markdownedContent);
-
   return (
     <div key={item.id}>
       {prevItemCreatedAt !== null && (
@@ -146,7 +144,7 @@ const ChatMessage = React.memo(({ item, prevItemCreatedAt }: ChatMessageProps) =
                 </span>
               )}
             </div>
-            <div className="relative mt-1 w-[600] text-gray-100">
+            <div className="relative mt-1 w-full text-gray-100">
               <MarkdownPreview markdown={markdownedContent} />
             </div>
           </div>

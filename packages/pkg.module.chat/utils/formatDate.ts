@@ -1,4 +1,10 @@
 const parseDate = (input: string | Date): Date | null => {
+  // Попробуем распарсить ISO 8601 формат
+  const isoDate = new Date(input);
+  if (!Number.isNaN(isoDate.getTime())) {
+    return isoDate;
+  }
+
   if (input instanceof Date) {
     return Number.isNaN(input.getTime()) ? null : input;
   }

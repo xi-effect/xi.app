@@ -40,7 +40,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
   };
 
   return (
-    <div className="flex w-full overflow-hidden md:hidden">
+    <div className="flex w-full overflow-hidden">
       <Swiper
         slidesPerView={1}
         initialSlide={slideIndex}

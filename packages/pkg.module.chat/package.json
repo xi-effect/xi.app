@@ -14,7 +14,7 @@
     "@xipkg/button": "2.0.0",
     "@xipkg/dropdown": "^2.1.0",
     "@xipkg/select": "0.2.0",
-    "@xipkg/inputsmart": "0.2.3",
+    "@xipkg/inputsmart": "0.3.2",
     "pkg.utils.client": "*",
     "pkg.utils": "*",
     "pkg.stores": "*",

@@ -18,8 +18,6 @@ export const Field = ({ editorRef, storageKey }: FieldPropsT) => {
   const [value, setValue] = useLocalStorage(storageKey, initialValue);
   const [isPlaceholder, setIsPlaceholder] = React.useState(true);
 
-  console.log('editorRef.current', editorRef.current);
-
   React.useEffect(() => {
     if (value) {
       editorRef.current?.setContent(value);

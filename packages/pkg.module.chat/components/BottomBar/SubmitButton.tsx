@@ -1,20 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Button } from '@xipkg/button';
 import { Send } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
 import { CustomEditor } from '@xipkg/inputsmart';
+import { convertSnakeToCamelCase } from '@xipkg/utils';
+import { useKeyPress } from 'pkg.utils.client';
 import { useChatStore } from '../../stores/chatStore';
+import { MessageT } from '../../models/Message';
 
 type SubmitButtonPropsT = {
   storageKey: string;
   editorRef: React.MutableRefObject<CustomEditor | null>;
 };
 
-export const SubmitButton = ({ editorRef, storageKey }: SubmitButtonPropsT) => {
+const SubmitButton = memo(({ editorRef, storageKey }: SubmitButtonPropsT) => {
   const socket = useMainSt((state) => state.socket);
   const chatId = useChatStore((state) => state.chatId);
+  const messages = useChatStore((state) => state.messages);
+  const setMessages = useChatStore((state) => state.setMessages);
 
   const handleReset = () => {
     if (!editorRef || !editorRef.current) return;
@@ -24,8 +29,6 @@ export const SubmitButton = ({ editorRef, storageKey }: SubmitButtonPropsT) => {
 
   const handleClick = () => {
     if (!socket) return;
-
-    console.log('storageKey', localStorage.getItem(storageKey));
 
     const slateString = localStorage.getItem(storageKey);
 
@@ -51,6 +54,8 @@ export const SubmitButton = ({ editorRef, storageKey }: SubmitButtonPropsT) => {
       return;
     }
 
+    console.log('ff', chatId, JSON.stringify(localStorage.getItem(storageKey)));
+
     socket.emit(
       'send-chat-message',
       {
@@ -59,19 +64,28 @@ export const SubmitButton = ({ editorRef, storageKey }: SubmitButtonPropsT) => {
           content: JSON.stringify(localStorage.getItem(storageKey)),
         },
       },
-      (status: number) => {
+      (status: number, data: any) => {
         console.log('status', status);
         if (status === 201) {
           handleReset();
+
+          const newMessage = convertSnakeToCamelCase(data) as MessageT;
+          setMessages([newMessage, ...(messages ?? [])]);
           localStorage.removeItem(storageKey);
         }
       },
     );
   };
 
+  useKeyPress('Enter', handleClick);
+
   return (
-    <Button onClick={handleClick} size="m" className="h-12 w-12 min-w-12 p-0">
+    <Button size="m" className="h-12 w-12 min-w-12 p-0">
       <Send className="fill-gray-0 h-6 w-6" />
     </Button>
   );
-};
+});
+
+SubmitButton.displayName = 'SubmitButton';
+
+export { SubmitButton };
