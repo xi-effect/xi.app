@@ -18,7 +18,7 @@ type PatchT<T> = GetT & { body?: T };
 type PutT<T> = GetT & { body?: T };
 type DelT = GetT;
 
-const servicesMap: ServicesMapT = {
+export const servicesMap: ServicesMapT = {
   backend: process.env.NEXT_PUBLIC_SERVER_URL_BACKEND ?? '',
   auth: process.env.NEXT_PUBLIC_SERVER_URL_AUTH ?? '',
   live: process.env.NEXT_PUBLIC_SERVER_URL_LIVE ?? '',
