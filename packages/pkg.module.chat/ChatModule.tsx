@@ -18,6 +18,7 @@ export const ChatModule = () => {
   const chatId = useChatStore((state) => state.chatId);
   const setChatId = useChatStore((state) => state.setChatId);
   const setMessages = useChatStore((state) => state.setMessages);
+  const setHasNextPage = useChatStore((state) => state.setHasNextPage);
 
   const currentSidebar = useInterfaceStore((state) => state.currentSidebar);
   const params = useParams<{ 'channel-id': string; 'community-id': string }>();
@@ -63,9 +64,14 @@ export const ChatModule = () => {
       ) => {
         console.log('status', status);
         if (status === 200) {
-          const messages: MessageT[] = latestMessages.map(
-            (item) => convertSnakeToCamelCase(item) as MessageT,
-          );
+          const messages: MessageT[] = latestMessages
+            .map((item) => convertSnakeToCamelCase(item) as MessageT)
+            .reverse();
+
+          if (messages.length === 20) {
+            setHasNextPage(true);
+          }
+
           setMessages(messages);
 
           console.log('messages', messages);
@@ -77,7 +83,7 @@ export const ChatModule = () => {
       if (!chatId || !socket) return;
 
       socket.emit('close-chat', { chat_id: chatId }, (status: number) => {
-        console.log('status', status);
+        console.log('close-chat', status);
       });
     };
   }, [chatId]);

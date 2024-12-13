@@ -21,6 +21,6 @@ export const useChatStore = create<useChatStoreT>()((set) => ({
     set({
       messages: newValue,
     }),
-  hasNextPage: true,
+  hasNextPage: false,
   setHasNextPage: (hasNextPage: boolean) => set({ hasNextPage }),
 }));

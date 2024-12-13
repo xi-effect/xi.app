@@ -1,6 +1,7 @@
 import React from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { useMainSt } from 'pkg.stores';
+import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { ChatMessage } from './ChatMessage';
 import { SkeletMessages } from '../Skelets';
 import { useChatStore } from '../../stores/chatStore';
@@ -9,13 +10,12 @@ import { MessageSnakeCaseT, MessageT } from '../../models/Message';
 export const Chat = () => {
   const socket = useMainSt((state) => state.socket);
   const messages = useChatStore((state) => state.messages);
-  // const setMessages = useChatStore((state) => state.setMessages);
+  const setMessages = useChatStore((state) => state.setMessages);
   const chatId = useChatStore((state) => state.chatId);
+  const hasNextPage = useChatStore((state) => state.hasNextPage);
+  const setHasNextPage = useChatStore((state) => state.setHasNextPage);
 
-  const [hasNextPage] = React.useState(true);
   const [loading] = React.useState(false);
-
-  const reversedItems = React.useMemo(() => [...(messages ?? [])].reverse(), [messages]);
 
   const loadMore = () => {
     if (!socket) {
@@ -23,30 +23,40 @@ export const Chat = () => {
       return;
     }
 
+    if (!hasNextPage) {
+      return;
+    }
+
+    if (messages === null) return;
+
     socket.emit(
       'list-chat-messages',
       {
         chat_id: chatId,
-        created_before: reversedItems[0].createdAt,
-        limit: 20,
+        created_before: messages[0].createdAt,
+        limit: 15,
       },
-      (
-        status: number,
-        { latest_messages: latestMessages }: { latest_messages: MessageSnakeCaseT[] },
-      ) => {
-        console.log('status', status);
-        console.log('latestMessages', latestMessages);
+      (status: number, latestMessages: MessageSnakeCaseT[]) => {
+        console.log('list-chat-messages', status, latestMessages);
+
+        const newMessage = latestMessages
+          .map((message) => convertSnakeToCamelCase(message) as MessageT)
+          .reverse();
+        setMessages([...newMessage, ...(messages ?? [])]);
+
+        if (newMessage.length < 15) {
+          console.log('setHasNextPage false');
+          setHasNextPage(false);
+        }
       },
     );
-
-    console.log('loadMore');
   };
 
   const [infiniteRef, { rootRef }] = useInfiniteScroll({
     loading,
     hasNextPage,
     onLoadMore: loadMore,
-    rootMargin: '600px 0px 0px 0px',
+    rootMargin: '200px 0px 0px 0px',
   });
 
   const scrollableRootRef = React.useRef<React.ElementRef<'div'> | null>(null);
@@ -59,7 +69,7 @@ export const Chat = () => {
     if (scrollableRoot) {
       scrollableRoot.scrollTop = scrollableRoot.scrollHeight - lastScrollDistanceToBottom;
     }
-  }, [reversedItems, rootRef]);
+  }, [messages, rootRef]);
 
   const rootRefSetter = React.useCallback(
     (node: HTMLDivElement) => {
@@ -100,8 +110,6 @@ export const Chat = () => {
     };
   }, [lockedHovered, hovered]);
 
-  if (messages === null) return null;
-
   return (
     <div
       ref={rootRefSetter}
@@ -113,16 +121,17 @@ export const Chat = () => {
           <SkeletMessages withoutLayout length={7} />
         </div>
       )}
-      {reversedItems.map(
-        (item: MessageT, index: number) =>
-          item !== null && (
-            <ChatMessage
-              item={item}
-              key={item.id}
-              prevItemCreatedAt={index !== 0 ? reversedItems[index - 1].createdAt : null}
-            />
-          ),
-      )}
+      {messages &&
+        messages.map(
+          (item: MessageT, index: number) =>
+            item !== null && (
+              <ChatMessage
+                item={item}
+                key={item.id}
+                prevItemCreatedAt={index !== 0 ? messages[index - 1].createdAt : null}
+              />
+            ),
+        )}
     </div>
   );
 };
