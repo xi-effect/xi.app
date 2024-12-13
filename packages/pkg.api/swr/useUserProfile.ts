@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import { servicesMap } from 'pkg.utils';
 
 type ResponseBodyUserT = {
-  id: 1;
+  id: number;
   username: string;
   display_name: string;
 };

@@ -7,10 +7,11 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
-import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import { MarkdownPreview, slateToMarkdown } from '@xipkg/inputsmart';
 import { DateChat } from './DateChat';
 import { MessageT } from '../../models/Message';
+import { UserName } from './UserName';
+import { UserAvatar } from './UserAvatar';
 
 type ChatMessageProps = {
   item: MessageT;
@@ -124,20 +125,10 @@ const ChatMessage = React.memo(({ item, prevItemCreatedAt }: ChatMessageProps) =
         onMouseLeave={() => handleMouseLeave(item.id)}
       >
         <div className="flex w-full p-2 transition-colors">
-          <Avatar size="l" className="mr-2">
-            <AvatarImage
-              src={`https://auth.xieffect.ru/api/users/${item.senderUserId}/avatar.webp`}
-              imageProps={{
-                src: `https://auth.xieffect.ru/api/users/${item.senderUserId}/avatar.webp`,
-                alt: 'User Avatar',
-              }}
-              alt="User Avatar"
-            />
-            <AvatarFallback size="l">А</AvatarFallback>
-          </Avatar>
+          <UserAvatar userId={item.senderUserId} />
           <div className="flex-1">
             <div className="flex items-center">
-              <span className="mr-2 font-semibold">ААААА</span>
+              <UserName userId={item.senderUserId} />
               {item.createdAt && (
                 <span className="text-s-base text-gray-40 font-normal">
                   {formatISODate(item.createdAt)}
