@@ -8,14 +8,17 @@ import {
 } from '@xipkg/dropdown';
 import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
 import { MarkdownPreview, slateToMarkdown } from '@xipkg/inputsmart';
+import { cn } from '@xipkg/utils';
 import { DateChat } from './DateChat';
 import { MessageT } from '../../models/Message';
 import { UserName } from './UserName';
 import { UserAvatar } from './UserAvatar';
+import { areDatesDifferent, formatTimeFromISO } from '../../utils';
 
 type ChatMessageProps = {
   item: MessageT;
   prevItemCreatedAt: MessageT['createdAt'] | null;
+  nextId: number | null;
 };
 
 const formatISODate = (isoString: string): string => {
@@ -49,7 +52,7 @@ const getButtonClassNames = (itemId: string, lockedHovered: string | null): stri
   return `m-0 h-6 w-6 rounded p-1 ${isLocked ? 'bg-gray-10' : 'hover:bg-gray-10'}`;
 };
 
-const ChatMessage = React.memo(({ item, prevItemCreatedAt }: ChatMessageProps) => {
+const ChatMessage = React.memo(({ item, prevItemCreatedAt, nextId }: ChatMessageProps) => {
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [lockedHovered, setLockedHovered] = React.useState<string | null>(null);
   const menuRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -114,28 +117,45 @@ const ChatMessage = React.memo(({ item, prevItemCreatedAt }: ChatMessageProps) =
     return item.content;
   }, [item.content]);
 
+  const showDate =
+    item.createdAt && prevItemCreatedAt && areDatesDifferent(item.createdAt, prevItemCreatedAt);
+  const showInfo = showDate || item.senderUserId !== nextId;
+
   return (
     <div key={item.id}>
-      {prevItemCreatedAt !== null && (
-        <DateChat itemCreatedAt={item.createdAt} prevItemCreatedAt={prevItemCreatedAt} />
-      )}
+      {showDate && <DateChat itemCreatedAt={item.createdAt} />}
       <div
         className={getContainerClassNames(item.id, hovered, lockedHovered)}
         onMouseEnter={() => setHovered(item.id)}
         onMouseLeave={() => handleMouseLeave(item.id)}
       >
-        <div className="flex w-full p-2 transition-colors">
-          <UserAvatar userId={item.senderUserId} />
-          <div className="flex-1">
-            <div className="flex items-center">
-              <UserName userId={item.senderUserId} />
-              {item.createdAt && (
-                <span className="text-s-base text-gray-40 font-normal">
-                  {formatISODate(item.createdAt)}
-                </span>
-              )}
+        <div
+          className={cn(
+            'flex w-full gap-2 transition-colors',
+            showInfo ? 'px-2 pb-1 pt-2' : 'px-2 py-1',
+          )}
+        >
+          {!showInfo && item.createdAt && (
+            <div className="flex w-[48px] justify-end">
+              <span className="text-s-base text-gray-40 font-normal opacity-0 transition-all ease-linear group-hover:opacity-100">
+                {' '}
+                {formatTimeFromISO(item.createdAt)}{' '}
+              </span>
             </div>
-            <div className="relative mt-1 w-full text-gray-100">
+          )}
+          {showInfo && <UserAvatar userId={item.senderUserId} />}
+          <div className="flex flex-1 flex-col gap-1">
+            {showInfo && (
+              <div className="flex items-center">
+                <UserName userId={item.senderUserId} />
+                {item.createdAt && (
+                  <span className="text-s-base text-gray-40 font-normal">
+                    {formatISODate(item.createdAt)}
+                  </span>
+                )}
+              </div>
+            )}
+            <div className="relative w-full text-[14px] text-gray-100">
               <MarkdownPreview markdown={markdownedContent} />
             </div>
           </div>

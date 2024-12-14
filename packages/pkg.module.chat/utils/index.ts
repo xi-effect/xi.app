@@ -1,2 +1,2 @@
 export { areDatesDifferent } from './areDatesDifferent';
-export { formatDate } from './formatDate';
+export { formatDate, formatTimeFromISO } from './formatDate';

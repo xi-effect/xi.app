@@ -12,7 +12,7 @@ const UserAvatar = memo(({ userId }: UserAvatarPropsT) => {
   if (!data) return null;
 
   return (
-    <Avatar size="l" className="mr-2">
+    <Avatar size="l" className="">
       <AvatarImage
         src={`https://auth.xieffect.ru/api/users/${userId}/avatar.webp`}
         imageProps={{

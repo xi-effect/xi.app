@@ -127,6 +127,7 @@ export const Chat = () => {
                 item={item}
                 key={item.id}
                 prevItemCreatedAt={index !== 0 ? messages[index - 1].createdAt : null}
+                nextId={index !== 0 ? messages[index - 1].senderUserId : null}
               />
             ),
         )}

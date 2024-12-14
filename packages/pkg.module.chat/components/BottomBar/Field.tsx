@@ -27,7 +27,11 @@ export const Field = ({ editorRef, storageKey }: FieldPropsT) => {
   const handleChange = (newValue: any) => {
     setValue(newValue);
 
-    if (newValue[0].children[0].text.length === 0) {
+    if (
+      newValue[0].children[0].text.length === 0 &&
+      newValue.length === 1 &&
+      newValue[0].children.length === 1
+    ) {
       setIsPlaceholder(true);
     } else {
       setIsPlaceholder(false);
@@ -35,8 +39,8 @@ export const Field = ({ editorRef, storageKey }: FieldPropsT) => {
   };
 
   return (
-    <div className="border-gray-30 relative box-border h-full max-h-32 min-h-12 w-full max-w-[calc(100%-64px)] rounded-lg border-2 p-2">
-      <div className="overflow-aut">
+    <div className="border-gray-30 relative box-border h-full max-h-32 min-h-12 w-full max-w-[calc(100%-64px)] overflow-auto rounded-lg border-2 p-2">
+      <div className="">
         <SmartInput
           editorRef={editorRef}
           initialValue={initialValue}
