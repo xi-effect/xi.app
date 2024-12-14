@@ -74,7 +74,12 @@ const SubmitButton = memo(({ editorRef, storageKey }: SubmitButtonPropsT) => {
     );
   };
 
-  useKeyPress('Enter', handleClick);
+  useKeyPress('Enter', (event) => {
+    // Предотваращем срабатывание на комбинацию shift + Enter
+    if (event.shiftKey) return;
+
+    handleClick();
+  });
 
   return (
     <Button size="m" className="h-12 w-12 min-w-12 p-0">
