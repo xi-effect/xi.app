@@ -37,8 +37,6 @@ export const Chat = () => {
         limit: 15,
       },
       (status: number, latestMessages: MessageSnakeCaseT[]) => {
-        console.log('list-chat-messages', status, latestMessages);
-
         const newMessage = latestMessages
           .map((message) => convertSnakeToCamelCase(message) as MessageT)
           .reverse();

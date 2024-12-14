@@ -30,8 +30,6 @@ export const ChatModule = () => {
       status: number,
       { chat_id: newChatId }: { chat_id: string },
     ) => {
-      console.log('p', params);
-      console.log('handleRetrieveChatChannel', status, newChatId);
       if (status === 200 && newChatId && typeof newChatId === 'number' && chatId !== newChatId) {
         setChatId(newChatId);
       }
@@ -62,7 +60,6 @@ export const ChatModule = () => {
         status: number,
         { latest_messages: latestMessages }: { latest_messages: MessageSnakeCaseT[] },
       ) => {
-        console.log('status', status);
         if (status === 200) {
           const messages: MessageT[] = latestMessages
             .map((item) => convertSnakeToCamelCase(item) as MessageT)
@@ -73,8 +70,6 @@ export const ChatModule = () => {
           }
 
           setMessages(messages);
-
-          console.log('messages', messages);
         }
       },
     );

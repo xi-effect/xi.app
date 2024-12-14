@@ -8,7 +8,7 @@ import { CustomEditor } from '@xipkg/inputsmart';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { useKeyPress } from 'pkg.utils.client';
 import { useChatStore } from '../../stores/chatStore';
-import { MessageT } from '../../models/Message';
+import { MessageSnakeCaseT, MessageT } from '../../models/Message';
 
 type SubmitButtonPropsT = {
   storageKey: string;
@@ -54,8 +54,6 @@ const SubmitButton = memo(({ editorRef, storageKey }: SubmitButtonPropsT) => {
       return;
     }
 
-    console.log('ff', chatId, JSON.stringify(localStorage.getItem(storageKey)));
-
     socket.emit(
       'send-chat-message',
       {
@@ -64,8 +62,7 @@ const SubmitButton = memo(({ editorRef, storageKey }: SubmitButtonPropsT) => {
           content: JSON.stringify(localStorage.getItem(storageKey)),
         },
       },
-      (status: number, data: any) => {
-        console.log('status', status);
+      (status: number, data: MessageSnakeCaseT) => {
         if (status === 201) {
           handleReset();
 
