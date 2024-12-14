@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
-export const useKeyPress = (targetKey: string, callback: () => void) => {
+export const useKeyPress = (targetKey: string, callback: (event: KeyboardEvent) => void) => {
   useEffect(() => {
     // console.log(`Added listener for ${targetKey}`);
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === targetKey) {
-        callback();
+        callback(event);
       }
     };
 
