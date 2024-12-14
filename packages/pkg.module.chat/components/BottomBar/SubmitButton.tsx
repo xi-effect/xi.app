@@ -70,7 +70,7 @@ const SubmitButton = memo(({ editorRef, storageKey }: SubmitButtonPropsT) => {
           handleReset();
 
           const newMessage = convertSnakeToCamelCase(data) as MessageT;
-          setMessages([newMessage, ...(messages ?? [])]);
+          setMessages([...(messages ?? []), newMessage]);
           localStorage.removeItem(storageKey);
         }
       },
