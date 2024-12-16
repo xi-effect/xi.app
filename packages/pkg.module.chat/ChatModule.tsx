@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { ChatProvider } from './components/Chat';
 import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
+import { Users } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
 import { useInterfaceStore } from './stores/interfaceStore';
 import { useChatStore } from './stores/chatStore';
@@ -100,9 +100,9 @@ export const ChatModule = () => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="bg-green-0 z-15 fixed right-0 top-0 hidden h-full min-w-[300px] md:block"
+            className="z-15 fixed right-0 top-0 hidden h-full min-w-[300px] md:block"
           >
-            <Sidebar />
+            <Users />
           </motion.aside>
         )}
       </AnimatePresence>
