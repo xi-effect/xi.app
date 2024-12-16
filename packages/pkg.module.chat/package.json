@@ -12,7 +12,7 @@
     "react-infinite-scroll-hook": "5.0.1",
     "@xipkg/icons": "1.4.0",
     "@xipkg/button": "2.0.0",
-    "@xipkg/dropdown": "^2.1.0",
+    "@xipkg/dropdown": "^2.2.1",
     "@xipkg/select": "0.2.0",
     "@xipkg/inputsmart": "0.3.2",
     "pkg.utils.client": "*",

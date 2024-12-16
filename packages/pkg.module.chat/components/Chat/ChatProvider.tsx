@@ -6,9 +6,15 @@ import { SkeletMessages, ZeroMessage } from '../Skelets';
 import { Chat } from './Chat';
 import { MessageSnakeCaseT, MessageT } from '../../models/Message';
 
+type FiredDeleteT = {
+  chat_id: string;
+  message_id: string;
+};
+
 export const ChatProvider = () => {
   const messages = useChatStore((state) => state.messages);
   const setMessages = useChatStore((state) => state.setMessages);
+  const removeMessageById = useChatStore((state) => state.removeMessageById);
   const socket = useMainSt((state) => state.socket);
 
   const handleNewMessage = (data: MessageSnakeCaseT) => {
@@ -24,6 +30,21 @@ export const ChatProvider = () => {
     // Очистка обработчиков при размонтировании компонента
     return () => {
       socket.off('send-chat-message', handleNewMessage);
+    };
+  }, []);
+
+  const handleFiredDelete = (data: FiredDeleteT) => {
+    removeMessageById(data.message_id);
+  };
+
+  useEffect(() => {
+    if (!socket) return () => {};
+
+    socket.on('delete-chat-message', handleFiredDelete);
+
+    // Очистка обработчиков при размонтировании компонента
+    return () => {
+      socket.off('delete-chat-message', handleFiredDelete);
     };
   }, []);
 

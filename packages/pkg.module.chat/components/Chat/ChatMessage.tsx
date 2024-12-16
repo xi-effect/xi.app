@@ -1,12 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button } from '@xipkg/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@xipkg/dropdown';
-import { Edit, Emotions, Link, MenuDots, Pin, Share, Trash } from '@xipkg/icons';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@xipkg/dropdown';
+import { Edit, Emotions, MenuDots, Share } from '@xipkg/icons';
 import { MarkdownPreview, slateToMarkdown } from '@xipkg/inputsmart';
 import { cn } from '@xipkg/utils';
 import { DateChat } from './DateChat';
@@ -14,6 +9,7 @@ import { MessageT } from '../../models/Message';
 import { UserName } from './UserName';
 import { UserAvatar } from './UserAvatar';
 import { areDatesDifferent, formatTimeFromISO } from '../../utils';
+import { MessageTools } from './MessageTools';
 
 type ChatMessageProps = {
   item: MessageT;
@@ -33,65 +29,7 @@ const formatISODate = (isoString: string): string => {
   return `${day}.${month}.${year} ${hours}:${minutes}`;
 };
 
-const getContainerClassNames = (
-  itemId: string,
-  hovered: string | null,
-  lockedHovered: string | null,
-): string => {
-  const isActive = hovered === itemId || lockedHovered === itemId;
-  return `group relative rounded-md ${isActive ? 'bg-gray-5' : 'hover:bg-gray-5'}`;
-};
-
-const getMenuClassNames = (itemId: string, hovered: string | null): string => {
-  const isHovered = hovered === itemId;
-  return `pointer-events-none absolute right-1 top-2 ${isHovered ? 'pointer-events-auto group-hover:opacity-100' : 'opacity-0'}`;
-};
-
-const getButtonClassNames = (itemId: string, lockedHovered: string | null): string => {
-  const isLocked = lockedHovered === itemId;
-  return `m-0 h-6 w-6 rounded p-1 ${isLocked ? 'bg-gray-10' : 'hover:bg-gray-10'}`;
-};
-
 const ChatMessage = React.memo(({ item, prevItemCreatedAt, nextId }: ChatMessageProps) => {
-  const [hovered, setHovered] = React.useState<string | null>(null);
-  const [lockedHovered, setLockedHovered] = React.useState<string | null>(null);
-  const menuRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const currentHovered = lockedHovered || hovered;
-      if (
-        currentHovered &&
-        menuRefs.current[currentHovered] &&
-        !menuRefs.current[currentHovered]!.contains(event.target as Node)
-      ) {
-        setLockedHovered(null);
-        setHovered(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [lockedHovered, hovered]);
-
-  const toggleHoverLock = (itemId: string) => {
-    if (lockedHovered === itemId) {
-      setLockedHovered(null);
-      setHovered(null);
-    } else {
-      setLockedHovered(itemId);
-      setHovered(itemId);
-    }
-  };
-
-  const handleMouseLeave = (itemId: string) => {
-    if (lockedHovered !== itemId) {
-      setHovered(null);
-    }
-  };
-
   const markdownedContent = useMemo(() => {
     let parsedContent;
 
@@ -121,14 +59,12 @@ const ChatMessage = React.memo(({ item, prevItemCreatedAt, nextId }: ChatMessage
     item.createdAt && prevItemCreatedAt && areDatesDifferent(item.createdAt, prevItemCreatedAt);
   const showInfo = showDate || item.senderUserId !== nextId;
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <div key={item.id}>
       {showDate && <DateChat itemCreatedAt={item.createdAt} />}
-      <div
-        className={getContainerClassNames(item.id, hovered, lockedHovered)}
-        onMouseEnter={() => setHovered(item.id)}
-        onMouseLeave={() => handleMouseLeave(item.id)}
-      >
+      <div className={cn('hover:bg-gray-5 group relative rounded-md transition-opacity')}>
         <div
           className={cn(
             'flex w-full gap-2 transition-colors',
@@ -162,60 +98,31 @@ const ChatMessage = React.memo(({ item, prevItemCreatedAt, nextId }: ChatMessage
         </div>
 
         <div
-          ref={(el: HTMLDivElement | null) => {
-            menuRefs.current[item.id] = el;
-          }}
-          className={getMenuClassNames(item.id, hovered)}
+          className={cn(
+            'absolute right-1 top-[4px]',
+            'pointer-events-none opacity-0',
+            'group-hover:pointer-events-auto group-hover:opacity-100',
+            showDropdown && 'pointer-events-auto opacity-100',
+          )}
         >
           <div className="border-gray-10 bg-gray-0 relative flex items-center justify-center gap-1 rounded border p-1">
-            <Button
-              variant="ghost"
-              type="button"
-              className="m-0 h-6 w-6 rounded p-1"
-              onClick={() => setHovered(item.id)}
-            >
+            <Button variant="ghost" type="button" className="m-0 h-6 w-6 rounded p-1">
               <Emotions />
             </Button>
-            <Button
-              variant="ghost"
-              type="button"
-              className="m-0 h-6 w-6 rounded p-1"
-              onClick={() => setHovered(item.id)}
-            >
+            <Button variant="ghost" type="button" className="m-0 h-6 w-6 rounded p-1">
               <Share />
             </Button>
-            <Button
-              variant="ghost"
-              type="button"
-              className="m-0 h-6 w-6 rounded p-1"
-              onClick={() => setHovered(item.id)}
-            >
+            <Button variant="ghost" type="button" className="m-0 h-6 w-6 rounded p-1">
               <Edit />
             </Button>
-            <DropdownMenu>
+            <DropdownMenu open={showDropdown} onOpenChange={(value) => setShowDropdown(value)}>
               <DropdownMenuTrigger className="cursor-pointer" asChild>
-                <Button
-                  variant="ghost"
-                  type="button"
-                  className={getButtonClassNames(item.id, lockedHovered)}
-                  onClick={() => toggleHoverLock(item.id)}
-                >
+                <Button variant="ghost" type="button" className="m-0 h-6 w-6 rounded p-1">
                   <MenuDots />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="mt-1">
-                <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
-                  <Pin className="mr-2 h-4 w-4" />
-                  <span className="text-xs">Закрепить сообщение</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
-                  <Link className="mr-2 h-4 w-4" />
-                  <span className="text-xs">Видео</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
-                  <Trash className="fill-red-60 mr-2 h-4 w-4" />
-                  <span className="text-red-60 text-xs">Удалить</span>
-                </DropdownMenuItem>
+              <DropdownMenuContent alignOffset={-4} align="end" className="mt-1 rounded-lg">
+                <MessageTools id={item.id} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
