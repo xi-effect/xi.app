@@ -10,7 +10,7 @@ import { StylePopupContent } from './StylePopupContent';
 export const Navbar = track(() => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const editor = useEditor();
-  const insertMedia = useInsertMedia();
+  const insertMedia = useInsertMedia(editor);
 
   const resetStyles = () => {
     editor.setStyleForNextShapes(DefaultColorStyle as unknown as StyleProp<string>, 'black');
@@ -30,11 +30,11 @@ export const Navbar = track(() => {
   return (
     <div className="pointer-events-none absolute inset-0">
       <div className="absolute bottom-3 left-0 right-0 z-30 flex w-full items-center justify-center">
-        <div className="z-30 flex gap-7">
-          <div className="border-gray-10 bg-gray-0 z-30 rounded-xl border p-2">
+        <div className="relative z-30 flex gap-7">
+          <div className="border-gray-10 bg-gray-0 absolute -left-[115px] z-30 flex rounded-xl border p-2">
             <NavbarAction />
           </div>
-          <div className="border-gray-10 bg-gray-0 flex gap-10 rounded-xl border">
+          <div className="border-gray-10 bg-gray-0 mx-auto flex gap-10 rounded-xl border">
             <div className="flex gap-2 p-1">
               {navBarElements.map((item: NavbarElementT) => {
                 const isActive = editor.getCurrentToolId() === item.action;
@@ -45,7 +45,7 @@ export const Navbar = track(() => {
                         <TooltipTrigger className="rounded-lg" asChild>
                           <button
                             type="button"
-                            className={`pointer-events-auto flex h-8 w-8 items-center justify-center rounded-lg ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
+                            className={`pointer-events-auto flex h-6 w-6 items-center justify-center rounded-lg lg:h-8 lg:w-8 ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                             data-isactive={isActive}
                             onClick={() => {
                               resetStyles();

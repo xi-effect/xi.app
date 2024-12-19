@@ -13,7 +13,7 @@ export const ZoomMenu = () => {
     editor.zoomOut(editor.getViewportScreenCenter(), { animation: { duration: 120 } });
 
   return (
-    <div className="absolute bottom-3 right-3 z-30">
+    <div className="absolute bottom-3 right-0.5 z-30">
       <div className="bg-gray-0 rounded-[16px]">
         <div className="flex items-center px-3">
           <Button
@@ -22,9 +22,9 @@ export const ZoomMenu = () => {
             className="cursor-pointer"
             onClick={() => handleZoomOut()}
           >
-            <Minus className="cursor-pointer" />
+            <Minus className="h-4 w-4 lg:h-6 lg:w-6" />
           </Button>
-          <div>
+          <div className="flex h-8 items-center justify-center lg:h-auto">
             <DefaultZoomMenu>
               <DefaultZoomMenuContent />
             </DefaultZoomMenu>
@@ -35,7 +35,7 @@ export const ZoomMenu = () => {
             className="cursor-pointer"
             onClick={() => handleZoomIn()}
           >
-            <Plus />
+            <Plus className="h-4 w-4 lg:h-6 lg:w-6" />
           </Button>
         </div>
       </div>
