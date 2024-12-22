@@ -1,6 +1,7 @@
-import { useMedia } from './useMedia';
-import { useSessionStorage } from './useSessionStorage';
-import { useFullScreen } from './useFullScreen';
-import { useGetUrlWithParams } from './useGetUrlWithParams';
-
-export { useMedia, useSessionStorage, useFullScreen, useGetUrlWithParams };
+export { useMedia } from './useMedia';
+export { useSessionStorage } from './useSessionStorage';
+export { useFullScreen } from './useFullScreen';
+export { useGetUrlWithParams } from './useGetUrlWithParams';
+export { useLocalStorage } from './useLocalStorage';
+export { useEventListener } from './useEventListener';
+export { useKeyPress } from './useKeyPress';

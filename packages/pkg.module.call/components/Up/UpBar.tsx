@@ -11,10 +11,12 @@ import {
   SpeakerHorizontal,
   Maximize,
   Minimize,
+  Settings as SettingsIcon,
 } from '@xipkg/icons';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useFullScreen } from 'pkg.utils.client';
 import { useMainSt } from 'pkg.stores';
+import { Settings } from './Settings';
 
 export const UpBar = () => {
   const params = useParams<{ 'community-id': string; 'channel-id': string }>();
@@ -55,7 +57,7 @@ export const UpBar = () => {
     return <Grid className="fill-gray-100" />;
   };
 
-  if (!currentCall) return null;
+  if (!currentCall || currentCall.length === 0) return null;
 
   const currentCallsCategory =
     typeof currentCall[0].categoryId === 'number'
@@ -93,13 +95,15 @@ export const UpBar = () => {
       className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
       >
         <External className="fill-gray-100" />
-      </button>
-      <button
-        type="button"
-      className="bg-gray-0 ml-2 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
-      >
-        <Settings className="fill-gray-100" />
       </button> */}
+      <Settings>
+        <button
+          type="button"
+          className="bg-gray-0 flex h-10 w-10 flex-row items-center justify-center rounded-[20px]"
+        >
+          <SettingsIcon className="fill-gray-100" />
+        </button>
+      </Settings>
     </div>
   );
 };

@@ -12,7 +12,7 @@ const withPWA = require('next-pwa')({
   mode: 'production',
   reloadOnOnline: true,
   cacheOnFrontEndNav: true,
-  disable: process.env.NODE_ENV === 'development',
+  disable: process.env.NODE_ENV !== 'production',
   skipWaiting: true,
   sw: '/sw.js',
   buildExcludes: [
@@ -57,10 +57,15 @@ const nextConfig = {
     '@xipkg/file',
     '@xipkg/tooltip',
     '@xipkg/breadcrumbs',
+    '@xipkg/sheet',
+    '@xipkg/inputsmart',
+    '@xipkg/contextmenu',
+    '@xipkg/slider',
+    '@xipkg/routerurl',
   ],
-  compiler: {
-    removeConsole: process.env.NODE_ENV !== 'development',
-  },
+  compiler: process.env.NODE_ENV === 'production' ? {
+    removeConsole: true,
+  } : {},
   reactStrictMode: true,
   images: {
     remotePatterns: [

@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import { TrackReferenceOrPlaceholder } from '@livekit/components-core';
 import {
   FocusToggleIcon,
@@ -9,13 +8,13 @@ import {
 import { Participant } from 'livekit-client';
 import React from 'react';
 
-export interface FocusToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export type FocusTogglePropsT = {
   trackRef?: TrackReferenceOrPlaceholder;
   /** @deprecated This parameter will be removed in a future version use `trackRef` instead. */
   participant?: Participant;
-}
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export function FocusToggle({ trackRef, ...props }: FocusToggleProps) {
+export const FocusToggle = ({ trackRef, ...props }: FocusTogglePropsT) => {
   const trackRefFromContext = useMaybeTrackRefContext();
 
   const { mergedProps, inFocus } = useFocusToggle({
@@ -25,17 +24,17 @@ export function FocusToggle({ trackRef, ...props }: FocusToggleProps) {
 
   return (
     <LayoutContext.Consumer>
-      {(layoutContext) =>
-        layoutContext && (
+      {(layoutContext) => {
+        if (!layoutContext) return null;
+
+        return (
           <button type="button" {...mergedProps}>
-            {props.children ? (
-              props.children
-            ) : inFocus ? null : (
-              <FocusToggleIcon className="fill-gray-100" />
-            )}
+            {props.children
+              ? props.children
+              : !inFocus && <FocusToggleIcon className="fill-gray-100" />}
           </button>
-        )
-      }
+        );
+      }}
     </LayoutContext.Consumer>
   );
-}
+};

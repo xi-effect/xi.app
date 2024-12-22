@@ -7,13 +7,16 @@ import type {
 } from 'livekit-client';
 import { createLocalTracks, facingModeFromLocalTrack, Track, Mutex } from 'livekit-client';
 import * as React from 'react';
-import { ParticipantPlaceholder, usePersistentUserChoices } from '@livekit/components-react';
+import { usePersistentUserChoices } from '@livekit/components-react';
 import type { LocalUserChoices } from '@livekit/components-core';
 import { log, defaultUserChoices } from '@livekit/components-core';
 import { Button } from '@xipkg/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
+import { useMainSt } from 'pkg.stores';
 import { MediaDeviceMenu } from './MediaDeviceMenu';
 import { MessageBeforeJoin } from './MessageBeforeJoin';
-import { DevicesBar } from './DevicesBar';
+import { DevicesBar } from '../common/DevicesBar';
+import { Header } from './Header';
 
 /**
  * Props for the PreJoin component.
@@ -106,7 +109,7 @@ export const usePreviewTracks = (
  * ```
  * @public
  */
-export const PreJoin = ({
+export const PreJoinSection = ({
   defaults = {},
   onValidate,
   onSubmit,
@@ -237,10 +240,12 @@ export const PreJoin = ({
     setPermissionByBrowser(true);
   }, [audioEnabled || videoEnabled]);
 
+  const identity = useMainSt((state) => state.user.id);
+
   return (
-    <div className="mt-4">
-      <h2 className="mb-8 font-sans text-[32px] font-medium">Присоединиться к конференции</h2>
-      <div className="mr-8 grid grid-cols-2 gap-2">
+    <div className="max-xs:p-4 p-8">
+      <Header />
+      <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
         <div
           data-theme="dark"
           className="bg-gray-10 relative flex aspect-video h-full w-full items-center justify-center overflow-hidden rounded-[16px]"
@@ -258,7 +263,17 @@ export const PreJoin = ({
             )}
             {(!videoTrack || !videoEnabled) && (
               <div className="bg-gray-10 flex items-center justify-center rounded-[16px]">
-                <ParticipantPlaceholder />
+                <Avatar size="xxl">
+                  <AvatarImage
+                    src={`https://auth.xieffect.ru/api/users/${identity}/avatar.webp`}
+                    imageProps={{
+                      src: `https://auth.xieffect.ru/api/users/${identity}/avatar.webp`,
+                      alt: 'user avatar',
+                    }}
+                    alt="user avatar"
+                  />
+                  <AvatarFallback size="xxl" loading />
+                </Avatar>
               </div>
             )}
           </div>

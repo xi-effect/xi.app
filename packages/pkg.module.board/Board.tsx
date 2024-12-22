@@ -17,7 +17,6 @@ type BoardPropsT = {
 };
 
 export const Board = ({ token }: BoardPropsT) => {
-  console.log('token', token);
   const store = useYjsStore({ roomId: token });
 
   return (

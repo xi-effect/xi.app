@@ -41,7 +41,6 @@ export const ResetPassword = () => {
   });
 
   const sendEmail = async ({ email }: z.infer<typeof FormSchema>) => {
-    console.log('email', email);
     const { status } = await post({
       service: 'auth',
       path: '/api/password-reset/requests/',

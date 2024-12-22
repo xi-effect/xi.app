@@ -16,16 +16,16 @@ export type PopupItemT = {
 };
 
 export const navBarElements: NavbarElementT[] = [
-  { action: 'select', title: 'Select', icon: <Cursor /> },
-  { action: 'hand', title: 'Hand', icon: <Hand /> },
+  { action: 'select', title: 'Select', icon: <Cursor size="l" /> },
+  { action: 'hand', title: 'Hand', icon: <Hand size="m" /> },
   {
     action: 'draw',
     title: 'Draw',
-    icon: <Pen />,
+    icon: <Pen size="l" />,
     hasAToolTip: true,
     menuPopupContent: [
       {
-        icon: <Pen className="fill-unset" />,
+        icon: <Pen className="fill-unset" size="l" />,
         action: 'open-style',
         color: 'blue',
       },
@@ -85,8 +85,8 @@ export const navBarElements: NavbarElementT[] = [
     ],
   },
   { action: 'text', title: 'Text', icon: <TText /> },
-  { action: 'rectangle', title: 'Shapes', icon: <Figures /> },
-  { action: 'arrow', title: 'Arrow', icon: <Arrow /> },
+  { action: 'rectangle', title: 'Shapes', icon: <Figures size="l" /> },
+  { action: 'arrow', title: 'Arrow', icon: <Arrow size="l" /> },
   { action: 'asset', title: 'Image', icon: <Image /> },
   { action: 'eraser', title: 'Eraser', icon: <Eraser /> },
 ];
