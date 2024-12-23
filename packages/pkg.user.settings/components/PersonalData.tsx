@@ -48,7 +48,7 @@ export const PersonalData = () => {
   const onSubmit = async (formData: z.infer<typeof FormSchema>) => {
     trigger();
 
-    const { status } = await patch<any, any>({
+    const { status } = await patch({
       service: 'auth',
       path: '/api/users/current/profile/',
       body: { username: formData.username, display_name: formData.displayName, theme },

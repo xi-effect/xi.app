@@ -58,7 +58,7 @@ export const Chat = () => {
   });
 
   const scrollableRootRef = React.useRef<React.ElementRef<'div'> | null>(null);
-  const lastScrollDistanceToBottomRef = React.useRef<number>();
+  const lastScrollDistanceToBottomRef = React.useRef<number>(null);
 
   // We keep the scroll position when new items are added etc.
   React.useLayoutEffect(() => {

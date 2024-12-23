@@ -11,7 +11,7 @@ export default function YandexMetrika() {
 
   useEffect(() => {
     const url = `${pathname}?${searchParams}`;
-    // @ts-ignore
+    // @ts-expect-error TODO: чёт с типами
     ym('97825173', 'hit', url);
   }, [pathname, searchParams]);
 

@@ -2,17 +2,18 @@
 
 import { useMainSt } from 'pkg.stores';
 
-import React from 'react';
+import React, { use } from 'react';
 import dynamic from 'next/dynamic';
 
 const Call = dynamic(() => import('pkg.module.call').then((mod) => mod.Call));
 
-export default function CallInCommunity({ params }: { params: { vid: string } }) {
+export default function CallInCommunity({ params }: { params: Promise<{ vid: string }> }) {
+  const { vid } = use(params);
   const getToken = useMainSt((state) => state.getToken);
   const token = useMainSt((state) => state.token);
 
   React.useEffect(() => {
-    getToken(params['[channel-id]']);
+    getToken(vid);
   }, []);
 
   return (

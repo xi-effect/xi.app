@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button } from '@xipkg/button/Button';
 import { post } from 'pkg.utils';
 import { toast } from 'sonner';
@@ -19,7 +19,7 @@ export const ConfirmEmail = () => {
   const router = useRouter();
   const { allowedConfirmationResend } = useMainSt((state) => state.user);
   const updateUser = useMainSt((state) => state.updateUser);
-  const allowedResendDate = new Date(allowedConfirmationResend);
+  const allowedResendDate = useMemo(() => new Date(allowedConfirmationResend), []);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isTimeUp, setIsTimeUp] = useState(currentDate >= allowedResendDate);
   const [isButtonActive, setIsButtonActive] = useState(true);
@@ -41,7 +41,7 @@ export const ConfirmEmail = () => {
   const resendConfirmation = async () => {
     setIsButtonActive(false);
 
-    const { status } = await post<{}, {}>({
+    const { status } = await post({
       service: 'auth',
       path: '/api/email-confirmation/requests/',
     });

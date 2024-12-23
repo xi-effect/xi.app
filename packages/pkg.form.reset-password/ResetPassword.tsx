@@ -34,6 +34,7 @@ export const ResetPassword = () => {
   const [emailSent, setEmailSent] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: '',

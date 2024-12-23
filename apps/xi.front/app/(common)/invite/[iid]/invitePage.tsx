@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
-import React, { RefObject, useRef } from 'react';
+import React, { RefObject, use, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useGetUrlWithParams } from 'pkg.utils.client';
 import { Logo } from 'pkg.logo';
-// import { Badge } from '@xipkg/badge';
 import { Button } from '@xipkg/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@xipkg/avatar';
 import Load from 'app/load';
@@ -16,33 +17,6 @@ type AvatarPreviewProps = {
   date: RefObject<'' | Date>;
   communityId: number | null;
 };
-
-// type UserRoleProps = {
-//   name: string;
-//   roleColor: string;
-//   roleType: string;
-// };
-
-// Отправляем запрос, получаем следующие данные:
-// const communityName = 'Иванова А. Г.';
-// const communityRoles = [
-//   { name: 'Cтудент', roleColor: 'bg-brand-80', roleType: 'circle' },
-//   { name: 'B1.2', roleColor: 'bg-gray-80', roleType: 'diamond' },
-// ];
-// const commId = 4;
-
-// const UserRole = ({ name, roleColor, roleType }: UserRoleProps) => (
-//   <li>
-//     <Badge className="text-xs bg-gray-5" size="s">
-//       <span className={`mr-2 ${checkRole(roleType)} ${roleColor}`} />
-//       {name.slice(0, 1).toUpperCase() + name.slice(1)}{' '}
-//     </Badge>
-//   </li>
-// );
-
-// function checkRole(role) {
-//   return role === 'circle' ? 'rounded-full size-3' : 'rotate-45 size-2.5';
-// }
 
 type ResponseBodyT = {
   community: {
@@ -110,16 +84,6 @@ const InviteCard = ({ invite, iid }: InviteCardT) => {
           <AvatarPreview date={date} communityId={invite.community.id} />
           <p className="text-base text-gray-80">Вы были приглашены в</p>
           <p className="text-2xl text-gray-100 mt-2">{invite.community.name}</p>
-          {/* <ul className="flex gap-2 mt-4">
-            {communityRoles.map((role) => (
-              <UserRole
-                key={role.name}
-                name={role.name}
-                roleColor={role.roleColor}
-                roleType={role.roleType}
-              />
-            ))}
-          </ul> */}
           {isLoading ? (
             <Button disabled variant="default-spinner" className="ml-0 mt-8 w-full text-xl" />
           ) : (
@@ -148,7 +112,9 @@ const AvatarPreview = ({ date, communityId }: AvatarPreviewProps) => (
   </Avatar>
 );
 
-export default function InvitePage({ params }: { params: { iid: string } }) {
+export default function InvitePage({ params }: { params: Promise<{ iid: string }> }) {
+  const { iid } = use(params);
+
   const [invite, setInvite] = React.useState<ResponseBodyT | null>(null);
   const router = useRouter();
   const getUrlWithParams = useGetUrlWithParams();
@@ -157,7 +123,7 @@ export default function InvitePage({ params }: { params: { iid: string } }) {
     const getInviteData = async () => {
       const { status, data } = await get<ResponseBodyT>({
         service: 'backend',
-        path: `/api/public/community-service/invitations/by-code/${params.iid}/community/`,
+        path: `/api/public/community-service/invitations/by-code/${iid}/community/`,
         config: {
           headers: {
             'Content-Type': 'application/json',
@@ -177,11 +143,11 @@ export default function InvitePage({ params }: { params: { iid: string } }) {
   if (!invite.is_authorized) {
     const newUrl = new URL(window.location.href);
     newUrl.pathname = '/signin';
-    newUrl.searchParams.set('iid', params.iid);
+    newUrl.searchParams.set('iid', iid);
     newUrl.searchParams.set('community', invite.community.name);
 
     router.push(getUrlWithParams(newUrl.toString()));
   }
 
-  return <InviteCard iid={params.iid} invite={invite} />;
+  return <InviteCard iid={iid} invite={invite} />;
 }

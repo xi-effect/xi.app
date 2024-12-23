@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useEffect, useState, KeyboardEvent } from 'react';
@@ -148,10 +149,10 @@ export const InlineToolbar = () => {
     };
 
     // TODO: разобраться с типизацией
-    // @ts-ignore
+    // @ts-expect-error TODO: разобраться с типизацией
     document.addEventListener('keydown', handleDocumentKeyDown);
     return () => {
-      // @ts-ignore
+      // @ts-expect-error TODO: разобраться с типизацией
       document.removeEventListener('keydown', handleDocumentKeyDown);
     };
   }, []);

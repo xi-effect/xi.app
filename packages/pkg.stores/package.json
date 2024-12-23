@@ -8,8 +8,6 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "next": "^14.2.3",
     "zustand": "^4.5.5",
     "pkg.utils": "*",
     "pkg.models": "*",
@@ -22,11 +20,15 @@
   "devDependencies": {
     "eslint-config-custom": "*",
     "@types/node": "^20.3.1",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@xipkg/eslint": "1.4.0",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "@xipkg/eslint": "3.2.0",
     "@xipkg/typescript": "latest",
     "typescript": "^5.4.2"
+  },
+  "peerDependencies": {
+    "react": "19",
+    "next": "15"
   },
   "author": "",
   "description": ""

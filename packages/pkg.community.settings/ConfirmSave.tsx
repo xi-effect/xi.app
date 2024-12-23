@@ -44,7 +44,7 @@ export const ConfirmSave = React.forwardRef<HTMLDivElement, ConfirmSaveProps>((p
   const isAnimation = useInterfaceStore((state) => state.isAnimate);
 
   return (
-    // @ts-ignore
+    // @ts-expect-error TODO: разобраться с типизацией
     <SnackbarContent ref={ref} role="alert" {...other} className="justify-center">
       <div
         className={`${isAnimation && 'animate-shake'} bg-gray-0 border-gray-30 flex min-h-[80px] w-fit flex-col items-center gap-4 rounded-[16px] border p-4 pl-8 md:flex-row`}

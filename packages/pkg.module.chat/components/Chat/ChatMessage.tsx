@@ -42,6 +42,7 @@ const ChatMessage = React.memo(({ item, prevItemCreatedAt, nextId }: ChatMessage
         parsedContent = JSON.parse(parsedContent);
       }
     } catch (e) {
+      console.log('error', e);
       // Если парсинг не удался, возвращаем исходную строку
       return item.content;
     }

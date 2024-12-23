@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
 export type JoinResponseT = {
   community: {
     description: null;

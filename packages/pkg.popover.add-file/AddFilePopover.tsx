@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 'use client';
@@ -79,7 +80,7 @@ export const AddFilePopover = ({
 
   // загрузка изображения на сервер
   const getImageResponse = async (imageFile: File) => {
-    // @ts-ignore
+    // @ts-expect-error TODO: починить типизацию
     let webpImage: File = await resizeFile(imageFile);
     if (webpImage.size > 1024 * 1024) {
       webpImage = await getCompressedFile(webpImage);
@@ -133,7 +134,6 @@ export const AddFilePopover = ({
         throw new Error('Unknown type');
     }
 
-    // @ts-ignore
     handleFileAttached(newNode);
     setOpen(false);
   };
@@ -180,6 +180,7 @@ export const AddFilePopover = ({
           fileSize = blob.size;
           newNode = createDefaultNode('fileBlock', inputData.fileLink, fileName, fileSize);
         } catch (error) {
+          console.log('error', error);
           toast('Не удалось загрузить файл, попробуйте другой');
           return;
         }
@@ -195,7 +196,6 @@ export const AddFilePopover = ({
       default:
         throw new Error('Unknown type');
     }
-    // @ts-ignore
     handleFileAttached(newNode);
     setOpen(false);
   };

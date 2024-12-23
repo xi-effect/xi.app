@@ -14,17 +14,22 @@ export const EmailConfirmation = () => {
   useEffect(() => {
     const confirmEmail = async () => {
       try {
+        // @ts-expect-error TODO поправить типизацию
         const { status } = await postEmailConfirm(params.id[0]);
         if (status !== 201) {
           setHasError(true);
         }
       } catch (e) {
+        console.log('error', e);
         setHasError(true);
       } finally {
         setIsLoading(false);
       }
     };
+
     confirmEmail();
+
+    return () => {};
   }, []);
 
   if (isLoading) {

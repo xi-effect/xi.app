@@ -88,6 +88,7 @@ export const ChatModule = () => {
       <motion.div
         animate={{ marginRight: currentSidebar !== null ? '300px' : '0px' }} // Меняем размер шапки при открытии меню
         transition={{ type: 'tween', duration: 0.3 }}
+        // @ts-expect-error TODO: чёт странное
         className="relative flex h-full w-full flex-col overflow-hidden"
       >
         <Header />
@@ -101,6 +102,7 @@ export const ChatModule = () => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
+            // @ts-expect-error TODO: чёт странное
             className="bg-green-0 z-15 fixed right-0 top-0 h-full min-w-[300px]"
           >
             <Sidebar />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 
@@ -76,7 +77,7 @@ export const EditorRoot = ({ initialValue, onChange, readOnly = false }: EditorP
         withReact(
           withCursors(
             withYHistory(withYjs(createEditor(), sharedType, { autoConnect: false })),
-            // @ts-ignore
+            // @ts-expect-error TODO: разобраться с типизацией
             provider.awareness,
             {
               data: randomCursorData(),

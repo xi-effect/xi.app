@@ -58,6 +58,7 @@ export const SignUp = () => {
 
   const onSignUp = useMainSt((state) => state.onSignUp);
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
   });
 

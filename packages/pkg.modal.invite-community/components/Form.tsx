@@ -105,6 +105,7 @@ export const Form = ({ setIsOpen, handleInviteCreate }: FormBlockPropsT) => {
   const communityId = useMainSt((state) => state.communityMeta.id);
 
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       maxUsageCount: '',

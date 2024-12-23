@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { getTrackReferenceId } from '@livekit/components-core';
 import { TrackLoopProps, TrackRefContext } from '@livekit/components-react';

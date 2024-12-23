@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import Image from 'next/image';
+import React, { ReactNode } from 'react';
 
 interface UserCardProps {
   avatarSrc: string;

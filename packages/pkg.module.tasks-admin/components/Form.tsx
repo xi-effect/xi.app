@@ -53,6 +53,7 @@ export type FormDataT = {
 
 export const FormBlock = ({ timer }: FormPropsT) => {
   const form = useForm<FormDataT>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
   });
 

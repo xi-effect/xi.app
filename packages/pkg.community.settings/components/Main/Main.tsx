@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/control-has-associated-label */
+
 import React, { ChangeEvent, useRef } from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -46,6 +48,7 @@ export const Main = () => {
   const date = React.useRef<'' | Date>('');
 
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: разобраться с типизацией
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: communityName || '',
