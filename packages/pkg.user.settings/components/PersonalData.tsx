@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button } from '@xipkg/button';
 import { patch } from 'pkg.utils';
 import { useMedia } from 'pkg.utils.client';
@@ -31,6 +32,7 @@ export const PersonalData = () => {
 
   const isMobile = useMedia('(max-width: 719px)');
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-ignore
     resolver: zodResolver(FormSchema),
     defaultValues: {
       displayName: user?.displayName,

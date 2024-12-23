@@ -13,7 +13,7 @@
     "@xipkg/button": "2.2.0",
     "@xipkg/checkbox": "^3.2.0",
     "@xipkg/dropdown": "^2.4.0",
-    "@xipkg/form": "^3.2.0",
+    "@xipkg/form": "^3.3.0",
     "@xipkg/icons": "1.6.0",
     "@xipkg/input": "1.2.0",
     "@xipkg/label": "1.2.0",
@@ -48,7 +48,7 @@
   "peerDependencies": {
     "react": "19",
     "next": "15",
-    "@hookform/resolvers": "^3.1.1",
+    "@hookform/resolvers": "3.9.1",
     "react-hook-form": "^7.0.0"
   },
   "description": "form for signin",

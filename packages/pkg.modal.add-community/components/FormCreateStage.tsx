@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 'use client';
 
 import React from 'react';
@@ -46,6 +48,7 @@ type JoinResponseT = {
 
 const FormCreateBlock = ({ onOpenChange }: AddCommunityModalT) => {
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-ignore
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',

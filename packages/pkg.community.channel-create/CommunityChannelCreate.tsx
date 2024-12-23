@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client';
@@ -92,7 +93,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
   const updateChannels = useMainSt((state) => state.updateChannels);
 
   const form = useForm<FormSchemaT>({
-    // @ts-expect-error Проблема версий
+    // @ts-ignore
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',

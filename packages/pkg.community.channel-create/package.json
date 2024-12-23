@@ -14,7 +14,7 @@
     "@xipkg/label": "1.2.0",
     "@xipkg/modal": "^3.3.0",
     "zod": "3.24.1",
-    "@xipkg/form": "^3.2.0",
+    "@xipkg/form": "^3.3.0",
     "pkg.stores": "*",
     "sonner": "1.4.41",
     "nanoid": "5.0.7"
@@ -32,7 +32,7 @@
   "peerDependencies": {
     "react": "19",
     "next": "15",
-    "@hookform/resolvers": "^3.1.1",
+    "@hookform/resolvers": "3.9.1",
     "react-hook-form": "^7.0.0"
   },
   "description": "Dialog box for creating a new channel",

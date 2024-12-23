@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client';
@@ -41,6 +42,7 @@ const FormBlock = ({ setStage, onOpenChange }: FormPropsT) => {
   const updateUserInfo = useMainSt((state) => state.updateUser);
 
   const form = useForm<z.infer<typeof schema>>({
+    // @ts-ignore
     resolver: zodResolver(schema),
     defaultValues: {
       currentPassword: '',

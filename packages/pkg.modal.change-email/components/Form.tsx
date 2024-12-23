@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client';
@@ -43,6 +44,7 @@ export type FormDataT = {
 
 const FormBlock = ({ onEmailChange, setStage, onOpenChange }: FormBlockPropsT) => {
   const form = useForm<FormDataT>({
+    // @ts-ignore
     resolver: zodResolver(schema),
   });
 
