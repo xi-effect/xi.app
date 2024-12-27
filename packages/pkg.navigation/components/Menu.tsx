@@ -1,7 +1,7 @@
 'use client';
 
 import { UserProfile } from '@xipkg/userprofile';
-import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
+import { Modal, ModalContent, ModalTitle, ModalTrigger } from '@xipkg/modal';
 import { UserSettings } from 'pkg.user.settings';
 import { createQueryString } from 'pkg.router.url';
 import { Logo } from 'pkg.logo';
@@ -158,6 +158,7 @@ export const Menu = ({ setSlideIndex }: MenuT) => {
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
+            <ModalTitle className="hidden"> Настройки пользователя </ModalTitle>
             <UserSettings />
           </ModalContent>
         </Modal>

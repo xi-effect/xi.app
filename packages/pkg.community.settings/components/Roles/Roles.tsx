@@ -83,6 +83,7 @@ export const Roles = () => {
                     </button>
                   </M.ModalTrigger>
                   <M.ModalContent className="rounded-2xl bg-white p-8">
+                    <M.ModalTitle className="hidden"> Удалиние роли </M.ModalTitle>
                     <Button variant="error">Удалить роль</Button>
                     <M.ModalCloseButton variant="noStyle" asChild>
                       <Button variant="ghost">Отмена</Button>
