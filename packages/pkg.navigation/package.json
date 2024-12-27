@@ -19,7 +19,7 @@
     "@xipkg/icons": "1.6.0",
     "@xipkg/input": "^1.2.0",
     "@xipkg/modal": "3.3.0",
-    "@xipkg/scrollarea": "1.2.0",
+    "@xipkg/scrollarea": "1.3.0",
     "@xipkg/toggle": "1.2.0",
     "@xipkg/tooltip": "^1.2.0",
     "@xipkg/userprofile": "3.3.0",

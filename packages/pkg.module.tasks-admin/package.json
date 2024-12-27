@@ -11,7 +11,7 @@
     "@xipkg/breadcrumbs": "^1.3.0",
     "@xipkg/button": "^2.2.0",
     "@xipkg/checkbox": "^3.2.0",
-    "@xipkg/datepicker": "^1.3.0",
+    "@xipkg/datepicker": "^1.4.0",
     "@xipkg/dropdown": "^2.4.0",
     "@xipkg/fileuploader": "^3.2.0",
     "@xipkg/form": "^3.3.0",
