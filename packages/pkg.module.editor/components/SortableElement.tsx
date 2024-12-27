@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { ReactNode } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { RenderElementProps } from 'slate-react';
@@ -34,7 +35,7 @@ export const SortableElement = ({
         ref={sortable.setNodeRef}
         style={{
           transition: sortable.transition,
-          // @ts-ignore
+          // @ts-expect-error TODO: разобраться с типизацией
           '--translate-y': toPx(sortable.transform?.y),
           transform: 'translate3d(0, var(--translate-y, 0), 0)',
           pointerEvents: sortable.isSorting ? 'none' : undefined,

@@ -38,7 +38,7 @@ type CommunityItemsPropsT = {
 
 const firstCategory = {
   uid: nanoid(),
-  id: 'empty' as 'empty',
+  id: 'empty' as const,
   name: null,
   description: null,
 };

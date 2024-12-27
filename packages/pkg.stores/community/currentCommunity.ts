@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { StateCreator } from 'zustand';
 import { UserProfile } from '../user/profile';
 import { VideoConference } from './videoConference';

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { StateCreator } from 'zustand';
 import { arrayMove } from '@dnd-kit/sortable';
 import { UserProfile } from '../user/profile';

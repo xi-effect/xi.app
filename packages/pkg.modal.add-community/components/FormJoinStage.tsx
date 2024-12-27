@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 'use client';
 
 import React from 'react';
@@ -46,6 +48,7 @@ const FormJoinBlock = ({ setStage, onOpenChange }: FormJoinProps) => {
   const getUrlWithParams = useGetUrlWithParams();
 
   const form = useForm<z.infer<typeof schema>>({
+    // @ts-ignore
     resolver: zodResolver(schema),
     defaultValues: {
       link: '',

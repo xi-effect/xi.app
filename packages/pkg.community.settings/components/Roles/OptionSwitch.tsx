@@ -1,6 +1,6 @@
 import { Toggle } from '@xipkg/toggle';
 import { cn } from '@xipkg/utils';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 interface OptionSwitchProps {
   initialChecked?: boolean;

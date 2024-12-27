@@ -57,6 +57,7 @@ export const SignIn = () => {
   const { setTheme } = useTheme();
 
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: '',

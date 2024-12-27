@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { StateCreator } from 'zustand';
 import { io } from 'socket.io-client';
 import { UseFormSetError } from 'react-hook-form';

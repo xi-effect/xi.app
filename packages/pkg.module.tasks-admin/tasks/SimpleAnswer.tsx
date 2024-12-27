@@ -43,6 +43,7 @@ const FormSchema = z.object({
 export const SimpleAnswer = forwardRef<SimpleAnswerRef, SimpleAnswerProps>(
   ({ index, taskId }, ref) => {
     const form = useForm({
+      // @ts-expect-error TODO: Разобраться с типами
       resolver: zodResolver(FormSchema),
       defaultValues: {
         question: '',

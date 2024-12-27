@@ -46,6 +46,7 @@ const SubmitButton = memo(({ editorRef, storageKey }: SubmitButtonPropsT) => {
       }
     } catch (e) {
       // Если парсинг не удался, то ничего не отправляем
+      console.log('error', e);
       return;
     }
 

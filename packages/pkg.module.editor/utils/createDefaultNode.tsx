@@ -16,18 +16,18 @@ export const createDefaultNode = (type: string, url?: string, fileName?: string,
     case 'tip':
       return node({
         type,
-        // @ts-ignore
+        // @ts-expect-error TODO: разобраться с типизацией
         children: [{ type: 'icon', icon: '🚧' }, { type: 'heading3' }, { type: 'paragraph' }],
       });
 
     case 'imageBlock':
-      // @ts-ignore
+      // @ts-expect-error TODO: разобраться с типизацией
       return node({ type: 'imageBlock', url: url ?? '', children: [{ text: '' }] });
 
     case 'fileBlock':
       return node({
         type: 'fileBlock',
-        // @ts-ignore
+        // @ts-expect-error TODO: разобраться с типизацией
         fileName: fileName ?? '',
         url: url ?? '',
         size: size ?? 0,
@@ -35,14 +35,14 @@ export const createDefaultNode = (type: string, url?: string, fileName?: string,
       });
 
     case 'videoBlock':
-      // @ts-ignore
+      // @ts-expect-error TODO: разобраться с типизацией
       return node({ type: 'videoBlock', url: url ?? '', children: [{ text: '' }] });
     case 'code':
-      // @ts-ignore
+      // @ts-expect-error TODO: разобраться с типизацией
       return node({ type: 'code', language: defaultLanguage });
 
     default:
-      // @ts-ignore
+      // @ts-expect-error TODO: разобраться с типизацией
       return node({ type });
   }
 };

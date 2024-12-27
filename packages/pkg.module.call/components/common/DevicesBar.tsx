@@ -28,6 +28,7 @@ export const DevicesBar = ({
   return (
     <>
       <motion.div
+        // @ts-expect-error TODO: чёт странное
         className="bg-gray-0 flex size-[44px] flex-row items-center justify-center rounded-[24px]"
         style={{
           background:

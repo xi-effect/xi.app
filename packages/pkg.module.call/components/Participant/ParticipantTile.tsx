@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-indent */
 import React from 'react';
 import { Participant, Track } from 'livekit-client';

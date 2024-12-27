@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable global-require */
 /** @type {import('tailwindcss').Config} */
 module.exports = {

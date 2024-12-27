@@ -71,6 +71,7 @@ export const Form = ({ onOpenChange }: FormT) => {
   const updatedChannels = useMainSt((state) => state.updateChannels);
 
   const form = useForm<FormSchemaT>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: '',

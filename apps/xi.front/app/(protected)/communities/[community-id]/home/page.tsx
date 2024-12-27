@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -72,7 +70,7 @@ const InfoCardList = () => (
           width={422}
           height={0}
           sizes="100vw"
-          alt={"Изображение 'Меню слева' не загрузилось"}
+          alt="Изображение 'Меню слева' не загрузилось"
         />
       </div>
       <h3 className="font-semibold text-2xl max-xs:text-xl mt-4">Меню слева</h3>
@@ -88,7 +86,7 @@ const InfoCardList = () => (
           width={236}
           height={92}
           sizes="100vw"
-          alt={"Изображение 'Роли' не загрузилось"}
+          alt="Изображение 'Роли' не загрузилось"
         />
       </div>
       <h3 className="font-semibold text-2xl max-xs:text-xl mt-4">Роли</h3>
@@ -104,7 +102,7 @@ const InfoCardList = () => (
           width={0}
           height={0}
           sizes="100vw"
-          alt={"Изображение 'Смена сообщества' не загрузилось"}
+          alt="Изображение 'Смена сообщества' не загрузилось"
         />
       </div>
       <h3 className="font-semibold text-2xl max-xs:text-xl mt-4">Смена сообщества</h3>

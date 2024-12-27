@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React from 'react';
 import { CustomEditor, SmartInput } from '@xipkg/inputsmart';
 import { useLocalStorage } from 'pkg.utils.client';

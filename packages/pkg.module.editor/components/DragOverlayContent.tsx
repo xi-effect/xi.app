@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { Move, Plus } from '@xipkg/icons';

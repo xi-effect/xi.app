@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DEFAULT_SUPPORTED_MEDIA_TYPE_LIST } from '@tldraw/editor';
 import { useCallback, useEffect, useRef } from 'react';
 
 export const useInsertMedia = (editor: any) => {
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const input = window.document.createElement('input');
@@ -23,6 +25,7 @@ export const useInsertMedia = (editor: any) => {
     }
     input.addEventListener('change', onchange);
     return () => {
+      // @ts-expect-error TODO: разобраться с типизацией
       inputRef.current = undefined;
       input.removeEventListener('change', onchange);
     };

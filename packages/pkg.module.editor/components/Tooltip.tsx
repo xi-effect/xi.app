@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react';
 import {
   useFloating,
@@ -119,6 +120,7 @@ export const TooltipTrigger = React.forwardRef<
       state.getReferenceProps({
         ref,
         ...props,
+        // @ts-expect-error Что-то с типизацией
         ...children.props,
         'data-state': state.open ? 'open' : 'closed',
       }),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/no-unused-prop-types */
 import React, { useEffect, useState } from 'react';
@@ -90,6 +91,7 @@ export const CarouselLayout = ({
   ...props
 }: CarouselLayoutProps & { userTracks: TrackReferenceOrPlaceholder[] }) => {
   const asideEl = React.useRef<HTMLDivElement>(null);
+  // @ts-expect-error TODO: разобраться с типизацией
   const { width, height } = useSize(asideEl);
   const carouselOrientation = orientation || (height >= width ? 'vertical' : 'horizontal');
   const tilesThatFit =
@@ -185,9 +187,11 @@ export const GridLayout = ({ tracks, ...props }: GridLayoutProps) => {
   const isOneItem = useEmptyItemContainerOfUser(tracks.length);
   const gridEl = React.createRef<HTMLDivElement>();
 
+  // @ts-expect-error TODO: разобраться с типизацией
   const { layout } = useGridLayout(gridEl, tracks.length + (isOneItem ? 1 : 0));
   const pagination = usePagination(layout.maxTiles + (isOneItem ? 1 : 0), tracks);
 
+  // @ts-expect-error TODO: разобраться с типизацией
   useSwipe(gridEl, {
     onLeftSwipe: pagination.nextPage,
     onRightSwipe: pagination.prevPage,
