@@ -21,6 +21,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { YKeyValue } from 'y-utility/y-keyvalue';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import * as Y from 'yjs';
+import { toast } from 'sonner';
 
 export function useYjsStore({
   roomId = 'test/slate-yjs-demo',
@@ -64,6 +65,7 @@ export function useYjsStore({
         onAuthenticationFailed: (data) => {
           console.log('onAuthenticationFailed', data);
           if (data.reason === 'permission-denied') {
+            toast('Ошибка доступа к серверу совместного редактирования');
             console.error('hocuspocus: permission-denied');
           }
         },

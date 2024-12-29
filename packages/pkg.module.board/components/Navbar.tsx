@@ -31,7 +31,7 @@ export const Navbar = track(() => {
     <div className="pointer-events-none absolute inset-0">
       <div className="absolute bottom-3 left-0 right-0 z-30 flex w-full items-center justify-center">
         <div className="relative z-30 flex gap-7">
-          <div className="border-gray-10 bg-gray-0 absolute -left-[115px] z-30 flex rounded-xl border p-2">
+          <div className="border-gray-10 bg-gray-0 absolute -left-[115px] z-30 flex rounded-xl border p-1">
             <NavbarAction />
           </div>
           <div className="border-gray-10 bg-gray-0 mx-auto flex gap-10 rounded-xl border">
