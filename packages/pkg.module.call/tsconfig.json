@@ -1,5 +1,5 @@
 {
   "extends": "@xipkg/typescript/react-library.json",
-  "include": ["*"],
+  "include": ["*", "app/Call.tsx", "shared/types"],
   "exclude": ["dist", "build", "node_modules"]
 }
