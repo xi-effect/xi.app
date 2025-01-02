@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useParams } from 'next/navigation';
+import { ErrorPage } from 'pkg.error-page';
 import { useLivekitToken } from '../shared/hooks';
 
 type CallPropsT = {
@@ -10,7 +11,16 @@ export const CallProvider = ({ children }: CallPropsT) => {
   const params = useParams<{ 'community-id': string; 'channel-id': string }>();
   const { token, error } = useLivekitToken(params['community-id'], params['channel-id']);
 
-  console.log('token', token);
+  if (error) {
+    return (
+      <ErrorPage
+        errorCode={Number(error.cause) || 500}
+        title="Ошибка"
+        text="Что-то сломалось в этой части приложения, попробуйте обновить страницу"
+        withLogo={false}
+      />
+    );
+  }
 
   if (!token) {
     return (
@@ -28,10 +38,6 @@ export const CallProvider = ({ children }: CallPropsT) => {
         </div>
       </div>
     );
-  }
-
-  if (error) {
-    return <div className="text-red-500">{error.message}</div>;
   }
 
   return children;

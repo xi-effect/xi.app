@@ -14,10 +14,12 @@ const subscribeToToken = (
 
   // Логика подписки на обновления токена
   const handleToken = (status: number, data: string) => {
-    console.log('data', status, data);
-
     if (status === 200) {
       next(null, data);
+    } else {
+      const error = new Error(`Server Error, ${status}`);
+      error.cause = status;
+      next(error, null);
     }
   };
 

@@ -35,12 +35,10 @@ export const Call = () => {
     setConnect(true);
   };
 
-  if (!token) return null;
-
   return (
     <CallProvider>
       <div>
-        {isStarted ? (
+        {isStarted && token ? (
           <div id="videoConferenceContainer" className="bg-gray-5" data-theme="dark">
             <ActiveRoom
               userChoice={userChoice}
