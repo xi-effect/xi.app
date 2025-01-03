@@ -2,12 +2,13 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMainSt } from 'pkg.stores';
+import { useMedia } from 'pkg.utils.client';
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { ChatProvider } from './components/Chat';
 import { Header } from './components/Header';
-import { Users } from './components/Sidebar';
+import { Sidebar } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
 import { useInterfaceStore } from './stores/interfaceStore';
 import { useChatStore } from './stores/chatStore';
@@ -80,11 +81,20 @@ export const ChatModule = () => {
     };
   }, [chatId]);
 
+  const isMobile = useMedia('(max-width: 960px)');
+
+  const marginRight = (() => {
+    if (currentSidebar !== null) {
+      return !isMobile ? '300px' : '0px';
+    }
+    return '0px';
+  })();
+
   return (
     <div className="flex h-full max-h-full w-full flex-row overflow-x-hidden">
       <motion.div
         animate={{
-          marginRight: currentSidebar !== null && window.innerWidth > 959 ? '300px' : '0px',
+          marginRight,
         }} // Меняем размер шапки при открытии меню
         transition={{ type: 'tween', duration: 0.3 }}
         className="relative flex h-full w-full flex-col overflow-hidden"
@@ -100,9 +110,9 @@ export const ChatModule = () => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="z-15 fixed right-0 top-0 hidden h-full min-w-[300px] md:block"
+            className={`${isMobile ? 'hidden' : null} z-15 fixed right-0 top-0 h-full min-w-[300px]`}
           >
-            <Users />
+            <Sidebar />
           </motion.aside>
         )}
       </AnimatePresence>
