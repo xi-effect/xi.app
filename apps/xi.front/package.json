@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "next dev --turbopack --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint \"**/*.{ts,tsx}\""
@@ -58,6 +58,7 @@
     "pkg.utils.client": "*",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-error-boundary": "^5.0.0",
     "socket.io": "4.7.5",
     "socket.io-client": "4.7.5",
     "sonner": "1.4.41",

@@ -16,6 +16,7 @@ export const StylePopupContent = ({ menuPopupContent }: StylePopupContentT) => {
           <TooltipTrigger>
             {menuPopupContent?.map((item: PopupItemT) => (
               <button
+                key={item.color}
                 type="button"
                 className="bg-gray-0 flex h-8 w-8 items-center justify-center"
                 onClick={() => setIsTooltipOpen(true)}

@@ -8,21 +8,21 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@tldraw/editor": "3.4.0",
+    "@tldraw/editor": "3.6.1",
     "@xipkg/button": "2.2.0",
-    "@xipkg/dropdown": "^2.4.0",
+    "@xipkg/dropdown": "^2.5.0",
     "@xipkg/icons": "1.6.0",
     "@xipkg/tooltip": "1.3.0",
     "@xipkg/slider": "1.2.0",
     "pkg.logo": "*",
     "pkg.utils.client": "*",
     "sonner": "^1.5.0",
-    "tldraw": "^3.4.0",
+    "tldraw": "^3.6.1",
     "@tlsync-yjs/core": "0.2.1",
     "pkg.utils": "*",
     "pkg.stores": "*",
-    "@hocuspocus/provider": "2.13.6",
-    "yjs": "13.6.19",
+    "@hocuspocus/provider": "2.15.0",
+    "yjs": "13.6.21",
     "y-utility": "0.1.4"
   },
   "devDependencies": {
