@@ -4,10 +4,11 @@ import { useSortable } from '@dnd-kit/sortable';
 import { RenderElementProps } from 'slate-react';
 import { toPx } from '../utils/toPx';
 import { CellControls } from './CellControls';
+import { CustomElement } from '../slate';
 
 type SortableElementPropsT = {
   attributes: RenderElementProps['attributes'];
-  element: RenderElementProps['element'];
+  element: CustomElement;
   children: ReactNode;
   renderElement: any;
 };

@@ -8,11 +8,11 @@ import {
   useLocalParticipantPermissions,
   usePersistentUserChoices,
 } from '@livekit/components-react';
-import { Chat, Endcall, Group, Hand } from '@xipkg/icons';
+import { Endcall } from '@xipkg/icons';
 import { LocalAudioTrack, LocalVideoTrack, Track } from 'livekit-client';
 import { supportsScreenSharing } from '@livekit/components-core';
 import { TrackToggle } from '../../shared/ui/TrackToggle/TrackToggle';
-import { ActionButton, DevicesBar } from '../../shared/ui';
+import { DevicesBar } from '../../shared/ui';
 
 const DisconnectButton = () => {
   const { buttonProps } = useDisconnectButton({});
@@ -112,12 +112,13 @@ export const BottomBar = ({ variation, controls, saveUserChoices = true }: Contr
             )}
           </div>
         </div>
-
-        <div className="bg-gray-0 flex h-12 w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] p-1">
+        <div />
+        {/* <div className="bg-gray-0 flex h-12
+        w-[144px] flex-row items-center justify-center gap-2 rounded-[24px] p-1">
           <ActionButton icon={<Group className="fill-gray-100" />} withBorder={false} />
           <ActionButton icon={<Chat className="fill-gray-100" />} withBorder={false} />
           <ActionButton icon={<Hand className="fill-gray-100" />} withBorder={false} />
-        </div>
+        </div> */}
         <DisconnectButton />
       </div>
     </div>
