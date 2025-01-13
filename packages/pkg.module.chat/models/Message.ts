@@ -31,3 +31,21 @@ export type MessageSnakeCaseT = {
   created_at?: string;
   updated_at?: string;
 };
+
+export type PinnedMessageSnakeCaseT = {
+  id: string;
+  content: string;
+  sender_user_id: number;
+  pinned: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PinnedMessageT = {
+  id: string;
+  content: string;
+  senderUserId: number;
+  pinned: boolean;
+  createdAt: string;
+  updatedAt: string;
+};

@@ -17,21 +17,19 @@ export const ChatProvider = () => {
   const removeMessageById = useChatStore((state) => state.removeMessageById);
   const socket = useMainSt((state) => state.socket);
 
-  const handleNewMessage = (data: MessageSnakeCaseT) => {
-    const newMessage = convertSnakeToCamelCase(data) as MessageT;
-    setMessages([...(messages ?? []), newMessage]);
-  };
-
   useEffect(() => {
     if (!socket) return () => {};
 
-    socket.on('send-chat-message', handleNewMessage);
+    socket.on('send-chat-message', (data: MessageSnakeCaseT) => {
+      const newMessage = convertSnakeToCamelCase(data) as MessageT;
+      setMessages([...(messages ?? []), newMessage]);
+    });
 
     // Очистка обработчиков при размонтировании компонента
     return () => {
-      socket.off('send-chat-message', handleNewMessage);
+      socket.off('send-chat-message');
     };
-  }, []);
+  }, [socket, messages, setMessages]);
 
   const handleFiredDelete = (data: FiredDeleteT) => {
     removeMessageById(data.message_id);
