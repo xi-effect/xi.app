@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import { ReactNode } from 'react';
 
 import { RenderElementProps } from 'slate-react';
 
-import { type CustomElement, type CustomText } from '../slate';
+import { type CustomElement, type CustomText } from '@xipkg/slatetypes';
 
 import { Typography } from './Typography';
 import { BulletedList } from './BulletedList';

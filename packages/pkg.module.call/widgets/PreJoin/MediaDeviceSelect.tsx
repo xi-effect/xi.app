@@ -11,7 +11,7 @@ export const MediaDeviceSelect = ({ devices }: MediaDeviceSelectPropsT) => (
     {devices &&
       devices.map((device) => (
         <li key={device.deviceId} id={device.deviceId}>
-          <SelectItem value={device.deviceId}>{device.label}</SelectItem>
+          <SelectItem value={device.deviceId ?? 'default'}>{device.label}</SelectItem>
         </li>
       ))}
   </ul>
