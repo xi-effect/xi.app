@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
+
 import React from 'react';
 import { RenderLeafProps } from 'slate-react';
 

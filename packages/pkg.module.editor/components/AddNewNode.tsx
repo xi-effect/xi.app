@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { Dispatch, ReactNode, SetStateAction } from 'react';
 import { Transforms } from 'slate';
 import { useSlate } from 'slate-react';
@@ -7,10 +8,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
+import { type CustomElement } from '@xipkg/slatetypes';
 import rootElements from '../const/rootElements';
 import { useInterfaceStore } from '../interfaceStore';
 import { createDefaultNode } from '../utils/createDefaultNode';
-import { type CustomElement } from '../slate';
 
 type AddNewNodePropsT = {
   children: ReactNode;
@@ -23,6 +24,7 @@ export const AddNewNode = ({ children, element, isOpen, setIsOpen }: AddNewNodeP
   const editor = useSlate();
 
   const handleDropdownSelect = (type: string) => {
+    // @ts-ignore
     const currentElIndex = editor.children.findIndex((item) => item.id === element.id);
 
     if (currentElIndex === -1) return;

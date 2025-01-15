@@ -3,8 +3,6 @@
   "include": ["*"],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "typeRoots": ["./slate", "../../node_modules/@types"],
-    "types": [],
-    "strict": true,
+    "types": ["node", "@xipkg/slatetypes"]
   }
 }

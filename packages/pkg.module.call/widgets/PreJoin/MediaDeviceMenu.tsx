@@ -7,6 +7,13 @@ import { Conference, Microphone, SoundTwo } from '@xipkg/icons';
 import { useMaybeRoomContext, useMediaDeviceSelect } from '@livekit/components-react';
 import { MediaDeviceKind, MediaDeviceSelect } from './MediaDeviceSelect';
 
+const placeholders = {
+  audioinput: 'Встроенный микрофон',
+  audiooutput: 'Встроенные динамики',
+  videoinput: 'Встроенная камера',
+  default: 'По умолчанию',
+};
+
 export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   kind: MediaDeviceKind;
@@ -72,12 +79,6 @@ export const MediaDeviceMenu = ({
   }, [handleClickOutside, setUpdateRequired]);
 
   const getPlaceholder = () => {
-    const placeholders = {
-      audioinput: 'Встроенный микрофон',
-      audiooutput: 'Встроенные динамики',
-      videoinput: 'Встроенная камера',
-      default: 'По умолчанию',
-    };
     if (initialSelection === '') return placeholders.default;
     if (!initialSelection && kind) {
       return placeholders[kind] || placeholders.default;
@@ -105,12 +106,16 @@ export const MediaDeviceMenu = ({
     await setActiveMediaDevice(deviceId);
   }
 
+  console.log('devices', devices);
+
   return (
     <div className={`${warnDisable ? 'border-orange-80 rounded-[8px] border-2' : null}`}>
       <Select
         onValueChange={(value) => handleActiveChange(value, kind)}
         defaultValue={devices?.length > 0 ? initialSelection : undefined}
-        disabled={disabled || warnDisable || !devices || devices.length === 0}
+        disabled={
+          disabled || warnDisable || !devices || devices.length === 0 || devices[0].deviceId === ''
+        }
       >
         <SelectTrigger className="w-full">
           {kind === 'videoinput' && <Conference width={14} />}
@@ -122,9 +127,11 @@ export const MediaDeviceMenu = ({
           ref={(ref) => ref?.addEventListener('touchend', (e) => e.preventDefault())}
           className="w-full"
         >
-          <SelectGroup>
-            <MediaDeviceSelect devices={devices} />
-          </SelectGroup>
+          {devices.length !== 0 && devices[0].deviceId !== '' && (
+            <SelectGroup>
+              <MediaDeviceSelect devices={devices} />
+            </SelectGroup>
+          )}
         </SelectContent>
       </Select>
     </div>

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React from 'react';
-import { CustomEditor, SmartInput } from '@xipkg/inputsmart';
+import { SmartInput } from '@xipkg/inputsmart';
 import { useLocalStorage } from 'pkg.utils.client';
+import { CustomEditorSI } from '../../type';
 
-const initialValue = [
+const initialValue: any = [
   {
     type: 'paragraph',
     children: [{ text: '' }],
@@ -13,7 +14,7 @@ const initialValue = [
 
 type FieldPropsT = {
   storageKey: string;
-  editorRef: React.MutableRefObject<CustomEditor | null>;
+  editorRef: React.RefObject<CustomEditorSI | null>;
 };
 
 export const Field = ({ editorRef, storageKey }: FieldPropsT) => {

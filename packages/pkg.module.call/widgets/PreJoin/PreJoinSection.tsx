@@ -90,6 +90,21 @@ export const usePreviewTracks = (
   return tracks;
 };
 
+// async function requestMediaAccess() {
+//   try {
+//     // Запрашиваем доступ к камере и микрофону
+//     const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+//     console.log('Access granted:', stream);
+//   } catch (error) {
+//     console.error('Access denied:', error);
+//     if (error.name === 'NotAllowedError') {
+//       alert('Please allow access to your camera and microphone.');
+//     } else if (error.name === 'NotFoundError') {
+//       alert('No camera or microphone found. Please connect a device.');
+//     }
+//   }
+// }
+
 /**
  * The `PreJoin` prefab component is normally presented to the user before he enters a room.
  * This component allows the user to check and select
@@ -253,7 +268,7 @@ export const PreJoinSection = ({
           <div className="relative">
             {videoTrack && videoEnabled && (
               <div className="aspect-video h-full w-full [transform:rotateY(180deg)]">
-                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                {}
                 <video
                   ref={videoEl}
                   data-lk-facing-mode={facingMode}
@@ -308,6 +323,8 @@ export const PreJoinSection = ({
             ) : !connect ? (
               <MessageBeforeJoin typeOfMessage="notStarted" />
             ) : null}
+            {/* <button type="button"
+            onClick={() => requestMediaAccess()}> Запросить доступ </button> */}
             <div className="mb-8">
               <h2 className="mb-1 font-sans">Камера</h2>
               <MediaDeviceMenu

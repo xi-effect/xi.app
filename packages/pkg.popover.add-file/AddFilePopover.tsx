@@ -12,7 +12,7 @@ import { Button } from '@xipkg/button';
 import { Input } from '@xipkg/input';
 import { FileUploader } from '@xipkg/fileuploader';
 import { Form, FormControl, FormField, FormItem, FormMessage, useForm } from '@xipkg/form';
-import { type CustomEditor } from 'pkg.module.editor/slate';
+import { type CustomEditor } from '@xipkg/slatetypes';
 import { resizeFile, getCompressedFile } from './utils';
 
 export type StageType = 'load' | 'link';

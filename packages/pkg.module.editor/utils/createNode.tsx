@@ -1,12 +1,16 @@
+import {
+  type CustomElement,
+  type CustomText,
+  type CommonCustomElementType,
+} from '@xipkg/slatetypes';
 import { makeNodeId } from '../plugins/withNodeId';
-import { type CustomElement, type CustomText, type CustomElementType } from '../slate';
 
-type CreateNodeOptions<T extends CustomElementType> =
+type CreateNodeOptions<T extends CommonCustomElementType['type']> =
   Extract<CustomElement, { type: T }> extends never
     ? { type: T }
     : Omit<Extract<CustomElement, { type: T }>, 'id' | 'children'> & { type: T };
 
-const createNode = <T extends CustomElementType>(
+const createNode = <T extends CommonCustomElementType['type']>(
   options: CreateNodeOptions<T>,
   ...children: Array<CustomElement | CustomText>
 ): CustomElement => ({

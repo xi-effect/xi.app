@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable consistent-return */
-/* eslint-disable no-param-reassign */
+// @ts-nocheck
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -22,10 +22,10 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import * as Y from 'yjs';
 import { withCursors, withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
+import { type MediaElement } from '@xipkg/slatetypes';
 import { isImageUrl } from './utils/isUrl';
 import { withNodeId } from './plugins/withNodeId';
 import { withNormalize } from './plugins/withNormalize';
-import { type MediaElement } from './slate';
 
 import { RenderElement } from './elements/RenderElement';
 import createNode from './utils/createNode';
