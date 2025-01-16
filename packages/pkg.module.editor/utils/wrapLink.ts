@@ -1,6 +1,6 @@
 import { Range, Editor, Transforms, Element as SlateElement } from 'slate';
+import { CustomElement } from '@xipkg/slatetypes';
 import { makeNodeId } from '../plugins/withNodeId';
-import { CustomElement } from '../slate';
 
 export const wrapLink = (editor: Editor, url: string) => {
   if (isLinkActive(editor)) {

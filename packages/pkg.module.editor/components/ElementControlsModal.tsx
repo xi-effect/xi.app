@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { Dispatch, ReactNode, SetStateAction } from 'react';
 import { Transforms } from 'slate';
 import { useSlate } from 'slate-react';
@@ -8,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@xipkg/dropdown';
 import { ArrowBottom, ArrowUp, Copy, Trash } from '@xipkg/icons';
-import { type CustomElement } from '../slate';
+import { type CustomElement } from '@xipkg/slatetypes';
 import { assignIdRecursively } from '../plugins/withNodeId';
 
 type ElementControlsModalPropsT = {
@@ -26,6 +27,7 @@ export const ElementControlsModal = ({
 }: ElementControlsModalPropsT) => {
   const editor = useSlate();
 
+  // @ts-ignore
   const currentElIndex = editor.children.findIndex((item) => item.id === element.id);
 
   const handleMoveUp = () => {

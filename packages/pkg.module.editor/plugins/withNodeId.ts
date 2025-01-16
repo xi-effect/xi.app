@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-param-reassign */
 
 import { BaseEditor, Element, Node } from 'slate';
@@ -7,6 +8,7 @@ export const makeNodeId = () => nanoid(16);
 
 export const assignIdRecursively = (node: Node) => {
   if (Element.isElement(node)) {
+    // @ts-ignore
     node.id = makeNodeId();
     node.children.forEach(assignIdRecursively);
   }
@@ -22,6 +24,7 @@ export const withNodeId = <E extends BaseEditor>(editor: E) => {
     }
 
     if (operation.type === 'split_node') {
+      // @ts-ignore
       operation.properties.id = makeNodeId();
       return apply(operation);
     }

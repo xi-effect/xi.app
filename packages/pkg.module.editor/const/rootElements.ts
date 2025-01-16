@@ -14,7 +14,7 @@ import {
   Code,
 } from '@xipkg/icons';
 import { ComponentType } from 'react';
-import { type CustomElementType } from '../slate';
+import { type CommonCustomElementType } from '@xipkg/slatetypes';
 
 export type EditorRootElementOptions = {
   label: string;
@@ -74,4 +74,4 @@ export default {
     label: 'Код',
     icon: Code,
   },
-} as const satisfies Partial<Record<CustomElementType, EditorRootElementOptions>>;
+} as const satisfies Partial<Record<CommonCustomElementType['type'], EditorRootElementOptions>>;

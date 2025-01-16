@@ -4,15 +4,15 @@ import React, { memo } from 'react';
 import { Button } from '@xipkg/button';
 import { Send } from '@xipkg/icons';
 import { useMainSt } from 'pkg.stores';
-import { CustomEditor } from '@xipkg/inputsmart';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { useKeyPress } from 'pkg.utils.client';
 import { useChatStore } from '../../stores/chatStore';
 import { MessageSnakeCaseT, MessageT } from '../../models/Message';
+import { CustomEditorSI } from '../../type';
 
 type SubmitButtonPropsT = {
   storageKey: string;
-  editorRef: React.MutableRefObject<CustomEditor | null>;
+  editorRef: React.RefObject<CustomEditorSI | null>;
 };
 
 const SubmitButton = memo(({ editorRef, storageKey }: SubmitButtonPropsT) => {

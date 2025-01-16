@@ -1,9 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
-
 import React from 'react';
 import Image from 'next/image';
+import { CustomText } from '@xipkg/slatetypes';
 import { type CustomRenderElementProps } from './RenderElement';
-import { CustomText } from '../slate';
 
 type ImageBlockPropsT = CustomRenderElementProps;
 

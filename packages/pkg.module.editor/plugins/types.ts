@@ -1,5 +1,5 @@
+import { type CustomEditor } from '@xipkg/slatetypes';
 import { languages } from '../const/codeEditorLanguages';
-import { type CustomEditor } from '../slate';
 
 export type NormalizeNodeFn = (
   ...args: [CustomEditor, ...Parameters<CustomEditor['normalizeNode']>]
