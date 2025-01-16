@@ -83,6 +83,7 @@ export default function CommunityCreate({ setStage, setTab }: CommunityCreatePro
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       community: '',

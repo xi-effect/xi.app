@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -166,10 +169,9 @@ export default function WelcomeUserInfo() {
             <Logo height={24} width={202} logoVariant="navigation" logoSize="default" />
           </div>
           <div className="mt-16 flex flex-row justify-between w-full items-start gap-4">
-            <div className="bg-brand-80 w-1/4 h-1.5 rounded" />
-            <div className="bg-gray-10 w-1/4 h-1.5 rounded" />
-            <div className="bg-gray-10 w-1/4 h-1.5 rounded" />
-            <div className="bg-gray-10 w-1/4 h-1.5 rounded" />
+            <div className="bg-brand-80 w-full h-1.5 rounded" />
+            <div className="bg-gray-10 w-full h-1.5 rounded" />
+            <div className="bg-gray-10 w-full h-1.5 rounded" />
           </div>
           <div id="title" className="mt-8 text-2xl font-semibold leading-[32px] text-gray-100">
             Давайте познакомимся
@@ -177,9 +179,10 @@ export default function WelcomeUserInfo() {
           <div className="flex flex-row mt-8 h-16">
             <AvatarPreview userId={user.id} date={date} />
             <div className="ml-4 flex flex-col gap-2">
-              <span className="font-medium leading-[22px] text-gray-90 w-full">
-                Изображение профиля
-              </span>
+              <p className="font-medium leading-[22px] text-gray-90 w-full">
+                Аватар&nbsp;
+                <span className="text-gray-40 font-normal">(необязательно)</span>
+              </p>
               <AvatarEditor
                 file={file}
                 open={isAvatarEditorOpen}
@@ -202,7 +205,7 @@ export default function WelcomeUserInfo() {
                 name="displayName"
                 render={({ field }) => (
                   <FormItem className="mt-8">
-                    <FormLabel>Отображаемое имя</FormLabel>
+                    <FormLabel>Как вас зовут?</FormLabel>
                     <FormControl>
                       <Input
                         className="mt-1"

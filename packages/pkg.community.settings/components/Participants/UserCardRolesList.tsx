@@ -21,10 +21,10 @@ const UserCardRolesList = () => {
   ];
   return (
     <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
-      {rolesTemplate.map((role, index) => (
+      {rolesTemplate.map((role) => (
         <UserBadge
           role={role}
-          key={index}
+          key={role.name}
           name={role.name}
           bgColorMain={role.bgColorMain}
           bgColorSecondary={role.bgColorSecondary}
@@ -39,9 +39,9 @@ const UserCardRolesList = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 p-3">
-            {rolesTemplate.map((role, index) => (
+            {rolesTemplate.map((role) => (
               <DropdownMenuItem
-                key={index}
+                key={role.name}
                 className="hover:bg-gray-10 rounded-lg"
                 onClick={() => console.log(role)}
               >

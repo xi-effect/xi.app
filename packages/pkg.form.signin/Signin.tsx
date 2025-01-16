@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useTransition } from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@xipkg/button';
@@ -57,6 +57,7 @@ export const SignIn = () => {
   const { setTheme } = useTheme();
 
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: '',
@@ -68,30 +69,29 @@ export const SignIn = () => {
     control,
     setError,
     handleSubmit,
-    trigger,
     formState: { errors },
   } = form;
 
-  const [isButtonActive, setIsButtonActive] = React.useState(true);
+  const [isPending, startTransition] = useTransition();
 
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    trigger();
-    setIsButtonActive(false);
-    const answer = await onSignIn({ ...data, setError });
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    startTransition(async () => {
+      const answer = await onSignIn({ ...data, setError });
 
-    if (answer.status !== 200) {
-      return setIsButtonActive(true);
-    }
+      if (answer.status !== 200) {
+        return;
+      }
 
-    if (answer.theme !== null) {
-      setTheme(answer.theme);
-    }
+      if (answer.theme !== null) {
+        setTheme(answer.theme);
+      }
 
-    if (searchParams.has('iid')) {
-      router.push(`/invite/${searchParams.get('iid')}`);
-    }
+      if (searchParams.has('iid')) {
+        router.push(`/invite/${searchParams.get('iid')}`);
+      }
 
-    return router.push('/communities');
+      router.push('/communities');
+    });
   };
 
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
@@ -177,7 +177,7 @@ export const SignIn = () => {
               Зарегистрироваться
             </Link>
           </div>
-          {isButtonActive ? (
+          {!isPending ? (
             <Button variant="default" type="submit" className="w-24">
               Войти
             </Button>

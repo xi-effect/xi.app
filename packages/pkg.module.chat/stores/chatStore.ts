@@ -6,6 +6,9 @@ type useChatStoreT = {
   setChatId: (newValue: string | null) => void;
   messages: MessageT[] | null;
   setMessages: (newValue: MessageT[] | null) => void;
+  removeMessageById: (id: string) => void;
+  hasNextPage: boolean;
+  setHasNextPage: (hasNextPage: boolean) => void;
 };
 
 export const useChatStore = create<useChatStoreT>()((set) => ({
@@ -19,4 +22,10 @@ export const useChatStore = create<useChatStoreT>()((set) => ({
     set({
       messages: newValue,
     }),
+  removeMessageById: (id: string) =>
+    set((state) => ({
+      messages: state.messages ? state.messages.filter((message) => message.id !== id) : null,
+    })),
+  hasNextPage: false,
+  setHasNextPage: (hasNextPage: boolean) => set({ hasNextPage }),
 }));

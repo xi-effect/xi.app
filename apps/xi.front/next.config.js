@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 // Не поддавайтесь соблазну использовать здесь import
 const path = require('path');
 const runtimeCaching = require('next-pwa/cache');
@@ -12,7 +13,7 @@ const withPWA = require('next-pwa')({
   mode: 'production',
   reloadOnOnline: true,
   cacheOnFrontEndNav: true,
-  disable: process.env.NODE_ENV === 'development',
+  disable: process.env.NODE_ENV !== 'production',
   skipWaiting: true,
   sw: '/sw.js',
   buildExcludes: [
@@ -25,9 +26,9 @@ const withPWA = require('next-pwa')({
 });
 
 const nextConfig = {
+  outputFileTracingRoot: path.join(__dirname, '../../'),
   experimental: {
     esmExternals: true,
-    outputFileTracingRoot: path.join(__dirname, '../../'),
   },
   transpilePackages: [
     '@xipkg/form',
@@ -59,10 +60,14 @@ const nextConfig = {
     '@xipkg/breadcrumbs',
     '@xipkg/sheet',
     '@xipkg/inputsmart',
+    '@xipkg/contextmenu',
+    '@xipkg/slider',
+    '@xipkg/routerurl',
+    '@xipkg/badge',
   ],
-  compiler: {
-    removeConsole: process.env.NODE_ENV !== 'development',
-  },
+  compiler: process.env.NODE_ENV === 'production' ? {
+    removeConsole: true,
+  } : {},
   reactStrictMode: true,
   images: {
     remotePatterns: [

@@ -1,3 +1,5 @@
+'use client';
+
 import dynamic from 'next/dynamic';
 import { EmailConfirmation } from 'pkg.email-confirmation';
 import React from 'react';

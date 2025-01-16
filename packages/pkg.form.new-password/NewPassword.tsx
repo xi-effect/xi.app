@@ -56,6 +56,7 @@ export const NewPassword = ({ token }: { token: string }) => {
   const router = useRouter();
 
   const form = useForm<FormSchemaT>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       password: '',
@@ -69,7 +70,7 @@ export const NewPassword = ({ token }: { token: string }) => {
     trigger();
     setIsButtonActive(false);
 
-    const { status } = await post<RequestBodyNewPassword, {}>({
+    const { status } = await post<RequestBodyNewPassword, unknown>({
       service: 'auth',
       path: '/api/password-reset/confirmations/',
       body: {

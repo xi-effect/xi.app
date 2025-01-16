@@ -18,7 +18,7 @@ export const EditorModal = ({ isOpen, onConfirm, onOpenChange }: EditorModalProp
           <Close className="fill-gray-80 sm:fill-gray-0" />
         </M.ModalCloseButton>
         <M.ModalHeader className="flex flex-row items-baseline gap-1">
-          <h2 className="text-xl-base">Создание ответа</h2>
+          <M.ModalTitle className="text-xl-base">Создание ответа</M.ModalTitle>
           <span className="text-s-base text-gray-60 font-normal">Черновик сохранен в 16:10</span>
         </M.ModalHeader>
 

@@ -1,3 +1,2 @@
 export { areDatesDifferent } from './areDatesDifferent';
-export { formatDate } from './formatDate';
-export { useLoadItems } from './useLoadItems';
+export { formatDate, formatTimeFromISO } from './formatDate';

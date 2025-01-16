@@ -12,17 +12,17 @@ import { Sidebar } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
 import { useInterfaceStore } from './stores/interfaceStore';
 import { useChatStore } from './stores/chatStore';
-import { MessageSnakeCaseT } from './models/Message';
+import { MessageSnakeCaseT, MessageT } from './models/Message';
 
 export const ChatModule = () => {
   const socket = useMainSt((state) => state.socket);
   const chatId = useChatStore((state) => state.chatId);
   const setChatId = useChatStore((state) => state.setChatId);
+  const setMessages = useChatStore((state) => state.setMessages);
+  const setHasNextPage = useChatStore((state) => state.setHasNextPage);
 
   const currentSidebar = useInterfaceStore((state) => state.currentSidebar);
   const params = useParams<{ 'channel-id': string; 'community-id': string }>();
-
-  console.log('params', params);
 
   useEffect(() => {
     if (!socket) return () => {};
@@ -31,8 +31,6 @@ export const ChatModule = () => {
       status: number,
       { chat_id: newChatId }: { chat_id: string },
     ) => {
-      console.log('p', params);
-      console.log('handleRetrieveChatChannel', status, newChatId);
       if (status === 200 && newChatId && typeof newChatId === 'number' && chatId !== newChatId) {
         setChatId(newChatId);
       }
@@ -63,11 +61,16 @@ export const ChatModule = () => {
         status: number,
         { latest_messages: latestMessages }: { latest_messages: MessageSnakeCaseT[] },
       ) => {
-        console.log('status', status);
         if (status === 200) {
-          const messages = latestMessages.map((item) => convertSnakeToCamelCase(item));
+          const messages: MessageT[] = latestMessages
+            .map((item) => convertSnakeToCamelCase(item) as MessageT)
+            .reverse();
 
-          console.log('messages', messages);
+          if (messages.length === 20) {
+            setHasNextPage(true);
+          }
+
+          setMessages(messages);
         }
       },
     );
@@ -76,7 +79,7 @@ export const ChatModule = () => {
       if (!chatId || !socket) return;
 
       socket.emit('close-chat', { chat_id: chatId }, (status: number) => {
-        console.log('status', status);
+        console.log('close-chat', status);
       });
     };
   }, [chatId]);
@@ -97,6 +100,7 @@ export const ChatModule = () => {
           marginRight,
         }} // Меняем размер шапки при открытии меню
         transition={{ type: 'tween', duration: 0.3 }}
+        // @ts-expect-error TODO: чёт странное
         className="relative flex h-full w-full flex-col overflow-hidden"
       >
         <Header />

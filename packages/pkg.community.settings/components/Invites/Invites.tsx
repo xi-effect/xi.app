@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -201,9 +203,9 @@ const UserCard = ({
         <div className="flex min-w-40 flex-col">
           <p className="mb-2 text-xs font-medium text-gray-100">Роли:</p>
           <ul className="gap-x-4 gap-y-2">
-            {roles.map((role, index) => (
+            {roles.map((role) => (
               <UserBadge
-                key={index}
+                key={role.name}
                 name={role.name}
                 bgColorMain={role.bgColorMain}
                 bgColorSecondary={role.bgColorSecondary}

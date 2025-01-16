@@ -1,4 +1,10 @@
 const parseDate = (input: string | Date): Date | null => {
+  // Попробуем распарсить ISO 8601 формат
+  const isoDate = new Date(input);
+  if (!Number.isNaN(isoDate.getTime())) {
+    return isoDate;
+  }
+
   if (input instanceof Date) {
     return Number.isNaN(input.getTime()) ? null : input;
   }
@@ -35,4 +41,11 @@ export const formatDate = (dateInput: string | Date): string | null => {
     day: 'numeric',
     month: 'long',
   });
+};
+
+export const formatTimeFromISO = (isoString: string): string => {
+  const date = new Date(isoString);
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
 };

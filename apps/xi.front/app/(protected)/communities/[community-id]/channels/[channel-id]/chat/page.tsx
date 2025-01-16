@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const Chat = dynamic(() => import('pkg.module.chat').then((mod) => mod.Chat));
+const Chat = dynamic(() => import('pkg.module.chat').then((mod) => mod.Chat), { ssr: false });
 
 export default function ChatPage() {
   return (

@@ -1,5 +1,12 @@
 {
   "extends": "@xipkg/typescript/react-library.json",
-  "include": ["*"],
-  "exclude": ["dist", "build", "node_modules"]
+  "include": ["*", "app/Call.tsx", "shared/types"],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["es2022", "dom"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": false
+  }
 }

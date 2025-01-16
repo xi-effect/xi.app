@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import React, { ReactNode } from 'react';
@@ -90,6 +93,7 @@ export const CommunityChannelCreate = ({ open, onOpenChange }: CommunityChannelC
   const updateChannels = useMainSt((state) => state.updateChannels);
 
   const form = useForm<FormSchemaT>({
+    // @ts-ignore
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',

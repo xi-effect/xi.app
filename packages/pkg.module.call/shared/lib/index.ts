@@ -1,0 +1,1 @@
+export { getSourceIcon } from './getSourceIcon';

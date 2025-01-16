@@ -1,5 +1,3 @@
-/* eslint-disable no-irregular-whitespace */
-
 'use client';
 
 import { Button } from '@xipkg/button';
@@ -44,6 +42,7 @@ export const ChangeEmailModal = ({ open, onOpenChange, children }: ChangeEmailMo
         )) ||
           (stage.type === 'success' && (
             <div className="space-y-8 p-8">
+              <M.ModalTitle className="hidden">Изменение электронной почты</M.ModalTitle>
               <p className="text-center text-2xl font-semibold text-gray-100">
                 На адрес {stage.email} отправлено письмо с подтверждением
               </p>

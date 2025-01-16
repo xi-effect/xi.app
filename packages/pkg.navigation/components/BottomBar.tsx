@@ -2,7 +2,7 @@
 
 import { ReactNode, useRef } from 'react';
 import { Close, Burger } from '@xipkg/icons';
-import { Modal, ModalContent, ModalTrigger } from '@xipkg/modal';
+import { Modal, ModalContent, ModalTitle, ModalTrigger } from '@xipkg/modal';
 import { UserSettings } from 'pkg.user.settings';
 import { Logo } from 'pkg.logo';
 import { UserProfile } from '@xipkg/userprofile';
@@ -40,7 +40,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
   };
 
   return (
-    <div className="flex w-full overflow-hidden md:hidden">
+    <div className="flex w-full overflow-hidden">
       <Swiper
         slidesPerView={1}
         initialSlide={slideIndex}
@@ -81,6 +81,7 @@ export const BottomBar = ({ children, slideIndex, setSlideIndex }: BottomBarT) =
             </div>
           </ModalTrigger>
           <ModalContent variant="full" className="p-4 lg:p-6">
+            <ModalTitle className="hidden"> Настройки пользователя </ModalTitle>
             <UserSettings />
           </ModalContent>
         </Modal>

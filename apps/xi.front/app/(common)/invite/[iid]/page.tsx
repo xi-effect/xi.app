@@ -1,39 +1,21 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 import { Metadata } from 'next';
-// import { get } from 'pkg.utils';
 import InvitePage from './invitePage';
 
-// type ResponseBodyT = {
-//   community: {
-//     id: number;
-//     name: string;
-//     description: string;
-//   };
-//   is_authorized: boolean;
-//   has_already_joined: boolean;
-// };
-
 type PageParamsT = {
-  params: {
+  params: Promise<{
     iid: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({ params }: PageParamsT): Promise<Metadata> {
-  // const { status, datas } = await get<ResponseBodyT>({
-  //   service: 'backend',
-  //   path: `/api/public/community-service/invitations/by-code/${params.iid}/community/`,
-  //   config: {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   },
-  // });
-
+  const { iid } = await params;
   // если использю get из pkg.utils то появляется ошибка:
   // импорт компонентов без пометки 'use client'
   const data = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/public/community-service/invitations/by-code/${params.iid}/community/`,
+    `${process.env.NEXT_PUBLIC_SERVER_URL_BACKEND}/api/public/community-service/invitations/by-code/${iid}/community/`,
   ).then((res) => res.json());
 
   return {

@@ -45,6 +45,7 @@ export default function CommunityInvite({ setStage, setTab }: CommunityInvitePro
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-expect-error TODO: Разобраться с типами
     resolver: zodResolver(FormSchema),
     defaultValues: {
       invite: '',

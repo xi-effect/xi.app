@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button } from '@xipkg/button';
 import { patch } from 'pkg.utils';
 import { useMedia } from 'pkg.utils.client';
@@ -31,6 +32,7 @@ export const PersonalData = () => {
 
   const isMobile = useMedia('(max-width: 719px)');
   const form = useForm<z.infer<typeof FormSchema>>({
+    // @ts-ignore
     resolver: zodResolver(FormSchema),
     defaultValues: {
       displayName: user?.displayName,
@@ -48,7 +50,7 @@ export const PersonalData = () => {
   const onSubmit = async (formData: z.infer<typeof FormSchema>) => {
     trigger();
 
-    const { status } = await patch<any, any>({
+    const { status } = await patch({
       service: 'auth',
       path: '/api/users/current/profile/',
       body: { username: formData.username, display_name: formData.displayName, theme },
