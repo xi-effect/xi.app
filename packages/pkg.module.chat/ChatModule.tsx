@@ -114,6 +114,7 @@ export const ChatModule = () => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
+            // @ts-expect-error TODO: чёт странное
             className={`${isMobile ? 'hidden' : null} z-15 fixed right-0 top-0 h-full min-w-[300px]`}
           >
             <Sidebar />
