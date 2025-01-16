@@ -1,5 +1,5 @@
+import { type CustomElement } from '@xipkg/slatetypes';
 import { makeNodeId } from '../plugins/withNodeId';
-import { type CustomElement } from '../slate';
 
 export const mockValues = [
   {

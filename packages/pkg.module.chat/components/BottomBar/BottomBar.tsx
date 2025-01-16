@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { CustomEditor } from '@xipkg/inputsmart';
 import { useParams } from 'next/navigation';
 import { SubmitButton } from './SubmitButton';
 import { Field } from './Field';
+import { CustomEditorSI } from '../../type';
 
 export const BottomBar = () => {
-  const editorRef = React.useRef<CustomEditor | null>(null);
+  const editorRef = React.useRef<CustomEditorSI | null>(null);
 
   const params = useParams<{ 'community-id': string; 'channel-id': string }>();
   const storageKey = useMemo(

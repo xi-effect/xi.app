@@ -6,6 +6,7 @@ import { ReactEditor, useSlate } from 'slate-react';
 import { Transforms } from 'slate';
 import { AddFilePopover } from 'pkg.popover.add-file';
 import { File as IconFile } from '@xipkg/icons';
+import { CustomEditor } from '@xipkg/slatetypes';
 import { type CustomRenderElementProps } from './RenderElement';
 import { createDefaultNode } from '../utils/createDefaultNode';
 
@@ -49,7 +50,7 @@ export const File = ({ element, children, attributes }: FilePropsT) => {
               setOpen={setOpen}
               handleFileAttached={handleFileAttached}
               type="file"
-              editor={editor}
+              editor={editor as CustomEditor}
               acceptedExtensions="application/*"
             />
           </PopoverContent>

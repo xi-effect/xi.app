@@ -5,8 +5,8 @@ import { FloatingDelayGroup } from '@floating-ui/react';
 import { Close, Move, Plus } from '@xipkg/icons';
 import { useReadOnly } from 'slate-react';
 import { Button } from '@xipkg/button';
+import { type CustomElement } from '@xipkg/slatetypes';
 import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
-import { type CustomElement } from '../slate';
 import { AddNewNode } from './AddNewNode';
 import { ElementControlsModal } from './ElementControlsModal';
 
