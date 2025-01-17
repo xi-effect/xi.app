@@ -250,7 +250,7 @@ export const Navigation = ({ children }: NavigationPropT) => {
     <ModalsProvider>
       {isDesktop ? (
         <div className="relative flex flex-row">
-          <div className="fixed flex h-screen min-h-screen min-w-[350px] flex-col p-6">
+          <div className="fixed flex h-screen min-h-screen w-[350px] flex-col p-6">
             <Menu setSlideIndex={setSlideIndex} />
           </div>
           <div className="ml-[350px] h-full w-[calc(100vw-350px)] overflow-auto">{children}</div>

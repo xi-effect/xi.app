@@ -88,7 +88,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
       <DropdownMenuSeparator className="bg-gray-10 my-0 mt-1.5" />
       <ScrollArea>
         <SortableContext strategy={verticalListSortingStrategy} items={categoryIds}>
-          <div id="subitems-menu" className="my-2 mr-2">
+          <div id="subitems-menu" className="my-2 pr-2">
             <CategoryContainer
               setSlideIndex={setSlideIndex}
               category={firstCategory}
@@ -98,7 +98,7 @@ const ItemsList = ({ channels, categories, categoryIds, isOwner, setSlideIndex }
           {categories &&
             categories.length !== 0 &&
             categories.map((category) => (
-              <div key={category.id} className="my-2 mr-2">
+              <div key={category.id} className="my-2 pr-2">
                 <CategoryContainer
                   setSlideIndex={setSlideIndex}
                   category={category}
@@ -388,7 +388,7 @@ export const CommunityItems = ({ className, setSlideIndex }: CommunityItemsProps
       onDragOver={onDragOver}
     >
       <ul
-        className={`mt-3 flex h-[calc(100dvh-156px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:h-[calc(100dvh-282px)] md:pl-1 md:pr-0 ${
+        className={`mt-3 flex h-[calc(100dvh-156px)] flex-col gap-1 overflow-y-auto px-5 sm:mb-[60px] sm:h-[calc(100dvh-282px)] md:px-0 ${
           className ?? ''
         }`}
       >
