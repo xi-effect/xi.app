@@ -14,6 +14,8 @@
     "@xipkg/icons": "1.6.0",
     "@xipkg/select": "1.3.0",
     "@xipkg/inputsmart": "1.2.3",
+    "@xipkg/modal": "^3.2.0",
+    "@xipkg/userprofile": "^3.1.0",
     "pkg.utils.client": "*",
     "pkg.utils": "*",
     "pkg.stores": "*",

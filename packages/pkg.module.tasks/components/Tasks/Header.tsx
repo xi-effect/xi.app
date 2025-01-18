@@ -42,27 +42,30 @@ export const Header = ({ onSelect, selectValue }: HeaderPropsT) => {
       <div>
         <BreadcrumbsRoot size="s">
           <BreadcrumbList>
-            <BreadcrumbItem>
+            <BreadcrumbItem className="overflow-hidden">
               <BreadcrumbLink asChild>
-                <Link href={`/communities/${params['community-id']}/home`}>
+                <Link
+                  href={`/communities/${params['community-id']}/home`}
+                  className="overflow-hidden"
+                >
                   {communityMeta.name ?? 'Моё пространство'}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{currentTasks[0]?.name}</BreadcrumbPage>
+            <BreadcrumbItem className="block overflow-hidden">
+              <BreadcrumbPage className="overflow-hidden">{currentTasks[0]?.name}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </BreadcrumbsRoot>
       </div>
       <div className="flex h-[40px] items-center">
-        <h1 className="text-xl-base sm:text-h6 lg:text-h5 mr-auto font-semibold sm:inline-block">
+        <h1 className="text-xl-base sm:text-h6 lg:text-h5 mr-auto w-full truncate font-semibold sm:inline-block">
           {currentTasks[0]?.name}
         </h1>
         <Select value={selectValue} onValueChange={onSelect}>
           <SelectTrigger className="h-8 w-72 justify-start px-2 py-1" aria-label="Food">
-            <span>Показывать: &nbsp; </span>
+            <span className="text-nowrap">Показывать: &nbsp; </span>
             <SelectValue />
             <div className="grow" />
           </SelectTrigger>

@@ -142,7 +142,7 @@ export const Form = ({ setIsOpen, handleInviteCreate }: FormBlockPropsT) => {
   return (
     <FormComponent {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-        <div className="grid gap-6 px-6">
+        <div className="grid gap-6 px-6 pt-6">
           <FormField
             name="maxUsageCount"
             control={form.control}
@@ -160,7 +160,7 @@ export const Form = ({ setIsOpen, handleInviteCreate }: FormBlockPropsT) => {
                     maxLength={2}
                     onChange={(event) => {
                       const inputValue = event.target.value;
-                      const onlyNumbers = inputValue.replace(/[^1-9]/g, ''); // Можно вводить только цифры
+                      const onlyNumbers = inputValue.replace(/[^0-9]/g, ''); // Можно вводить только цифры
 
                       form.setValue('maxUsageCount', onlyNumbers);
                     }}

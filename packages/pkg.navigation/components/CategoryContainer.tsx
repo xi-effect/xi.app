@@ -158,8 +158,10 @@ export const CategoryContainer = ({ category, channels, setSlideIndex }: Categor
         <div {...attributes} {...listeners}>
           {name && (
             <div className="flex flex-col items-start p-2">
-              <span className="text-[16px] font-semibold">{name}</span>
-              {description && <span className="text-[14px] font-normal">{description}</span>}
+              <span className="w-full truncate text-[16px] font-semibold">{name}</span>
+              {description && (
+                <span className="w-full truncate text-[14px] font-normal">{description}</span>
+              )}
             </div>
           )}
         </div>

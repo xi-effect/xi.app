@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMainSt } from 'pkg.stores';
+import { useMedia } from 'pkg.utils.client';
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
@@ -89,10 +90,21 @@ export const ChatModule = () => {
     pinned: <Pinned />,
   };
 
+  const isMobile = useMedia('(max-width: 960px)');
+
+  const marginRight = (() => {
+    if (currentSidebar !== null) {
+      return !isMobile ? '300px' : '0px';
+    }
+    return '0px';
+  })();
+
   return (
     <div className="flex h-full max-h-full w-full flex-row overflow-x-hidden">
       <motion.div
-        animate={{ marginRight: currentSidebar !== null ? '400px' : '0px' }} // Меняем размер шапки при открытии меню
+        animate={{
+          marginRight,
+        }} // Меняем размер шапки при открытии меню
         transition={{ type: 'tween', duration: 0.3 }}
         className="relative flex h-full w-full flex-col overflow-hidden"
       >
@@ -107,7 +119,7 @@ export const ChatModule = () => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="bg-gray-0 z-15 fixed right-0 top-0 h-full w-[400px] p-4"
+            className={`${isMobile ? 'hidden' : null} z-15 fixed right-0 top-0 h-full min-w-[300px]`}
           >
             {sidebarContent[currentSidebar]}
           </motion.aside>
