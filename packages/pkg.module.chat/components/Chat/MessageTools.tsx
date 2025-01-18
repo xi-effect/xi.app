@@ -57,10 +57,10 @@ export const MessageTools = ({ id, isPinned }: MessageToolsPropsT) => {
 
   const handleTogglePin = () => {
     if (isPinned) {
-      handleUnpinMessage();
-    } else {
-      handlePinMessage();
+      return handleUnpinMessage();
     }
+
+    return handlePinMessage();
   };
 
   return (
