@@ -7,6 +7,7 @@ type useChatStoreT = {
   messages: MessageT[] | null;
   setMessages: (newValue: MessageT[] | null) => void;
   removeMessageById: (id: string) => void;
+  updateMessageById: (id: string, props: Partial<MessageT>) => void;
   hasNextPage: boolean;
   setHasNextPage: (hasNextPage: boolean) => void;
 };
@@ -28,4 +29,10 @@ export const useChatStore = create<useChatStoreT>()((set) => ({
     })),
   hasNextPage: false,
   setHasNextPage: (hasNextPage: boolean) => set({ hasNextPage }),
+  updateMessageById: (id, props) =>
+    set((state) => ({
+      messages: state.messages
+        ? state.messages.map((message) => (message.id === id ? { ...message, ...props } : message))
+        : null,
+    })),
 }));

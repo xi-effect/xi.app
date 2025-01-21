@@ -7,37 +7,70 @@ import { useChatStore } from '../../stores';
 
 type MessageToolsPropsT = {
   id: string;
+  isPinned: boolean;
 };
 
-export const MessageTools = ({ id }: MessageToolsPropsT) => {
+export const MessageTools = ({ id, isPinned }: MessageToolsPropsT) => {
   const chatId = useChatStore((state) => state.chatId);
   const removeMessageById = useChatStore((state) => state.removeMessageById);
+  const updateMessageById = useChatStore((state) => state.updateMessageById);
   const socket = useMainSt((state) => state.socket);
 
-  const handleDelete = () => {
+  const emitSocketEvent = (
+    event: string,
+    data: { message_id: string; chat_id: string | null },
+    callBack: (status: number) => void,
+  ) => {
     if (!socket || !chatId) return null;
 
-    socket.emit(
+    socket.emit(event, data, callBack);
+    return null;
+  };
+
+  const handleDelete = () => {
+    emitSocketEvent(
       'delete-my-chat-message',
-      {
-        message_id: id,
-        chat_id: chatId,
-      },
+      { message_id: id, chat_id: chatId },
       (status: number) => {
         if (status === 204) {
           removeMessageById(id);
         }
       },
     );
+  };
 
-    return null;
+  const handlePinMessage = () => {
+    emitSocketEvent('pin-chat-message', { message_id: id, chat_id: chatId }, (status: number) => {
+      if (status === 204) {
+        updateMessageById(id, { pinned: true });
+      }
+    });
+  };
+
+  const handleUnpinMessage = () => {
+    emitSocketEvent('unpin-chat-message', { message_id: id, chat_id: chatId }, (status: number) => {
+      if (status === 204) {
+        updateMessageById(id, { pinned: false });
+      }
+    });
+  };
+
+  const handleTogglePin = () => {
+    if (isPinned) {
+      return handleUnpinMessage();
+    }
+
+    return handlePinMessage();
   };
 
   return (
     <>
-      <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
+      <DropdownMenuItem
+        onClick={handleTogglePin}
+        className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5"
+      >
         <Pin className="mr-2 h-4 w-4" />
-        <span className="text-xs">Закрепить сообщение</span>
+        <span className="text-xs">{isPinned ? 'Открепить сообщение' : 'Закрепить сообщение'}</span>
       </DropdownMenuItem>
       <DropdownMenuItem className="hover:bg-gray-5 active:bg-gray-5 focus:bg-gray-5">
         <Link className="mr-2 h-4 w-4" />
