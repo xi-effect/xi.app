@@ -32,6 +32,8 @@ const parseDate = (input: string | Date): Date | null => {
  */
 export const formatDate = (dateInput: string | Date): string | null => {
   const date = parseDate(dateInput);
+  const currentYear = new Date().getFullYear();
+  const inputYear = date?.getFullYear();
 
   if (!date) {
     return null;
@@ -40,6 +42,7 @@ export const formatDate = (dateInput: string | Date): string | null => {
   return date.toLocaleDateString('ru-RU', {
     day: 'numeric',
     month: 'long',
+    year: currentYear !== inputYear ? 'numeric' : undefined,
   });
 };
 

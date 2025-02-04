@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { ChatProvider } from './components/Chat';
 import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
+import { Media, Pinned, Users } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
 import { useInterfaceStore } from './stores/interfaceStore';
 import { useChatStore } from './stores/chatStore';
@@ -84,6 +84,12 @@ export const ChatModule = () => {
     };
   }, [chatId]);
 
+  const sidebarContent = {
+    media: <Media />,
+    users: <Users />,
+    pinned: <Pinned />,
+  };
+
   const isMobile = useMedia('(max-width: 960px)');
 
   const marginRight = (() => {
@@ -100,7 +106,6 @@ export const ChatModule = () => {
           marginRight,
         }} // Меняем размер шапки при открытии меню
         transition={{ type: 'tween', duration: 0.3 }}
-        // @ts-expect-error TODO: чёт странное
         className="relative flex h-full w-full flex-col overflow-hidden"
       >
         <Header />
@@ -114,10 +119,9 @@ export const ChatModule = () => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            // @ts-expect-error TODO: чёт странное
             className={`${isMobile ? 'hidden' : null} z-15 fixed right-0 top-0 h-full min-w-[300px]`}
           >
-            <Sidebar />
+            {sidebarContent[currentSidebar]}
           </motion.aside>
         )}
       </AnimatePresence>
