@@ -1,4 +1,5 @@
 import { Microphone } from '@xipkg/icons';
+import React from 'react';
 
 type MessageBeforeJoinPropsT = {
   typeOfMessage: 'notStarted' | 'needPermission';

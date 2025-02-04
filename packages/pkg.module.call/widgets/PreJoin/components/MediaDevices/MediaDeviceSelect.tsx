@@ -1,4 +1,5 @@
 import { SelectItem } from '@xipkg/select';
+import React from 'react';
 
 export type MediaDeviceKind = 'videoinput' | 'audiooutput' | 'audioinput';
 

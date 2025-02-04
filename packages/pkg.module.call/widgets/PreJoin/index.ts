@@ -1,1 +1,1 @@
-export { PreJoinSection } from './PreJoinSection';
+export { PreJoin } from './PreJoin';

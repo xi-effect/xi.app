@@ -19,7 +19,7 @@ export interface MediaDeviceMenuProps extends React.ButtonHTMLAttributes<HTMLBut
   kind: MediaDeviceKind;
   initialSelection: string | undefined;
   onActiveDeviceChange?: (kind: MediaDeviceKind, deviceId: string) => void;
-  warnDisable: boolean;
+  warnDisable?: boolean;
   requestPermissions?: boolean;
 }
 
