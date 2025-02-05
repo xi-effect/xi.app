@@ -2,12 +2,13 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMainSt } from 'pkg.stores';
+import { useMedia } from 'pkg.utils.client';
 import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { convertSnakeToCamelCase } from '@xipkg/utils';
 import { ChatProvider } from './components/Chat';
 import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
+import { Media, Pinned, Users } from './components/Sidebar';
 import { BottomBar } from './components/BottomBar';
 import { useInterfaceStore } from './stores/interfaceStore';
 import { useChatStore } from './stores/chatStore';
@@ -83,12 +84,28 @@ export const ChatModule = () => {
     };
   }, [chatId]);
 
+  const sidebarContent = {
+    media: <Media />,
+    users: <Users />,
+    pinned: <Pinned />,
+  };
+
+  const isMobile = useMedia('(max-width: 960px)');
+
+  const marginRight = (() => {
+    if (currentSidebar !== null) {
+      return !isMobile ? '300px' : '0px';
+    }
+    return '0px';
+  })();
+
   return (
     <div className="flex h-full max-h-full w-full flex-row overflow-x-hidden">
       <motion.div
-        animate={{ marginRight: currentSidebar !== null ? '300px' : '0px' }} // Меняем размер шапки при открытии меню
+        animate={{
+          marginRight,
+        }} // Меняем размер шапки при открытии меню
         transition={{ type: 'tween', duration: 0.3 }}
-        // @ts-expect-error TODO: чёт странное
         className="relative flex h-full w-full flex-col overflow-hidden"
       >
         <Header />
@@ -102,10 +119,9 @@ export const ChatModule = () => {
             animate={{ x: '0%' }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            // @ts-expect-error TODO: чёт странное
-            className="bg-green-0 z-15 fixed right-0 top-0 h-full min-w-[300px]"
+            className={`${isMobile ? 'hidden' : null} z-15 fixed right-0 top-0 h-full min-w-[300px]`}
           >
-            <Sidebar />
+            {sidebarContent[currentSidebar]}
           </motion.aside>
         )}
       </AnimatePresence>

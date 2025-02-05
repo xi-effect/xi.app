@@ -7,7 +7,7 @@ import { CellControls } from './CellControls';
 
 type SortableElementPropsT = {
   attributes: RenderElementProps['attributes'];
-  element: RenderElementProps['element'];
+  element: any;
   children: ReactNode;
   renderElement: any;
 };

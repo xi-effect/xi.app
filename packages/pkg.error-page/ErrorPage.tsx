@@ -4,34 +4,49 @@ import React from 'react';
 import { Link } from '@xipkg/link';
 import { TelegramFilled, MailRounded } from '@xipkg/icons';
 import Image from 'next/image';
+import { cn } from '@xipkg/utils';
 
 export type ErrorPagePropsT = {
   title: string;
   errorCode: number;
   text: string;
   children?: React.ReactNode;
+  withLogo?: boolean;
 };
 
-export const ErrorPage = ({ title, errorCode, text, children }: ErrorPagePropsT) => (
-  <main className="3xl:px-[360px] flex h-[100dvh] w-full flex-col justify-between gap-8 overflow-y-scroll px-8 md:px-[60px] lg:px-[120px]">
-    <div className="flex h-[88px] min-h-[44px] items-end xl:h-[132px] xl:min-h-[52px]">
-      <Image
-        width={201}
-        height={24}
-        className="block xl:h-[32px] xl:w-[269px] dark:hidden"
-        src="/assets/brand/navigationlogo-default-light.svg"
-        priority
-        alt="logo"
-      />
-      <Image
-        width={201}
-        height={24}
-        className="hidden xl:h-[32px] xl:w-[269px] dark:block"
-        src="/assets/brand/navigationlogo-default-dark.svg"
-        priority
-        alt="logo"
-      />
-    </div>
+export const ErrorPage = ({
+  title,
+  errorCode,
+  text,
+  children,
+  withLogo = true,
+}: ErrorPagePropsT) => (
+  <main
+    className={cn(
+      '3xl:px-[360px] flex h-full min-h-[100dvh] w-full flex-col justify-center gap-8 overflow-y-scroll px-8 md:px-[60px] lg:px-[120px]',
+      withLogo && 'h-[100dvh] justify-between',
+    )}
+  >
+    {withLogo && (
+      <div className="flex h-[88px] min-h-[44px] items-end xl:h-[132px] xl:min-h-[52px]">
+        <Image
+          width={201}
+          height={24}
+          className="block xl:h-[32px] xl:w-[269px] dark:hidden"
+          src="/assets/brand/navigationlogo-default-light.svg"
+          priority
+          alt="logo"
+        />
+        <Image
+          width={201}
+          height={24}
+          className="hidden xl:h-[32px] xl:w-[269px] dark:block"
+          src="/assets/brand/navigationlogo-default-dark.svg"
+          priority
+          alt="logo"
+        />
+      </div>
+    )}
     <div className="flex flex-col justify-center">
       <span className="flex flex-col-reverse sm:flex-row sm:gap-1">
         <h1 className="text-gray-90 text-h3 sm:text-h2 mb-4 font-bold xl:text-[64px] xl:leading-[78px]">

@@ -13,11 +13,10 @@
     "@xipkg/fileuploader": "3.2.0",
     "@xipkg/form": "^3.3.0",
     "@xipkg/input": "1.2.0",
+    "@xipkg/slatetypes": "0.0.3",
     "browser-image-compression": "^2.0.2",
     "pkg.utils": "*",
     "react-image-file-resizer": "^0.4.8",
-    "slate": "^0.103.0",
-    "slate-react": "^0.106.0",
     "sonner": "1.4.41",
     "zod": "3.22.4"
   },

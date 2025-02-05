@@ -38,9 +38,12 @@ export const Header = () => {
     <div className="flex flex-col gap-4 pb-4 md:pb-8">
       <BreadcrumbsRoot size="s">
         <BreadcrumbList>
-          <BreadcrumbItem>
+          <BreadcrumbItem className="overflow-hidden">
             <BreadcrumbLink asChild>
-              <Link href={`/communities/${params['community-id']}/home`}>
+              <Link
+                href={`/communities/${params['community-id']}/home`}
+                className="overflow-hidden"
+              >
                 {communityMeta.name ?? 'Моё пространство'}
               </Link>
             </BreadcrumbLink>
@@ -51,11 +54,11 @@ export const Header = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </BreadcrumbsRoot>
-      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row md:items-center">
-        <h1 className="text-3xl font-semibold max-[520px]:text-2xl sm:inline-block sm:text-4xl">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center md:items-center">
+        <h1 className="w-full truncate text-3xl font-semibold max-[520px]:text-2xl sm:inline-block sm:text-4xl">
           {currentPosts[0]?.name}
         </h1>
-        <div className="flex w-full justify-end gap-6">
+        <div className="flex w-full justify-end gap-6 sm:w-auto md:w-auto">
           {isOwner && (
             <Button size="s" className="w-[100px] pl-2" onClick={handleRouteChange}>
               <Plus size="s" className="fill-gray-0 mr-[6px]" />

@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "@xipkg/avatar": "2.2.0",
-    "@livekit/components-react": "2.6.5",
-    "@livekit/components-core": "0.11.9",
+    "@livekit/components-react": "2.6.11",
+    "@livekit/components-core": "0.11.11",
     "@livekit/components-styles": "1.1.4",
-    "@livekit/krisp-noise-filter": "^0.2.12",
-    "livekit-client": "2.5.9",
+    "@livekit/krisp-noise-filter": "^0.2.14",
+    "livekit-client": "2.8.0",
     "@xipkg/aspect-ratio": "^1.2.0",
     "@xipkg/icons": "1.6.0",
     "@xipkg/button": "2.2.0",
@@ -24,9 +24,11 @@
     "pkg.utils.client": "*",
     "pkg.utils": "*",
     "pkg.stores": "*",
+    "pkg.error-page": "*",
     "@xipkg/utils": "1.2.3",
     "framer-motion": "11.3.28",
-    "swr": "2.2.5"
+    "swr": "2.2.5",
+    "zustand": "5.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

@@ -2,7 +2,7 @@
   "extends": "@xipkg/typescript/react-library.json",
   "include": [
     "*",
-    "components/Header.tsx",
+    "components/Header/Header.tsx",
     "components/NavbarAction.tsx",
     "components/Navbar.tsx",
     "components/ZoomMenu.tsx",

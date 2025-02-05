@@ -38,9 +38,12 @@ export const Header = ({ editHandler }: HeaderPropsT) => {
       <div>
         <BreadcrumbsRoot size="s">
           <BreadcrumbList>
-            <BreadcrumbItem>
+            <BreadcrumbItem className="overflow-hidden">
               <BreadcrumbLink asChild>
-                <Link href={`/communities/${params['community-id']}/home`}>
+                <Link
+                  href={`/communities/${params['community-id']}/home`}
+                  className="overflow-hidden"
+                >
                   {communityMeta.name ?? 'Моё пространство'}
                 </Link>
               </BreadcrumbLink>
@@ -56,7 +59,7 @@ export const Header = ({ editHandler }: HeaderPropsT) => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem>
+            <BreadcrumbItem className="block overflow-hidden">
               <BreadcrumbPage>{currentPost.title}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

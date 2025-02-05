@@ -32,8 +32,8 @@ import 'prismjs/components/prism-sass';
 import 'prismjs/components/prism-scss';
 
 import { NodeEntry, Node, Range } from 'slate';
+import { CodeElement } from '@xipkg/slatetypes';
 import { normalizeTokens } from '../utils/normalizeTokens';
-import { CodeElement } from '../slate';
 import { defaultLanguage } from '../const/codeEditorLanguages';
 
 export const useDecorateCode = () =>

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { useEffect, useState, KeyboardEvent } from 'react';
 

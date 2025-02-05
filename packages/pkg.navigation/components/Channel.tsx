@@ -94,7 +94,7 @@ export const Channel = ({ channel, className, setSlideIndex, onOpenEditModal }: 
       ? stylesDict.disabled
       : stylesDict.default;
 
-  const iconClassName = `transition-colors ease-in ${currentStyles.icon}`;
+  const iconClassName = `transition-colors shrink-0 ease-in ${currentStyles.icon}`;
 
   const iconsDict: IconsDictT = {
     posts: <Announce className={iconClassName} />,
@@ -172,14 +172,14 @@ export const Channel = ({ channel, className, setSlideIndex, onOpenEditModal }: 
         <div
           className={`${currentStyles.channel} ${className} group flex h-[40px] w-full flex-row items-center justify-between rounded-lg p-2 transition-colors ease-in hover:cursor-pointer`}
         >
-          <div className="flex items-center">
+          <div className="flex max-w-[80%] items-center">
             {iconsDict[channel.kind]}
-            <span className="pl-2 text-[14px] font-normal">{channel.name}</span>
+            <span className="w-full truncate px-2 text-[14px] font-normal">{channel.name}</span>
           </div>
           {isOwner && !isMobile && mouseOver ? (
             <div {...attributes} {...listeners} className="flex items-center gap-3">
               {activeChannel ? (
-                <Settings size="s" className={activeChannel ? 'fill-brand-80' : ''} />
+                <Settings size="s" className={activeChannel ? 'fill-brand-80 shrink-0' : ''} />
               ) : (
                 ''
               )}

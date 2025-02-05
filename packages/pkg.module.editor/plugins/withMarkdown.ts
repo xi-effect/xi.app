@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
@@ -7,7 +8,7 @@
  */
 
 import { Descendant, Editor, Element, Point, Range, Text, Transforms } from 'slate';
-import { CustomElement } from '../slate';
+import { CustomElement } from '@xipkg/slatetypes';
 
 function escapeRegExp(s: string) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -93,6 +94,7 @@ const SHORTCUTS = [
   { trigger: inlineRegex('__'), apply: createSetMarkApply('bold') },
   { trigger: inlineRegex('*'), apply: createSetMarkApply('italic') },
   { trigger: inlineRegex('_'), apply: createSetMarkApply('italic') },
+  // @ts-ignore
   { trigger: inlineRegex('~~'), apply: createSetMarkApply('stroke') },
 ];
 
@@ -226,6 +228,7 @@ export function withMarkdown(editor: Editor) {
           const newProperties: Partial<Element> = {
             type: 'paragraph',
           };
+          // @ts-ignore
           Transforms.setNodes(editor, newProperties);
           return;
         }
