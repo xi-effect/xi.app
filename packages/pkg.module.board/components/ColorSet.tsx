@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { DefaultColorStyle, useEditor } from 'tldraw';
+import React, { useState } from 'react';
 import { colorOptions } from '../utils/customConfig';
 
 type ColorOptionT = (typeof colorOptions)[number]['name'];
@@ -26,14 +25,9 @@ const ColorCircle = ({ colorClass, isSelected, handleClick }: ColorCircleT) => (
 
 export const ColorGrid = () => {
   const [selectedColor, setSelectedColor] = useState<ColorOptionT>('black');
-  const editor = useEditor();
 
   const handleColorClick = (colorName: ColorOptionT) => {
     setSelectedColor(colorName);
-
-    if (editor) {
-      editor.setStyleForNextShapes(DefaultColorStyle, colorName);
-    }
   };
 
   return (

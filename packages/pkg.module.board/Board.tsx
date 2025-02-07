@@ -1,41 +1,59 @@
-'use client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// components/Whiteboard.tsx
+import React, { useState, useRef, useEffect } from 'react';
+import { Stage } from 'react-konva';
+import CanvasLayer from './CanvasLayer';
+import { ToolType } from './types';
+import { useBoardStore, useUIStore } from './store';
+import { useWheelZoom } from './hooks';
+import { BackgroundLayer } from './components';
 
-import { DefaultContextMenu, Tldraw } from 'tldraw';
-import React from 'react';
-import { Navbar } from './components/Navbar';
-import './index.css';
-import { ZoomMenu } from './components/ZoomMenu';
-import { Header } from './components/Header';
-import { hiddenComponents } from './utils/customConfig';
-import { StickerTool } from './components/CustomTools';
-import { useYjsStore } from './useYjsStore';
+export const Board: React.FC = () => {
+  // Выбранный инструмент
+  const [selectedTool, setSelectedTool] = useState<ToolType>('pen');
+  const { boardElements } = useBoardStore();
+  const stageRef = useRef<any>(null);
 
-// import { myAssetStore } from './utils/imageStore';
+  // Получаем scale, setScale, zoomIn и zoomOut из UI‑стора
+  const { scale } = useUIStore();
 
-type BoardPropsT = {
-  token: string;
-};
+  // Пример хоткеев: Escape – переключиться в режим выделения,
+  // Delete – удалить выделенные элементы (реализовать логику выбора)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedTool('select');
+      }
+      if (e.key === 'Delete') {
+        // TODO: удалить выбранные элементы (логика выделения реализуется дополнительно)
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
-export const Board = ({ token }: BoardPropsT) => {
-  const store = useYjsStore({ roomId: token });
+  const handleWheel = useWheelZoom(stageRef);
+
+  // Получаем размеры доски (для примера используем window.innerWidth и window.innerHeight - 50)
+  const boardWidth = window.innerWidth;
+  const boardHeight = window.innerHeight;
 
   return (
-    <Tldraw
-      store={store}
-      // assets={myAssetStore as TLAssetStoreT}
-      onMount={(editor) => {
-        editor.updateInstanceState({ isGridMode: true });
-      }}
-      tools={[StickerTool]}
-      components={hiddenComponents}
-      // overrides={[
-      //   LoadingScreen: () => <span> Loading </span>,
-      // ]}
-    >
-      <Header />
-      <Navbar />
-      <ZoomMenu />
-      <DefaultContextMenu />
-    </Tldraw>
+    <div className="flex h-full w-full flex-col">
+      <div className="relative flex-1">
+        <Stage
+          width={boardWidth}
+          height={boardHeight}
+          ref={stageRef}
+          className="bg-white"
+          onWheel={handleWheel}
+          scaleX={scale}
+          scaleY={scale}
+        >
+          <BackgroundLayer width={boardWidth} height={boardHeight} stageScale={scale} />
+          <CanvasLayer boardElements={boardElements} selectedTool={selectedTool} />
+        </Stage>
+      </div>
+    </div>
   );
 };

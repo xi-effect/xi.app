@@ -17,13 +17,14 @@
     "pkg.logo": "*",
     "pkg.utils.client": "*",
     "sonner": "^1.5.0",
-    "tldraw": "^3.6.1",
-    "@tlsync-yjs/core": "0.2.1",
     "pkg.utils": "*",
     "pkg.stores": "*",
     "@hocuspocus/provider": "2.15.0",
     "yjs": "13.6.21",
-    "y-utility": "0.1.4"
+    "y-utility": "0.1.4",
+    "react-konva": "19.0.2",
+    "zustand": "5.0.3",
+    "use-image": "1.1.1"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

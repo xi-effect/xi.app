@@ -1,24 +1,19 @@
-import { useState } from 'react';
-import { DefaultSizeStyle, useEditor } from 'tldraw';
+import React, { useState } from 'react';
 import { Slider } from '@xipkg/slider';
 import { ColorGrid } from './ColorSet';
 
 const sizes = ['s', 'm', 'l', 'xl'] as const;
 
 export const StyleMenu = () => {
-  const editor = useEditor();
   const [currentSize, setCurrentSize] = useState<string>('m');
   const [currentOpacity, setCurrentOpacity] = useState<number>(100);
 
   const handleSize = (value: number[]) => {
     const size = sizes[value[0] - 1];
     setCurrentSize(size);
-    editor.setStyleForNextShapes(DefaultSizeStyle, size);
   };
 
   const handleOpacity = (value: number[]) => {
-    const opacity = value[0] / 100;
-    editor.setOpacityForNextShapes(opacity);
     setCurrentOpacity(value[0]);
   };
 

@@ -1,16 +1,10 @@
-import { DefaultZoomMenu, DefaultZoomMenuContent, useEditor } from 'tldraw';
-import 'tldraw/tldraw.css';
 import { Plus, Minus } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
+import { useUIStore } from '../store';
 
 export const ZoomMenu = () => {
-  const editor = useEditor();
-
-  const handleZoomIn = () =>
-    editor.zoomIn(editor.getViewportScreenCenter(), { animation: { duration: 200 } });
-
-  const handleZoomOut = () =>
-    editor.zoomOut(editor.getViewportScreenCenter(), { animation: { duration: 120 } });
+  // Получаем значения из UI-стора
+  const { scale, zoomIn, zoomOut } = useUIStore();
 
   return (
     <div className="border-gray-10 absolute bottom-3 right-3 z-30">
@@ -18,19 +12,15 @@ export const ZoomMenu = () => {
         <Button
           className="hover:bg-brand-0 pointer-events-auto flex h-6 w-6 items-center justify-center rounded-lg p-0 lg:h-8 lg:w-8"
           variant="ghost"
-          onClick={() => handleZoomOut()}
+          onClick={() => zoomOut()}
         >
           <Minus className="h-4 w-4 fill-gray-100 lg:h-6 lg:w-6" />
         </Button>
-        <div className="flex h-8 items-center justify-center">
-          <DefaultZoomMenu>
-            <DefaultZoomMenuContent />
-          </DefaultZoomMenu>
-        </div>
+        <div className="flex h-8 items-center justify-center">{(scale * 100).toFixed(0)}%</div>
         <Button
           className="hover:bg-brand-0 pointer-events-auto flex h-6 w-6 items-center justify-center rounded-lg p-0 lg:h-8 lg:w-8"
           variant="ghost"
-          onClick={() => handleZoomIn()}
+          onClick={() => zoomIn()}
         >
           <Plus className="h-4 w-4 lg:h-6 lg:w-6" />
         </Button>
