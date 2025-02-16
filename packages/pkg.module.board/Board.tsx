@@ -38,7 +38,7 @@ export const Board: React.FC = () => {
 
   const debouncedSetStagePos = useDebounce((x, y) => {
     setStagePos({ x, y });
-  }, 10);
+  }, 100);
 
   const handleDragMove = (e: Konva.KonvaEventObject<DragEvent>) => {
     debouncedSetStagePos(e.target.x(), e.target.y());
@@ -60,7 +60,7 @@ export const Board: React.FC = () => {
           width={boardWidth}
           height={boardHeight}
           ref={stageRef}
-          className="bg-[#f5f5f5]"
+          className="bg-gray-0"
           onWheel={handleOnWheel}
           onDragMove={handleDragMove}
           draggable
