@@ -2,17 +2,19 @@
 // components/Whiteboard.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Stage } from 'react-konva';
+import Konva from 'konva';
 import CanvasLayer from './CanvasLayer';
-import { ToolType } from './types';
+import { StagePositionT, ToolType } from './types';
 import { useBoardStore, useUIStore } from './store';
-import { useWheelZoom } from './hooks';
+import { useWheelZoom, useDebounce } from './hooks';
 import { BackgroundLayer } from './components';
 
 export const Board: React.FC = () => {
   // Выбранный инструмент
   const [selectedTool, setSelectedTool] = useState<ToolType>('pen');
+  const [stagePos, setStagePos] = useState<StagePositionT>({ x: 0, y: 0 });
   const { boardElements } = useBoardStore();
-  const stageRef = useRef<any>(null);
+  const stageRef = useRef<Konva.Stage>(null);
 
   // Получаем scale, setScale, zoomIn и zoomOut из UI‑стора
   const { scale } = useUIStore();
@@ -34,6 +36,19 @@ export const Board: React.FC = () => {
 
   const handleWheel = useWheelZoom(stageRef);
 
+  const debouncedSetStagePos = useDebounce((x, y) => {
+    setStagePos({ x, y });
+  }, 10);
+
+  const handleDragMove = (e: Konva.KonvaEventObject<DragEvent>) => {
+    debouncedSetStagePos(e.target.x(), e.target.y());
+  };
+
+  const handleOnWheel = (e: Konva.KonvaEventObject<WheelEvent>) => {
+    setStagePos({ x: e.target.x(), y: e.target.y() });
+    handleWheel(e);
+  };
+
   // Получаем размеры доски (для примера используем window.innerWidth и window.innerHeight - 50)
   const boardWidth = window.innerWidth;
   const boardHeight = window.innerHeight;
@@ -45,12 +60,12 @@ export const Board: React.FC = () => {
           width={boardWidth}
           height={boardHeight}
           ref={stageRef}
-          className="bg-white"
-          onWheel={handleWheel}
-          scaleX={scale}
-          scaleY={scale}
+          className="bg-[#f5f5f5]"
+          onWheel={handleOnWheel}
+          onDragMove={handleDragMove}
+          draggable
         >
-          <BackgroundLayer width={boardWidth} height={boardHeight} stageScale={scale} />
+          <BackgroundLayer stagePos={stagePos ?? { x: 0, y: 0 }} scaleValue={scale} />
           <CanvasLayer boardElements={boardElements} selectedTool={selectedTool} />
         </Stage>
       </div>
