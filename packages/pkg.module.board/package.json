@@ -15,7 +15,6 @@
     "@xipkg/icons": "1.6.0",
     "@xipkg/slider": "1.2.0",
     "@xipkg/tooltip": "1.3.0",
-    "canvas": "^3.0.0-rc3",
     "konva": "^9.3.18",
     "pkg.logo": "*",
     "pkg.stores": "*",
