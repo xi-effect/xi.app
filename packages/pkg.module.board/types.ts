@@ -27,8 +27,3 @@ export interface BoardElement {
   // Свойства для изображения
   src?: string;
 }
-
-export type StagePositionT = {
-  x: number;
-  y: number;
-};

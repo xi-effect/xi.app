@@ -3,21 +3,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Stage } from 'react-konva';
 import Konva from 'konva';
+import { useDebouncedFunction } from '@xipkg/utils';
 import CanvasLayer from './CanvasLayer';
-import { StagePositionT, ToolType } from './types';
+import { ToolType } from './types';
 import { useBoardStore, useUIStore } from './store';
-import { useWheelZoom, useDebounce } from './hooks';
+import { useWheelZoom } from './hooks';
 import { BackgroundLayer } from './components';
 
 export const Board: React.FC = () => {
   // Выбранный инструмент
   const [selectedTool, setSelectedTool] = useState<ToolType>('pen');
-  const [stagePos, setStagePos] = useState<StagePositionT>({ x: 0, y: 0 });
   const { boardElements } = useBoardStore();
   const stageRef = useRef<Konva.Stage>(null);
 
   // Получаем scale, setScale, zoomIn и zoomOut из UI‑стора
-  const { scale } = useUIStore();
+  const { scale, setStagePosition } = useUIStore();
 
   // Пример хоткеев: Escape – переключиться в режим выделения,
   // Delete – удалить выделенные элементы (реализовать логику выбора)
@@ -36,8 +36,8 @@ export const Board: React.FC = () => {
 
   const handleWheel = useWheelZoom(stageRef);
 
-  const debouncedSetStagePos = useDebounce((x, y) => {
-    setStagePos({ x, y });
+  const debouncedSetStagePos = useDebouncedFunction((x, y) => {
+    setStagePosition({ x, y });
   }, 100);
 
   const handleDragMove = (e: Konva.KonvaEventObject<DragEvent>) => {
@@ -45,7 +45,7 @@ export const Board: React.FC = () => {
   };
 
   const handleOnWheel = (e: Konva.KonvaEventObject<WheelEvent>) => {
-    setStagePos({ x: e.target.x(), y: e.target.y() });
+    setStagePosition({ x: e.target.x(), y: e.target.y() });
     handleWheel(e);
   };
 
@@ -65,7 +65,7 @@ export const Board: React.FC = () => {
           onDragMove={handleDragMove}
           draggable
         >
-          <BackgroundLayer stagePos={stagePos ?? { x: 0, y: 0 }} scaleValue={scale} />
+          <BackgroundLayer scaleValue={scale} />
           <CanvasLayer boardElements={boardElements} selectedTool={selectedTool} />
         </Stage>
       </div>
