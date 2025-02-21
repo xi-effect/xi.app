@@ -8,6 +8,10 @@ interface UIState {
   zoomIn: () => void;
   zoomOut: () => void;
   setPan: (pan: { x: number; y: number }) => void;
+  viewport: { width: number; height: number };
+  setViewport: (viewport: { width: number; height: number }) => void;
+  stagePosition: { x: number; y: number };
+  setStagePosition: (stagePosition: { x: number; y: number }) => void;
 }
 
 export const useUIStore = create<UIState>((set, get) => ({
@@ -25,4 +29,8 @@ export const useUIStore = create<UIState>((set, get) => ({
     set({ scale: newScale });
   },
   setPan: (pan) => set({ pan }),
+  viewport: { width: 0, height: 0 },
+  setViewport: (viewport) => set({ viewport }),
+  stagePosition: { x: 0, y: 0 },
+  setStagePosition: (stagePosition) => set({ stagePosition }),
 }));

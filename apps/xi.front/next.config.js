@@ -26,6 +26,11 @@ const withPWA = require('next-pwa')({
 });
 
 const nextConfig = {
+  webpack: (config) => {
+    // eslint-disable-next-line no-param-reassign
+    config.externals = [...config.externals, { canvas: 'canvas' }];
+    return config;
+  },
   outputFileTracingRoot: path.join(__dirname, '../../'),
   experimental: {
     esmExternals: true,
@@ -65,9 +70,12 @@ const nextConfig = {
     '@xipkg/routerurl',
     '@xipkg/badge',
   ],
-  compiler: process.env.NODE_ENV === 'production' ? {
-    removeConsole: true,
-  } : {},
+  compiler:
+    process.env.NODE_ENV === 'production'
+      ? {
+          removeConsole: true,
+        }
+      : {},
   reactStrictMode: true,
   images: {
     remotePatterns: [
