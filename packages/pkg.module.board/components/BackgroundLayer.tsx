@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Layer, Shape } from 'react-konva';
 import { useUIStore } from '../store';
-import { boardGridStep } from '../const';
+import { boardBackgroundDotSize, boardGridStep } from '../const';
 
 type BackgroundLayerPropsT = {
   scaleValue: number;
@@ -46,7 +46,7 @@ export const BackgroundLayer = ({ scaleValue }: BackgroundLayerPropsT) => {
           for (let x = startX; x <= endX; x += boardGridStep) {
             for (let y = startY; y <= endY; y += boardGridStep) {
               context.beginPath();
-              context.arc(x, y, 4 / scaleValue, 0, Math.PI * 2);
+              context.arc(x, y, boardBackgroundDotSize / scaleValue, 0, Math.PI * 2);
               context.fill();
             }
           }

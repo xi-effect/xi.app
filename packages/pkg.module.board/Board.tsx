@@ -9,10 +9,12 @@ import { ToolType } from './types';
 import { useBoardStore, useUIStore } from './store';
 import { useWheelZoom } from './hooks';
 import { BackgroundLayer } from './components';
+import { ZoomMenu } from './components/ZoomMenu';
 
 export const Board: React.FC = () => {
   // Выбранный инструмент
   const [selectedTool, setSelectedTool] = useState<ToolType>('pen');
+
   const { boardElements } = useBoardStore();
   const stageRef = useRef<Konva.Stage>(null);
 
@@ -56,6 +58,7 @@ export const Board: React.FC = () => {
   return (
     <div className="flex h-full w-full flex-col">
       <div className="relative flex-1 overflow-hidden">
+        <ZoomMenu />
         <Stage
           width={boardWidth}
           height={boardHeight}
@@ -63,6 +66,8 @@ export const Board: React.FC = () => {
           className="bg-gray-0"
           onWheel={handleOnWheel}
           onDragMove={handleDragMove}
+          scaleX={scale}
+          scaleY={scale}
           draggable
         >
           <BackgroundLayer scaleValue={scale} />

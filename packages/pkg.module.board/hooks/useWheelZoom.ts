@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // hooks/useWheelZoom.ts
+import Konva from 'konva';
 import { useCallback } from 'react';
 import { useUIStore } from '../store';
 
@@ -7,7 +8,7 @@ import { useUIStore } from '../store';
  * Хук для обработки масштабирования (зума) при помощи колесика мыши/тачпада.
  * Принимает ссылку на Stage и возвращает обработчик onWheel.
  */
-export const useWheelZoom = (stageRef: React.RefObject<any>) => {
+export const useWheelZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
   const { setScale } = useUIStore();
 
   const handleWheel = useCallback(
