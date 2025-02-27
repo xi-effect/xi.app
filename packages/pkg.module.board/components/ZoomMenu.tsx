@@ -2,9 +2,15 @@ import { Plus, Minus } from '@xipkg/icons';
 import { Button } from '@xipkg/button';
 import { useUIStore } from '../store';
 
-export const ZoomMenu = () => {
+type ZoomMenuPropsT = {
+  zoomIn: () => void;
+  zoomOut: () => void;
+  resetZoom: () => void;
+};
+
+export const ZoomMenu = ({ zoomIn, zoomOut, resetZoom }: ZoomMenuPropsT) => {
   // Получаем значения из UI-стора
-  const { scale, zoomIn, zoomOut, setScale } = useUIStore();
+  const { scale } = useUIStore();
 
   return (
     <div className="absolute bottom-4 right-4 z-30">
@@ -20,7 +26,7 @@ export const ZoomMenu = () => {
           className="min-w-[60px] items-center justify-center px-2 py-1 hover:bg-transparent focus:bg-transparent active:bg-transparent"
           variant="ghost"
           size="s"
-          onClick={() => setScale(1)}
+          onClick={() => resetZoom()}
         >
           {(scale * 100).toFixed(0)}%
         </Button>

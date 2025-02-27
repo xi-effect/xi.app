@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components/Whiteboard.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Stage } from 'react-konva';
+import { Layer, Rect, Stage } from 'react-konva';
 import Konva from 'konva';
-import { useDebouncedFunction } from '@xipkg/utils';
 import CanvasLayer from './CanvasLayer';
 import { ToolType } from './types';
 import { useBoardStore, useUIStore } from './store';
-import { useWheelZoom } from './hooks';
+import { useZoom } from './hooks';
 import { BackgroundLayer } from './components';
 import { ZoomMenu } from './components/ZoomMenu';
 
@@ -19,7 +18,7 @@ export const Board: React.FC = () => {
   const stageRef = useRef<Konva.Stage>(null);
 
   // Получаем scale, setScale, zoomIn и zoomOut из UI‑стора
-  const { scale, setStagePosition } = useUIStore();
+  const { setStagePosition } = useUIStore();
 
   // Пример хоткеев: Escape – переключиться в режим выделения,
   // Delete – удалить выделенные элементы (реализовать логику выбора)
@@ -36,18 +35,10 @@ export const Board: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handleWheel = useWheelZoom(stageRef);
-
-  const debouncedSetStagePos = useDebouncedFunction((x, y) => {
-    setStagePosition({ x, y });
-  }, 100);
-
-  const handleDragMove = (e: Konva.KonvaEventObject<DragEvent>) => {
-    debouncedSetStagePos(e.target.x(), e.target.y());
-  };
+  const { handleWheel, handleZoomIn, handleZoomOut, handleResetZoom } = useZoom(stageRef);
 
   const handleOnWheel = (e: Konva.KonvaEventObject<WheelEvent>) => {
-    setStagePosition({ x: e.target.x(), y: e.target.y() });
+    setStagePosition(e.currentTarget.position());
     handleWheel(e);
   };
 
@@ -58,19 +49,22 @@ export const Board: React.FC = () => {
   return (
     <div className="flex h-full w-full flex-col">
       <div className="relative flex-1 overflow-hidden">
-        <ZoomMenu />
+        <ZoomMenu zoomIn={handleZoomIn} zoomOut={handleZoomOut} resetZoom={handleResetZoom} />
         <Stage
           width={boardWidth}
           height={boardHeight}
           ref={stageRef}
           className="bg-gray-0"
           onWheel={handleOnWheel}
-          onDragMove={handleDragMove}
-          scaleX={scale}
-          scaleY={scale}
+          onDragEnd={(e) => {
+            setStagePosition(e.currentTarget.position());
+          }}
           draggable
         >
-          <BackgroundLayer scaleValue={scale} />
+          <BackgroundLayer />
+          <Layer>
+            <Rect x={50} y={50} width={100} height={100} strokeWidth={2} fill="#000" />
+          </Layer>
           <CanvasLayer boardElements={boardElements} selectedTool={selectedTool} />
         </Stage>
       </div>

@@ -1,1 +1,1 @@
-export { useWheelZoom } from './useWheelZoom';
+export { useZoom } from './useWheelZoom';
