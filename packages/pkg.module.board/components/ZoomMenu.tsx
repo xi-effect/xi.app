@@ -9,7 +9,6 @@ type ZoomMenuPropsT = {
 };
 
 export const ZoomMenu = ({ zoomIn, zoomOut, resetZoom }: ZoomMenuPropsT) => {
-  // Получаем значения из UI-стора
   const { scale } = useUIStore();
 
   return (
@@ -28,7 +27,7 @@ export const ZoomMenu = ({ zoomIn, zoomOut, resetZoom }: ZoomMenuPropsT) => {
           size="s"
           onClick={() => resetZoom()}
         >
-          {(scale * 100).toFixed(0)}%
+          {scale < 0.01 ? '< 1%' : `${(scale * 100).toFixed(0)}%`}
         </Button>
         <Button
           className="hover:bg-brand-0 pointer-events-auto flex h-8 w-8 items-center justify-center rounded-xl p-0 focus:bg-transparent"

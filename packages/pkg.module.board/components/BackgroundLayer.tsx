@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Layer, Shape } from 'react-konva';
 import { useUIStore } from '../store';
-import { boardBackgroundDotSize, boardGridStep } from '../const';
+import { baseDotSize, baseGridStep, minDotSize } from '../const';
 
 export const BackgroundLayer = () => {
   const { viewport, setViewport, stagePosition, scale } = useUIStore();
@@ -22,24 +22,29 @@ export const BackgroundLayer = () => {
     const visibleWidth = viewport.width / scale;
     const visibleHeight = viewport.height / scale;
 
+    const stepMultiplier = 2 ** Math.round(Math.log2(1 / scale));
+
+    const gridStep = baseGridStep * stepMultiplier;
+
+    const dotSize = Math.max(baseDotSize * stepMultiplier ** 1, minDotSize);
+
     const buffer = Math.max(visibleWidth, visibleHeight) * 2;
 
-    const startX = Math.floor((-stagePosition.x / scale - buffer) / boardGridStep) * boardGridStep;
+    const startX = Math.floor((-stagePosition.x / scale - buffer) / gridStep) * gridStep;
     const endX =
-      Math.ceil((-stagePosition.x / scale + visibleWidth + buffer) / boardGridStep) * boardGridStep;
-    const startY = Math.floor((-stagePosition.y / scale - buffer) / boardGridStep) * boardGridStep;
+      Math.ceil((-stagePosition.x / scale + visibleWidth + buffer) / gridStep) * gridStep;
+    const startY = Math.floor((-stagePosition.y / scale - buffer) / gridStep) * gridStep;
     const endY =
-      Math.ceil((-stagePosition.y / scale + visibleHeight + buffer) / boardGridStep) *
-      boardGridStep;
+      Math.ceil((-stagePosition.y / scale + visibleHeight + buffer) / gridStep) * gridStep;
 
     return (
       <Shape
         sceneFunc={(context) => {
           context.fillStyle = '#e8e8e8';
-          for (let x = startX; x <= endX; x += boardGridStep) {
-            for (let y = startY; y <= endY; y += boardGridStep) {
+          for (let x = startX; x <= endX; x += gridStep) {
+            for (let y = startY; y <= endY; y += gridStep) {
               context.beginPath();
-              context.arc(x, y, boardBackgroundDotSize / scale, 0, Math.PI * 2);
+              context.arc(x, y, dotSize, 0, Math.PI * 2);
               context.fill();
             }
           }

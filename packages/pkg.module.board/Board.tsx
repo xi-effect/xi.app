@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components/Whiteboard.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Layer, Rect, Stage } from 'react-konva';
+import { Stage } from 'react-konva';
 import Konva from 'konva';
 import CanvasLayer from './CanvasLayer';
 import { ToolType } from './types';
@@ -14,11 +14,13 @@ export const Board: React.FC = () => {
   // Выбранный инструмент
   const [selectedTool, setSelectedTool] = useState<ToolType>('pen');
 
-  const { boardElements } = useBoardStore();
   const stageRef = useRef<Konva.Stage>(null);
 
-  // Получаем scale, setScale, zoomIn и zoomOut из UI‑стора
+  const { boardElements } = useBoardStore();
   const { setStagePosition } = useUIStore();
+
+  const boardWidth = window.innerWidth;
+  const boardHeight = window.innerHeight;
 
   // Пример хоткеев: Escape – переключиться в режим выделения,
   // Delete – удалить выделенные элементы (реализовать логику выбора)
@@ -42,10 +44,6 @@ export const Board: React.FC = () => {
     handleWheel(e);
   };
 
-  // Получаем размеры доски (для примера используем window.innerWidth и window.innerHeight - 50)
-  const boardWidth = window.innerWidth;
-  const boardHeight = window.innerHeight;
-
   return (
     <div className="flex h-full w-full flex-col">
       <div className="relative flex-1 overflow-hidden">
@@ -62,9 +60,6 @@ export const Board: React.FC = () => {
           draggable
         >
           <BackgroundLayer />
-          <Layer>
-            <Rect x={50} y={50} width={100} height={100} strokeWidth={2} fill="#000" />
-          </Layer>
           <CanvasLayer boardElements={boardElements} selectedTool={selectedTool} />
         </Stage>
       </div>

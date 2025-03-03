@@ -4,7 +4,7 @@ import Konva from 'konva';
 import { useCallback } from 'react';
 import { calculateZoom, defaultZoomConfig } from '../utils';
 import { useUIStore } from '../store';
-import { roundScale } from '../utils/zoomConfig';
+import { roundScale, zoomLevels } from '../utils/zoomConfig';
 
 /**
  * Хук для обработки масштабирования (зума) при помощи колесика мыши/тачпада.
@@ -23,14 +23,13 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
       const pointer = stage.getPointerPosition();
       if (!pointer) return;
 
-      // Определяем координаты точки, на которую указывает курсор, относительно текущего масштаба
       const mousePointTo = {
         x: (pointer.x - stage.x()) / oldScale,
         y: (pointer.y - stage.y()) / oldScale,
       };
 
       const delta = e.evt.deltaY;
-      const scaleStep = 0.02;
+      const scaleStep = 0.01;
       const speedFactor = Math.abs(delta) > 50 ? 2 : 1;
 
       let newScale =
@@ -60,30 +59,33 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
   const handleZoom = useCallback(
     (direction: 'in' | 'out') => {
       const stage = stageRef.current;
-      if (!stage) {
-        return;
-      }
+      if (!stage) return;
 
       const oldScale = stage.scaleX();
+
+      const uniqueZoomLevels = [...new Set([...zoomLevels, oldScale])].sort((a, b) => a - b);
+      const currentIndex = uniqueZoomLevels.indexOf(oldScale);
+
       let newScale = oldScale;
 
       if (direction === 'in') {
-        newScale = oldScale >= 1 ? oldScale + 0.25 : oldScale * 1.1;
-      } else {
-        newScale = oldScale > 1 ? oldScale - 0.25 : oldScale * 0.9;
+        if (currentIndex < uniqueZoomLevels.length - 1) {
+          newScale = uniqueZoomLevels[currentIndex + 1];
+        }
+      } else if (currentIndex > 0) {
+        newScale = uniqueZoomLevels[currentIndex - 1];
       }
+
+      if (newScale === oldScale) return;
 
       // Ограничиваем масштаб в рамках minScale и maxScale
       newScale = Math.max(
         defaultZoomConfig.minScale,
         Math.min(newScale, defaultZoomConfig.maxScale),
       );
-      newScale = roundScale(newScale);
 
       const result = calculateZoom(stageRef, newScale, null, defaultZoomConfig);
-      if (!result) {
-        return;
-      }
+      if (!result) return;
 
       const { newScale: finalScale, newPos } = result;
 
@@ -100,7 +102,7 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
       setStagePosition({ x: newPos.x, y: newPos.y });
       stage.batchDraw();
     },
-    [setScale, stageRef, setStagePosition],
+    [setScale, setStagePosition, stageRef],
   );
 
   const handleZoomIn = useCallback(() => handleZoom('in'), [handleZoom]);
