@@ -24,9 +24,14 @@ export const BackgroundLayer = () => {
 
     const stepMultiplier = 2 ** Math.round(Math.log2(1 / scale));
 
-    const gridStep = baseGridStep * stepMultiplier;
+    let gridStep = baseGridStep * stepMultiplier;
 
-    const dotSize = Math.max(baseDotSize * stepMultiplier ** 1, minDotSize);
+    let dotSize = Math.max(baseDotSize * stepMultiplier ** 1, minDotSize);
+
+    if (scale < 0.01) {
+      gridStep /= 2;
+      dotSize /= 2;
+    }
 
     const buffer = Math.max(visibleWidth, visibleHeight) * 2;
 

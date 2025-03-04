@@ -3,7 +3,7 @@ import { ZoomConfig } from '../types';
 export const defaultZoomConfig: ZoomConfig = {
   minScale: 0.005,
   maxScale: 3,
-  scaleBy: 0.1,
+  scaleBy: 0.05,
   animationDuration: 250,
 };
 

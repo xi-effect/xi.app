@@ -29,13 +29,15 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
       };
 
       const delta = e.evt.deltaY;
-      const scaleStep = 0.01;
-      const speedFactor = Math.abs(delta) > 50 ? 2 : 1;
 
-      let newScale =
-        delta > 0 ? oldScale - scaleStep * speedFactor : oldScale + scaleStep * speedFactor;
+      const baseScaleStep = 0.01;
 
-      // Ограничиваем масштаб от 50% до 300%
+      const adjustedFactor = Math.max(0.1, oldScale * 2);
+
+      const scaleStep = baseScaleStep * adjustedFactor;
+
+      let newScale = delta > 0 ? oldScale - scaleStep : oldScale + scaleStep;
+
       newScale = Math.max(
         defaultZoomConfig.minScale,
         Math.min(newScale, defaultZoomConfig.maxScale),
@@ -96,9 +98,11 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
         y: newPos.y,
         duration: defaultZoomConfig.animationDuration / 1000,
         easing: Konva.Easings.Linear,
+        onUpdate: () => {
+          setScale(finalScale);
+        },
       });
 
-      setScale(finalScale);
       setStagePosition({ x: newPos.x, y: newPos.y });
       stage.batchDraw();
     },
