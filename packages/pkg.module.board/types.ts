@@ -27,3 +27,15 @@ export interface BoardElement {
   // Свойства для изображения
   src?: string;
 }
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
+export interface ZoomConfig {
+  minScale: number;
+  maxScale: number;
+  scaleBy: number;
+  animationDuration: number;
+}
