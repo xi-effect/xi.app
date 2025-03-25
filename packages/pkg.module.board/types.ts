@@ -1,5 +1,13 @@
 // types/index.ts
-export type ToolType = 'pen' | 'sticker' | 'text' | 'eraser' | 'shape' | 'image' | 'select';
+export type ToolType =
+  | 'pen'
+  | 'sticker'
+  | 'text'
+  | 'eraser'
+  | 'shape'
+  | 'image'
+  | 'select'
+  | 'hand';
 
 export type ElementType = 'line' | 'rectangle' | 'circle' | 'text' | 'sticker' | 'image';
 
@@ -38,4 +46,5 @@ export interface ZoomConfig {
   maxScale: number;
   scaleBy: number;
   animationDuration: number;
+  baseScaleStep: number;
 }

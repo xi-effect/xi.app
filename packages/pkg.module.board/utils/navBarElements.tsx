@@ -19,8 +19,8 @@ export const navBarElements: NavbarElementT[] = [
   { action: 'select', title: 'Select', icon: <Cursor size="l" /> },
   { action: 'hand', title: 'Hand', icon: <Hand size="m" /> },
   {
-    action: 'draw',
-    title: 'Draw',
+    action: 'pen',
+    title: 'Pen',
     icon: <Pen size="l" />,
     hasAToolTip: true,
     menuPopupContent: [

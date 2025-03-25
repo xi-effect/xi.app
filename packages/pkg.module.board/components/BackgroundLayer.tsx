@@ -3,9 +3,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { Layer, Shape } from 'react-konva';
 import { useUIStore } from '../store';
-import { baseDotSize, baseGridStep, minDotSize } from '../const';
+import { gridConfig } from '../utils';
 
-export const BackgroundLayer = () => {
+const BackgroundLayerComponent = () => {
   const { viewport, setViewport, stagePosition, scale } = useUIStore();
 
   useEffect(() => {
@@ -19,6 +19,10 @@ export const BackgroundLayer = () => {
   }, [setViewport]);
 
   const dots = useMemo(() => {
+    if (!viewport) return null;
+
+    const { baseGridStep, baseDotSize, minDotSize } = gridConfig;
+
     const visibleWidth = viewport.width / scale;
     const visibleHeight = viewport.height / scale;
 
@@ -45,7 +49,7 @@ export const BackgroundLayer = () => {
     return (
       <Shape
         sceneFunc={(context) => {
-          context.fillStyle = '#e8e8e8';
+          context.fillStyle = gridConfig.dotFill;
           for (let x = startX; x <= endX; x += gridStep) {
             for (let y = startY; y <= endY; y += gridStep) {
               context.beginPath();
@@ -56,7 +60,9 @@ export const BackgroundLayer = () => {
         }}
       />
     );
-  }, [viewport.width, viewport.height, scale, stagePosition]);
+  }, [viewport, scale, stagePosition.x, stagePosition.y]);
 
   return <Layer listening={false}>{dots}</Layer>;
 };
+
+export const BackgroundLayer = React.memo(BackgroundLayerComponent);

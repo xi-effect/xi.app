@@ -1,20 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // hooks/useWheelZoom.ts
 import Konva from 'konva';
 import { useCallback } from 'react';
 import { calculateZoom, defaultZoomConfig } from '../utils';
 import { useUIStore } from '../store';
 import { roundScale, zoomLevels } from '../utils/zoomConfig';
+import { useElementHandlers } from './useElementHandlers';
 
 /**
  * Хук для обработки масштабирования (зума) при помощи колесика мыши/тачпада.
  */
 export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
   const { setScale, setStagePosition } = useUIStore();
+  const { onChangeTransformerPosition } = useElementHandlers();
 
   const handleWheel = useCallback(
     (e: Konva.KonvaEventObject<WheelEvent>) => {
       e.evt.preventDefault();
+
+      const { baseScaleStep, minScale, maxScale } = defaultZoomConfig;
 
       const stage = stageRef.current;
       if (!stage) return;
@@ -30,18 +33,13 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
 
       const delta = e.evt.deltaY;
 
-      const baseScaleStep = 0.01;
-
       const adjustedFactor = Math.max(0.1, oldScale * 2);
 
       const scaleStep = baseScaleStep * adjustedFactor;
 
       let newScale = delta > 0 ? oldScale - scaleStep : oldScale + scaleStep;
 
-      newScale = Math.max(
-        defaultZoomConfig.minScale,
-        Math.min(newScale, defaultZoomConfig.maxScale),
-      );
+      newScale = Math.max(minScale, Math.min(newScale, maxScale));
 
       newScale = roundScale(newScale);
       setScale(newScale);
@@ -52,6 +50,7 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
       };
+
       stage.position(newPos);
       stage.batchDraw();
     },
@@ -62,6 +61,8 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
     (direction: 'in' | 'out') => {
       const stage = stageRef.current;
       if (!stage) return;
+
+      const { animationDuration, minScale, maxScale } = defaultZoomConfig;
 
       const oldScale = stage.scaleX();
 
@@ -81,10 +82,7 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
       if (newScale === oldScale) return;
 
       // Ограничиваем масштаб в рамках minScale и maxScale
-      newScale = Math.max(
-        defaultZoomConfig.minScale,
-        Math.min(newScale, defaultZoomConfig.maxScale),
-      );
+      newScale = Math.max(minScale, Math.min(newScale, maxScale));
 
       const result = calculateZoom(stageRef, newScale, null, defaultZoomConfig);
       if (!result) return;
@@ -96,17 +94,22 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
         scaleY: finalScale,
         x: newPos.x,
         y: newPos.y,
-        duration: defaultZoomConfig.animationDuration / 1000,
+        duration: animationDuration / 1000,
         easing: Konva.Easings.Linear,
         onUpdate: () => {
           setScale(finalScale);
+        },
+        onFinish: () => {
+          setTimeout(() => {
+            onChangeTransformerPosition();
+          }, 50);
         },
       });
 
       setStagePosition({ x: newPos.x, y: newPos.y });
       stage.batchDraw();
     },
-    [setScale, setStagePosition, stageRef],
+    [stageRef, setStagePosition, setScale, onChangeTransformerPosition],
   );
 
   const handleZoomIn = useCallback(() => handleZoom('in'), [handleZoom]);
@@ -116,6 +119,8 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
     const stage = stageRef.current;
     if (!stage) return;
 
+    const { animationDuration } = defaultZoomConfig;
+
     setScale(1);
     setStagePosition({ x: stage.x(), y: stage.y() });
 
@@ -124,12 +129,17 @@ export const useZoom = (stageRef: React.RefObject<Konva.Stage | null>) => {
       scaleY: 1,
       x: stage.x(),
       y: stage.y(),
-      duration: defaultZoomConfig.animationDuration / 1000,
+      duration: animationDuration / 1000,
       easing: Konva.Easings.Linear,
+      onFinish: () => {
+        setTimeout(() => {
+          onChangeTransformerPosition();
+        }, 50);
+      },
     });
 
     stage.batchDraw();
-  }, [stageRef, setScale, setStagePosition]);
+  }, [stageRef, setScale, setStagePosition, onChangeTransformerPosition]);
 
   return { handleWheel, handleZoomIn, handleZoomOut, handleResetZoom };
 };

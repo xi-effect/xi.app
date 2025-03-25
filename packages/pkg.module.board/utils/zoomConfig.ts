@@ -5,6 +5,7 @@ export const defaultZoomConfig: ZoomConfig = {
   maxScale: 3,
   scaleBy: 0.05,
   animationDuration: 250,
+  baseScaleStep: 0.01,
 };
 
 export const roundScale = (scale: number) => Math.round(scale * 1000) / 1000;

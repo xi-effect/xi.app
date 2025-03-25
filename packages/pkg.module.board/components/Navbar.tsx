@@ -3,18 +3,23 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@xipkg
 import { NavbarAction } from './NavbarAction';
 // import { StickerPopupContent } from './StickerPopupContent';
 import { navBarElements, NavbarElementT } from '../utils/navBarElements';
+import { useBoardStore } from '../store';
+import { ToolType } from '../types';
 // import { StylePopupContent } from './StylePopupContent';
 
 export const Navbar = () => {
   const [isTooltipOpen] = React.useState(false);
+  const { setSelectedTool, selectedTool } = useBoardStore();
 
-  const resetStyles = () => {};
+  // const resetStyles = () => {};
 
-  // const hanleTool = () => {};
+  const handleSelectTool = (toolName: ToolType) => {
+    setSelectedTool(toolName);
+  };
 
   return (
     <div className="pointer-events-none absolute inset-0">
-      <div className="absolute bottom-3 left-0 right-0 z-30 flex w-full items-center justify-center">
+      <div className="absolute bottom-4 left-0 right-0 z-30 flex w-full items-center justify-center">
         <div className="relative z-30 flex gap-7">
           <div className="border-gray-10 bg-gray-0 absolute -left-[115px] z-30 flex rounded-xl border p-1">
             <NavbarAction />
@@ -22,8 +27,7 @@ export const Navbar = () => {
           <div className="border-gray-10 bg-gray-0 mx-auto flex gap-10 rounded-xl border">
             <div className="flex gap-2 p-1">
               {navBarElements.map((item: NavbarElementT) => {
-                // const isActive = editor.getCurrentToolId() === item.action;
-                const isActive = true;
+                const isActive = item.action === selectedTool;
                 return (
                   <TooltipProvider key={item.action}>
                     <Tooltip open={item?.hasAToolTip && isTooltipOpen}>
@@ -34,7 +38,7 @@ export const Navbar = () => {
                             className={`pointer-events-auto flex h-6 w-6 items-center justify-center rounded-lg lg:h-8 lg:w-8 ${isActive ? 'bg-brand-0' : 'bg-gray-0'}`}
                             data-isactive={isActive}
                             onClick={() => {
-                              resetStyles();
+                              handleSelectTool(item.action as ToolType);
                             }}
                           >
                             {item.icon ? item.icon : item.title}
@@ -43,11 +47,11 @@ export const Navbar = () => {
                         <TooltipContent className="border-gray-10 bg-gray-0 mb-1 flex gap-10 rounded-xl border p-1 shadow-none">
                           {/* {editor.getCurrentToolId() === 'sticker' && (
                             <StickerPopupContent menuPopupContent={item?.menuPopupContent || []} />
-                          )}
-                          {editor.getCurrentToolId() === 'draw' && (
+                          )} */}
+                          {/* {selectedTool === 'pen' && (
                             <StylePopupContent menuPopupContent={item?.menuPopupContent || []} />
                           )} */}
-                          1
+                          {item.title}
                         </TooltipContent>
                       </div>
                     </Tooltip>
