@@ -19,17 +19,11 @@ export const CanvasLayer = memo(() => {
       if (selectedNode) {
         transformerRef.current.nodes([selectedNode]);
         transformerRef.current.getLayer()?.batchDraw();
-
-        if (transformerRef.current && selectedElementId) {
-          const selectedNode = layerRef.current?.findOne(`#${selectedElementId}`);
-          if (selectedNode) {
-            const box = transformerRef.current.getClientRect();
-            setSelectToolbarPosition({
-              x: box.x,
-              y: box.y,
-            });
-          }
-        }
+        const box = transformerRef.current.getClientRect();
+        setSelectToolbarPosition({
+          x: box.x,
+          y: box.y,
+        });
       } else {
         transformerRef.current.nodes([]);
       }

@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import Konva from 'konva';
+import { useDebouncedFunction } from '@xipkg/utils';
 import { useBoardStore, useUIStore } from '../store';
 import { useStage } from '../providers';
 import { useZoom } from './useWheelZoom';
@@ -12,10 +13,11 @@ export const useCanvasHandlers = () => {
 
   const currentLineId = useRef<string>('');
   const currentElementRef = useRef<BoardElement | null>(null);
-
   const isDrawing = useRef(false);
 
   const { handleWheel } = useZoom(stageRef);
+
+  const debouncedElementUpdate = useDebouncedFunction(updateElement, 300);
 
   const handleOnWheel = (e: Konva.KonvaEventObject<WheelEvent>) => {
     setStagePosition(e.currentTarget.position());
@@ -68,7 +70,7 @@ export const useCanvasHandlers = () => {
     line.points(newPoints);
     layer.batchDraw();
 
-    updateElement(currentLineId.current, { points: newPoints });
+    debouncedElementUpdate(currentLineId.current, { points: newPoints });
   };
 
   const handleMouseUp = () => {

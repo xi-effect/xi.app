@@ -1,16 +1,19 @@
 import { memo } from 'react';
 import { Line } from 'react-konva';
-import { useBoardStore } from '../../store';
+import { useBoardStore, useUIStore } from '../../store';
 import { BoardElement } from '../../types';
 import { useElementHandlers } from '../../hooks';
 
 export const LineShape = memo(({ element }: { element: BoardElement }) => {
   const { selectedElementId } = useBoardStore();
   const { handleSelect, handleDragEnd } = useElementHandlers();
+  const { scale } = useUIStore();
+
+  const hitStrokeWidth = Math.max(20, Math.min(40, 20 / scale));
 
   return (
     <Line
-      hitStrokeWidth={20}
+      hitStrokeWidth={hitStrokeWidth}
       id={element.id}
       tension={0.5}
       points={element.points}
