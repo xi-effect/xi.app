@@ -1,7 +1,7 @@
 // store/useBoardStore.ts
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { BoardElement } from '../types';
+import { BoardElement, ToolType } from '../types';
 
 interface BoardState {
   boardElements: BoardElement[];
@@ -9,6 +9,12 @@ interface BoardState {
   updateElement: (id: string, updates: Partial<BoardElement>) => void;
   removeElement: (id: string) => void;
   clearBoard: () => void;
+  selectedTool: ToolType;
+  setSelectedTool: (tool: ToolType) => void;
+  selectedElementId: string | null;
+  selectElement: (id: string | null) => void;
+  selectToolbarPosition: { x: number; y: number };
+  setSelectToolbarPosition: (position: { x: number; y: number }) => void;
 }
 
 export const useBoardStore = create<BoardState>()(
@@ -28,6 +34,13 @@ export const useBoardStore = create<BoardState>()(
           boardElements: state.boardElements.filter((el) => el.id !== id),
         })),
       clearBoard: () => set(() => ({ boardElements: [] })),
+      selectedTool: 'select',
+      setSelectedTool: (tool: ToolType) => set(() => ({ selectedTool: tool })),
+      selectedElementId: null,
+      selectElement: (id: string | null) => set(() => ({ selectedElementId: id })),
+      selectToolbarPosition: { x: 0, y: 0 },
+      setSelectToolbarPosition: (position: { x: number; y: number }) =>
+        set(() => ({ selectToolbarPosition: position })),
     }),
     { name: 'board-storage' },
   ),

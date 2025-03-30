@@ -1,8 +1,6 @@
 import { Undo, Redo } from '@xipkg/icons';
 
 export const NavbarAction = () => {
-  console.log('NavbarAction');
-
   const canUndo = false;
   const canRedo = false;
   return (
