@@ -6,12 +6,15 @@ import { useCanvasHandlers, useZoom } from './hooks';
 import { useStage } from './providers';
 import { BackgroundLayer, SelectedElementToolbar, Navbar, ZoomMenu } from './components';
 import { CanvasLayer } from './CanvasLayer';
+import { useWhiteboardCollaborative } from './useWhiteboardCollaborative';
 
 export const Canvas = () => {
   const { stageRef } = useStage();
   const { selectedTool, removeElement, selectedElementId, selectElement } = useBoardStore();
   const { handleOnWheel, handleMouseUp, handleMouseDown, handleMouseMove, handleDragEnd } =
     useCanvasHandlers();
+
+  useWhiteboardCollaborative({ roomId: 'test/slate-yjs-demo' });
 
   const { handleResetZoom, handleZoomIn, handleZoomOut } = useZoom(stageRef);
 

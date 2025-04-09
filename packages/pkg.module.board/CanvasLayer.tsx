@@ -6,11 +6,10 @@ import { useStage } from './providers';
 import { useElementHandlers, useIsStageScaling } from './hooks';
 
 export const CanvasLayer = memo(() => {
-  const { boardElements, selectedElementId, selectedTool, setSelectToolbarPosition } =
-    useBoardStore();
+  const { boardElements, selectedElementId, selectedTool, updateElement } = useBoardStore();
 
   const { layerRef, transformerRef } = useStage();
-  const { onChangeTransformerPosition } = useElementHandlers();
+  const { handleTransformEnd, handleDragStart, onChangeTransformerPosition } = useElementHandlers();
   const { isScaling } = useIsStageScaling();
 
   useEffect(() => {
@@ -20,23 +19,20 @@ export const CanvasLayer = memo(() => {
         transformerRef.current.nodes([selectedNode]);
         transformerRef.current.getLayer()?.batchDraw();
         const box = transformerRef.current.getClientRect();
-        setSelectToolbarPosition({
-          x: box.x,
-          y: box.y,
-        });
+        updateElement('toolbar', { x: box.x, y: box.y });
       } else {
         transformerRef.current.nodes([]);
       }
     } else {
       transformerRef.current?.nodes([]);
     }
-  }, [layerRef, selectedElementId, setSelectToolbarPosition, transformerRef]);
+  }, [layerRef, selectedElementId, transformerRef, updateElement]);
 
   useEffect(() => {
     if (!isScaling && selectedElementId) {
       onChangeTransformerPosition();
     }
-  }, [isScaling, selectedElementId, onChangeTransformerPosition]);
+  }, [isScaling, onChangeTransformerPosition, selectedElementId]);
 
   return (
     <Layer ref={layerRef}>
@@ -47,14 +43,16 @@ export const CanvasLayer = memo(() => {
         <Transformer
           ref={transformerRef}
           rotateEnabled={false}
+          flipEnabled={false}
           anchorCornerRadius={8}
           anchorStroke="#070707"
           borderStroke="#070707"
           borderDash={[5, 5]}
           padding={8}
           enabledAnchors={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
-          onTransform={onChangeTransformerPosition}
-          onDragMove={onChangeTransformerPosition}
+          onTransformEnd={handleTransformEnd}
+          onDragStart={handleDragStart}
+          onTransformStart={handleDragStart}
         />
       )}
     </Layer>
