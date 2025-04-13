@@ -19,6 +19,10 @@ export const LineShape = memo(({ element }: { element: BoardElement }) => {
       points={element.points}
       stroke={element.stroke}
       strokeWidth={element.strokeWidth}
+      x={element.x}
+      y={element.y}
+      scaleX={element.scaleX ?? 1}
+      scaleY={element.scaleY ?? 1}
       lineJoin="round"
       lineCap="round"
       onClick={(e) => handleSelect(e, element.id)}

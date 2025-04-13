@@ -9,7 +9,14 @@ export type ToolType =
   | 'select'
   | 'hand';
 
-export type ElementType = 'line' | 'rectangle' | 'circle' | 'text' | 'sticker' | 'image';
+export type ElementType =
+  | 'line'
+  | 'rectangle'
+  | 'circle'
+  | 'text'
+  | 'sticker'
+  | 'image'
+  | 'toolbar';
 
 export interface BoardElement {
   id: string;
@@ -26,6 +33,9 @@ export interface BoardElement {
   height?: number;
   radius?: number;
   fill?: string;
+  // Свойства масштабирования для всех элементов
+  scaleX?: number;
+  scaleY?: number;
   // Свойства для текста и стикера
   text?: string;
   fontSize?: number;
@@ -47,4 +57,9 @@ export interface ZoomConfig {
   scaleBy: number;
   animationDuration: number;
   baseScaleStep: number;
+}
+
+export interface ToolbarElement extends BoardElement {
+  type: 'toolbar';
+  elementId: string | null;
 }
