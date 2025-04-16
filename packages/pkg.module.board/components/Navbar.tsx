@@ -9,11 +9,12 @@ import { ToolType } from '../types';
 
 export const Navbar = () => {
   const [isTooltipOpen] = React.useState(false);
-  const { setSelectedTool, selectedTool } = useBoardStore();
+  const { setSelectedTool, selectedTool, selectElement } = useBoardStore();
 
   // const resetStyles = () => {};
 
   const handleSelectTool = (toolName: ToolType) => {
+    selectElement(null);
     setSelectedTool(toolName);
   };
 
