@@ -21,7 +21,7 @@
     "date-fns": "^3.6.0",
     "next-themes": "^0.2.1",
     "pkg.stores": "*",
-    "sonner": "^1.4.41",
+    "sonner": "^2.0.3",
     "zod": "3.24.1"
   },
   "devDependencies": {

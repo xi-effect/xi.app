@@ -18,7 +18,7 @@
     "pkg.stores": "*",
     "pkg.utils": "*",
     "pkg.utils.client": "*",
-    "sonner": "^1.4.41",
+    "sonner": "^2.0.3",
     "zod": "3.24.1"
   },
   "devDependencies": {
