@@ -17,7 +17,7 @@
     "@xipkg/toggle": "^1.2.0",
     "zod": "3.24.1",
     "pkg.stores": "*",
-    "sonner": "1.4.41",
+    "sonner": "^2.0.3",
     "nanoid": "5.0.7"
   },
   "devDependencies": {

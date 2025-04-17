@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useBoardStore } from './store';
 import { BoardElement } from './types';
-import { useYJS } from './hooks';
+import { useYjs } from './hooks';
 
 export const useWhiteboardCollaborative = ({
   roomId = 'roomid',
@@ -16,7 +16,7 @@ export const useWhiteboardCollaborative = ({
   let hasConnectedBefore = false;
 
   const { addElement, updateElement, removeElement, boardElements } = useBoardStore();
-  const { yDoc, provider, yStore, yArr, getYJSKeys } = useYJS(roomId, hostUrl);
+  const { yDoc, provider, yStore, yArr, getYJSKeys } = useYjs(roomId, hostUrl);
 
   // Синхронизирует один элемент из YJS в локальный стор
   const synchronizeElementFromYjs = (elementId: string) => {

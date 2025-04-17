@@ -19,7 +19,7 @@
     "pkg.logo": "*",
     "pkg.stores": "*",
     "pkg.utils": "^0.0.0",
-    "sonner": "^1.4.41",
+    "sonner": "^2.0.3",
     "zod": "3.24.1"
   },
   "devDependencies": {

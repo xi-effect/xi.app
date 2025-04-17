@@ -40,7 +40,7 @@
     "pkg.utils": "*",
     "pkg.utils.client": "*",
     "socket.io-client": "4.7.5",
-    "sonner": "1.4.41",
+    "sonner": "^2.0.3",
     "swiper": "^11.1.14",
     "zustand": "^4.5.5"
   },

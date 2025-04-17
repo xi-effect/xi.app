@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { getOrCreateInstance, releaseInstance, getKeys } from '../services';
 
-export const useYJS = (roomId: string, hostUrl: string) => {
+export const useYjs = (roomId: string, hostUrl: string) => {
   // Получаем инстанс YJS
   const instance = useMemo(() => getOrCreateInstance(roomId, hostUrl), [roomId, hostUrl]);
 

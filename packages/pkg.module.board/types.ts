@@ -4,10 +4,12 @@ export type ToolType =
   | 'sticker'
   | 'text'
   | 'eraser'
-  | 'shape'
+  | 'rectangle'
   | 'image'
   | 'select'
-  | 'hand';
+  | 'hand'
+  | 'arrow'
+  | 'asset';
 
 export type ElementType =
   | 'line'
