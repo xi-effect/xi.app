@@ -12,7 +12,7 @@ import { useTheme } from 'next-themes';
 import { patch } from 'pkg.utils';
 import { toast } from 'sonner';
 import { useMainSt } from 'pkg.stores';
-import { useDebouncedFunction } from '@xipkg/utils/useDebouncedFunction';
+import { useDebouncedFunction } from '@xipkg/utils';
 
 type ThemeT = 'light' | 'dark' | 'system';
 
