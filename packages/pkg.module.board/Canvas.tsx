@@ -2,7 +2,7 @@
 import { Stage } from 'react-konva';
 import { useKeyPress } from 'pkg.utils.client';
 import { useBoardStore } from './store';
-import { useCanvasHandlers, useZoom } from './hooks';
+import { useCanvasHandlers, useCursor, useZoom } from './hooks';
 import { useStage } from './providers';
 import { BackgroundLayer, SelectedElementToolbar, Navbar, ZoomMenu } from './components';
 import { CanvasLayer } from './CanvasLayer';
@@ -18,6 +18,8 @@ export const Canvas = () => {
 
   const { handleResetZoom, handleZoomIn, handleZoomOut } = useZoom(stageRef);
 
+  const { cursor, mouseHandlers } = useCursor(selectedTool);
+
   const boardWidth = window.innerWidth;
   const boardHeight = window.innerHeight;
 
@@ -29,7 +31,7 @@ export const Canvas = () => {
   });
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col" style={{ cursor }} {...mouseHandlers}>
       <div className="relative flex-1 overflow-hidden">
         <ZoomMenu zoomIn={handleZoomIn} zoomOut={handleZoomOut} resetZoom={handleResetZoom} />
         <Navbar />
